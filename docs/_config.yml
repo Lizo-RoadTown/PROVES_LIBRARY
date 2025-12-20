@@ -45,3 +45,6 @@ exclude:
   - mcp-server/
   - .venv/
   - trial_docs/
+  - vendor/
+  - Gemfile
+  - Gemfile.lock
