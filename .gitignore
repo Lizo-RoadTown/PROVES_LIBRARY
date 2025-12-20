@@ -37,6 +37,11 @@ env/
 .DS_Store
 Thumbs.db
 
+# Environment files (NEVER COMMIT THESE)
+.env
+*.env
+!.env.template
+
 # MCP Server
 mcp-server/.env
 mcp-server/index.db
@@ -60,3 +65,4 @@ package-lock.json
 # Temporary files
 *.tmp
 .cache/
+.claude/
