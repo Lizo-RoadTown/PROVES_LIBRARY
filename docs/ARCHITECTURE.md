@@ -38,6 +38,50 @@ library/
 
 **Location:** `/mcp-server/`
 
+```mermaid
+graph TB
+    subgraph Clients[MCP Clients]
+        VSCode[VS Code Extension]
+        Scanner[Risk Scanner]
+        CLI[Command Line Tool]
+        Builder[Builder Agent]
+    end
+
+    subgraph Server[MCP Server]
+        API[FastAPI Endpoints]
+        Search[Search Engine]
+        Indexer[Library Indexer]
+        Cache[Response Cache]
+    end
+
+    subgraph Storage[Data Layer]
+        Files[(Markdown Files)]
+        DB[(SQLite Metadata)]
+        Embeddings[(Vector Store)]
+    end
+
+    VSCode -->|search, fetch| API
+    Scanner -->|search, get_artifacts| API
+    CLI -->|list, fetch| API
+    Builder -->|search patterns| API
+
+    API --> Search
+    API --> Indexer
+    API --> Cache
+
+    Search --> DB
+    Search --> Embeddings
+    Indexer --> Files
+    Indexer --> DB
+    Indexer --> Embeddings
+
+    Cache -.Cache hits.-> API
+
+    style API fill:#4D96FF
+    style Search fill:#6BCB77
+    style Files fill:#FFD93D
+```
+
 **Key Endpoints:**
 - `search(query, filters)` - Semantic and keyword search
 - `fetch(entry_id)` - Retrieve specific entry with full metadata
@@ -56,11 +100,61 @@ library/
 - Structured queries vs dumping docs into context windows
 - Creates "memory" for AI interactions
 
-###3. Risk Scanner
+### 3. Risk Scanner
 
 **Purpose:** Detect mission-critical risks in repos and capture knowledge
 
 **Location:** `/risk-scanner/`
+
+```mermaid
+graph TB
+    subgraph Input[Scan Input]
+        Repo[Repository Code]
+        Config[Config Files]
+        Tests[Test Files]
+    end
+
+    subgraph Scanner[Risk Scanner Engine]
+        AST[AST Parser]
+        ConfigAnalyzer[Config Analyzer]
+        DepCheck[Dependency Checker]
+        PatternMatcher[Pattern Matcher]
+    end
+
+    subgraph Patterns[Risk Patterns]
+        Power[Power Patterns]
+        Radio[Radio Patterns]
+        Memory[Memory Patterns]
+        Integration[Integration Patterns]
+    end
+
+    subgraph Output[Scan Output]
+        Report[Risk Report]
+        Alerts[Team Alerts]
+        Capture[Knowledge Capture]
+    end
+
+    Repo --> AST
+    Config --> ConfigAnalyzer
+    Tests --> DepCheck
+
+    AST --> PatternMatcher
+    ConfigAnalyzer --> PatternMatcher
+    DepCheck --> PatternMatcher
+
+    Power --> PatternMatcher
+    Radio --> PatternMatcher
+    Memory --> PatternMatcher
+    Integration --> PatternMatcher
+
+    PatternMatcher --> Report
+    Report --> Alerts
+    Alerts -.Team Response.-> Capture
+
+    style PatternMatcher fill:#FFD93D
+    style Report fill:#FF6B6B
+    style Capture fill:#6BCB77
+```
 
 **Workflow:**
 1. Scan repository for known risk patterns
@@ -112,6 +206,32 @@ graph LR
 
 ## Push/Pull Mechanism
 
+```mermaid
+sequenceDiagram
+    participant Team as University Team
+    participant Repo as Team Repository
+    participant Scanner as Risk Scanner
+    participant MCP as MCP Server
+    participant Library as Library Storage
+
+    Note over Repo,Scanner: PUSH Phase - Value to Team
+    Repo->>Scanner: Trigger scan (CI/manual)
+    Scanner->>Scanner: Analyze code patterns
+    Scanner->>MCP: Query: "Known fixes for I2C conflict?"
+    MCP->>Scanner: Return: software-001 entry
+    Scanner->>Team: ALERT: Risk detected + Fix link
+
+    Note over Team,Scanner: PULL Phase - Value to Library
+    Team->>Team: Review risk, implement fix
+    Scanner->>Team: PROMPT: "How did you resolve it?"
+    Team->>Scanner: CONTEXT: "Used TCA9548A, 2 weeks to CDR..."
+    Scanner->>Library: Submit raw capture with context
+    Library->>MCP: Re-index with new entry
+    MCP-->>Scanner: Updated knowledge available
+
+    Note over Team,Library: Mutual Value Exchange
+```
+
 ### PUSH (Scanner → Team)
 - Scanner detects risk
 - Looks up fix in library via MCP
@@ -125,6 +245,48 @@ graph LR
 - **Value to library:** Enriched knowledge with real-world context
 
 ## Future: Agentic Systems
+
+```mermaid
+graph TB
+    subgraph Phase4[Phase 4 - Agentic Automation]
+        Curator[Curator Agent<br/>LLM-powered normalization]
+        Builder[Builder Agent<br/>Code generation]
+    end
+
+    subgraph Core[Core System]
+        Scanner[Risk Scanner]
+        Library[(Library Storage)]
+        MCP[MCP Server]
+    end
+
+    subgraph Human[Human Oversight]
+        Reviewer[Human Reviewer]
+        Team[University Team]
+    end
+
+    Scanner -->|Raw Capture| Curator
+    Curator -->|Extract citations| Curator
+    Curator -->|Suggest tags| Curator
+    Curator -->|Check duplicates| Curator
+    Curator -->|Normalized Entry| Reviewer
+    Reviewer -->|Approve/Reject| Library
+    Reviewer -.Feedback.-> Curator
+
+    MCP -->|Query patterns| Builder
+    Team -->|Request component| Builder
+    Builder -->|Generate FPP/C++| Builder
+    Builder -->|Generate tests| Builder
+    Builder -->|Validate code| Builder
+    Builder -->|Generated code| Reviewer
+    Reviewer -->|Approve| Team
+
+    Library -->|Index| MCP
+
+    style Curator fill:#E8AA42
+    style Builder fill:#E8AA42
+    style Reviewer fill:#95E1D3
+    style Library fill:#6BCB77
+```
 
 ### Curator Agent (Phase 4)
 - Normalizes raw captures into entry format
