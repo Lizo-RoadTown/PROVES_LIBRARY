@@ -1,27 +1,43 @@
-# Getting Started with PROVES Library Development
+# Getting Started with PROVES Library
 
-**Welcome!** This guide will get you up and running with the PROVES Library development environment in under 30 minutes.
+**Welcome!** This guide will get you up and running with the PROVES Library in under 15 minutes.
+
+---
+
+## What You'll Set Up
+
+- ✅ Deep Agent system (LangGraph + Claude Sonnet 4.5)
+- ✅ Neon PostgreSQL knowledge graph (cloud-hosted)
+- ✅ LangSmith tracing for observability
+- ✅ Infrastructure utilities for database operations
 
 ---
 
 ## Prerequisites
 
-Before you begin, ensure you have:
+### Required
 
-- **Python 3.9+** ([Download](https://www.python.org/downloads/))
-- **Node.js 16+** ([Download](https://nodejs.org/)) - for VS Code extension
+- **Python 3.11+** ([Download](https://www.python.org/downloads/))
 - **Git** ([Download](https://git-scm.com/))
-- **Neo4j Desktop** ([Download](https://neo4j.com/download/)) - Recommended for graph database
-- **VS Code** ([Download](https://code.visualstudio.com/)) - Recommended IDE
+- **API Keys:**
+  - [Anthropic API Key](https://console.anthropic.com/) - For Claude Sonnet 4.5
+  - [LangSmith API Key](https://smith.langchain.com/) - For tracing and Studio UI
+  - [Neon Database URL](https://neon.tech/) - For cloud PostgreSQL
 
-**Hardware Requirements:**
-- 8GB RAM minimum (16GB recommended)
-- 10GB free disk space
-- Modern CPU (for LLM inference if running locally)
+### Optional
+
+- **VS Code** ([Download](https://code.visualstudio.com/)) - Recommended IDE
+- **Node.js 18+** - For LangGraph CLI (optional, for local dev server)
+
+### Hardware Requirements
+
+- 4GB RAM minimum (8GB recommended)
+- 2GB free disk space
+- Internet connection (cloud-based services)
 
 ---
 
-## Quick Start (5 Minutes)
+## Quick Start
 
 ### 1. Clone the Repository
 
@@ -34,539 +50,439 @@ cd PROVES_LIBRARY
 
 ```bash
 # Create virtual environment
-python -m venv venv
+python -m venv .venv
 
 # Activate (Windows)
-venv\Scripts\activate
+.venv\Scripts\activate
 
 # Activate (macOS/Linux)
-source venv/bin/activate
+source .venv/bin/activate
 
-# Install dependencies (when available)
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 3. Explore the Structure
+### 3. Configure Environment Variables
 
 ```bash
-# View documentation
-cat docs/ARCHITECTURE.md
-cat docs/KNOWLEDGE_GRAPH_SCHEMA.md
-cat ROADMAP.md
+# Copy template
+cp .env.example .env
 
-# Check example entry
-cat library/software/example-i2c-conflict.md
+# Edit .env with your API keys
+# Required variables:
+#   ANTHROPIC_API_KEY=sk-ant-api03-...
+#   LANGSMITH_API_KEY=lsv2_sk_...
+#   DATABASE_URL=postgresql://...
+#   LANGCHAIN_TRACING_V2=true
 ```
+
+### 4. Initialize Database Schema
+
+```bash
+# Apply knowledge graph schema to Neon database
+python scripts/apply_schema.py
+
+# Verify connection
+python scripts/db_connector.py
+```
+
+### 5. Test the Deep Agent System
+
+```bash
+# Navigate to curator-agent
+cd curator-agent
+
+# Run test script
+python test_agent.py
+
+# Expected output: Knowledge graph statistics
+```
+
+Success! You now have the PROVES Library running.
 
 ---
 
-## Development Environment Setup
+## Detailed Setup
 
-### Option A: Full Stack (Graph + MCP + Agents)
+### Step 1: Get Your API Keys
 
-**For Phase 2+ development - complete system**
+#### Anthropic (Claude Sonnet 4.5)
 
-#### 1. Install Neo4j Desktop
+1. Sign up at https://console.anthropic.com/
+2. Navigate to **API Keys**
+3. Create a new key
+4. Copy key starting with `sk-ant-api03-...`
+5. Add to `.env`: `ANTHROPIC_API_KEY=sk-ant-api03-...`
 
-1. Download from https://neo4j.com/download/
+**Free Tier:** $5 credit for new users
+
+#### LangSmith (Tracing & Studio UI)
+
+1. Sign up at https://smith.langchain.com/
+2. Navigate to **Settings > API Keys**
+3. Create a new key
+4. Copy key starting with `lsv2_sk_...`
+5. Add to `.env`: `LANGSMITH_API_KEY=lsv2_sk_...`
+
+**Free Tier:** Personal accounts get free tracing
+
+#### Neon PostgreSQL (Knowledge Graph Database)
+
+1. Sign up at https://neon.tech/
 2. Create a new project: "PROVES Library"
-3. Create a database: "proves-dev"
-   - Password: `proves-dev-123` (change for production!)
-   - Version: Latest (5.x)
-4. Start the database
-5. Open Neo4j Browser: http://localhost:7474
+3. Copy connection string (looks like `postgresql://user:pass@ep-xxx.us-east-2.aws.neon.tech/proves`)
+4. Add to `.env`: `DATABASE_URL=postgresql://...`
 
-#### 2. Load Initial Schema
+**Free Tier:** 500MB storage, 10GB data transfer/month
 
-```bash
-# Install Neo4j Python driver
-pip install neo4j
+### Step 2: Understand the Repository Structure
 
-# Run schema setup script (coming soon)
-python scripts/setup_graph_schema.py
+See [FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md) for complete organization guide.
 
-# Verify
-# Open Neo4j Browser, run: MATCH (n) RETURN count(n)
-# Should see 0 nodes initially
+```
+PROVES_LIBRARY/
+├── curator-agent/       # 🤖 Deep Agent system (PRIMARY)
+│   ├── src/curator/     # Main coordinator + 3 sub-agents
+│   ├── test_agent.py    # Test script
+│   └── README.md        # Deep Agent documentation
+│
+├── scripts/             # Infrastructure utilities
+│   ├── db_connector.py  # Database connection pooling
+│   ├── graph_manager.py # Knowledge graph CRUD
+│   └── apply_schema.py  # Schema initialization
+│
+├── docs/                # Technical documentation
+├── trial_docs/          # Manual analysis results
+├── library/             # Knowledge base entries
+└── .env.example         # Environment template
 ```
 
-#### 3. Set Up MCP Server
+### Step 3: Verify Your Setup
+
+#### Test Database Connection
 
 ```bash
-cd mcp-server
-
-# Install dependencies
-pip install fastapi uvicorn pydantic python-dotenv neo4j sentence-transformers
-
-# Create .env file
-cat > .env << EOF
-LIBRARY_PATH=../library
-NEO4J_URI=bolt://localhost:7687
-NEO4J_USER=neo4j
-NEO4J_PASSWORD=proves-dev-123
-EMBEDDING_MODEL=all-MiniLM-L6-v2
-LOG_LEVEL=INFO
-EOF
-
-# Run server
-python server.py
-
-# Test (in another terminal)
-curl http://localhost:8000/health
+python scripts/db_connector.py
 ```
 
-#### 4. Set Up Risk Scanner
-
-```bash
-cd risk-scanner
-
-# Install dependencies
-pip install click rich pyyaml
-
-# Run test scan
-python scanner.py --help
-
-# Scan example repo (when available)
-python scanner.py --repo /path/to/test-repo --output report.json
+**Expected output:**
+```
+✅ Connected to Neon PostgreSQL
+Database: proves
+Tables: kg_nodes, kg_relationships, library_entries
 ```
 
-#### 5. Set Up LangGraph Agents (Phase 3+)
+#### Test Knowledge Graph Operations
 
 ```bash
-# Install LangGraph dependencies
-pip install langgraph langchain langchain-anthropic
-
-# Set API keys
-export ANTHROPIC_API_KEY="your-key-here"  # Get from https://console.anthropic.com
-
-# Test agent (when available)
-python agents/curator/agent.py --test
+python scripts/graph_manager.py
 ```
 
-### Option B: Documentation Only
-
-**For Phase 1 - understanding and planning**
-
-```bash
-# Just read the docs!
-cat docs/ARCHITECTURE.md | less
-cat docs/KNOWLEDGE_GRAPH_SCHEMA.md | less
-cat ROADMAP.md | less
-
-# View diagrams in VS Code with Markdown Preview
-code docs/ARCHITECTURE.md
-# Press Ctrl+Shift+V for preview
+**Expected output:**
+```
+✅ Knowledge graph initialized
+Nodes: 6, Relationships: 3
 ```
 
-### Option C: Frontend Only (VS Code Extension)
-
-**For VS Code extension development**
+#### Test Deep Agent System
 
 ```bash
-cd vscode-extension  # (when created)
+cd curator-agent
+python test_agent.py
+```
 
-# Install dependencies
-npm install
-
-# Run extension in development mode
-npm run dev
-
-# This opens a new VS Code window with the extension loaded
+**Expected output:**
+```
+The knowledge graph currently contains:
+- 6 nodes total
+- 3 relationships total
+Nodes: Hardware (3), Component (2), Pattern (1)
 ```
 
 ---
 
-## Your First Contribution
+## What's Next?
 
-### 1. Add a New Library Entry
+### Learn the Deep Agent System
 
-**Goal:** Create a new risk pattern or lesson entry
+Read [curator-agent/README.md](curator-agent/README.md) to understand:
 
-```bash
-# 1. Create file
-touch library/software/my-new-pattern.md
+- Main Curator Agent (coordinator)
+- Extractor Sub-Agent (dependency discovery)
+- Validator Sub-Agent (schema compliance)
+- Storage Sub-Agent (knowledge graph operations)
+- Sub-agents-as-tools pattern
 
-# 2. Use this template
-cat > library/software/my-new-pattern.md << 'EOF'
----
-entry_id: software-XXX  # Get next ID from maintainers
-type: risk-pattern | lesson | config
-domain: software
-observed: Brief description of what you observed
-sources:
-  - citation: "Source name"
-    url: "https://..."
-    excerpt: "Relevant quote"
-artifacts:
-  - type: component | repo | doc | test
-    path: "Path or URL"
-    description: "What this artifact is"
-resolution: How it was resolved
-verification: How to verify the fix works
-tags: [tag1, tag2, tag3]
-created: 2024-12-20
-updated: 2024-12-20
----
-
-# Title of Your Entry
-
-## Problem
-
-Describe the problem you encountered...
-
-## Context
-
-What was the specific situation?...
-
-## Resolution
-
-How did you solve it?...
-
-## Verification
-
-How can someone verify this works?...
-
-## Related Patterns
-
-- `software-001`: Related pattern
-- `build-042`: Related build issue
-EOF
-
-# 3. Validate (when validator available)
-python scripts/validate_entry.py library/software/my-new-pattern.md
-
-# 4. Submit PR
-git checkout -b add-software-XXX
-git add library/software/my-new-pattern.md
-git commit -m "Add software-XXX: [brief description]"
-git push origin add-software-XXX
-# Open PR on GitHub
-```
-
-### 2. Add a Graph Node
-
-**Goal:** Add a component/port/resource to the knowledge graph
+### Run Your First Extraction
 
 ```bash
-# 1. Define node in CSV format
-cat >> data/nodes.csv << EOF
-id,type,name,namespace,version,category
-comp_new,SoftwareComponent,MyComponent,MyNamespace,v1.0.0,software
-EOF
+cd curator-agent
+python -c "
+from src.curator.agent import graph
 
-# 2. Define edges
-cat >> data/edges.csv << EOF
-source,target,relation,forward,reverse,strength,mechanism,knownness,scope
-comp_new,existing_comp,REQUIRES,true,false,always,protocol,known,fprime@v3.4.3
-EOF
+result = graph.invoke({
+    'messages': [{
+        'role': 'user',
+        'content': 'Extract dependencies from ../trial_docs/fprime_i2c_driver_full.md'
+    }]
+})
 
-# 3. Ingest into graph (when script available)
-python scripts/ingest_nodes.py data/nodes.csv data/edges.csv
-
-# 4. Verify in Neo4j Browser
-# Run: MATCH (n {id: 'comp_new'}) RETURN n
+print(result['messages'][-1].content)
+"
 ```
 
-### 3. Add a Risk Pattern to Scanner
+### View Traces in LangSmith
 
-**Goal:** Detect a new type of risk
+1. Go to https://smith.langchain.com/
+2. Select "PROVES_Library" project
+3. View traces of agent execution
+4. See sub-agent spawning and tool calls
 
-```bash
-# 1. Create pattern file
-cat > risk-scanner/patterns/my_pattern.py << 'EOF'
-def detect_my_pattern(ast_tree, config):
-    """
-    Detect [describe your pattern]
+### Use LangSmith Studio (Human-in-the-Loop)
 
-    Pattern: [what to look for]
-    Severity: HIGH | MEDIUM | LOW
-    Library Reference: software-XXX
-    """
-    # Your detection logic here
-    # Return Risk(...) if found, None otherwise
-    return None
-EOF
+**Note:** Requires local dev server (see troubleshooting below)
 
-# 2. Register pattern in scanner.py
-# Add: from patterns.my_pattern import detect_my_pattern
-# Add to pattern list
-
-# 3. Test
-python risk-scanner/scanner.py --repo test-repos/my-test --pattern my_pattern
-
-# 4. Submit PR
-```
+1. Go to https://smith.langchain.com/studio/
+2. Connect to local agent (requires `langgraph dev`)
+3. Pause, inspect, and modify agent execution in real-time
 
 ---
 
-## Development Workflows
+## Project Workflows
 
-### Workflow 1: Building a New Feature
+### Adding New Knowledge to the Graph
 
-```bash
-# 1. Create feature branch
-git checkout -b feature/my-feature
+**Option 1: Manual Entry**
 
-# 2. Develop
-# ... make changes ...
+Create a markdown file in `library/` with YAML frontmatter:
 
-# 3. Test
-pytest tests/  # When tests exist
-python -m mypy .  # Type checking
-
-# 4. Commit
-git add .
-git commit -m "feat: Add my feature
-
-Detailed description of what this does and why."
-
-# 5. Push and PR
-git push origin feature/my-feature
-# Open PR on GitHub
-```
-
-### Workflow 2: Testing Cascade Analysis
-
-```bash
-# 1. Start Neo4j
-# Open Neo4j Desktop, start database
-
-# 2. Load test data
-python scripts/load_test_cascade.py  # Loads RadioTX → Brownout example
-
-# 3. Run cascade query
-curl -X POST http://localhost:8000/graph/cascade \
-  -H "Content-Type: application/json" \
-  -d '{
-    "start_node": "RadioTX_Component",
-    "resource_type": "power",
-    "max_depth": 5
-  }'
-
-# 4. Visualize in Neo4j Browser
-# Run: MATCH p=(n {id: 'RadioTX_Component'})-[*1..5]->(m) RETURN p
-```
-
-### Workflow 3: Running Sweeps
-
-```bash
-# 1. Configure sweep
-cat > sweep_config.yaml << EOF
-sweep: cascade
-start_nodes:
-  - RadioTX_Component
-  - PowerMonitor_Component
-resource_type: power
-max_depth: 5
-EOF
-
-# 2. Run sweep
-python scripts/run_sweep.py sweep_config.yaml --output cascade_report.md
-
-# 3. Review results
-cat cascade_report.md
-```
-
+```markdown
+---
+title: UART Driver
+type: software
+tags: [driver, serial, communication]
+dependencies:
+  - name: GPIO Controller
+    relationship: depends_on
+    criticality: HIGH
 ---
 
-## Testing
+# UART Driver
 
-### Unit Tests
-
-```bash
-# Run all tests
-pytest tests/
-
-# Run specific test file
-pytest tests/test_mcp_server.py
-
-# Run with coverage
-pytest --cov=mcp-server --cov-report=html
-# Open htmlcov/index.html
+## Description
+Universal Asynchronous Receiver-Transmitter driver...
 ```
 
-### Integration Tests
+**Option 2: Automated Extraction (Deep Agent)**
 
-```bash
-# Test MCP server + Graph DB
-pytest tests/integration/test_mcp_graph.py
+```python
+from curator_agent import graph
 
-# Test Scanner + MCP server
-pytest tests/integration/test_scanner_mcp.py
+result = graph.invoke({
+    "messages": [{
+        "role": "user",
+        "content": "Extract dependencies from path/to/documentation.md"
+    }]
+})
 ```
 
-### End-to-End Tests
+### Querying the Knowledge Graph
 
-```bash
-# Full workflow test
-pytest tests/e2e/test_full_workflow.py
+```python
+from scripts.graph_manager import GraphManager
+
+gm = GraphManager()
+
+# Find a component
+node = gm.get_node_by_name("ImuManager")
+
+# Get its dependencies
+deps = gm.get_node_relationships(node['id'], direction='outgoing')
+
+# Find transitive dependencies
+chain = gm.get_transitive_dependencies(node['id'], max_depth=5)
 ```
 
----
+### Syncing Documentation
 
-## Common Tasks
+```python
+from scripts.github_doc_sync import GitHubDocSync
 
-### Task: Update Documentation
+sync = GitHubDocSync()
 
-```bash
-# Edit docs
-code docs/ARCHITECTURE.md
+# Sync F' framework docs
+sync.sync_repo("nasa/fprime", "docs/")
 
-# Preview mermaid diagrams in VS Code
-# Install extension: "Markdown Preview Mermaid Support"
-# Press Ctrl+Shift+V
-
-# Commit
-git add docs/
-git commit -m "docs: Update architecture diagrams"
-```
-
-### Task: Add a New MCP Endpoint
-
-```bash
-# 1. Edit server.py
-code mcp-server/server.py
-
-# 2. Add endpoint
-@app.post("/graph/my-new-endpoint")
-async def my_new_endpoint(params: MyParams):
-    # Implementation
-    return result
-
-# 3. Add tests
-code mcp-server/tests/test_endpoints.py
-
-# 4. Test
-pytest mcp-server/tests/test_endpoints.py::test_my_new_endpoint
-
-# 5. Update API docs
-code docs/MCP_API.md  # When created
-```
-
-### Task: Query the Knowledge Graph
-
-```bash
-# Using Neo4j Browser (http://localhost:7474)
-
-# Find all components
-MATCH (n:SoftwareComponent) RETURN n
-
-# Find all REQUIRES edges
-MATCH (a)-[r:REQUIRES]->(b) RETURN a, r, b
-
-# Find cascade paths from RadioTX
-MATCH p=(start {id: 'RadioTX_Component'})-[*1..5]->(end)
-WHERE ALL(r IN relationships(p) WHERE r.relation IN ['CONSUMES', 'CONSTRAINS', 'COUPLES_TO'])
-RETURN p
-
-# Find all unknown edges
-MATCH (a)-[r]->(b)
-WHERE r.knownness = 'unknown'
-RETURN a, r, b
+# Sync PROVES Kit docs
+sync.sync_repo("BroncoSpace/PROVES", "docs/")
 ```
 
 ---
 
 ## Troubleshooting
 
-### Problem: Neo4j won't start
+### Issue: "ModuleNotFoundError: No module named 'langchain'"
 
 **Solution:**
 ```bash
-# Check if port 7687 is in use
-netstat -an | grep 7687
-
-# Kill conflicting process
-# Windows: taskkill /F /PID [PID]
-# Linux/Mac: kill -9 [PID]
-
-# Try different port in Neo4j Desktop settings
-```
-
-### Problem: MCP server import errors
-
-**Solution:**
-```bash
-# Ensure virtual environment is activated
-which python  # Should point to venv/bin/python
+# Make sure virtual environment is activated
+.venv\Scripts\activate  # Windows
+source .venv/bin/activate  # macOS/Linux
 
 # Reinstall dependencies
-pip install -r requirements.txt --force-reinstall
-
-# Check Python version
-python --version  # Should be 3.9+
+pip install -r requirements.txt
 ```
 
-### Problem: Graph queries are slow
+### Issue: "Database connection failed"
 
 **Solution:**
 ```bash
-# Create indexes in Neo4j Browser
-CREATE INDEX component_id FOR (n:SoftwareComponent) ON (n.id);
-CREATE INDEX edge_relation FOR ()-[r]->() ON (r.relation);
+# Check DATABASE_URL in .env
+# Should start with: postgresql://
 
-# Check query execution plan
-EXPLAIN MATCH (n {id: 'comp_001'}) RETURN n
+# Test connection
+python scripts/db_connector.py
+
+# Check Neon dashboard for database status
 ```
 
-### Problem: LangGraph agents timeout
+### Issue: "403 Forbidden" errors in LangSmith
 
 **Solution:**
 ```bash
-# Increase timeout in config
-export LANGCHAIN_TIMEOUT=120  # seconds
+# Check API key is correct in .env
+# Should start with: lsv2_sk_
 
-# Use faster model for testing
-# In agent code: model = "claude-haiku-3-5-20250929"
-
-# Check API key is valid
-echo $ANTHROPIC_API_KEY
+# Check LangSmith workspace permissions
+# Personal accounts may have limited access
 ```
+
+### Issue: "langgraph dev" requires Rust compilation (Windows)
+
+**Context:** Local dev server for Studio UI requires Microsoft Visual C++ Build Tools
+
+**Options:**
+
+1. **Install Visual Studio Build Tools** (~6GB):
+   - Download from: https://visualstudio.microsoft.com/downloads/
+   - Select "Desktop development with C++"
+   - Restart terminal after install
+
+2. **Use Python SDK directly** (works without dev server):
+   ```bash
+   cd curator-agent
+   python test_agent.py
+   ```
+
+3. **Deploy to LangSmith Cloud** (requires paid plan)
+
+### Issue: Agent execution is slow
+
+**Common causes:**
+
+1. **Large documents:** Chunk documents before extraction
+2. **Network latency:** Check internet connection to Anthropic API
+3. **Database operations:** Use connection pooling (already configured)
+
+**Monitor with LangSmith:**
+- View execution traces
+- Identify bottlenecks
+- Optimize prompts based on token usage
 
 ---
 
-## Learning Resources
+## Development Best Practices
+
+### 1. Follow the Folder Structure
+
+See [FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md) for guidelines on where to add new files.
+
+**Quick reference:**
+
+| What you're adding | Where it goes |
+|-------------------|---------------|
+| New sub-agent | `curator-agent/src/curator/subagents/` |
+| Database utility | `scripts/` |
+| Documentation | `docs/` |
+| Knowledge entry | `library/` |
+| Test | `tests/` |
+
+### 2. Use Consistent Naming
+
+- **Python files:** `lowercase_with_underscores.py`
+- **Classes:** `PascalCase`
+- **Functions:** `lowercase_with_underscores`
+- **Docs:** `UPPERCASE_WITH_UNDERSCORES.md` (major) or `lowercase-with-hyphens.md` (specific)
+
+### 3. Keep Documentation Current
+
+When you change architecture or add features:
+
+1. Update relevant docs in `docs/`
+2. Update README.md if major change
+3. Update FOLDER_STRUCTURE.md if adding new directory
+4. Add entry to decision log
+
+### 4. Test Before Committing
+
+```bash
+# Test database operations
+python scripts/db_connector.py
+
+# Test agent system
+cd curator-agent && python test_agent.py
+
+# Run tests (when available)
+pytest tests/
+```
+
+### 5. Use LangSmith for Debugging
+
+Every agent execution is traced in LangSmith:
+
+1. Check traces for errors
+2. View token usage and costs
+3. Analyze prompt performance
+4. Debug sub-agent spawning
+
+---
+
+## Additional Resources
 
 ### Documentation
 
-- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - System architecture with diagrams
-- **[KNOWLEDGE_GRAPH_SCHEMA.md](docs/KNOWLEDGE_GRAPH_SCHEMA.md)** - ERV schema specification
-- **[AGENTIC_ARCHITECTURE.md](docs/AGENTIC_ARCHITECTURE.md)** - LangGraph + agents design
-- **[ROADMAP.md](ROADMAP.md)** - Implementation roadmap
+- [FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md) - Repository organization
+- [curator-agent/README.md](curator-agent/README.md) - Deep Agent system
+- [docs/KNOWLEDGE_GRAPH_SCHEMA.md](docs/KNOWLEDGE_GRAPH_SCHEMA.md) - Database schema
+- [docs/LANGSMITH_INTEGRATION.md](docs/LANGSMITH_INTEGRATION.md) - Tracing setup
 
 ### External Resources
 
-- [Neo4j Documentation](https://neo4j.com/docs/)
-- [FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/)
 - [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
-- [F´ Documentation](https://fprime.jpl.nasa.gov/)
-- [PROVES Kit Documentation](https://github.com/proveskit)
+- [Claude API Docs](https://docs.anthropic.com/)
+- [LangSmith Docs](https://docs.smith.langchain.com/)
+- [Neon PostgreSQL Docs](https://neon.tech/docs/)
 
-### Example Queries
+### Community
 
-See [docs/EXAMPLE_QUERIES.md](docs/EXAMPLE_QUERIES.md) (coming soon) for common graph queries and MCP API examples.
-
----
-
-## Getting Help
-
-- **Issues:** Open an issue on [GitHub](https://github.com/Lizo-RoadTown/PROVES_LIBRARY/issues)
-- **Discussions:** Use [GitHub Discussions](https://github.com/Lizo-RoadTown/PROVES_LIBRARY/discussions)
-- **Email:** eosborn@cpp.edu (for urgent matters)
+- **GitHub Issues:** https://github.com/Lizo-RoadTown/PROVES_LIBRARY/issues
+- **Email:** eosborn@cpp.edu
 
 ---
 
 ## Next Steps
 
-Now that you're set up:
+1. ✅ Complete this setup guide
+2. Read [FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md) for project organization
+3. Read [curator-agent/README.md](curator-agent/README.md) for Deep Agent details
+4. Explore [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md) for example analysis
+5. Run your first dependency extraction
+6. View traces in LangSmith
+7. Add knowledge entries to the graph
 
-1. **Read the architecture docs** to understand the system
-2. **Explore the example library entry** to see the format
-3. **Try adding a new entry** following the contribution guide
-4. **Join a dev discussion** on GitHub
-
-Welcome to the team! 🚀
+Welcome to the PROVES Library! 🚀
 
 ---
 
-**Last Updated:** December 19, 2024
+**Last Updated:** December 21, 2024
+**Maintained by:** Elizabeth Osborn (eosborn@cpp.edu)

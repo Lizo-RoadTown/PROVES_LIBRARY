@@ -34,10 +34,12 @@ LLM-powered dependency extraction + knowledge graph + continuous monitoring → 
 │     ├─ F´ Framework (NASA/JPL)                      │
 │     └─ PROVES Kit (Cal Poly Pomona)                 │
 │              ↓                                       │
-│  🤖 LLM Dependency Extractor (GPT-4o-mini)          │
-│     ├─ Chunking & Prompt Engineering                │
-│     ├─ Cross-Document Analysis                      │
-│     └─ LangSmith Tracing (Full Observability)       │
+│  🤖 Deep Agent System (LangGraph + Claude)          │
+│     ├─ Main Curator Agent (Coordinator)             │
+│     ├─ Extractor Sub-Agent (Dependency Discovery)   │
+│     ├─ Validator Sub-Agent (Schema Compliance)      │
+│     ├─ Storage Sub-Agent (Knowledge Graph Ops)      │
+│     └─ LangSmith Studio (Human-in-the-Loop)         │
 │              ↓                                       │
 │  🗄️  Neon PostgreSQL (Cloud Knowledge Graph)        │
 │     ├─ kg_nodes (Components, Hardware, Patterns)    │
@@ -72,18 +74,20 @@ LLM-powered dependency extraction + knowledge graph + continuous monitoring → 
 - [GitHub Pages Visualizations](https://lizo-roadtown.github.io/PROVES_LIBRARY/)
 - Demonstrated feasibility of automated dependency extraction
 
-### ✅ Phase 2: Infrastructure - **COMPLETE**
+### ✅ Phase 2: Infrastructure & Deep Agent System - **COMPLETE**
 
 **Cloud Database:**
 - Neon PostgreSQL with pgvector for semantic search
 - Knowledge graph schema (nodes + ERV relationships)
 - Connection pooling and query utilities
 
-**LLM Extraction Pipeline:**
-- GPT-4o-mini powered dependency extractor
-- Document chunking and prompt engineering
-- Cross-document dependency detection
-- Full LangSmith tracing for observability
+**Deep Agent System (LangGraph):**
+- **Main Curator Agent** - Coordinates dependency extraction workflow
+- **Extractor Sub-Agent** - Discovers dependencies from documentation using Claude Sonnet 4.5
+- **Validator Sub-Agent** - Ensures ERV schema compliance and checks for duplicates
+- **Storage Sub-Agent** - Manages knowledge graph operations (create/update nodes & relationships)
+- **LangSmith Studio Integration** - Human-in-the-loop monitoring and control
+- Sub-agents-as-tools pattern for context isolation and specialization
 
 **Visualization:**
 - GitHub Pages site with Tactile theme
@@ -107,8 +111,8 @@ LLM-powered dependency extraction + knowledge graph + continuous monitoring → 
 - **Python 3.9+**
 - **Git**
 - **API Keys:**
-  - OpenAI (for LLM extraction)
-  - LangSmith (for tracing/observability)
+  - Anthropic (Claude Sonnet 4.5 for Deep Agent system)
+  - LangSmith (for tracing/observability and Studio UI)
   - Neon PostgreSQL (database connection string)
 
 ### Installation
@@ -129,10 +133,10 @@ pip install -r requirements.txt
 # 4. Configure environment
 cp .env.example .env
 # Edit .env and add your API keys:
-#   NEON_DATABASE_URL=postgresql://...
-#   OPENAI_API_KEY=sk-...
-#   LANGSMITH_API_KEY=lsv2_pt_...
-#   LANGSMITH_TRACING=true
+#   DATABASE_URL=postgresql://...
+#   ANTHROPIC_API_KEY=sk-ant-api03-...
+#   LANGSMITH_API_KEY=lsv2_sk_...
+#   LANGCHAIN_TRACING_V2=true
 ```
 
 ### Test the System
@@ -144,12 +148,15 @@ python scripts/db_connector.py
 # Test knowledge graph
 python scripts/graph_manager.py
 
-# Run dependency extraction (with LangSmith tracing)
-python scripts/dependency_extractor.py trial_docs/fprime_i2c_driver_full.md
+# Run Deep Agent system
+cd curator-agent
+python test_agent.py
 
-# View trace in LangSmith UI
-# → https://smith.langchain.com (PROVES_Library project)
+# View execution in LangSmith Studio
+# → https://smith.langchain.com/studio/
 ```
+
+See [curator-agent/README.md](curator-agent/README.md) for detailed Deep Agent documentation.
 
 ---
 
@@ -212,30 +219,35 @@ One change at any level can cascade failures through entire chain.
 
 ```
 PROVES_LIBRARY/
-├── scripts/                    # Core utilities
+├── curator-agent/             # 🤖 Deep Agent system (LangGraph)
+│   ├── src/curator/           # Main + sub-agents
+│   ├── langgraph.json         # LangGraph deployment config
+│   ├── test_agent.py          # Test script
+│   └── README.md              # Deep Agent documentation
+│
+├── scripts/                   # Infrastructure utilities
 │   ├── db_connector.py        # Neon PostgreSQL connection
 │   ├── graph_manager.py       # Knowledge graph CRUD
-│   └── dependency_extractor.py # LLM extraction + tracing
+│   └── doc_sync_manager.py    # Documentation sync
 │
-├── docs/                       # Documentation
-│   ├── AGENT_HANDOFF.md       # 👈 START HERE (agent onboarding)
-│   ├── AGENTIC_ARCHITECTURE.md # Agent system design
+├── docs/                      # Technical documentation
 │   ├── KNOWLEDGE_GRAPH_SCHEMA.md # Database schema
 │   ├── LANGSMITH_INTEGRATION.md # Tracing setup
-│   └── *.md                   # Additional docs
+│   └── *.md                   # Architecture docs
 │
-├── trial_docs/                # Trial mapping results
+├── trial_docs/                # Manual analysis results
 │   ├── COMPREHENSIVE_DEPENDENCY_MAP.md # Full analysis
-│   ├── fprime_i2c_driver_full.md # F´ documentation
-│   └── proves_kit_power_mgmt_full.md # PROVES Kit docs
+│   └── fprime_i2c_driver_full.md # F´ docs
 │
-├── mcp-server/                # MCP server (future)
-├── risk-scanner/              # Risk scanner (future)
-├── library/                   # Knowledge entries (future)
+├── library/                   # Knowledge base entries
+├── archive/                   # Superseded code & docs
 ├── .env.example               # Environment template
 ├── requirements.txt           # Python dependencies
+├── FOLDER_STRUCTURE.md        # Organization best practices
 └── README.md                  # This file
 ```
+
+See [FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md) for complete organization guidelines.
 
 ---
 
@@ -243,10 +255,11 @@ PROVES_LIBRARY/
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| **[AGENT_HANDOFF.md](AGENT_HANDOFF.md)** | **👈 START HERE** - Complete project status | ✅ Current |
-| [GETTING_STARTED.md](GETTING_STARTED.md) | Setup and installation guide | ✅ Current |
-| [ROADMAP.md](ROADMAP.md) | Implementation roadmap | ✅ Current |
-| [docs/AGENTIC_ARCHITECTURE.md](docs/AGENTIC_ARCHITECTURE.md) | Agent system design | ✅ Current |
+| **[FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md)** | **👈 START HERE** - Repository organization | ✅ Current |
+| **[curator-agent/README.md](curator-agent/README.md)** | Deep Agent system documentation | ✅ Current |
+| [GETTING_STARTED.md](GETTING_STARTED.md) | Setup and installation guide | ⚠️ Needs update |
+| [AGENT_HANDOFF.md](AGENT_HANDOFF.md) | Project status and context | ⚠️ Needs update |
+| [ROADMAP.md](ROADMAP.md) | Implementation roadmap | ⚠️ Needs update |
 | [docs/LANGSMITH_INTEGRATION.md](docs/LANGSMITH_INTEGRATION.md) | Tracing and observability | ✅ Current |
 | [docs/KNOWLEDGE_GRAPH_SCHEMA.md](docs/KNOWLEDGE_GRAPH_SCHEMA.md) | Database schema | ✅ Current |
 | [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md) | Trial results | ✅ Current |
