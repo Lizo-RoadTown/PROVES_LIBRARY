@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "curator": "./src/curator/agent.py:graph"
+  },
+  "env": "../.env"
+}
