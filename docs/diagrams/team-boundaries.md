@@ -264,6 +264,7 @@ gantt
 ### Knowledge Loss Calculation
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#ff6b6b', 'pie2':'#ffa500', 'pie3':'#90ee90'}}}%%
 pie title Knowledge Retention After Team Graduation
     "Lost (graduated)" : 70
     "Degraded (partially remembered)" : 20

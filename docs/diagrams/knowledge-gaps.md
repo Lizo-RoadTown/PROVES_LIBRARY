@@ -546,6 +546,7 @@ graph LR
 ### Gap Distribution
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#ff6b6b', 'pie2':'#ffa500', 'pie3':'#ffd700', 'pie4':'#ff8c42', 'pie5':'#ffb347'}}}%%
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
     "Hardware Parameters" : 5

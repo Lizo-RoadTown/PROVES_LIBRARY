@@ -183,6 +183,7 @@ sequenceDiagram
 ### By Criticality
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#ff6b6b', 'pie2':'#ffa500', 'pie3':'#ffd700'}}}%%
 pie title Dependency Criticality Distribution
     "HIGH" : 28
     "MEDIUM" : 11

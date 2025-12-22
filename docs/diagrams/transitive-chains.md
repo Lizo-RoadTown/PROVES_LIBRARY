@@ -407,6 +407,7 @@ graph LR
 ### 1. Hidden Coupling
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#90ee90', 'pie2':'#ffa500', 'pie3':'#ff6b6b'}}}%%
 pie title Dependency Visibility
     "Direct (visible in code)" : 15
     "Transitive (hidden)" : 27
