@@ -1,0 +1,139 @@
+# PROVES Library Documentation Site - TeXt Theme Configuration
+source: docs
+destination: _site
+
+## => Site Settings
+##############################
+text_skin: dark # "default", "dark", "forest", "ocean", "chocolate", "orange"
+highlight_theme: tomorrow-night # "default", "tomorrow", "tomorrow-night", "tomorrow-night-eighties"
+url: https://lizo-roadtown.github.io
+baseurl: /PROVES_LIBRARY
+title: PROVES Library
+description: >
+  Trial Dependency Mapping - Comprehensive analysis demonstrating
+  knowledge graph capabilities for CubeSat mission safety.
+
+## => Language and Timezone
+##############################
+lang: en
+timezone: America/Los_Angeles
+
+## => Author and Social
+##############################
+author:
+  type: person
+  name: Elizabeth Osborn
+  url: https://lizo-roadtown.github.io/PROVES_LIBRARY
+  bio: Researcher developing agentic curation systems for mission knowledge
+  email: eosborn@cpp.edu
+  github: Lizo-RoadTown
+  linkedin:
+
+## => GitHub Repository
+##############################
+repository: Lizo-RoadTown/PROVES_LIBRARY
+repository_tree: master
+
+## => Paths
+##############################
+paths:
+  root: /
+  home: /
+  archive: /archive.html
+  rss: /feed.xml
+
+## => Navigation
+##############################
+header:
+  theme: dark
+
+## => Post
+##############################
+excerpt_separator: <!--more-->
+license: CC-BY-NC-4.0
+
+## => TOC
+##############################
+toc:
+  selectors: "h1,h2,h3"
+
+## => Markdown Enhancements
+##############################
+mathjax: true
+mathjax_autoNumber: false
+mermaid: false # Disabled - using custom Mermaid v10 in head/custom.html instead
+chart: false
+
+## => Paginate
+##############################
+paginate: 8
+paginate_path: /page:num
+
+## => Sources
+##############################
+sources: unpkg
+
+## => Sharing
+##############################
+sharing:
+  provider: false
+
+## => Comments
+##############################
+comments:
+  provider: false
+
+## => Pageview
+##############################
+pageview:
+  provider: false
+
+## => Search
+##############################
+search:
+  provider: default
+
+## => Build
+##############################
+markdown: kramdown
+highlighter: rouge
+permalink: date
+
+exclude:
+  - CHANGELOG.md
+  - CONTRIBUTING.md
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README-*.md
+  - README.md
+  - docs/
+  - node_modules/
+  - package-lock.json
+  - package.json
+  - scripts/
+  - test/
+  - trial_docs/
+  - vendor/
+  - "*.ps1"
+  - "*.bat"
+  - fix_liquid.py
+
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: article
+      aside:
+        toc: true
+      show_edit_on_github: false
+      show_author_profile: false
+
+## => Plugins
+##############################
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-seo-tag
