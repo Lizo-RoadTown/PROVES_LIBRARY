@@ -22,10 +22,11 @@ def apply_schema():
         sys.exit(1)
 
     # Schema files in order
-    schema_dir = Path(__file__).parent.parent / 'mcp-server' / 'schema'
+    schema_dir = Path(__file__).parent.parent / 'archive' / 'design-docs' / 'mcp-server' / 'schema'
     schema_files = [
         '00_initial_schema.sql',
-        '01_seed_data.sql'
+        '01_seed_data.sql',
+        '02_training_data.sql'  # Training data collection for local LLM fine-tuning
     ]
 
     print(f"Connecting to Neon database...")
@@ -56,25 +57,56 @@ def apply_schema():
                 conn.commit()
                 print(f"[OK] {schema_file} applied successfully")
             except Exception as e:
-                print(f"[ERROR] Error applying {schema_file}: {e}")
-                conn.rollback()
-                raise
+                error_str = str(e).lower()
+                # Skip "already exists" errors - these are fine for incremental migrations
+                if 'already exists' in error_str:
+                    print(f"[SKIP] {schema_file} - objects already exist (this is OK)")
+                    conn.rollback()
+                    continue
+                else:
+                    print(f"[ERROR] Error applying {schema_file}: {e}")
+                    conn.rollback()
+                    raise
 
         # Verify schema by checking statistics
         print(f"\n[*] Database Statistics:")
-        cur.execute("SELECT * FROM database_statistics ORDER BY table_name")
-        stats = cur.fetchall()
+        try:
+            cur.execute("SELECT * FROM database_statistics ORDER BY table_name")
+            stats = cur.fetchall()
+            for table_name, row_count in stats:
+                print(f"  {table_name}: {row_count} rows")
+        except Exception as e:
+            print(f"  (Could not fetch stats: {e})")
 
-        for table_name, row_count in stats:
-            print(f"  {table_name}: {row_count} rows")
+        # Check training data tables
+        print(f"\n[*] Training Data Tables:")
+        try:
+            cur.execute("""
+                SELECT table_name 
+                FROM information_schema.tables 
+                WHERE table_schema = 'public' 
+                AND table_name LIKE 'training_%'
+                ORDER BY table_name
+            """)
+            training_tables = cur.fetchall()
+            if training_tables:
+                for (table_name,) in training_tables:
+                    cur.execute(f"SELECT COUNT(*) FROM {table_name}")
+                    count = cur.fetchone()[0]
+                    print(f"  {table_name}: {count} rows")
+            else:
+                print("  (No training tables found)")
+        except Exception as e:
+            print(f"  (Could not check training tables: {e})")
 
         cur.close()
         conn.close()
 
-        print(f"\n[OK] Schema applied successfully!")
+        print(f"\n[OK] Schema migration complete!")
         print(f"\nNext steps:")
         print(f"  1. Run: python scripts/index_library.py")
         print(f"  2. Test queries with graph_manager.py")
+        print(f"  3. Run curator agent to collect training data")
 
     except psycopg2.Error as e:
         print(f"\n[ERROR] Database error: {e}")

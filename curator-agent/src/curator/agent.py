@@ -2,8 +2,8 @@
 PROVES Library Curator Agent
 Main agent that coordinates sub-agents for dependency curation
 """
+import os
 from typing import Annotated, Any, Literal, NotRequired, TypedDict
-import sqlite3
 import time
 from functools import wraps
 from langchain_anthropic import ChatAnthropic
@@ -12,8 +12,15 @@ from langchain_core.messages import AIMessage, ToolMessage
 from langgraph.graph import StateGraph, MessagesState
 from langgraph.graph.message import add_messages
 from langgraph.types import Command, interrupt
-from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.checkpoint.postgres import PostgresSaver
 from langsmith import traceable
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Training data logger
+from .training_logger import get_training_logger
 
 # Timing utilities
 _timing_log = []
@@ -66,6 +73,8 @@ class CuratorState(TypedDict):
     messages: Annotated[list, add_messages]
     deferred_storage: NotRequired[list[dict[str, Any]]]
     storage_approval: NotRequired[str | None]
+    human_correction: NotRequired[dict[str, Any] | None]  # For corrected extractions
+    current_interaction_id: NotRequired[str | None]  # Track for training data
 
 
 # ============================================
@@ -157,7 +166,8 @@ def create_curator():
     - Spawns specialized sub-agents (extractor, validator, storage)
     - Coordinates their work through tool calls
     - Maintains conversation state
-    - Enables human-in-the-loop via interrupt() and SQLite checkpointer
+    - Enables human-in-the-loop via interrupt() and PostgreSQL checkpointer (Neon)
+    - Collects training data for local LLM fine-tuning
 
     Cost Optimization:
     - Main curator: Sonnet 4.5 (complex decisions)
@@ -343,21 +353,37 @@ Do not assume the dependency was stored until you see an explicit HITL message c
     def request_human_approval(state: CuratorState):
         deferred = state.get("deferred_storage") or []
         if not deferred:
-            return {"storage_approval": None}
+            return {"storage_approval": None, "current_interaction_id": None}
 
         # Only approve one at a time for now (simple + predictable).
         pending = deferred[0]
         task = pending.get("task", "")
+
+        # Log the interaction BEFORE interrupt for training data collection
+        logger = get_training_logger()
+        interaction_id = None
+        if logger:
+            try:
+                interaction_id = logger.log_interaction(
+                    interaction_type="dependency_storage",
+                    input_data=task,
+                    ai_output=pending,  # The deferred storage data
+                    context={"criticality": "HIGH", "source": "curator_agent"}
+                )
+                print(f"[Training] Logged interaction {interaction_id}")
+            except Exception as e:
+                print(f"[Training] Could not log interaction: {e}")
 
         print("[HITL] Requesting human approval for HIGH criticality dependency...")
         approval = interrupt({
             "type": "dependency_approval",
             "task": task,
             "criticality": "HIGH",
-            "message": "This dependency is marked as HIGH criticality (mission-critical). Review before storing."
+            "message": "This dependency is marked as HIGH criticality (mission-critical). Review before storing.",
+            "instructions": "Reply with 'approved', 'rejected', or provide corrections as JSON."
         })
 
-        return {"storage_approval": approval}
+        return {"storage_approval": approval, "current_interaction_id": interaction_id}
 
     def commit_deferred_storage(state: CuratorState):
         deferred = state.get("deferred_storage") or []
@@ -365,13 +391,34 @@ Do not assume the dependency was stored until you see an explicit HITL message c
             return {}
 
         approval = state.get("storage_approval")
+        human_correction = state.get("human_correction")
+        interaction_id = state.get("current_interaction_id")
         task = (deferred[0] or {}).get("task", "")
+        
+        # Get training logger for feedback recording
+        logger = get_training_logger()
+
+        # Check if approval is a correction (dict/JSON) rather than simple string
+        is_correction = isinstance(approval, dict) or (
+            isinstance(approval, str) and approval not in ("approved", "rejected")
+        )
 
         if approval == "approved":
             print("[HITL] Approved - executing deferred storage_agent now...")
+            
+            # Record approval in training data
+            if logger and interaction_id:
+                try:
+                    logger.record_feedback(
+                        interaction_id=interaction_id,
+                        feedback_type="approved",
+                        corrected_output=None
+                    )
+                    print(f"[Training] Recorded approval for {interaction_id}")
+                except Exception as e:
+                    print(f"[Training] Could not record feedback: {e}")
+            
             try:
-                # Run storage sub-agent directly (not via tool calling), since we already emitted
-                # a placeholder tool_result for the original tool_use.
                 storage_result = call_storage_agent(task)
                 return {
                     "messages": [
@@ -385,20 +432,93 @@ Do not assume the dependency was stored until you see an explicit HITL message c
                     ],
                     "deferred_storage": [],
                     "storage_approval": None,
+                    "current_interaction_id": None,
                 }
             except Exception as e:
                 return {
                     "messages": [AIMessage(content=f"[HITL] ERROR executing deferred storage_agent: {e}")],
                     "deferred_storage": [],
                     "storage_approval": None,
+                    "current_interaction_id": None,
+                }
+        
+        elif is_correction:
+            print("[HITL] Correction received - applying human edits...")
+            
+            # Parse correction if it's a string (could be JSON)
+            corrected_data = approval
+            if isinstance(approval, str):
+                try:
+                    import json
+                    corrected_data = json.loads(approval)
+                except json.JSONDecodeError:
+                    # Not JSON, treat as corrected task string
+                    corrected_data = {"task": approval}
+            
+            # Record correction in training data - THIS IS GOLD for fine-tuning!
+            if logger and interaction_id:
+                try:
+                    logger.record_feedback(
+                        interaction_id=interaction_id,
+                        feedback_type="corrected",
+                        corrected_output=corrected_data,
+                        notes="Human provided corrections to AI output"
+                    )
+                    print(f"[Training] Recorded correction for {interaction_id} - GOLD DATA!")
+                except Exception as e:
+                    print(f"[Training] Could not record correction: {e}")
+            
+            # Use corrected data for storage
+            corrected_task = corrected_data.get("task", task) if isinstance(corrected_data, dict) else task
+            
+            try:
+                storage_result = call_storage_agent(corrected_task)
+                return {
+                    "messages": [
+                        AIMessage(
+                            content=(
+                                "[HITL] Human provided corrections. Applied edits and executed storage_agent.\n\n"
+                                f"Original: {task[:200]}...\n"
+                                f"Corrected: {corrected_task[:200]}...\n\n"
+                                f"{storage_result}"
+                            )
+                        )
+                    ],
+                    "deferred_storage": [],
+                    "storage_approval": None,
+                    "current_interaction_id": None,
+                    "human_correction": None,
+                }
+            except Exception as e:
+                return {
+                    "messages": [AIMessage(content=f"[HITL] ERROR executing corrected storage_agent: {e}")],
+                    "deferred_storage": [],
+                    "storage_approval": None,
+                    "current_interaction_id": None,
                 }
 
-        print("[HITL] Rejected - skipping deferred storage_agent")
-        return {
-            "messages": [AIMessage(content="[HITL] Human rejected HIGH criticality dependency. Skipped storage.")],
-            "deferred_storage": [],
-            "storage_approval": None,
-        }
+        else:
+            print("[HITL] Rejected - skipping deferred storage_agent")
+            
+            # Record rejection in training data
+            if logger and interaction_id:
+                try:
+                    logger.record_feedback(
+                        interaction_id=interaction_id,
+                        feedback_type="rejected",
+                        corrected_output=None,
+                        notes="Human rejected AI output"
+                    )
+                    print(f"[Training] Recorded rejection for {interaction_id}")
+                except Exception as e:
+                    print(f"[Training] Could not record rejection: {e}")
+            
+            return {
+                "messages": [AIMessage(content="[HITL] Human rejected HIGH criticality dependency. Skipped storage.")],
+                "deferred_storage": [],
+                "storage_approval": None,
+                "current_interaction_id": None,
+            }
 
     # Build the graph
     workflow = StateGraph(CuratorState)
@@ -425,11 +545,20 @@ Do not assume the dependency was stored until you see an explicit HITL message c
     workflow.add_edge("approval", "commit")
     workflow.add_edge("commit", "agent")
 
-    # Initialize SQLite checkpointer for HITL persistence
-    print("Setting up SQLite checkpointer for HITL...")
-    # Create persistent connection manually to avoid context manager issues
-    conn = sqlite3.connect("curator_checkpoints.db", check_same_thread=False)
-    checkpointer = SqliteSaver(conn)
+    # Initialize PostgreSQL checkpointer for HITL persistence (Neon)
+    db_url = os.getenv('NEON_DATABASE_URL')
+    if not db_url:
+        raise ValueError("NEON_DATABASE_URL not set in environment")
+    
+    print("Setting up PostgreSQL checkpointer (Neon) for HITL...")
+    
+    # PostgresSaver.from_conn_string returns a context manager
+    # We need to enter it to get the actual checkpointer
+    checkpointer_cm = PostgresSaver.from_conn_string(db_url)
+    checkpointer = checkpointer_cm.__enter__()
+    
+    # The context manager handles table setup automatically
+    print("  Checkpointer connected to Neon")
 
     print("Curator Agent ready!")
     print()

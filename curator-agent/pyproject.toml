@@ -1,15 +1,18 @@
 [project]
 name = "curator-agent"
-version = "0.1.0"
+version = "0.2.0"
 description = "PROVES Library Curator Agent - Deep agent for dependency extraction and knowledge graph curation"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "langgraph>=0.3.0",
+    "langgraph-checkpoint-postgres>=3.0.0",  # PostgreSQL checkpointer for HITL
     "langchain-anthropic>=1.0.0",
     "langchain-core>=0.3.0",
     "langsmith>=0.2.0",
     "psycopg2-binary>=2.9.0",
+    "psycopg[binary,pool]>=3.1.0",  # For PostgresSaver checkpointer
+    "python-dotenv>=1.0.0",
 ]
 
 [build-system]

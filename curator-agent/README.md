@@ -75,12 +75,15 @@ Every action is visible:
 [TOOLS] Executing sub-agent tool calls...
 [CURATOR] Planning to call 4 sub-agent(s):
   -> validator_agent (x4)
+[Training] Logged interaction abc123
+[Training] Recorded correction - GOLD DATA!
 ```
 
 Plus:
-- SQLite checkpoints (full conversation history)
+- PostgreSQL checkpoints (Neon cloud - full conversation history)
 - Neo4j graph (stored dependencies)
-- Optional debug logs (detailed reasoning)
+- Training data collection (for local LLM fine-tuning)
+- Optional LangSmith tracing (detailed reasoning)
 
 ### 4. Human-in-the-Loop
 
@@ -118,6 +121,57 @@ You: Approve? (yes/no)
 ```
 
 **Cost Optimization**: Haiku for simple tasks = 90% savings on sub-agents!
+
+## Training Data Collection
+
+**Every HITL interaction becomes training data for local LLM fine-tuning!**
+
+When you approve, reject, or correct the AI's outputs, that feedback is logged to PostgreSQL:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  HUMAN-IN-THE-LOOP TRAINING DATA PIPELINE                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  AI Output ──► Human Review ──► Feedback Logged             │
+│       │              │               │                      │
+│       │         ┌────┴────┐          │                      │
+│       │         │ Options │          ▼                      │
+│       │         ├─────────┤    ┌─────────────┐             │
+│       │         │ Approve │───►│  Confirmed  │             │
+│       │         │ Reject  │───►│  Negative   │             │
+│       │         │ CORRECT │───►│  GOLD DATA! │ ◄── Best!   │
+│       │         └─────────┘    └─────────────┘             │
+│       │                              │                      │
+│       ▼                              ▼                      │
+│  training_interactions ────► training_examples              │
+│                              (Alpaca-style JSONL)           │
+│                                      │                      │
+│                                      ▼                      │
+│                              Fine-tune Llama/Mistral        │
+│                              locally with LoRA/QLoRA        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Why Corrections Are Gold**:
+- Approvals confirm the AI was right (useful, but expected)
+- Rejections say "wrong" but not "what's right"
+- **Corrections** show exactly how to fix mistakes = highest quality training data
+
+**Export for Fine-Tuning**:
+```sql
+-- Get JSONL training data
+SELECT * FROM export_training_jsonl('corrections_only');
+```
+
+**Example Training Record**:
+```json
+{
+  "instruction": "Extract dependencies from: ImuDriver initialization code...",
+  "input": "The ImuDriver component requires LinuxI2cDriver...",
+  "output": "{\"dependencies\": [{\"source\": \"ImuDriver\", \"target\": \"LinuxI2cDriver\", \"criticality\": \"HIGH\"}]}"
+}
+```
 
 ## Core Files
 

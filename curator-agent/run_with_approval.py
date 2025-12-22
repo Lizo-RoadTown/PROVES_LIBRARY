@@ -10,13 +10,15 @@ Usage:
 Features:
 - Pauses execution when HIGH criticality dependencies are detected
 - Shows dependency details for human review
-- Requires explicit approval before storage
-- Maintains conversation state via SQLite checkpointer
+- Supports: approve, reject, or CORRECT (edit the AI's output)
+- Maintains conversation state via PostgreSQL checkpointer (Neon)
+- Collects training data for local LLM fine-tuning
 - Visible progress with print statements
 """
 
 import os
 import sys
+import json
 from dotenv import load_dotenv
 from langgraph.types import Command
 
@@ -81,13 +83,20 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
             print()
             print("This dependency is mission-critical. If it fails, the mission fails.")
             print()
+            print("-" * 40)
+            print("OPTIONS:")
+            print("  [y]es    - Approve and store as-is")
+            print("  [n]o     - Reject and skip storage")
+            print("  [e]dit   - Provide corrections (GOLD training data!)")
+            print("-" * 40)
+            print()
 
             # Get human decision
             while True:
-                decision = input("Approve this dependency? (yes/no): ").strip().lower()
-                if decision in ['yes', 'y', 'no', 'n']:
+                decision = input("Your choice (y/n/e): ").strip().lower()
+                if decision in ['yes', 'y', 'no', 'n', 'edit', 'e']:
                     break
-                print("Please enter 'yes' or 'no'")
+                print("Please enter 'y', 'n', or 'e'")
 
             print()
 
@@ -95,6 +104,61 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
             if decision in ['yes', 'y']:
                 print("Resuming with approval...")
                 result = graph.invoke(Command(resume="approved"), config)
+            elif decision in ['edit', 'e']:
+                print()
+                print("=" * 60)
+                print("CORRECTION MODE - Your edits become training data!")
+                print("=" * 60)
+                print()
+                print("Current AI output (task):")
+                print("-" * 40)
+                task_str = interrupt_data.get('task', '')
+                print(task_str[:1000] + "..." if len(task_str) > 1000 else task_str)
+                print("-" * 40)
+                print()
+                print("Enter your corrections:")
+                print("  Option 1: Paste corrected JSON (for structured edits)")
+                print("  Option 2: Type 'task: <corrected task string>'")
+                print("  Option 3: Press Enter twice when done with multi-line input")
+                print()
+                
+                # Collect multi-line input
+                lines = []
+                empty_count = 0
+                print("(Enter your correction, press Enter twice to submit)")
+                while True:
+                    try:
+                        line = input()
+                        if line == "":
+                            empty_count += 1
+                            if empty_count >= 2:
+                                break
+                        else:
+                            empty_count = 0
+                            lines.append(line)
+                    except EOFError:
+                        break
+                
+                correction_text = "\n".join(lines).strip()
+                
+                if not correction_text:
+                    print("No correction provided, approving as-is...")
+                    result = graph.invoke(Command(resume="approved"), config)
+                else:
+                    # Try to parse as JSON, otherwise wrap in task object
+                    try:
+                        correction_data = json.loads(correction_text)
+                    except json.JSONDecodeError:
+                        # Not JSON, check for "task:" prefix
+                        if correction_text.lower().startswith("task:"):
+                            correction_data = {"task": correction_text[5:].strip()}
+                        else:
+                            correction_data = {"task": correction_text}
+                    
+                    print()
+                    print(f"Submitting correction: {json.dumps(correction_data, indent=2)[:200]}...")
+                    print("This will be logged as GOLD training data!")
+                    result = graph.invoke(Command(resume=correction_data), config)
             else:
                 print("Resuming with rejection...")
                 result = graph.invoke(Command(resume="rejected"), config)
