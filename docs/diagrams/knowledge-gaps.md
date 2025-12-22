@@ -45,7 +45,7 @@ sequenceDiagram
     Power->>Device: Voltage ramps up
 
     Note over Power,Device: ❌ GAP: How long does this take?
-    rect rgb(255, 240, 240)
+    rect rgb(255, 200, 200)
         Power-->>Device: t_rise = ??? ms
         Device-->>Device: Internal power-on reset
         Note over Device: ❌ GAP: How long for POR?

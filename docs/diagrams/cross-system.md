@@ -148,14 +148,14 @@ sequenceDiagram
 
     Note over Topology: ❌ UNDOCUMENTED ORDER
 
-    rect rgb(255, 240, 240)
+    rect rgb(255, 200, 200)
         Topology->>LSM: turn_on("imu")
         LSM->>Power: Enable IMU power
         Note over Power: ⏱️ UNDOCUMENTED DELAY
         Power-->>Power: Voltage stabilizes (how long?)
     end
 
-    rect rgb(240, 255, 240)
+    rect rgb(200, 255, 200)
         Topology->>BusDrv: open("/dev/i2c-1")
         BusDrv->>I2C: Initialize I2C device
         I2C-->>BusDrv: Device ready

@@ -157,31 +157,31 @@ sequenceDiagram
 
     Main->>Topo: Call configureTopology()
 
-    rect rgb(255, 240, 240)
+    rect rgb(255, 200, 200)
         Note over Topo,LSM: ❌ Step 2-4: UNDOCUMENTED
         Topo->>LSM: turn_on("imu")
         LSM->>LSM: Set board.IMU_ENABLE = HIGH
         LSM-->>Topo: Return True
     end
 
-    rect rgb(255, 255, 220)
+    rect rgb(255, 255, 180)
         Note over Delay: ❌ Step 5: UNDOCUMENTED<br/>How long to wait?
         Delay-->>Delay: Wait for voltage stabilization
     end
 
-    rect rgb(240, 255, 240)
+    rect rgb(200, 255, 200)
         Topo->>BD: open("/dev/i2c-1")
         BD->>BD: Initialize I2C device
         BD-->>Topo: Return I2cStatus::I2C_OK
     end
 
-    rect rgb(240, 240, 255)
+    rect rgb(200, 220, 255)
         Topo->>IM: configure(0x68)
         IM->>IM: Set I2C address
         IM-->>Topo: Return I2cStatus::I2C_OK
     end
 
-    rect rgb(240, 255, 255)
+    rect rgb(200, 255, 255)
         Note over IM,HW: ✅ Step 10-12: Documented in F´
         IM->>HW: Write RESET_REG
         HW->>HW: Device reset

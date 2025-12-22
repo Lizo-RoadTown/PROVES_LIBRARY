@@ -298,14 +298,14 @@ sequenceDiagram
 
     TeamA->>TeamA: Tests and validates<br/>(works with delay)
 
-    rect rgb(255, 240, 240)
+    rect rgb(255, 200, 200)
         Note over TeamA,Docs: ❌ GAP: Knowledge not captured
         TeamA->>Docs: Commit code with delay<br/>❌ No comment explaining why
     end
 
     Note over TeamA: May 2021: Team graduates
 
-    rect rgb(255, 255, 220)
+    rect rgb(255, 255, 180)
         Note over Docs,TeamB: 6 month gap
     end
 
@@ -316,7 +316,7 @@ sequenceDiagram
 
     TeamB->>TeamB: "This 200ms delay seems<br/>arbitrary and slow"
 
-    rect rgb(255, 240, 240)
+    rect rgb(255, 200, 200)
         Note over TeamB: ❌ Optimizes delay to 10ms
         TeamB->>Docs: Commit change<br/>"Optimize power-on sequence"
     end
@@ -325,7 +325,7 @@ sequenceDiagram
 
     TeamB->>System: Ship to orbit
 
-    rect rgb(255, 200, 200)
+    rect rgb(220, 150, 150)
         System-->>TeamB: Cold boot in orbit
         Note over System: 10ms too short<br/>I2C init fails
         System--XSystem: Mission failure
