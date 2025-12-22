@@ -187,7 +187,10 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
 
 
 def simple_test():
-    """Run a simple test of the curator with a small task."""
+    """
+    LEGACY TEST - Kept for basic connectivity testing only.
+    Use options 3 or 4 for actual crawling work.
+    """
     import uuid
     import os
     
@@ -196,17 +199,23 @@ def simple_test():
     doc_path = os.path.join(project_root, "trial_docs", "fprime_i2c_driver_full.md")
     
     task = f"""
-Extract dependencies from the fprime I2C driver documentation.
-Focus on HIGH criticality dependencies only.
+LEGACY TEST - Basic connectivity check.
 
+Read this local file and extract a few dependencies to verify the pipeline works:
 File: {doc_path}
 
-Store any HIGH criticality dependencies you find (they will require approval).
+Extract ALL dependencies you find (not just HIGH criticality).
+For each dependency, assess criticality based on mission impact:
+- HIGH: If this fails, mission fails (requires HITL approval before storage)
+- MEDIUM: Degraded operation possible
+- LOW: Convenience/optimization
+
+This is a connectivity test. Store what you find.
 """
 
-    # Use unique thread ID to avoid any checkpoint pollution
     thread_id = f"test-{uuid.uuid4().hex[:8]}"
     print(f"Using fresh thread ID: {thread_id}")
+    print("NOTE: This is a legacy test. Use options 3 or 4 for real crawling.")
     run_curator_with_approval(task, thread_id=thread_id)
 
 
@@ -242,13 +251,86 @@ IMPORTANT: Only extract and store HIGH criticality dependencies for this test.
     run_curator_with_approval(task, thread_id="autonomous-exploration-1")
 
 
+def fprime_web_crawl():
+    """Test web crawling of F' documentation."""
+    import uuid
+    
+    task = """
+You are the curator agent for the PROVES Library.
+
+YOUR MISSION: Crawl F' (F Prime) documentation and extract dependencies.
+
+START WITH THE F' GITHUB REPOSITORY:
+1. Use list_github_directory to explore: github.com/nasa/fprime (branch: devel)
+2. Focus on the Svc/ and Drv/ directories - these contain flight software components
+3. For each component, use fetch_github_file to read README.md or .fpp files
+4. Extract dependencies between components
+
+IMPORTANT URLs:
+- GitHub repo: nasa/fprime (use the GitHub tools, NOT the website)
+- Start with: Svc/ directory, then Drv/ directory
+
+EXTRACTION FOCUS:
+- Component-to-component dependencies
+- Port connections (what ports components expose/require)
+- Configuration parameters
+- Any safety-critical constraints mentioned
+
+For this test, process at most 3 components to verify the tools work.
+
+Store only HIGH criticality dependencies (they will require approval).
+For each fact you extract, CITE THE SOURCE URL.
+"""
+
+    thread_id = f"fprime-crawl-{uuid.uuid4().hex[:8]}"
+    print(f"Using fresh thread ID: {thread_id}")
+    run_curator_with_approval(task, thread_id=thread_id)
+
+
+def proveskit_web_crawl():
+    """Test web crawling of ProvesKit documentation."""
+    import uuid
+    
+    task = """
+You are the curator agent for the PROVES Library.
+
+YOUR MISSION: Crawl ProvesKit documentation and extract dependencies.
+
+START WITH THE PROVESKIT DOCUMENTATION:
+1. Use fetch_webpage to read: https://docs.proveskit.space/en/latest/
+2. Follow links to explore the Power Management and Flight Software sections
+3. Extract dependencies and component relationships
+
+ALSO EXPLORE THE GITHUB REPO:
+1. Use list_github_directory to explore: github.com/proveskit/flight_software
+2. Look for README files, CircuitPython code, and configuration
+
+EXTRACTION FOCUS:
+- Hardware-software interfaces (which CircuitPython code controls which hardware)
+- Power management dependencies
+- Flight modes and their requirements
+- Safety constraints
+
+For this test, process at most 3 pages/files to verify the tools work.
+
+Store only HIGH criticality dependencies (they will require approval).
+For each fact you extract, CITE THE SOURCE URL.
+"""
+
+    thread_id = f"proveskit-crawl-{uuid.uuid4().hex[:8]}"
+    print(f"Using fresh thread ID: {thread_id}")
+    run_curator_with_approval(task, thread_id=thread_id)
+
+
 if __name__ == "__main__":
     import sys
 
     print()
     print("Available tests:")
-    print("1. Simple test (extract HIGH criticality from fprime I2C driver)")
+    print("1. Simple test (extract HIGH criticality from local fprime I2C driver)")
     print("2. Autonomous exploration (agent decides what to do)")
+    print("3. F' web crawl (fetch from nasa/fprime GitHub repo)")
+    print("4. ProvesKit web crawl (fetch from docs.proveskit.space)")
     print()
 
     # Check for command-line argument
@@ -257,7 +339,7 @@ if __name__ == "__main__":
     else:
         # Try interactive input, fall back to simple test
         try:
-            choice = input("Enter choice (1 or 2): ").strip()
+            choice = input("Enter choice (1-4): ").strip()
         except (EOFError, KeyboardInterrupt):
             print("No input detected, defaulting to simple test (1)")
             choice = "1"
@@ -266,6 +348,10 @@ if __name__ == "__main__":
         simple_test()
     elif choice == "2":
         autonomous_exploration()
+    elif choice == "3":
+        fprime_web_crawl()
+    elif choice == "4":
+        proveskit_web_crawl()
     else:
         print(f"Invalid choice '{choice}'. Running simple test...")
         simple_test()

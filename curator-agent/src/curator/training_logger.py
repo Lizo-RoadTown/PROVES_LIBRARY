@@ -14,7 +14,10 @@ import psycopg2
 from psycopg2.extras import Json
 from dotenv import load_dotenv
 
-load_dotenv()
+# Load environment variables from project root .env
+_this_dir = os.path.dirname(os.path.abspath(__file__))
+_project_root = os.path.abspath(os.path.join(_this_dir, '..', '..', '..'))
+load_dotenv(os.path.join(_project_root, '.env'))
 
 
 @dataclass

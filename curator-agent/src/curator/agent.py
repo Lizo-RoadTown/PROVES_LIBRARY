@@ -16,8 +16,17 @@ from langgraph.checkpoint.postgres import PostgresSaver
 from langsmith import traceable
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from project root .env
+# The .env file is in PROVES_LIBRARY/, this file is in PROVES_LIBRARY/curator-agent/src/curator/
+_this_dir = os.path.dirname(os.path.abspath(__file__))
+_project_root = os.path.abspath(os.path.join(_this_dir, '..', '..', '..'))
+load_dotenv(os.path.join(_project_root, '.env'))
+
+# Verify critical env vars are loaded
+if os.getenv('LANGCHAIN_TRACING_V2') == 'true':
+    print(f"[LangSmith] Tracing enabled, project: {os.getenv('LANGCHAIN_PROJECT')}")
+else:
+    print("[LangSmith] Tracing DISABLED - set LANGCHAIN_TRACING_V2=true in .env")
 
 # Training data logger
 from .training_logger import get_training_logger
@@ -371,10 +380,11 @@ Do not assume the dependency was stored until you see an explicit HITL message c
         if logger:
             try:
                 interaction_id = logger.log_interaction(
-                    interaction_type="dependency_storage",
-                    input_data=task,
-                    ai_output=pending,  # The deferred storage data
-                    context={"criticality": "HIGH", "source": "curator_agent"}
+                    thread_id=state.get("current_interaction_id", "unknown"),
+                    session_type="dependency_storage",
+                    doc_chunk=task[:5000] if task else None,  # Truncate to 5K chars
+                    ai_extraction=pending,  # The deferred storage data
+                    model_used="claude-sonnet-4-5"
                 )
                 print(f"[Training] Logged interaction {interaction_id}")
             except Exception as e:
