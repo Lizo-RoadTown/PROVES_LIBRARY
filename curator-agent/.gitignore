@@ -1,3 +1,10 @@
 
 # LangGraph API
 .langgraph_api
+curator_checkpoints.db*
+nul
+*.db-shm
+*.db-wal
+__pycache__/
+*.pyc
+.pytest_cache/
