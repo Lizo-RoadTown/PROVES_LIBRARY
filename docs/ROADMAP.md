@@ -1,288 +1,147 @@
 # PROVES Library Implementation Roadmap
 
-**Version:** 2.0 (Updated with Actual Progress)
-**Last Updated:** December 20, 2025
-**Status:** Phase 1 Complete, Phase 2 Core Integration 40% Complete
+**Version:** 3.0 (December 2025 Reorganization)
+**Last Updated:** December 22, 2025
+**Status:** Infrastructure Complete, Curator Agent In Development
 
 ---
 
 ## Executive Summary
 
-This roadmap outlines the implementation of the PROVES Library system - a knowledge graph-powered, agent-driven platform for capturing and interrogating CubeSat mission knowledge. The system integrates:
+This roadmap outlines the implementation of the PROVES Library system - a knowledge graph-powered, agent-driven platform for capturing and interrogating CubeSat mission knowledge.
 
-- **FRAMES Ontology** (organizational behavior modeling)
-- **Engineering Relationship Vocabulary** (technical causality mapping)
-- **LangGraph + Deep Agents** (autonomous reasoning)
-- **MCP + RAG** (hybrid knowledge retrieval)
-- **Neon PostgreSQL** (serverless database with pgvector)
-- **GitHub MCP Integration** (40 tools for repository operations)
+**Current Stack:**
+- **LangGraph + Claude Sonnet 4.5** (curator agent with sub-agents)
+- **Neon PostgreSQL** (knowledge graph + checkpointer tables)
+- **Human-in-the-Loop (HITL)** (for HIGH criticality dependencies)
 
-**What's Changed Since v1.0:**
+**What's Done:**
+- ✅ Database infrastructure with 9 tables + checkpointer tables
+- ✅ LangGraph curator agent with sub-agents (extractor, validator, storage)
+- ✅ PostgresSaver checkpointer for state persistence
+- ✅ Trial mapping with 45+ dependencies identified
 
-- ✅ Database infrastructure COMPLETE (not just planned)
-- ✅ Actual schema applied to Neon PostgreSQL (9 tables live)
-- ✅ Core utilities built and tested
-- ✅ GitHub API sync framework ready
-- 🔄 Ready for first documentation sync (blocked on GITHUB_TOKEN)
-
-**Revised Timeline:** 2-3 weeks to MVP, 6-8 weeks to production
-**Current Phase:** Phase 2 (Core Integration) - 40% complete
+**Current Focus:**
+- 🔄 Refining curator agent workflow
+- 🔄 Training data collection from HITL interactions
 
 ---
 
-## Current Status (December 20, 2025)
+## Current Status (December 22, 2025)
 
-### What's Actually Done ✅
+### ✅ Phase 1: Trial Mapping — COMPLETE
 
-**Database Infrastructure (100%)**
-- Neon PostgreSQL database provisioned and connected
-- 9 tables applied: library_entries, kg_nodes, kg_relationships, risk_patterns, repository_scans, detected_risks, curator_jobs, builder_jobs, sync_metadata
-- ERV schema with 6 relationship types: depends_on, conflicts_with, enables, requires, mitigates, causes
-- pgvector extension enabled for semantic search
-- Initial seed data: 6 nodes, 3 relationships, 5 risk patterns
+**Manual Analysis Results:**
+- F´ I2C Driver (411 lines) + PROVES Kit Power Management (154 lines)
+- **45+ dependencies** with exact line citations
+- **4 critical cross-system dependencies** (previously undocumented)
+- **5 major knowledge gaps** identified
 
-**Core Utilities (100%)**
-- `scripts/db_connector.py` - Connection pooling and query helpers
-- `scripts/graph_manager.py` - Knowledge graph CRUD, cascade path queries
-- `scripts/library_indexer.py` - Markdown parser with YAML frontmatter
-- `scripts/apply_schema.py` - Database initialization
-- `scripts/github_doc_sync.py` - GitHub API documentation sync
+See: [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](../trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md)
 
-**Documentation (100%)**
-- MCP Setup Guide
-- Setup Log with execution details
-- Documentation Sync Strategy
-- GitHub API Sync Quick Start
-- GitHub MCP Tools Reference (40 tools documented)
-- Updated proveskit-agent website with architecture diagrams
+### ✅ Phase 2: Infrastructure — COMPLETE
 
-**MCP Integrations (100%)**
-- Neon MCP server connected (23 tools)
-- GitHub MCP server connected (40 tools)
-- LangChain MCP server connected
+**Database (Neon PostgreSQL):**
+- 9 knowledge graph tables: kg_nodes, kg_relationships, library_entries, etc.
+- 4 LangGraph checkpointer tables: checkpoints, checkpoint_blobs, checkpoint_writes, checkpoint_migrations
+- ERV schema with 6 relationship types
+- pgvector enabled for future semantic search
 
-### What's Next (Immediate Priorities)
+**Scripts:**
+- `scripts/apply_schema.py` - Initialize knowledge graph schema
+- `scripts/setup_checkpointer.py` - Create LangGraph tables
+- `scripts/db_connector.py` - Connection pooling
+- `scripts/graph_manager.py` - Knowledge graph CRUD
 
-**🔥 PRIORITY 1: Documentation Sync (Today/Tomorrow)**
-- [ ] Add GITHUB_TOKEN to .env (5 min) - **BLOCKED: Need user to generate token**
-- [ ] Test connection: `python scripts/github_doc_sync.py test`
-- [ ] Run initial F´ sync: `python scripts/github_doc_sync.py init fprime`
-- [ ] Verify 50-100+ entries in database
-- [ ] Add PROVES Kit repository URL
-- [ ] Schedule daily sync job
+### 🔄 Phase 3: Curator Agent — IN DEVELOPMENT
 
-**🔥 PRIORITY 2: Vector Embeddings (This Week)**
-- [ ] Create embedding generation script
-- [ ] Generate embeddings for all library entries
-- [ ] Test semantic similarity search
-- [ ] Add embedding generation to indexer pipeline
+**What's Built:**
+- LangGraph orchestration with sub-agents-as-tools pattern
+- Claude Sonnet 4.5 (curator/extractor) + Haiku 3.5 (validator/storage)
+- Human-in-the-loop framework for HIGH criticality
+- PostgresSaver checkpointer (Neon-hosted)
 
-**🔥 PRIORITY 3: Quality Scoring (This Week)**
-- [ ] Define quality metrics (completeness, clarity, examples, metadata)
-- [ ] Implement scoring in library_indexer.py
-- [ ] Score all existing entries
-- [ ] Set thresholds for auto-approval vs manual review
+**Current Work:**
+- [ ] Agent workflow refinement (stop conditions, state management)
+- [ ] Task/outcome definition clarity
+- [ ] Integration testing with trial documents
 
-**PRIORITY 4: Curator Agent MVP (Next Week)**
-- [ ] Create LangGraph workflow
-- [ ] Implement quality assessment
-- [ ] Add metadata enrichment
-- [ ] Build knowledge graph integration
-- [ ] Add human-in-loop review
+**Entry Point:** `curator-agent/run_with_approval.py`
 
-### Current Blockers
+### 🔮 Phase 4: Training Pipeline — PLANNED
 
-1. **GITHUB_TOKEN** - Required for documentation sync
-   - **Action**: Generate token at https://github.com/settings/tokens
-   - **Permissions**: `public_repo` (read access)
-   - **Impact**: Blocks entire documentation sync workflow
+**Goal:** Fine-tune local LLM on curator HITL interactions
 
-2. **PROVES Kit Repository URL** - Not yet provided
-   - **Action**: Provide GitHub owner/repo for PROVES Kit
-   - **Impact**: Blocks PROVES Kit documentation sync
+**Approach:**
+1. Collect training data from HITL approvals/corrections
+2. Export from Neon to JSONL (Alpaca format)
+3. Fine-tune with Unsloth/LoRA on Hugging Face model
+4. Deploy specialized CubeSat dependency model
+
+**Notebook:** `notebooks/02_training_local_llm.ipynb`
 
 ---
 
-## Revised Phase Overview
+## Architecture Overview
 
-```mermaid
-gantt
-    title PROVES Library Implementation Timeline
-    dateFormat YYYY-MM-DD
-    section Phase 1
-    Foundation             :done, p1, 2024-12-01, 2024-12-20
-
-    section Phase 2
-    Knowledge Graph Setup  :active, p2a, 2024-12-21, 2025-01-17
-    MCP Server Core        :p2b, 2024-12-28, 2025-01-31
-    Risk Scanner v1        :p2c, 2025-01-10, 2025-02-07
-
-    section Phase 3
-    RAG System             :p3a, 2025-02-01, 2025-02-28
-    LangGraph Agents       :p3b, 2025-02-15, 2025-03-21
-    VS Code Extension      :p3c, 2025-03-01, 2025-03-28
-
-    section Phase 4
-    Curator Agent          :p4a, 2025-03-22, 2025-04-25
-    Builder Agent          :p4b, 2025-04-01, 2025-05-02
-    Production Deploy      :p4c, 2025-05-03, 2025-05-16
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    PROVES Library System                        │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  📄 Documentation Sources                                       │
+│     ├── F´ Framework (NASA/JPL flight software)                │
+│     └── PROVES Kit (Cal Poly Pomona CubeSat hardware)          │
+│                          ↓                                      │
+│  🤖 Curator Agent (LangGraph + Claude)                          │
+│     ┌─────────────────────────────────────┐                    │
+│     │  Main Curator (Sonnet 4.5)          │                    │
+│     │     ↓ spawns as tools               │                    │
+│     │  ├── Extractor (Sonnet 4.5)         │                    │
+│     │  ├── Validator (Haiku 3.5)          │                    │
+│     │  └── Storage   (Haiku 3.5)          │                    │
+│     └─────────────────────────────────────┘                    │
+│                          ↓                                      │
+│  👤 Human-in-the-Loop (HITL)                                    │
+│     └── HIGH criticality deps require approval                 │
+│                          ↓                                      │
+│  🗄️ Neon PostgreSQL                                             │
+│     ├── Knowledge graph (kg_nodes, kg_relationships)           │
+│     └── Checkpointer (checkpoints, checkpoint_blobs, etc.)     │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Phase 1: Foundation ✅ (90% Complete)
+## What's NOT Built (Archived)
 
-**Duration:** 3 weeks (Dec 1 - Dec 20, 2024)
-**Status:** Nearly complete
+The following were designed but not implemented. See `archive/design-docs/`:
 
-### Completed ✅
+- **MCP Server** - Custom MCP endpoints for knowledge queries
+- **Risk Scanner** - Automated risk detection in codebases
+- **GitHub Sync** - Automated documentation sync from repos
+- **OpenTelemetry** - Distributed tracing integration
 
-- [x] Repository structure created
-- [x] Comprehensive documentation (2,600+ lines)
-  - [x] ARCHITECTURE.md with mermaid diagrams
-  - [x] TASKS.md with phase dependencies
-  - [x] ONTOLOGY_INTEGRATION.md (FRAMES analysis)
-  - [x] KNOWLEDGE_GRAPH_SCHEMA.md (ERV specification)
-  - [x] AGENTIC_ARCHITECTURE.md (LangGraph + agents)
-- [x] Example library entry (I2C conflict pattern)
-- [x] Agent architecture specifications
-- [x] Theoretical framework integration (FRAMES + ERV)
-
-### Remaining ✓
-
-- [ ] **Entry schema formalization** (docs/ENTRY_SCHEMA.md)
-- [ ] **2-3 more example entries** (one per domain: build, ops)
-- [ ] **Contributing guidelines** (docs/CONTRIBUTING.md)
-
-**Deliverable:** Complete foundational documentation and example entries
-**Timeline:** Complete by Dec 23, 2024 (3 days)
+These may be revisited in future phases.
 
 ---
 
-## Phase 2: Core Infrastructure (8 weeks)
+## Next Steps
 
-**Duration:** 8 weeks (Dec 21, 2024 - Feb 14, 2025)
-**Goal:** Build the knowledge graph, MCP server, and basic risk scanner
-
-### Milestone 2.1: Knowledge Graph Setup (4 weeks)
-
-**Owner:** Backend team
-**Dependencies:** None
-**Deliverable:** Working graph database with first 100 nodes
-
-#### Week 1-2: Database Setup & Initial Schema
-
-**Tasks:**
-1. **Choose graph database**
-   - Recommendation: Neo4j Community Edition
-   - Alternative: PostgreSQL + Apache AGE (graph extension)
-   - Fallback: DuckDB + graph tables (simplest)
-
-2. **Implement ERV schema**
-   ```python
-   # Schema implementation
-   - Node types: Component, Port, Hardware, Resource, Procedure, FailureMode
-   - Edge types: IDENTICAL, REQUIRES, CONFIGURES, CONTROLS, COUPLES_TO, etc.
-   - 5 attributes per edge: directionality, strength, mechanism, knownness, scope
-   ```
-
-3. **Create ingestion pipeline**
-   - Parse markdown entries → extract nodes/edges
-   - Validate schema compliance
-   - Store in graph DB
-
-4. **Build first 100 nodes**
-   - 30 nodes: F´ core components (CommandDispatcher, RateGroup, ActiveLogger, etc.)
-   - 30 nodes: PROVES Kit components (PowerMonitor, RadioDriver, IMU, etc.)
-   - 20 nodes: Resources (PowerRail_3V3, I2C_Bus, Thermal budget, etc.)
-   - 20 nodes: Hardware elements (SX1262, INA219, STM32, etc.)
-
-**Code Example:**
-```python
-# nodes.csv
-id,type,name,namespace,version,category
-comp_001,SoftwareComponent,RadioDriver,PROVES.Radio,v2.1.0,software
-hw_001,HardwareElement,SX1262,Radio.Hardware,rev_c,hardware
-res_001,Resource,PowerRail_3V3,Power.Rails,,resource
-
-# edges.csv
-source,target,relation,forward,reverse,strength,mechanism,knownness,scope
-comp_001,hw_001,REQUIRES,true,false,always,protocol,known,fprime@v3.4.3
-comp_001,res_001,CONSUMES,true,false,sometimes,electrical,known,board_rev_c
-```
-
-#### Week 3-4: First Cascade & Sweep Implementation
-
-**Tasks:**
-1. **Implement cascade path algorithm**
-   ```python
-   def find_cascade_paths(start_node, resource_type, max_depth=5):
-       # Traverse graph following CONSUMES/CONSTRAINS/COUPLES_TO edges
-       # Return all paths from start_node through resource_type
-       # Flag unknowns and assumed edges
-   ```
-
-2. **Build first sweep: Cascade Analysis**
-   - Input: Starting component + resource type (power, thermal, timing)
-   - Output: All cascade paths with risk scoring
-   - Evidence gaps flagged
-
-3. **Test with real scenario**
-   - Scenario: "RadioTX causes brownouts"
-   - Expected path: RadioTX → PowerRail_3V3 → MCU_Brownout → Reset
-   - Validate knownness tracking works
-
-**Deliverable:**
-- Graph DB with 100 nodes, 50+ edges
-- Working cascade path query
-- First sweep implementation
-
-**Success Metric:** Can answer "Show all components affected by RadioTX via power"
+1. **Complete curator agent testing** with trial documents
+2. **Collect HITL training data** from real extraction runs
+3. **Evaluate training approach** (OpenAI fine-tuning vs Hugging Face)
+4. **Build visualization layer** for knowledge graph queries
 
 ---
 
-### Milestone 2.2: MCP Server Core (4 weeks, overlaps with 2.1)
+## Historical Context
 
-**Owner:** Backend team
-**Dependencies:** Graph DB setup (week 2)
-**Deliverable:** MCP server with graph query endpoints
-
-#### Week 1-2: Basic MCP Server
-
-**Tasks:**
-1. **Set up FastAPI application**
-   ```python
-   # mcp-server/server.py
-   from fastapi import FastAPI
-   from pydantic import BaseModel
-
-   app = FastAPI(title="PROVES Library MCP Server")
-
-   # Standard MCP endpoints
-   @app.post("/search")
-   @app.get("/entry/{entry_id}")
-   @app.get("/list")
-   @app.get("/artifacts/{entry_id}")
-   ```
-
-2. **Implement library indexer**
-   - Parse markdown files with frontmatter
-   - Extract metadata to SQLite
-   - Build full-text search index
-
-3. **Add basic search functionality**
-   - Keyword search across entries
-   - Filter by domain (build/software/ops)
-   - Filter by tags
-
-**Deliverable:** Working MCP server with basic search
-
-#### Week 3-4: Graph Query Endpoints
-
-**Tasks:**
-1. **Add graph query endpoints**
-   ```python
-   # New endpoints
+For detailed historical phase plans and design documents, see:
+- `archive/design-docs/` - Unimplemented feature designs
+- `archive/outdated-docs/` - Superseded documentation
+- `archive/historical/` - Point-in-time status logs
    @app.post("/graph/query")          # Cypher-like queries
    @app.post("/graph/cascade")        # Cascade path analysis
    @app.get("/graph/node/{id}/edges") # Get all edges for node

@@ -70,7 +70,7 @@ This project uses AI agents to automatically extract dependencies from technical
 
 ---
 
-## 📊 Current Status
+## 📊 Current Status (December 2025)
 
 ### ✅ Phase 1: Trial Mapping — COMPLETE
 - Manually analyzed F´ I2C Driver (411 lines) + PROVES Kit Power Management (154 lines)
@@ -78,17 +78,21 @@ This project uses AI agents to automatically extract dependencies from technical
 - **Discovered 4 critical cross-system dependencies** (undocumented in either system!)
 - **Identified 5 major knowledge gaps** (timing specs, voltage requirements, error recovery)
 
-### ✅ Phase 2: Deep Agent System — COMPLETE
-- LangGraph orchestration with sub-agents-as-tools pattern
-- Cost-optimized model selection (Sonnet for complex, Haiku for simple)
-- Human-in-the-loop with safe interrupt pattern
-- Neon PostgreSQL with pgvector for semantic search
-- LangSmith integration for observability
+### ✅ Phase 2: Infrastructure — COMPLETE
+- Neon PostgreSQL database with knowledge graph schema (9 tables)
+- LangGraph checkpointer tables for agent state persistence
+- Scripts for database management and schema application
 
-### 🔄 Phase 3: Automation — IN PROGRESS
-- Automated extraction vs manual analysis comparison
-- GitHub sync for continuous documentation monitoring
-- Risk scanner integration
+### 🔄 Phase 3: Curator Agent — IN DEVELOPMENT
+- LangGraph orchestration with sub-agents-as-tools pattern
+- Claude Sonnet 4.5 (curator/extractor) + Haiku 3.5 (validator/storage)
+- Human-in-the-loop framework for HIGH criticality dependencies
+- **Current focus:** Agent workflow refinement and testing
+
+### 🔮 Phase 4: Training Pipeline — PLANNED
+- Training data collection from HITL interactions
+- Local LLM fine-tuning with Unsloth/LoRA
+- Model deployment for specialized CubeSat knowledge
 
 ---
 
@@ -96,7 +100,7 @@ This project uses AI agents to automatically extract dependencies from technical
 
 ### Prerequisites
 - Python 3.11+
-- API keys: [Anthropic](https://console.anthropic.com/), [LangSmith](https://smith.langchain.com/), [Neon](https://neon.tech/)
+- API keys: [Anthropic](https://console.anthropic.com/), [Neon](https://neon.tech/)
 
 ### Setup
 
@@ -115,10 +119,13 @@ pip install -r requirements.txt
 
 # Configure environment
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your API keys:
+#   ANTHROPIC_API_KEY=sk-ant-...
+#   DATABASE_URL=postgresql://...
 
 # Initialize database
 python scripts/apply_schema.py
+python scripts/setup_checkpointer.py
 
 # Run the curator agent
 cd curator-agent

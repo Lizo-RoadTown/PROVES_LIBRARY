@@ -6,9 +6,9 @@
 
 ## What You'll Set Up
 
-- ✅ Deep Agent system (LangGraph + Claude Sonnet 4.5)
+- ✅ Curator Agent system (LangGraph + Claude Sonnet 4.5)
 - ✅ Neon PostgreSQL knowledge graph (cloud-hosted)
-- ✅ LangSmith tracing for observability
+- ✅ LangGraph checkpointer for agent state persistence
 - ✅ Infrastructure utilities for database operations
 
 ---
@@ -21,13 +21,12 @@
 - **Git** ([Download](https://git-scm.com/))
 - **API Keys:**
   - [Anthropic API Key](https://console.anthropic.com/) - For Claude Sonnet 4.5
-  - [LangSmith API Key](https://smith.langchain.com/) - For tracing and Studio UI
   - [Neon Database URL](https://neon.tech/) - For cloud PostgreSQL
 
 ### Optional
 
 - **VS Code** ([Download](https://code.visualstudio.com/)) - Recommended IDE
-- **Node.js 18+** - For LangGraph CLI (optional, for local dev server)
+- **LangSmith API Key** ([smith.langchain.com](https://smith.langchain.com/)) - For tracing (disabled by default)
 
 ### Hardware Requirements
 
@@ -71,9 +70,10 @@ cp .env.example .env
 # Edit .env with your API keys
 # Required variables:
 #   ANTHROPIC_API_KEY=sk-ant-api03-...
-#   LANGSMITH_API_KEY=lsv2_sk_...
 #   DATABASE_URL=postgresql://...
-#   LANGCHAIN_TRACING_V2=true
+#
+# Optional (tracing disabled by default):
+#   LANGCHAIN_TRACING_V2=false
 ```
 
 ### 4. Initialize Database Schema
@@ -82,20 +82,24 @@ cp .env.example .env
 # Apply knowledge graph schema to Neon database
 python scripts/apply_schema.py
 
+# Create LangGraph checkpointer tables
+python scripts/setup_checkpointer.py
+
 # Verify connection
 python scripts/db_connector.py
 ```
 
-### 5. Test the Deep Agent System
+### 5. Run the Curator Agent
 
 ```bash
 # Navigate to curator-agent
 cd curator-agent
 
-# Run test script
-python test_agent.py
+# Run with human-in-the-loop approval
+python run_with_approval.py
 
-# Expected output: Knowledge graph statistics
+# Or run the test script
+python test_agent.py
 ```
 
 Success! You now have the PROVES Library running.
@@ -116,16 +120,6 @@ Success! You now have the PROVES Library running.
 
 **Free Tier:** $5 credit for new users
 
-#### LangSmith (Tracing & Studio UI)
-
-1. Sign up at https://smith.langchain.com/
-2. Navigate to **Settings > API Keys**
-3. Create a new key
-4. Copy key starting with `lsv2_sk_...`
-5. Add to `.env`: `LANGSMITH_API_KEY=lsv2_sk_...`
-
-**Free Tier:** Personal accounts get free tracing
-
 #### Neon PostgreSQL (Knowledge Graph Database)
 
 1. Sign up at https://neon.tech/
@@ -135,21 +129,42 @@ Success! You now have the PROVES Library running.
 
 **Free Tier:** 500MB storage, 10GB data transfer/month
 
+#### LangSmith (Optional - For Tracing)
+
+Tracing is **disabled by default**. To enable:
+
+1. Sign up at https://smith.langchain.com/
+2. Navigate to **Settings > API Keys**
+3. Create a **personal API key** (not org-scoped)
+4. Copy key starting with `lsv2_pt_...`
+5. Add to `.env`:
+   ```bash
+   LANGCHAIN_TRACING_V2=true
+   LANGCHAIN_API_KEY=lsv2_pt_...
+   ```
+
+**Note:** Org-scoped keys require workspace specification and may cause issues.
+
 ### Step 2: Understand the Repository Structure
 
 See [FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md) for complete organization guide.
 
 ```
 PROVES_LIBRARY/
-├── curator-agent/       # 🤖 Deep Agent system (PRIMARY)
+├── curator-agent/       # 🤖 Curator Agent system (PRIMARY)
 │   ├── src/curator/     # Main coordinator + 3 sub-agents
-│   ├── test_agent.py    # Test script
-│   └── README.md        # Deep Agent documentation
+│   ├── run_with_approval.py  # CLI with HITL
+│   └── README.md        # Agent documentation
 │
 ├── scripts/             # Infrastructure utilities
 │   ├── db_connector.py  # Database connection pooling
 │   ├── graph_manager.py # Knowledge graph CRUD
-│   └── apply_schema.py  # Schema initialization
+│   ├── apply_schema.py  # Schema initialization
+│   └── setup_checkpointer.py  # LangGraph tables
+│
+├── notebooks/           # Jupyter notebooks
+│   ├── 01_setup_and_explore.ipynb
+│   └── 02_training_local_llm.ipynb
 │
 ├── docs/                # Technical documentation
 ├── trial_docs/          # Manual analysis results
@@ -184,7 +199,7 @@ python scripts/graph_manager.py
 Nodes: 6, Relationships: 3
 ```
 
-#### Test Deep Agent System
+#### Test Curator Agent
 
 ```bash
 cd curator-agent

@@ -4,6 +4,17 @@ This directory contains outdated, superseded, or unimplemented code and document
 
 ## Archive Organization
 
+### curator-agent-old/
+**Superseded curator agent scripts and documentation**
+- Old monitoring scripts, demo files, and design docs
+- Replaced by simplified agent architecture in `curator-agent/`
+
+Contents:
+- `README_OLD.md` - Old README before simplification
+- `AGENT_INTELLIGENCE_GUIDE.md` - Old training approach doc
+- `DESIGN_ACTION_LEVEL_HITL.md` - Design doc for HITL patterns
+- `demo_learning.py`, `quick_monitor.py` - Old demo/monitoring scripts
+
 ### legacy-agents/
 **Superseded agent implementations**
 - Old standalone agent architecture (before LangGraph Deep Agents)
@@ -27,13 +38,21 @@ Contents:
 - Old setup guides, architecture docs
 - Superseded by current documentation
 
+Contents:
+- `LANGSMITH_INTEGRATION.md` - Old LangSmith setup (tracing now disabled)
+- `OPENTELEMETRY_INTEGRATION.md` - OpenTelemetry docs (not implemented)
+- `GITHUB_ACTIONS_SETUP.md` - CI/CD docs (not yet implemented)
+- `GITHUB_API_SYNC_QUICKSTART.md` - GitHub sync (not yet implemented)
+
 ### old-configs/
 **Deprecated configuration templates**
 - Old database configurations (Neo4j)
 - Outdated environment templates
 
-Contents:
-- `.env.template` - Old template with Neo4j config (use `.env.example` instead)
+### historical/
+**Point-in-time records**
+- Setup logs from specific dates
+- Status snapshots
 
 ## Why Archive Instead of Delete?
 
@@ -49,4 +68,4 @@ See [FOLDER_STRUCTURE.md](../FOLDER_STRUCTURE.md) for the current project organi
 
 ---
 
-Archived: December 21, 2024
+Last Updated: December 22, 2025

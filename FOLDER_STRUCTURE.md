@@ -1,6 +1,6 @@
 # PROVES Library - Folder Structure & Organization Best Practices
 
-**Last Updated:** December 21, 2024
+**Last Updated:** December 22, 2025
 **Purpose:** Maintain clean, organized repository structure as the project evolves
 
 ---
@@ -10,26 +10,38 @@
 ```
 PROVES_LIBRARY/
 ├── curator-agent/              # PRIMARY: Deep Agent system (LangGraph)
-├── scripts/                    # Infrastructure utilities and tools
+│   ├── src/curator/            # Agent implementation
+│   │   ├── agent.py            # Main coordinator + HITL
+│   │   └── subagents/          # Extractor, Validator, Storage
+│   ├── run_with_approval.py    # CLI entry point
+│   └── langgraph.json          # Deployment config
+├── scripts/                    # Infrastructure utilities
+│   ├── apply_schema.py         # Initialize knowledge graph schema
+│   ├── setup_checkpointer.py   # Create LangGraph checkpoint tables
+│   ├── db_connector.py         # PostgreSQL connection pooling
+│   └── graph_manager.py        # Knowledge graph CRUD
 ├── docs/                       # Technical documentation
 │   ├── ROADMAP.md              # Implementation roadmap
 │   ├── AGENT_HANDOFF.md        # AI agent onboarding context
-│   ├── MCP_SETUP_GUIDE.md      # MCP server setup
-│   └── *.md                    # Architecture, schema, integration docs
+│   └── *.md                    # Architecture, schema docs
+├── notebooks/                  # Jupyter notebooks
+│   ├── 01_setup_and_explore.ipynb
+│   └── 02_training_local_llm.ipynb
 ├── library/                    # Knowledge base entries
-├── trial_docs/                 # Manual analysis and trial results
-├── notebooks/                  # Jupyter notebooks for exploration
+├── trial_docs/                 # Manual analysis results
 ├── tests/                      # Test suite (to be populated)
 ├── archive/                    # Superseded code and documentation
 │   ├── legacy-agents/          # Old agent implementations
+│   ├── curator-agent-old/      # Old curator scripts and docs
 │   ├── design-docs/            # Unimplemented designs
-│   ├── historical/             # Point-in-time logs and status
-│   └── old-configs/            # Deprecated configurations
-├── .env.example                # Environment template (current)
+│   ├── historical/             # Point-in-time logs
+│   ├── old-configs/            # Deprecated configurations
+│   └── outdated-docs/          # Superseded documentation
+├── .env.example                # Environment template
 ├── requirements.txt            # Python dependencies (root)
 ├── README.md                   # Project overview (START HERE)
 ├── GETTING_STARTED.md          # Setup and onboarding
-└── FOLDER_STRUCTURE.md         # This file (organization guide)
+└── FOLDER_STRUCTURE.md         # This file
 ```
 
 ## What Goes Where?
