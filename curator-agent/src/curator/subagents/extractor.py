@@ -18,10 +18,13 @@ def read_document(doc_path: str) -> str:
         lines = content.split('\n')
         chars = len(content)
 
-        # Return first 500 chars as preview + stats
-        preview = content[:500] + "..." if len(content) > 500 else content
-
-        return f"Document: {doc_path}\nSize: {chars} characters, {len(lines)} lines\n\nPreview:\n{preview}"
+        # Return full content up to 50K chars (enough for most docs)
+        # This allows the extractor to actually analyze dependencies
+        max_chars = 50000
+        if chars > max_chars:
+            content = content[:max_chars] + f"\n\n... (truncated, showing first {max_chars} of {chars} characters)"
+        
+        return f"Document: {doc_path}\nSize: {chars} characters, {len(lines)} lines\n\nFull Content:\n{content}"
     except Exception as e:
         return f"Error reading document: {str(e)}"
 

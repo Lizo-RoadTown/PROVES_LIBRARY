@@ -189,11 +189,17 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
 def simple_test():
     """Run a simple test of the curator with a small task."""
     import uuid
-    task = """
+    import os
+    
+    # Get absolute path to the trial docs
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    doc_path = os.path.join(project_root, "trial_docs", "fprime_i2c_driver_full.md")
+    
+    task = f"""
 Extract dependencies from the fprime I2C driver documentation.
 Focus on HIGH criticality dependencies only.
 
-File: ../trial_docs/fprime_i2c_driver_full.md
+File: {doc_path}
 
 Store any HIGH criticality dependencies you find (they will require approval).
 """

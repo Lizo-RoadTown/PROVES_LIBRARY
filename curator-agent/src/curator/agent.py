@@ -100,9 +100,13 @@ def call_extractor_agent(task: str) -> str:
     Returns:
         Extraction results with found dependencies
     """
+    print(f"[EXTRACTOR TASK] {task}")  # Debug: show what task the extractor received
     extractor = create_extractor_agent()
     result = extractor.invoke({"messages": [{"role": "user", "content": task}]})
-    return result['messages'][-1].content
+    content = result['messages'][-1].content
+    # Debug: show first 500 chars of extractor result
+    print(f"[EXTRACTOR RESULT] {content[:500]}..." if len(content) > 500 else f"[EXTRACTOR RESULT] {content}")
+    return content
 
 
 @tool("validator_agent")
@@ -224,12 +228,14 @@ You coordinate THREE specialized sub-agents:
 
 ## Workflow
 
-For each request, follow this pattern:
+For each request, follow this SEQUENTIAL pattern. IMPORTANT: Complete each step before moving to the next!
 
-1. **Extract**: Use extractor_agent to process documentation
-2. **Validate**: Use validator_agent to check each HIGH criticality dependency
-3. **Store**: Use storage_agent to save validated dependencies
-4. **Report**: Summarize what was stored and any issues
+1. **Extract ONCE**: Call extractor_agent to process the documentation. Do NOT call it again - one extraction is enough.
+2. **Parse Results**: From the extraction results, identify HIGH criticality dependencies.
+3. **Store Each**: For each HIGH criticality dependency found, call storage_agent to save it.
+4. **Report and STOP**: After storing dependencies, provide a final summary and STOP (don't make more tool calls).
+
+CRITICAL: After calling extractor_agent ONCE, move on to storage_agent. Do NOT keep calling extractor repeatedly!
 
 ## ERV Relationship Types
 
@@ -246,7 +252,7 @@ For each request, follow this pattern:
 - **MEDIUM**: Important, affects functionality
 - **LOW**: Nice-to-have, minor impact
 
-Work autonomously but explain your reasoning. The human can watch and intervene via LangSmith Studio."""
+Work autonomously but explain your reasoning. When you're done, provide a summary WITHOUT making more tool calls."""
 
     system_message += """
 
@@ -552,12 +558,19 @@ Do not assume the dependency was stored until you see an explicit HITL message c
     
     print("Setting up PostgreSQL checkpointer (Neon) for HITL...")
     
-    # PostgresSaver.from_conn_string returns a context manager
-    # We need to enter it to get the actual checkpointer
-    checkpointer_cm = PostgresSaver.from_conn_string(db_url)
-    checkpointer = checkpointer_cm.__enter__()
+    # Use connection pool approach for persistent connections
+    from psycopg_pool import ConnectionPool
+    pool = ConnectionPool(conninfo=db_url, min_size=1, max_size=5)
+    checkpointer = PostgresSaver(pool)
     
-    # The context manager handles table setup automatically
+    # Setup tables on first use
+    try:
+        checkpointer.setup()
+        print("  Checkpointer tables ready")
+    except Exception as e:
+        # Tables may already exist
+        print(f"  Checkpointer setup: {e}")
+    
     print("  Checkpointer connected to Neon")
 
     print("Curator Agent ready!")
