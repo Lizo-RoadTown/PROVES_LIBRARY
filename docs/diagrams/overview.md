@@ -11,81 +11,92 @@ Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Ki
 
 ---
 
+## Quick Terminology Guide
+
+**Dependency** - When one component needs another component to work
+- Example: "The IMU sensor depends on power" means if power fails, IMU fails too
+
+**F´ (F Prime)** - NASA's flight software framework used on many spacecraft
+
+**I2C** - Communication protocol that lets microcontrollers talk to sensors (like USB but for embedded systems)
+
+**PROVES Kit** - University CubeSat platform with standardized hardware modules
+
+**Load Switch** - Electronic switch that turns power on/off to different components
+
+**Device Manager** - Software layer that handles talking to hardware sensors
+
+**Bus Driver** - Low-level software that manages the I2C communication protocol
+
+---
+
 ## F´ I2C Driver Dependencies
 
 ### Software Architecture
 
+**What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
+
 ```mermaid
 graph TB
-    subgraph "Application Layer"
-        APP[Application Components]
-    end
+    APP[Application Components<br/>Your mission code that needs sensor data]
 
-    subgraph "Device Manager Layer"
-        DM[ImuManager<br/>Device Manager]
-        DM_PORTS[Output Ports:<br/>- busWriteRead<br/>- busWrite]
-        DM_TYPES[Data Types:<br/>- ImuData<br/>- GeometricVector3]
-    end
+    DM[ImuManager - Device Manager<br/>Knows how to talk to the IMU sensor<br/>Uses: busWriteRead, busWrite ports<br/>Returns: ImuData, GeometricVector3]
 
-    subgraph "Bus Driver Layer"
-        BD[LinuxI2cDriver<br/>Bus Driver]
-        BD_IFACE[Drv.I2c Interface]
-        BD_STATUS[Drv.I2cStatus]
-    end
+    BD[LinuxI2cDriver - Bus Driver<br/>Low-level I2C communication<br/>Implements: Drv.I2c interface<br/>Returns: I2cStatus success/error codes]
 
-    subgraph "Hardware Layer"
-        HW[MPU6050 IMU Sensor<br/>I2C Address: 0x68]
-        I2C_BUS[I2C Hardware Bus<br/>/dev/i2c-1]
-    end
+    I2C_BUS[I2C Hardware Bus<br/>/dev/i2c-1<br/>Physical wires: SDA and SCL]
 
-    APP -->|requests data| DM
-    DM -->|mirrors interface| BD_IFACE
-    DM -->|uses| DM_PORTS
-    DM -->|defines| DM_TYPES
-    DM -->|port calls| BD
-    BD -->|implements| BD_IFACE
-    BD -->|returns| BD_STATUS
-    BD -->|hardware I/O| I2C_BUS
-    I2C_BUS -->|physical connection| HW
+    HW[MPU6050 IMU Sensor<br/>Hardware device at address 0x68<br/>Measures acceleration and rotation]
+
+    APP -->|"1. Requests sensor data"| DM
+    DM -->|"2. Calls I2C operations"| BD
+    BD -->|"3. Sends electrical signals"| I2C_BUS
+    I2C_BUS -->|"4. Physical connection"| HW
 
     style APP fill:#e1f5ff
     style DM fill:#fff4e1
     style BD fill:#f0e1ff
-    style HW fill:#f5f5f5
+    style I2C_BUS fill:#ffe0b2
+    style HW fill:#ffebee
 ```
+
+**Key insight:** If any layer fails, all layers above it fail too. This is why dependencies matter!
 
 ### Configuration Dependencies
 
+**What you're looking at:** Three types of configuration that all need to match up correctly.
+
 ```mermaid
-graph LR
-    subgraph "Build System"
-        FPUTIL[fprime-util]
-        FPP[FPP Component<br/>Modeling]
+graph TB
+    subgraph BUILD["Build System - Compiles the code"]
+        FPUTIL[fprime-util<br/>Build command]
+        FPP[FPP files<br/>Component definitions]
     end
 
-    subgraph "Topology Configuration"
-        TOPO[topology.fpp]
-        CONFIG[configureTopology]
-        INST[Component<br/>Instances]
+    subgraph TOPO["System Configuration - How components connect"]
+        TOPO_FILE[topology.fpp<br/>Defines which components exist]
+        CONFIG[configureTopology function<br/>Sets up connections at startup]
     end
 
-    subgraph "Device Configuration"
-        ADDR[I2C Address<br/>0x68]
-        REGS[Register Addresses:<br/>RESET_REG: 0x00<br/>CONFIG_REG: 0x01<br/>DATA_REG: 0x10]
-        VALS[Register Values:<br/>RESET_VAL: 0x80<br/>DEFAULT_ADDR: 0x48]
+    subgraph DEVICE["Hardware Configuration - Device settings"]
+        ADDR[I2C Address: 0x68<br/>How to find the IMU on the bus]
+        REGS[IMU Register Addresses<br/>RESET: 0x00, CONFIG: 0x01, DATA: 0x10]
+        VALS[Register Values<br/>What to write to configure the sensor]
     end
 
-    FPUTIL -->|builds| TOPO
-    FPP -->|defines| INST
-    TOPO -->|contains| INST
-    CONFIG -->|sets| ADDR
-    ADDR -->|from datasheet| REGS
-    REGS -->|configured with| VALS
+    FPUTIL -->|"Compiles"| TOPO_FILE
+    FPP -->|"Generates code for"| TOPO_FILE
+    TOPO_FILE -->|"Used by"| CONFIG
+    CONFIG -->|"Must set correct"| ADDR
+    ADDR -->|"Comes from sensor datasheet"| REGS
+    REGS -->|"Require correct"| VALS
 
-    style FPUTIL fill:#e8f5e9
-    style CONFIG fill:#fff3e0
-    style ADDR fill:#fce4ec
+    style BUILD fill:#e8f5e9
+    style TOPO fill:#fff3e0
+    style DEVICE fill:#fce4ec
 ```
+
+**Why this matters:** If the I2C address in code (0x68) doesn't match the hardware's actual address, communication fails silently.
 
 ---
 
@@ -93,49 +104,45 @@ graph LR
 
 ### Power Control Architecture
 
+**What you're looking at:** How the PROVES Kit software controls power to different subsystems.
+
 ```mermaid
 graph TB
-    subgraph "Load Switch Manager"
-        LSM[LoadSwitchManager<br/>Implements LoadSwitchProto]
-        SWITCHES{Load Switches}
-        STATE[switch_states<br/>Dictionary]
+    subgraph SOFTWARE["Python Software Layer"]
+        LSM[LoadSwitchManager<br/>Main power control class]
+        STATE[switch_states dictionary<br/>Tracks what's on/off]
+
+        DIO[digitalio.DigitalInOut<br/>GPIO pin control library]
+        LOGGER[Logger<br/>Records power events]
+        RETRY[with_retries decorator<br/>Auto-retry if operations fail]
     end
 
-    subgraph "Hardware Controls"
-        RADIO[Radio Transceiver<br/>board.RADIO_ENABLE]
-        IMU[IMU Sensor<br/>board.IMU_ENABLE]
-        MAG[Magnetometer<br/>board.MAG_ENABLE]
-        CAM[Camera<br/>board.CAMERA_ENABLE]
+    subgraph HARDWARE["Hardware Subsystems Being Powered"]
+        RADIO[Radio Transceiver<br/>board.RADIO_ENABLE pin]
+        IMU[IMU Sensor<br/>board.IMU_ENABLE pin]
+        MAG[Magnetometer<br/>board.MAG_ENABLE pin]
+        CAM[Camera<br/>board.CAMERA_ENABLE pin]
     end
 
-    subgraph "Software Dependencies"
-        DIO[digitalio.DigitalInOut]
-        LOGGER[pysquared.logger.Logger]
-        PROTO[LoadSwitchProto<br/>Interface]
-        RETRY[with_retries<br/>Decorator]
-        ERR[HardwareInitializationError]
-    end
+    LSM -->|"Uses to control pins"| DIO
+    LSM -->|"Records events to"| LOGGER
+    LSM -->|"Retries using"| RETRY
+    LSM -->|"Tracks status in"| STATE
 
-    LSM -->|controls| SWITCHES
-    LSM -->|tracks state in| STATE
-    SWITCHES -->|powers| RADIO
-    SWITCHES -->|powers| IMU
-    SWITCHES -->|powers| MAG
-    SWITCHES -->|powers| CAM
-
-    LSM -->|requires| DIO
-    LSM -->|requires| LOGGER
-    LSM -->|implements| PROTO
-    LSM -->|uses| RETRY
-    LSM -->|raises| ERR
+    LSM -->|"Turns power on/off via"| RADIO
+    LSM -->|"Turns power on/off via"| IMU
+    LSM -->|"Turns power on/off via"| MAG
+    LSM -->|"Turns power on/off via"| CAM
 
     style LSM fill:#e1f5ff
+    style STATE fill:#fff4e1
     style RADIO fill:#ffebee
     style IMU fill:#ffebee
     style MAG fill:#ffebee
     style CAM fill:#ffebee
-    style DIO fill:#f3e5f5
 ```
+
+**Key insight:** The LoadSwitchManager is the single point of control for all subsystem power. If it fails, you can't turn anything on or off.
 
 ### Configuration Flow
 

@@ -4,19 +4,34 @@ title: PROVES Library
 key: page-home
 ---
 
-# PROVES Library: Trial Dependency Mapping
+# PROVES Library: Capturing Mission Knowledge Before It's Lost
 
-## Visual Analysis of CubeSat Knowledge Dependencies
+## Preventing CubeSat Failures Through Automated Knowledge Capture
 
-This site demonstrates comprehensive dependency tracking for CubeSat mission-critical knowledge. We analyzed two real-world documents to show how hidden dependencies between systems can lead to catastrophic failures.
+**What We're Building:** A system that automatically finds and tracks technical dependencies in spacecraft software - before student teams graduate and the knowledge disappears.
+
+**Why It Matters:** University CubeSat missions fail when teams don't know what previous teams learned. This system captures that knowledge automatically.
 
 ---
 
 ## The Problem: Knowledge Loss at Team Boundaries
 
-**Real Scenario:** Team B modified power management code, tested it locally (worked), but caused catastrophic failure 2 weeks before launch. Team A knew the answer from "several generations before" but the knowledge wasn't accessible across team boundaries.
+**Real Scenario from a CubeSat Mission:**
 
-**Our Solution:** Map EVERY dependency, track WHERE knowledge lives, and alert on knowledge at risk of loss.
+A new student team took over a satellite project. They found a 200ms delay in the power management code. It seemed pointless - "why wait 200 milliseconds?" They removed it to make the code faster.
+
+On the bench in the lab, everything worked fine.
+
+Two weeks before launch, during integration testing, the satellite failed completely. The IMU (navigation sensor) wouldn't respond. After days of debugging, they discovered: the sensor needs 200ms after power-on before it's ready to talk. The original team (who graduated 2 years ago) had figured this out the hard way and added the delay - but never documented WHY.
+
+**The Real Problem:**
+- Critical knowledge lived only in people's heads
+- When students graduated, the knowledge vanished
+- Code comments didn't explain the "why" behind decisions
+- No one knew there was a dependency between power timing and sensor communication
+
+**Our Solution:**
+Automatically find and capture these dependencies BEFORE the knowledge is lost. Track exactly which team discovered each piece of knowledge. Alert teams when they're about to change something that might break other systems.
 
 ---
 
@@ -117,31 +132,44 @@ SELECT transitive_dependencies(X);
 
 ---
 
-## Next Steps
+## What's Working Now vs. What's Coming
 
-### Phase 1: Manual Trial ✅ (Complete)
-- Fetch F´ and PROVES Kit documentation
-- Identify all dependencies manually
-- Create comprehensive dependency map
-- Generate visualization diagrams
+### ✅ Phase 1: Manual Analysis (COMPLETE)
+We manually analyzed two real NASA/university CubeSat documents and found:
+- 45+ dependencies that teams need to know about
+- 4 critical dependencies that aren't documented ANYWHERE
+- 5 major knowledge gaps that cause failures
 
-### Phase 2: Database Integration (In Progress)
-- Insert trial documents into Neon PostgreSQL
-- Create knowledge graph nodes and relationships
-- Test query capabilities
-- Validate approach scalability
+[See the interactive diagrams below](#interactive-diagrams) to explore what we found.
 
-### Phase 3: Automation (Planned)
-- NLP extraction of dependencies from markdown
-- Code analysis for `#include` and import statements
-- Configuration file parsing (.fpp, .xml, CMake)
-- Automated dependency discovery at scale
+### ✅ Phase 2: Automated Extraction (WORKING NOW)
+The system can now automatically:
+- Read documentation and extract dependencies using AI (Claude)
+- Validate dependencies against our schema
+- Store them in a PostgreSQL knowledge graph
+- Ask humans to approve critical findings
+- Track which team/person contributed each piece of knowledge
 
-### Phase 4: Agent Integration (Planned)
-- Curator agent for quality assessment
-- Builder agent for component generation
-- Risk scanner for failure pattern detection
-- Continuous knowledge capture from teams
+**Status:** Proof of concept working. You can run it yourself!
+
+### 🔨 Phase 3: Smart Analysis (IN PROGRESS)
+Building AI agents that can:
+- Find hidden dependencies across multiple documents
+- Detect when changes might break other systems
+- Identify what knowledge is missing from documentation
+- Trace why failures happen by following dependency chains
+
+**Status:** Core framework built, connecting the pieces now.
+
+### 🎯 Phase 4: Full Automation (FUTURE VISION)
+The big goal:
+- Automatically scan all your code and docs
+- Find risks before they cause failures
+- Generate code that follows best practices
+- Continuous knowledge capture as teams work
+- Alert when someone's about to make a dangerous change
+
+**Status:** Designed but not yet implemented.
 
 ---
 
@@ -156,20 +184,36 @@ SELECT transitive_dependencies(X);
 
 ## About PROVES Library
 
-The PROVES Library is an agentic knowledge base system for CubeSat missions that:
-- Captures tribal knowledge before it's lost to student turnover
-- Maps technical dependencies (ERV) and organizational knowledge flow (FRAMES)
-- Prevents mission failures by surfacing hidden dependencies
-- Scales from documentation to code to runtime telemetry
+**What It Does:**
+The PROVES Library automatically captures and preserves technical knowledge from CubeSat missions before student teams graduate and that knowledge is lost.
 
-**Technology Stack:**
-- LangGraph + Claude (Deep Agents)
-- Neon PostgreSQL + pgvector
-- MCP (Model Context Protocol)
-- GitHub API integration
-- RAG (Retrieval Augmented Generation)
+**How It Works:**
+1. **Reads** documentation and code using AI (Claude language models)
+2. **Finds** dependencies between components (like "IMU needs power to be stable for 200ms")
+3. **Stores** them in a database with evidence (which document, which line number)
+4. **Tracks** which team discovered each piece of knowledge
+5. **Alerts** when someone might break something by changing code
+
+**Who It's For:**
+- University CubeSat teams (students, faculty)
+- Anyone building complex systems with team turnover
+- Organizations that need to preserve "tribal knowledge"
+
+**Technology We're Using:**
+- **AI Models:** Claude (by Anthropic) for reading and understanding docs
+- **Database:** PostgreSQL with pgvector for storing knowledge graphs
+- **Agents:** LangGraph framework for orchestrating AI tasks
+- **APIs:** GitHub integration for scanning repositories
+- **Human Oversight:** System asks for approval before storing critical findings
+
+**Current Status (December 2024):**
+- ✅ Trial analysis complete (45+ dependencies found manually)
+- ✅ Automated extraction working (AI can find dependencies)
+- 🔨 Smart analysis in progress (connecting multiple AI agents)
+- 🎯 Full automation planned (scan whole repos, detect risks)
 
 ---
 
-**Last Updated:** December 20, 2024
-**Status:** Trial Phase Complete, Database Integration In Progress
+**For Students:** This is a research project showing how AI can help preserve knowledge in spacecraft missions. The trial analysis (diagrams below) is complete and shows what we're trying to achieve at scale.
+
+**For Developers:** The automated extraction system is working. Check out the [GitHub repository](https://github.com/Lizo-RoadTown/PROVES_LIBRARY) to see the code.
