@@ -108,38 +108,33 @@ graph TB
 
 ```mermaid
 graph TB
-    subgraph SOFTWARE["Python Software Layer"]
-        LSM[LoadSwitchManager<br/>Main power control class]
-        STATE[switch_states dictionary<br/>Tracks what's on/off]
+    LSM[LoadSwitchManager<br/>Main power control class<br/>Written in Python]
 
-        DIO[digitalio.DigitalInOut<br/>GPIO pin control library]
-        LOGGER[Logger<br/>Records power events]
-        RETRY[with_retries decorator<br/>Auto-retry if operations fail]
+    subgraph TOOLS["Software Tools It Uses"]
+        DIO[digitalio.DigitalInOut<br/>Controls GPIO pins]
+        LOGGER[Logger<br/>Records events]
+        STATE[switch_states dict<br/>Tracks on/off status]
     end
 
-    subgraph HARDWARE["Hardware Subsystems Being Powered"]
-        RADIO[Radio Transceiver<br/>board.RADIO_ENABLE pin]
-        IMU[IMU Sensor<br/>board.IMU_ENABLE pin]
-        MAG[Magnetometer<br/>board.MAG_ENABLE pin]
-        CAM[Camera<br/>board.CAMERA_ENABLE pin]
+    subgraph DEVICES["Hardware It Powers"]
+        RADIO[Radio<br/>board.RADIO_ENABLE]
+        IMU[IMU Sensor<br/>board.IMU_ENABLE]
+        MAG[Magnetometer<br/>board.MAG_ENABLE]
+        CAM[Camera<br/>board.CAMERA_ENABLE]
     end
 
-    LSM -->|"Uses to control pins"| DIO
-    LSM -->|"Records events to"| LOGGER
-    LSM -->|"Retries using"| RETRY
-    LSM -->|"Tracks status in"| STATE
+    LSM -->|Uses| DIO
+    LSM -->|Uses| LOGGER
+    LSM -->|Uses| STATE
 
-    LSM -->|"Turns power on/off via"| RADIO
-    LSM -->|"Turns power on/off via"| IMU
-    LSM -->|"Turns power on/off via"| MAG
-    LSM -->|"Turns power on/off via"| CAM
+    LSM -->|Controls power to| RADIO
+    LSM -->|Controls power to| IMU
+    LSM -->|Controls power to| MAG
+    LSM -->|Controls power to| CAM
 
     style LSM fill:#e1f5ff
-    style STATE fill:#fff4e1
-    style RADIO fill:#ffebee
-    style IMU fill:#ffebee
-    style MAG fill:#ffebee
-    style CAM fill:#ffebee
+    style TOOLS fill:#fff9c4
+    style DEVICES fill:#ffebee
 ```
 
 **Key insight:** The LoadSwitchManager is the single point of control for all subsystem power. If it fails, you can't turn anything on or off.
