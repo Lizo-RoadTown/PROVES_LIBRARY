@@ -1,0 +1,260 @@
+# PROVES Library - Source Registry
+# =================================
+# Pre-mapped locations for agent knowledge extraction.
+# Agents use this to know WHERE to look for information
+# without needing to discover it at query time.
+
+version: "1.0"
+
+# ============================================
+# F' (F Prime) Framework
+# ============================================
+fprime:
+  name: "F Prime Flight Software Framework"
+  description: "NASA's open-source component-based flight software framework"
+  
+  # Primary documentation
+  docs:
+    url: "https://nasa.github.io/fprime/"
+    repo: "github.com/nasa/fprime"
+    branch: "devel"
+    paths:
+      - "docs/"
+      - "README.md"
+  
+  # Source code locations by category
+  components:
+    # Command & Data Handling
+    command_dispatcher:
+      path: "Svc/CmdDispatcher/"
+      description: "Routes commands to components based on opcode"
+      related: ["command_sequencer", "command_splitter"]
+    
+    command_sequencer:
+      path: "Svc/CmdSequencer/"
+      description: "Executes sequences of commands from files"
+    
+    # Telemetry
+    telemetry_channel:
+      path: "Svc/TlmChan/"
+      description: "Telemetry storage and retrieval"
+    
+    # Drivers - I2C
+    i2c_driver:
+      path: "Drv/LinuxI2cDriver/"
+      description: "Linux I2C device driver"
+      common_issues:
+        - "address conflicts"
+        - "bus contention"
+        - "timing violations"
+    
+    # Drivers - SPI
+    spi_driver:
+      path: "Drv/LinuxSpiDriver/"
+      description: "Linux SPI device driver"
+    
+    # Drivers - GPIO
+    gpio_driver:
+      path: "Drv/LinuxGpioDriver/"
+      description: "Linux GPIO pin driver"
+    
+    # Rate Groups / Scheduling
+    rate_group:
+      path: "Svc/RateGroupDriver/"
+      description: "Periodic task scheduling"
+      related: ["active_rate_group"]
+    
+    active_rate_group:
+      path: "Svc/ActiveRateGroup/"
+      description: "Active component for rate group execution"
+    
+    # Health Monitoring
+    health:
+      path: "Svc/Health/"
+      description: "Component health monitoring and watchdog"
+    
+    # File Management
+    file_downlink:
+      path: "Svc/FileDownlink/"
+      description: "File transfer from spacecraft to ground"
+    
+    file_uplink:
+      path: "Svc/FileUplink/"
+      description: "File transfer from ground to spacecraft"
+    
+    # Parameters
+    param_database:
+      path: "Svc/PrmDb/"
+      description: "Parameter storage and management"
+  
+  # File patterns for different content types
+  patterns:
+    component_definition: "*.fpp"
+    component_impl: "*Impl.cpp"
+    component_header: "*Impl.hpp"
+    unit_tests: "*Test*.cpp"
+    topology: "*Topology.fpp"
+    
+  # Known issue areas (for conflict detection)
+  risk_areas:
+    i2c_addressing:
+      description: "I2C address conflicts between devices"
+      search_paths: ["Drv/LinuxI2cDriver/", "Drv/I2c/"]
+      keywords: ["i2c", "address", "0x", "conflict"]
+    
+    rate_group_timing:
+      description: "Rate group scheduling and timing issues"
+      search_paths: ["Svc/RateGroupDriver/", "Svc/ActiveRateGroup/"]
+      keywords: ["rate", "group", "timing", "overrun"]
+    
+    memory_allocation:
+      description: "Static vs dynamic memory allocation"
+      search_paths: ["Fw/Types/", "Fw/Buffer/"]
+      keywords: ["malloc", "static", "buffer", "allocation"]
+
+# ============================================
+# PROVES Kit / ProvesKit
+# ============================================
+proveskit:
+  name: "PROVES Kit CubeSat Platform"
+  description: "Open-source PocketQube/CubeSat avionics and flight software"
+  
+  # Repositories
+  repos:
+    flight_software:
+      url: "github.com/proveskit/flight-software"
+      branch: "main"
+      description: "F'-based flight software for PROVES missions"
+      paths:
+        - "Components/"
+        - "Topology/"
+        - "config/"
+    
+    pysquared:
+      url: "github.com/proveskit/pysquared"
+      branch: "main"
+      description: "CircuitPython-based flight software (legacy)"
+      paths:
+        - "pysquared/"
+    
+    avionics:
+      url: "github.com/proveskit/avionics-board"
+      branch: "main"
+      description: "Hardware design files for avionics board"
+      paths:
+        - "Hardware/"
+        - "docs/"
+    
+    documentation:
+      url: "github.com/proveskit/proveskit.github.io"
+      branch: "main"
+      description: "Official documentation site"
+  
+  # Hardware components and their F' mappings
+  hardware:
+    rtc_rv3032:
+      description: "RV3032 Real-Time Clock"
+      i2c_address: "0x51"
+      fprime_driver: "Drv/LinuxI2cDriver"
+      datasheet: "https://www.microcrystal.com/rv3032"
+      conflicts: []  # Will be populated as discovered
+    
+    imu_bno085:
+      description: "BNO085 9-DOF IMU"
+      i2c_address: "0x4A"  # or 0x4B depending on pin
+      fprime_driver: "Drv/LinuxI2cDriver"
+      conflicts: []
+    
+    barometer_ms5611:
+      description: "MS5611 Barometric Pressure Sensor"
+      i2c_address: "0x76"  # or 0x77
+      known_conflicts:
+        - component: "bme280"
+          reason: "Same default I2C address 0x76"
+    
+    gps_max_m10s:
+      description: "u-blox MAX-M10S GPS"
+      interface: "UART"
+      fprime_driver: "Drv/LinuxSerialDriver"
+    
+    radio_sx1262:
+      description: "SX1262 LoRa Radio"
+      interface: "SPI"
+      fprime_driver: "Drv/LinuxSpiDriver"
+    
+    flash_w25q:
+      description: "W25Q Flash Memory"
+      interface: "SPI"
+      fprime_driver: "Drv/LinuxSpiDriver"
+  
+  # Common integration patterns
+  patterns:
+    power_modes:
+      description: "Power management and sleep states"
+      locations: ["Components/PowerManager/", "config/power/"]
+    
+    watchdog:
+      description: "Watchdog timer configuration"
+      locations: ["Components/Health/", "config/watchdog/"]
+    
+    telemetry:
+      description: "Telemetry definitions and channels"
+      locations: ["Topology/", "config/tlm/"]
+
+# ============================================
+# Common Query Mappings
+# ============================================
+# When users ask about these topics, search these locations
+
+query_mappings:
+  # "How do I handle I2C?"
+  i2c:
+    fprime_paths: ["Drv/LinuxI2cDriver/", "Drv/I2c/"]
+    proveskit_paths: ["Components/I2cManager/"]
+    keywords: ["i2c", "wire", "address", "bus"]
+  
+  # "How do rate groups work?"
+  scheduling:
+    fprime_paths: ["Svc/RateGroupDriver/", "Svc/ActiveRateGroup/"]
+    proveskit_paths: ["Topology/"]
+    keywords: ["rate", "group", "schedule", "periodic"]
+  
+  # "How do I add a new command?"
+  commands:
+    fprime_paths: ["Fw/Cmd/", "Svc/CmdDispatcher/"]
+    proveskit_paths: ["Components/*/commands.fpp"]
+    keywords: ["command", "opcode", "dispatch"]
+  
+  # "How does telemetry work?"
+  telemetry:
+    fprime_paths: ["Fw/Tlm/", "Svc/TlmChan/"]
+    proveskit_paths: ["Components/*/telemetry.fpp"]
+    keywords: ["telemetry", "tlm", "channel", "downlink"]
+  
+  # "Power management / sleep modes"
+  power:
+    fprime_paths: ["Svc/Health/"]
+    proveskit_paths: ["Components/PowerManager/"]
+    keywords: ["power", "sleep", "wake", "battery", "voltage"]
+  
+  # "File handling / storage"
+  files:
+    fprime_paths: ["Svc/FileDownlink/", "Svc/FileUplink/", "Os/File/"]
+    proveskit_paths: ["Components/FileManager/"]
+    keywords: ["file", "storage", "flash", "download", "upload"]
+
+# ============================================
+# External References
+# ============================================
+external:
+  fprime_tutorials:
+    url: "https://nasa.github.io/fprime/latest/tutorials/"
+    topics: ["getting started", "components", "deployment"]
+  
+  fprime_api:
+    url: "https://nasa.github.io/fprime/latest/api/"
+    topics: ["api", "reference", "types"]
+  
+  cubesat_standards:
+    url: "https://www.cubesat.org/s/CDS-rev14.pdf"
+    topics: ["cubesat", "standard", "spec", "interface"]

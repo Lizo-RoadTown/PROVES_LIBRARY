@@ -9,12 +9,20 @@
 
 ```
 PROVES_LIBRARY/
-├── curator-agent/              # PRIMARY: Deep Agent system (LangGraph)
+├── curator-agent/              # PRIMARY: LangGraph agent system
 │   ├── src/curator/            # Agent implementation
 │   │   ├── agent.py            # Main coordinator + HITL
 │   │   └── subagents/          # Extractor, Validator, Storage
 │   ├── run_with_approval.py    # CLI entry point
 │   └── langgraph.json          # Deployment config
+├── mcp-server/                 # MCP Server (FastMCP)
+│   ├── src/proves_mcp/         # Server implementation
+│   │   ├── server.py           # FastMCP tools definition
+│   │   ├── db.py               # Database queries
+│   │   └── registry.py         # Source registry loader
+│   ├── source_registry.yaml    # Pre-mapped F'/ProvesKit locations
+│   ├── pyproject.toml          # Package config
+│   └── README.md               # MCP server documentation
 ├── scripts/                    # Infrastructure utilities
 │   ├── apply_schema.py         # Initialize knowledge graph schema
 │   ├── setup_checkpointer.py   # Create LangGraph checkpoint tables
