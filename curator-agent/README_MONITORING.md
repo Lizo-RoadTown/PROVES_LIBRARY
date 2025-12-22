@@ -56,16 +56,13 @@ python quick_monitor.py watch 5  # Live updates every 5 seconds
 
 ## WHAT GETS STORED WHERE
 
-### HIGH Criticality Dependencies
-1. **Extractor finds them** → Stored in conversation
-2. **Curator calls storage_agent** → DEFERRED (waits for approval)
-3. **You approve** → Stored in Neo4j
-4. **You reject** → NOT stored anywhere
+### All Dependencies (Regardless of Criticality)
 
-### MEDIUM/LOW Criticality Dependencies
 1. **Extractor finds them** → Stored in conversation
-2. **Curator calls storage_agent** → Immediately stored in Neo4j
-3. **No approval needed** → Direct to graph
+2. **Curator decides to store** → May request approval based on configuration
+3. **After approval (if needed)** → Stored in Neo4j with criticality as metadata
+
+**Note**: Criticality (HIGH/MEDIUM/LOW) is metadata that describes the dependency's importance, not a gate for whether it gets stored. All discovered dependencies should be extracted and stored in the knowledge graph.
 
 ### All Conversation Data
 - Every message from you
@@ -182,14 +179,20 @@ tail -f curator_debug.log
 
 ### Current HITL (Human-in-the-Loop) System
 
-1. **When HIGH criticality dependency is detected**:
-   - Agent calls `storage_agent`
-   - System detects "HIGH" in task
-   - Storage is DEFERRED
-   - `interrupt()` is called
-   - **You see**: Approval prompt
+HITL can operate at two levels:
 
-2. **Where to check for pending approvals**:
+1. **Action-Level Approval** (Recommended):
+   - Agent decides WHAT to do autonomously
+   - Agent requests approval before EXECUTING actions
+   - You approve the agent's chosen approach
+   - This tests autonomous intelligence
+
+2. **Data-Level Approval** (Simple):
+   - Agent can be configured to request approval for HIGH criticality storage
+   - This is optional - criticality is primarily metadata
+   - Most useful during initial testing
+
+3. **Where to check for pending approvals**:
 ```bash
 python -c "
 import sys
@@ -242,8 +245,9 @@ YOU ────► Task ────► Curator Agent
                              └─► MEDIUM/LOW ──► Directly to Neo4j
 
 MONITOR:
-├─► Checkpoints: python view_session.py
-└─► Graph: python quick_monitor.py
+├─► Checkpoints: python view_session.py (full conversation history)
+├─► Graph: python quick_monitor.py (stored dependencies)
+└─► Console: Watch agent decisions in real-time
 ```
 
 ---

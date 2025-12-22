@@ -1,58 +1,65 @@
-# OPTION: Remove HITL Gate - Store All Dependencies Automatically
+# UNDERSTANDING HITL: Action-Level vs Data-Level Approval
 
-## Current Behavior
-- HIGH criticality → Requires approval before storage
-- MEDIUM/LOW → Auto-stored
+## The Key Insight
 
-## Your Point
-"Criticality is just a descriptor. All dependencies should be stored. The level is just metadata."
+**Criticality is metadata, not a gate.**
 
-You're right! Criticality should be:
-- A **field** on each dependency (metadata)
-- NOT a **gate** for whether to store it
+ALL dependencies should be extracted and stored in the knowledge graph. The criticality level (HIGH/MEDIUM/LOW) is simply metadata that describes each dependency's importance for later querying and analysis.
 
-## How to Change It
+## Two Approaches to Human-in-the-Loop
 
-### Option A: Keep HITL but Make It Optional
+### Current Implementation: Data-Level Approval (Optional)
+
+- Agent can be configured to request approval for HIGH criticality storage
+- This is useful during initial testing to verify extraction quality
+- But criticality should NOT determine what gets stored - only what gets flagged for review
+
+### Recommended: Action-Level Approval
+
+- Agent autonomously decides HOW to accomplish goals
+- Agent requests approval before EXECUTING actions (calling tools)
+- You approve the agent's chosen approach
+- This tests true autonomous intelligence
+
+The difference:
+
+- **Data-level**: "Should I store this HIGH criticality item?"
+- **Action-level**: "Should I execute extractor_agent to analyze this file?"
+
+## Configuration Options
+
+### Option 1: Disable Data-Level Approval (Store All Dependencies)
+
+To remove criticality-based approval and store all dependencies automatically:
 
 Edit `src/curator/agent.py` around line 238-251:
 
 ```python
-# Find this function:
 def _is_high_criticality_storage_call(tool_call: dict[str, Any]) -> bool:
-    if tool_call.get("name") != "storage_agent":
-        return False
-    task = (tool_call.get("args") or {}).get("task", "")
-    return "HIGH" in str(task).upper()
+    # DISABLED: Criticality is metadata only, not a storage gate
+    return False  # <-- Return False to disable data-level approval
 ```
 
-**Change to**:
-```python
-def _is_high_criticality_storage_call(tool_call: dict[str, Any]) -> bool:
-    # DISABLED: No longer gate on criticality
-    return False  # <-- Just return False always
-```
+Now ALL dependencies are stored immediately with criticality as metadata.
 
-Now ALL dependencies are stored immediately, regardless of criticality.
+### Option 2: Make Data-Level Approval Configurable
 
-### Option B: Make HITL Configurable
-
-Better approach - add a config flag:
+Add a configuration parameter:
 
 ```python
-# In create_curator(), add a parameter:
-def create_curator(require_approval_for_high: bool = False):  # <-- NEW
+def create_curator(require_approval_for_high: bool = False):
     """
     Create the main curator agent.
 
     Args:
-        require_approval_for_high: If True, HIGH criticality requires approval.
-                                   If False, all dependencies auto-store.
+        require_approval_for_high: If True, request approval for HIGH criticality storage.
+                                   If False, all dependencies auto-store (recommended).
+                                   Note: Criticality is always stored as metadata.
     """
     # ... existing code ...
 
     def _is_high_criticality_storage_call(tool_call: dict[str, Any]) -> bool:
-        if not require_approval_for_high:  # <-- NEW
+        if not require_approval_for_high:
             return False
         if tool_call.get("name") != "storage_agent":
             return False
@@ -63,65 +70,58 @@ def create_curator(require_approval_for_high: bool = False):  # <-- NEW
 Then at the bottom:
 ```python
 # Export the graph
-graph = create_curator(require_approval_for_high=False)  # <-- Set to False
+graph = create_curator(require_approval_for_high=False)  # Recommended: False
 ```
 
-### Option C: Post-Storage Review Instead
+### Option 3: Implement Action-Level Approval
 
-Different approach - store everything immediately, but flag HIGH for review later:
+For true autonomous intelligence testing, implement action-level approval where the agent asks before executing tools:
 
-```python
-# In storage_agent tool definition, add logging:
-@tool("storage_agent")
-def call_storage_agent(task: str) -> str:
-    """Call the storage sub-agent to store validated dependencies."""
+See [DESIGN_ACTION_LEVEL_HITL.md](DESIGN_ACTION_LEVEL_HITL.md) for detailed implementation strategies.
 
-    # Check if HIGH criticality
-    if "HIGH" in task.upper():
-        # Log for later review instead of blocking
-        with open("high_criticality_review.log", "a") as f:
-            f.write(f"{datetime.now()}: {task}\n")
-        print("[LOGGED] HIGH criticality dependency stored - flagged for review")
+Key concept:
 
-    # Store immediately regardless
-    storage = create_storage_agent()
-    result = storage.invoke({"messages": [{"role": "user", "content": task}]})
-    return result['messages'][-1].content
-```
+- Agent plans autonomously
+- Agent shows you WHAT it wants to do and WHY
+- You approve EXECUTION, not data storage decisions
+- This demonstrates genuine intelligence vs automation
 
-## What I Recommend
+## Recommendation
 
-**For your use case**: Option A or B (remove the gate)
+**For production use**: Option 1 or 2 (disable/configure data-level approval)
 
 Why:
-1. You want ALL dependencies extracted and stored
-2. Criticality is just metadata for querying later
-3. You can review the graph after extraction
-4. No interruption to the extraction workflow
 
-## After Removing Gate
+1. ALL dependencies should be extracted and stored
+2. Criticality is metadata for querying and analysis
+3. You can filter and review by criticality after extraction
+4. No interruption to the autonomous workflow
 
-Then you can:
-```bash
-# Extract everything from a document
-python run_curator.py
+**For testing intelligence**: Implement Option 3 (action-level approval)
 
-# Later, query by criticality in Neo4j:
-# Get all HIGH criticality dependencies
+Why:
+
+1. Tests if agent can learn from examples
+2. Shows autonomous decision-making
+3. Demonstrates ability to discover insights
+4. Maintains human control over execution
+
+## Using Criticality as Metadata
+
+After storing all dependencies, query by criticality in Neo4j:
+
+```cypher
+// Get all HIGH criticality dependencies
 MATCH (a)-[r:DEPENDS_ON {criticality: 'HIGH'}]->(b)
 RETURN a.name, b.name, r.description
 
-# Get dependency counts by criticality
+// Get dependency counts by criticality
 MATCH ()-[r:DEPENDS_ON]->()
 RETURN r.criticality, count(r) as count
 ORDER BY count DESC
+
+// Find critical failure paths
+MATCH path = (start)-[:DEPENDS_ON*]->(end)
+WHERE ALL(r IN relationships(path) WHERE r.criticality = 'HIGH')
+RETURN path
 ```
-
-## Should I Make This Change?
-
-Would you like me to:
-1. **Remove the HITL gate** (Option A) - simplest
-2. **Make it configurable** (Option B) - more flexible
-3. **Post-storage review** (Option C) - middle ground
-
-Or just **run a full extraction** with the current system to see it work?

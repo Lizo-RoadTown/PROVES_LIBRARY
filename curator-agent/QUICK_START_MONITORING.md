@@ -88,19 +88,22 @@ tail -f curator_debug.log
 
 ### Q: "Did it record only HIGH, or all dependencies?"
 
-**A**: Check like this:
+**A**: The agent extracts and stores ALL dependencies it finds. Criticality (HIGH/MEDIUM/LOW) is just metadata that describes each dependency's importance - it's not a filter for what gets stored.
+
+Check what was stored:
 
 ```bash
 # What did the extractor FIND?
 python view_session.py simple-test-1 | grep -i "dependency\|depends"
 
-# What was STORED in Neo4j?
+# What was STORED in Neo4j (with criticality levels)?
 python -c "
 from neo4j import GraphDatabase
 driver = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j', 'password'))
 with driver.session() as s:
-    result = s.run('MATCH ()-[r]->() RETURN count(r) as total')
-    print(f'Total relationships stored: {result.single()[\"total\"]}')
+    result = s.run('MATCH ()-[r:DEPENDS_ON]->() RETURN r.criticality, count(r) as count')
+    for record in result:
+        print(f'{record[\"criticality\"]}: {record[\"count\"]} dependencies')
 "
 ```
 
@@ -171,10 +174,18 @@ python run_with_approval.py 1
 The `test_simple_extraction.py` test was **intentionally narrow** - it only looked for ONE dependency to test HITL.
 
 For a REAL extraction of ALL dependencies:
-- Use `run_with_approval.py` instead
-- Don't specify a single dependency
-- Let the agent find everything
-- You'll approve each HIGH one
-- MEDIUM/LOW auto-store
 
-**Next**: Run `python run_with_approval.py 1` and you'll see it extract multiple dependencies!
+- Use `demo_learning.py` to see autonomous intelligence in action
+- The agent learns from examples and finds dependencies on its own
+- It decides WHAT to do autonomously
+- It asks for approval before EXECUTING actions (not based on criticality)
+- ALL dependencies are stored with their criticality as metadata
+
+**What Makes This Intelligent**:
+
+- Agent learns methodology from examples
+- Agent decides which tools to call and when
+- Agent discovers things humans might miss
+- Agent asks approval before executing (not just before storing HIGH)
+
+**Next**: Run `python demo_learning.py` to see the agent demonstrate real intelligence!
