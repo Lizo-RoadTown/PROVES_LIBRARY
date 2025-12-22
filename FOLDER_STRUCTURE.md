@@ -20,6 +20,7 @@ PROVES_LIBRARY/
 │   ├── setup_checkpointer.py   # Create LangGraph checkpoint tables
 │   ├── db_connector.py         # PostgreSQL connection pooling
 │   └── graph_manager.py        # Knowledge graph CRUD
+│   └── fix_liquid.py           # Doc cleanup utility
 ├── docs/                       # Technical documentation
 │   ├── ROADMAP.md              # Implementation roadmap
 │   ├── AGENT_HANDOFF.md        # AI agent onboarding context
@@ -58,6 +59,8 @@ PROVES_LIBRARY/
 - `CONTRIBUTING.md` - Contribution guidelines (if you add one)
 - `.env.example` - Environment template
 - `requirements.txt` - Python dependencies
+- `_config.yml` - GitHub Pages build override (source: docs)
+- `.github/` - GitHub Actions workflows (Pages build/deploy)
 - `.gitignore`, `.gitattributes` - Git configuration
 
 **❌ DON'T PUT IN ROOT:**
@@ -162,6 +165,9 @@ curator-agent/
 - `doc_sync_manager.py` - Documentation synchronization framework
 - `github_doc_sync.py` - GitHub API documentation fetcher
 - `library_indexer.py` - Markdown parser with YAML frontmatter
+
+**Documentation Utilities (Keep):**
+- `fix_liquid.py` - Wrap Liquid-sensitive code blocks in `{% raw %}` tags
 
 **Legacy Extraction (Review):**
 - `dependency_extractor.py` - OpenAI-based extraction (consider migrating to Claude)

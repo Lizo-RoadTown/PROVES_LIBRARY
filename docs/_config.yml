@@ -113,7 +113,7 @@ exclude:
   - vendor/
   - "*.ps1"
   - "*.bat"
-  - fix_liquid.py
+  - ../scripts/fix_liquid.py
 
 defaults:
   - scope:
