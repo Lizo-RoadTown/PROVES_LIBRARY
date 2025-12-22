@@ -49,6 +49,40 @@ In scope today:
 4. Gate high-critical items for human approval.
 5. Store approved knowledge and update diagrams.
 
+## Lifecycle diagrams
+
+System flow from sources to usable knowledge:
+
+```mermaid
+graph TD
+  A[Docs, repos, and issues] --> B[Ingestion]
+  B --> C[Extractor sub-agent]
+  C --> D[Validator sub-agent]
+  D -->|low/medium| E[Storage sub-agent]
+  D -->|high/conflict| F[Human review]
+  F -->|approve| E
+  F -->|reject| G[Reject or revise]
+  E --> H[Knowledge graph + library entries]
+  H --> I[Diagrams, queries, and risk scans]
+  I --> J[Prompt and pattern refinement]
+  J --> C
+```
+
+Curator job lifecycle:
+
+```mermaid
+stateDiagram-v2
+  [*] --> Ingested
+  Ingested --> Extracted: dependencies parsed
+  Extracted --> Validated: ERV normalization
+  Validated --> Review: high or conflict
+  Validated --> Stored: low/medium
+  Review --> Stored: approved
+  Review --> Rejected: needs rewrite
+  Stored --> [*]
+  Rejected --> [*]
+```
+
 ## Current focus
 
 - Automate extraction and validation of dependencies.
