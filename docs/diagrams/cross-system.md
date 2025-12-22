@@ -13,9 +13,27 @@ This is the exact failure mode from the Team A/Team B scenario.
 
 ---
 
+## Quick Terminology
+
+**Cross-System Dependency** - When two separate systems (managed by different teams) depend on each other but neither documents the connection
+
+**F´ (F Prime)** - NASA's flight software framework (Team A)
+
+**PROVES Kit** - University power management system (Team B)
+
+**I2C** - Communication bus that sensors use to talk to the computer
+
+**Load Switch** - Electronic power switch controlled by software
+
+**Why This Is Dangerous:** If Team B changes power settings without telling Team A, the sensors fail. Neither team knows to coordinate because the dependency isn't documented anywhere.
+
+---
+
 ## Critical Finding: Hidden Dependencies
 
 Neither F´ documentation nor PROVES Kit documentation mentions the other system. Yet they have critical runtime dependencies that can cause mission failures if misconfigured.
+
+**Translation for Students:** Imagine two groups working on the same car - one builds the engine (F´/Team A), one controls the fuel pump (PROVES/Team B). The engine obviously needs fuel, but if neither group's manual mentions the other, Team B might change the fuel pump timing and break the engine without realizing it.
 
 ### Team A / Team B Knowledge Gap
 
@@ -328,6 +346,8 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
     raise ImuReadFailure("Failed after power cycle attempts")
 ```
 
+> **Why This Matters:** Without documented error recovery, every team will either (1) give up on first error, or (2) invent their own recovery strategy. This leads to inconsistent behavior and missed opportunities for automatic recovery.
+
 ---
 
 ## Organizational Analysis
@@ -376,6 +396,8 @@ graph LR
 - Not captured in either documentation system
 - Vulnerable to team turnover
 - No mechanism for cross-team knowledge transfer
+
+> **Key Insight:** The weakest link in the system isn't technical—it's organizational. Two excellent documentation systems (F´ and PROVES Kit) fail when they don't talk to each other.
 
 ---
 

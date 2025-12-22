@@ -23,6 +23,12 @@ Organizational analysis showing WEAK interface between NASA/JPL F´ team and uni
 
 ## Team Boundary Map
 
+### What You're Looking At
+
+This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box is a team or group of people. Solid lines show strong, documented relationships (like F´ Core maintaining their docs). Dashed lines show weak, at-risk relationships (like university teams graduating and losing knowledge). The colors highlight different risk levels—red for teams that already left, orange for teams in transition, green for active teams.
+
+**Think of it like:** A family tree showing who talks to whom. Strong relationships (solid lines) are like parents teaching kids—regular, documented, reliable. Weak relationships (dashed lines) are like distant cousins you only see at weddings—sporadic, informal, knowledge doesn't flow well.
+
 ### Organizational Structure
 
 ```mermaid
@@ -145,9 +151,17 @@ graph LR
 - Error recovery strategies
 - Platform-specific configurations
 
+> **Key Insight:** F´ and PROVES Kit are both well-documented systems individually, but the interface between them has a strength score of 2/10. This is like having two excellent textbooks but no syllabus telling you how to use them together.
+
 ---
 
 ## Knowledge Flow Analysis
+
+### What You're Looking At
+
+This flowchart shows the journey developers take when they need integration knowledge. Start at the top: check F´ docs (not found), check PROVES docs (not found), ask tribal experts. The problem is that the tribal knowledge path leads to either (1) PROVES maintainers who know but are overloaded, (2) JPL engineers who don't know PROVES, or (3) students who are also learning. Eventually, everyone ends up at "Discover Through Failure" → knowledge gets captured in email/chat → then LOST at graduation.
+
+**Think of it like:** Trying to find a recipe your grandmother used to make. Check the cookbook (not there), check online (not there), ask family members (some remember pieces), eventually you try to recreate it yourself and write it down... on a sticky note that falls behind the fridge.
 
 ### Where Integration Knowledge Lives
 
@@ -199,9 +213,17 @@ flowchart TB
 
 **Single Point of Failure:** If PROVES maintainers leave, integration knowledge is LOST.
 
+> **Why This Matters:** This diagram explains why the power-on timing issue keeps happening. The knowledge exists somewhere (in someone's head or buried in a chat log), but the path to find it is so convoluted that most developers give up and rediscover it through failure instead.
+
 ---
 
 ## Team Turnover Analysis
+
+### What You're Looking At
+
+This Gantt chart shows three university team lifecycles over 5 years. Notice the pattern: each team works for 12-18 months (colored bars), then graduates (red "crit" markers), leaving a knowledge gap. Team B starts 6 months after Team A leaves, so there's no overlap for knowledge transfer. The red milestone markers show when knowledge is at risk of being lost forever.
+
+**Think of it like:** Relay race runners who never actually hand off the baton. Runner A finishes and leaves the stadium. Six months later, Runner B shows up and has to figure out where the baton is and which direction to run.
 
 ### University Team Lifecycle
 
@@ -250,9 +272,17 @@ pie title Knowledge Retention After Team Graduation
 
 **Only 10% of tribal knowledge is captured and passed to next team.**
 
+> **Key Insight:** The 70% knowledge loss isn't because students are lazy about documentation. It's because (1) they're focused on getting their mission to work, (2) they don't know what future teams will need to know, and (3) there's no system in place to capture knowledge automatically as they work.
+
 ---
 
 ## The Team A / Team B Failure Scenario
+
+### What You're Looking At
+
+This sequence diagram tells the story of an actual failure caused by team boundaries. Follow the numbered steps: Team A discovers the 200ms delay is needed (through testing), commits the code but doesn't document WHY, then graduates. Team B arrives, sees the delay, thinks it's wasteful, "optimizes" it to 10ms, tests (works on warm hardware!), ships to space, then fails on cold boot. The red boxes highlight where knowledge was lost.
+
+**Think of it like:** Your roommate learns that the apartment's hot water takes 2 minutes to warm up, but doesn't tell you. They move out. You move in, wait 30 seconds, decide the hot water is broken, and call the landlord. Meanwhile, you could have just waited 2 minutes.
 
 ### Organizational Dynamics
 
@@ -311,6 +341,8 @@ sequenceDiagram
 - **Interface strength:** WEAK (only code, no explanation)
 - **Knowledge transfer mechanism:** None (graduation = knowledge loss)
 - **Result:** Team B didn't know what Team A knew
+
+> **Why This Matters:** This isn't a hypothetical scenario—it's based on real mission failures. The technical solution (200ms delay) was simple. The organizational problem (no knowledge transfer) caused mission loss. PROVES Library addresses the organizational problem by capturing knowledge automatically, before teams graduate.
 
 ---
 
@@ -416,6 +448,8 @@ graph TB
 **Only 30% of mission knowledge is permanently captured.**
 
 **50% of knowledge is LOST after team graduation.**
+
+> **Key Insight:** Notice that code (30% captured) is preserved, but the "why" behind decisions (50% lost) is not. Team B had Team A's code but not their reasoning. This is why PROVES Library focuses on capturing design rationale, failure lessons, and workarounds—the knowledge that lives in tribal memory, not in code repositories.
 
 ---
 

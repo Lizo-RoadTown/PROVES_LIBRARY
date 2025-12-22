@@ -25,6 +25,12 @@ This analysis found **5 major knowledge gaps** in the F´ + PROVES Kit integrati
 
 ## Gap 1: Power-On Timing Requirements
 
+### What You're Looking At
+
+This sequence diagram shows the power-on process for an I2C device, with all the timing steps highlighted in red because they're NOT documented anywhere. When you turn on power, the voltage takes time to rise, the device takes time to reset itself, and it takes more time to be ready for communication. Without knowing these delays, you'll try to talk to the device before it's ready.
+
+**Think of it like:** Calling someone right after they wake up. You need time for them to (1) open their eyes (voltage rise), (2) remember who they are (power-on reset), and (3) get their brain working (ready for conversation). Call too early and you'll just get confused mumbling.
+
 ### The Missing Specification
 
 ```mermaid
@@ -121,9 +127,17 @@ flowchart TB
 
 **Probability:** 70% of developers will get this wrong without documentation.
 
+> **Why This Matters:** This is the EXACT failure mode from the Team A/Team B scenario. Team A knew the 200ms delay was needed (through trial and error). Team B saw it, thought "that's too slow," changed it to 10ms, tested on a warm system (worked), then failed in orbit on a cold boot. All because the timing requirement wasn't documented.
+
 ---
 
 ## Gap 2: Voltage Stability Requirements
+
+### What You're Looking At
+
+This diagram shows electrical characteristics that software developers never think about but absolutely matter for I2C communication. Every component has voltage requirements (how clean the power needs to be, how much it can drop, etc.). The diagram shows all the parameters with "???" because they're not in the software documentation.
+
+**Think of it like:** Trying to have a phone conversation with a bad connection. If the signal drops too low (voltage dropout), gets too noisy (ripple), or cuts out briefly (current spike), you'll miss words or get static. Your phone app doesn't tell you "you need -85dBm signal strength" but that knowledge matters.
 
 ### The Missing Specification
 
@@ -203,9 +217,17 @@ Mission loss
 
 **Time to debug:** Days to weeks (requires oscilloscope, experienced hardware engineer)
 
+> **Key Insight:** This gap exists because hardware knowledge and software knowledge live in different teams and different documents. The hardware team knows the voltage requirements (they designed the circuit), but the software team doesn't have access to that information. This is an organizational problem, not a technical one.
+
 ---
 
 ## Gap 3: Error Recovery Strategies
+
+### What You're Looking At
+
+This state diagram shows a decision tree for error recovery that SHOULD exist but doesn't. When an I2C error happens, the system needs to decide: Is this recoverable? Should we retry? Should we power cycle? How many times? The diagram shows that currently, systems just log the error and give up (red path at bottom), when they should follow the recovery decision tree (red-boxed section).
+
+**Think of it like:** When you drop your phone and the screen freezes, you could either (1) declare it broken and buy a new one, or (2) try turning it off and on again first. Most software does option 1 because nobody documented that option 2 exists and works 90% of the time.
 
 ### The Missing Integration
 
@@ -288,9 +310,17 @@ IF I2cStatus == I2C_READ_ERR:
 
 **Risk:** Each new mission team rediscovers this through failures.
 
+> **Why This Matters:** Without documented recovery strategies, every team invents their own (or doesn't bother). This means inconsistent behavior across missions and lost opportunities for automatic recovery. One team might have a sensor permanently fail while another team's system auto-recovers—just because of undocumented tribal knowledge.
+
 ---
 
 ## Gap 4: Bus Sharing and Conflicts
+
+### What You're Looking At
+
+This diagram shows an I2C bus topology where multiple devices share the same communication bus, but nobody documented which devices are where or what addresses they use. The dashed lines represent "unknown" connections. Without knowing the full picture, you might accidentally put two devices at the same address or try to power them all on simultaneously (overloading the power supply).
+
+**Think of it like:** A party line telephone (old tech, look it up!). Multiple people share one phone line, so you need to know (1) who else is on the line, (2) their "ring codes" (addresses), and (3) not to call everyone at once. Without documentation, you'll accidentally call the wrong person or interrupt someone else's call.
 
 ### The Missing Architecture
 
@@ -405,9 +435,17 @@ sequenceDiagram
 
 **Risk:** Software developers don't have access to hardware documentation.
 
+> **Key Insight:** This is another hardware/software knowledge gap. The hardware team drew schematics showing the bus topology, but the software team is writing I2C drivers without seeing those schematics. Both teams have half the picture, neither has the complete view.
+
 ---
 
 ## Gap 5: Platform-Specific Integration
+
+### What You're Looking At
+
+This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare metal) and PROVES Kit supports multiple languages (CircuitPython, C), but there's no documentation on how to combine them. Each box is a valid configuration, but the arrows with "how to combine?" show that the integration patterns are undocumented.
+
+**Think of it like:** You have IKEA furniture (F´) and tools from Home Depot (PROVES Kit). Both are good products with instructions, but there's no guide for "how to use Home Depot tools to assemble IKEA furniture." Every team figures it out themselves, often differently.
 
 ### The Missing Cross-Platform Guide
 
@@ -498,6 +536,8 @@ graph LR
 - 🔄 Reinvented for each new mission
 
 **Risk:** No standard integration pattern, constant rework.
+
+> **Why This Matters:** Every mission team is reinventing the wheel. One team builds F´+PROVES as separate processes communicating over sockets. Another compiles PROVES to C and links it with F´. A third uses Python embedding. Without a documented pattern, teams waste months on integration instead of working on their actual mission.
 
 ---
 

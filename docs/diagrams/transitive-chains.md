@@ -22,6 +22,12 @@ Multi-hop dependency paths showing how high-level application requests cascade t
 
 ## Chain 1: Application → I2C Communication → Power
 
+### What You're Looking At
+
+This diagram shows a complete 13-hop dependency chain from your high-level application code all the way down to the physical GPIO pin that controls power. Each layer adds indirection, making it harder to see how a change at the bottom (like flipping a power switch setting) affects the top (your application getting sensor data).
+
+**Think of it like:** Ordering food through multiple middlemen—you ask a waiter (Application), who tells the kitchen manager (Device Manager), who tells the line cook (Bus Driver), who uses equipment (I2C Bus), which requires electricity (Power). If someone unplugs the stove, your food never arrives, but the waiter has no idea why.
+
 ### Complete Dependency Path
 
 ```mermaid
@@ -124,9 +130,17 @@ graph TB
 
 **Root cause visibility:** Low - F´ error message doesn't mention power
 
+> **Why This Matters:** Without understanding transitive dependencies, you might spend hours debugging "I2C communication failure" when the real problem is a power configuration 6 layers away. This is why the Team A/Team B failure happened—Team B optimized what looked like an arbitrary delay without understanding the full dependency chain.
+
 ---
 
 ## Chain 2: Configuration → Topology → Bus → Power
+
+### What You're Looking At
+
+This sequence diagram shows what happens when your system boots up. The tricky part is that steps 2-5 (highlighted in red and yellow) are completely undocumented. Most developers only see the green F´ documentation telling them to call `busDriver.open()`, but they don't know they need to power on the device first and wait for it to stabilize.
+
+**Think of it like:** Starting a car. You need to (1) unlock the door, (2) sit down, (3) put the key in, (4) turn it, and (5) wait for the engine to warm up before driving. If the manual only says "turn the key," you might try to drive immediately and damage the cold engine.
 
 ### Initialization Dependency Chain
 
@@ -227,9 +241,17 @@ flowchart TB
 
 **These probabilities demonstrate the knowledge gap problem.**
 
+> **Key Insight:** Notice how the "success" path is only 10%? That's not because developers are bad—it's because the documentation doesn't tell them what to do. The 90% failure rate is a documentation problem, not a developer problem.
+
 ---
 
 ## Chain 3: Error Propagation Path
+
+### What You're Looking At
+
+This flowchart shows what happens when an I2C read fails. The solid lines show what F´ actually does (logs a warning and gives up). The dashed red lines show what SHOULD happen but isn't implemented—power cycle recovery. This missing recovery logic means every I2C error becomes permanent.
+
+**Think of it like:** When your Wi-Fi stops working, your computer could either (1) show an error and give up, or (2) automatically try turning the Wi-Fi off and on again. Option 2 fixes 80% of problems automatically. F´ currently does option 1.
 
 ### When I2C Read Fails
 
@@ -302,9 +324,17 @@ graph TB
 
 **With Transitive Dependency Tracking:** System alerts "IMU failure may be power-related - check LoadSwitchManager state"
 
+> **Why This Matters:** When errors propagate through 7 layers, the symptom you see (Application layer) is completely disconnected from the root cause (Power layer). Without understanding the full chain, you waste time debugging the wrong layer.
+
 ---
 
 ## Chain 4: Build System Dependencies
+
+### What You're Looking At
+
+This diagram shows how F´'s build system creates your code. When you run `fprime-util build`, it goes through multiple compilation stages (FPP → C++ → compiled binary). Each stage has its own dependencies. The diagram shows how changing something fundamental (like the target platform) ripples through all the layers.
+
+**Think of it like:** Making a cake from scratch. You need (1) a recipe (FPP files), (2) ingredients (source code), (3) mixing bowls (CMake), and (4) an oven (compiler). If you switch from a gas oven to electric (change platform), you might need different timing and temperatures at every step.
 
 ### Compilation Dependency Chain
 
@@ -367,6 +397,8 @@ graph LR
 5. **FpConfig.h depends on platform definitions** (Linux, Zephyr, etc.)
 
 **Impact:** Changing platform (Linux → Zephyr) cascades through 5 layers to affect ImuManager compilation.
+
+> **Key Insight:** Build dependencies are usually well-documented (F´'s build system is solid), but they illustrate the same transitive principle: change something at the bottom, affect everything at the top. This is the ONE chain where documentation is good—notice the difference?
 
 ---
 
