@@ -166,6 +166,7 @@ This flowchart shows the journey developers take when they need integration know
 ### Where Integration Knowledge Lives
 
 ```mermaid
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 flowchart TB
     START[Integration Knowledge Needed]
 
