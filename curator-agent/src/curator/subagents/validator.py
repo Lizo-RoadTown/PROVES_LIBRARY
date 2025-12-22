@@ -104,9 +104,11 @@ def create_validator_agent():
     - Detecting conflicts
     - Searching for similar dependencies
     - Ensuring data quality
+
+    Uses Claude Haiku 3.5 for cost optimization (validation is simple pattern matching)
     """
     model = ChatAnthropic(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-3-5-haiku-20241022",  # Haiku for 90% cost savings!
         temperature=0.1,
     )
 

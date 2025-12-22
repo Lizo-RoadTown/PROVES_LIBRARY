@@ -113,9 +113,11 @@ def create_storage_agent():
     - Managing database transactions
     - Tracking graph statistics
     - Ensuring data integrity
+
+    Uses Claude Haiku 3.5 for cost optimization (storage is simple database operations)
     """
     model = ChatAnthropic(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-3-5-haiku-20241022",  # Haiku for 90% cost savings!
         temperature=0.1,
     )
 
