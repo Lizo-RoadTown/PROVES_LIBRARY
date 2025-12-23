@@ -405,10 +405,33 @@ def extract_architecture_using_claude(text: str, document_name: str) -> str:
             temperature=0,
         )
 
-        extraction_prompt = f"""## YOUR MISSION
+        extraction_prompt = f"""## YOUR MISSION: Reduce Ambiguity for Human Verifier
 
-You are mapping the STRUCTURAL ARCHITECTURE of a system using FRAMES methodology.
-Read the ontology below, then analyze the document.
+You are preparing architecture data for HUMAN VERIFICATION.
+
+**The Pipeline:**
+1. YOU extract structure from documentation
+2. YOU compare against verified examples (use query tools!)
+3. YOU document your reasoning trail
+4. HUMAN reviews with full context
+5. HUMAN verifies and promotes to truth
+
+**Why This Matters:**
+Humans can't verify what they can't understand. Your job is to REDUCE AMBIGUITY by:
+- Citing exact sources (they need to verify your quotes)
+- Comparing against verified examples (they need to see your logic)
+- Documenting what you're confident about and WHY
+- Explaining any uncertainties
+
+**Use Your Query Tools:**
+- query_verified_entities() → See verified examples to match patterns
+- query_staging_history() → Learn what confidence levels were accepted
+
+**Document Your Reasoning:**
+When you extract, note:
+- "I compared this to verified entities X, Y, Z which have similar structure"
+- "Confidence is HIGH because source explicitly states X with example"
+- "Confidence is LOW because documentation only implies X, no explicit statement"
 
 ---
 {ontology}
@@ -423,9 +446,9 @@ Text:
 
 ---
 
-## YOUR TASK
+## YOUR TASK: Extract with Context for Human Review
 
-Extract ALL structural elements you find. Use this format:
+Extract ALL structural elements you find. For EACH extraction, help the human verify by providing:
 
 ### COMPONENTS FOUND
 For each component (module, unit, subsystem):
