@@ -84,6 +84,8 @@ class CuratorState(TypedDict):
     storage_approval: NotRequired[str | None]
     human_correction: NotRequired[dict[str, Any] | None]  # For corrected extractions
     current_interaction_id: NotRequired[str | None]  # Track for training data
+    extractor_failures: NotRequired[int]  # Track consecutive extractor failures
+    last_error: NotRequired[str | None]  # Track what error occurred
 
 
 # ============================================
@@ -98,7 +100,7 @@ def call_extractor_agent(task: str) -> str:
     Call the extractor sub-agent to map system architecture using FRAMES methodology.
 
     FRAMES = Framework for Resilience Assessment in Modular Engineering Systems
-    
+
     The extractor maps STRUCTURAL ELEMENTS:
     - COMPONENTS: Semi-autonomous units (modules) with boundaries
     - INTERFACES: Where components connect (ports, buses, protocols)
@@ -115,7 +117,7 @@ def call_extractor_agent(task: str) -> str:
     IMPORTANT: For GitHub repos:
     - list_github_directory("nasa", "fprime", "Svc", branch="devel")
     - fetch_github_file("nasa", "fprime", "Svc/TlmChan/TlmChan.fpp", branch="devel")
-    
+
     All fetched content is stored in raw_snapshots for audit.
 
     CRITICAL: Agents note CONFIDENCE (documentation clarity).
@@ -128,13 +130,31 @@ def call_extractor_agent(task: str) -> str:
     Returns:
         Architecture extraction results with components, interfaces, flows, mechanisms
     """
-    print(f"[EXTRACTOR TASK] {task}")  # Debug: show what task the extractor received
-    extractor = create_extractor_agent()
-    result = extractor.invoke({"messages": [{"role": "user", "content": task}]})
-    content = result['messages'][-1].content
-    # Debug: show first 500 chars of extractor result
-    print(f"[EXTRACTOR RESULT] {content[:500]}..." if len(content) > 500 else f"[EXTRACTOR RESULT] {content}")
-    return content
+    print(f"[EXTRACTOR TASK] {task}")
+
+    try:
+        extractor = create_extractor_agent()
+        result = extractor.invoke({"messages": [{"role": "user", "content": task}]})
+        content = result['messages'][-1].content
+
+        # Check for error indicators in the response
+        error_indicators = [
+            "404", "not found", "error fetching", "failed to", "unable to",
+            "timeout", "connection error", "does not exist", "cannot access"
+        ]
+
+        content_lower = content.lower()
+        if any(indicator in content_lower for indicator in error_indicators):
+            print(f"[EXTRACTOR] ⚠️ Warning: Possible error detected in response")
+
+        # Debug: show first 500 chars of extractor result
+        print(f"[EXTRACTOR RESULT] {content[:500]}..." if len(content) > 500 else f"[EXTRACTOR RESULT] {content}")
+        return content
+
+    except Exception as e:
+        error_msg = f"EXTRACTOR ERROR: {str(e)}"
+        print(f"[EXTRACTOR] ❌ {error_msg}")
+        return error_msg
 
 
 @tool("validator_agent")
@@ -241,6 +261,15 @@ def create_curator():
 
 Your mission: Extract dependencies from CubeSat system documentation and build a comprehensive knowledge graph that prevents catastrophic mission failures due to hidden cross-system dependencies.
 
+## Fail-Fast Safeguards
+
+CRITICAL: You have a failure counter that tracks consecutive extractor failures. If the extractor fails 5 times in a row:
+- **STOP IMMEDIATELY** - Do not make more extractor calls
+- **REPORT THE PROBLEM** - Tell the human what's failing and why
+- **SUGGEST SOLUTIONS** - Recommend fixing the URL, checking documentation map, or switching sources
+
+Check your failure counter before each extractor call. If you see repeated failures with the same approach, CHANGE STRATEGY instead of retrying the same thing.
+
 ## Your Sub-Agents
 
 You coordinate THREE specialized sub-agents that prepare data for HUMAN verification:
@@ -250,6 +279,7 @@ You coordinate THREE specialized sub-agents that prepare data for HUMAN verifica
    - Makes smart categorization attempts ("this component belongs to this hardware")
    - Provides context based on source/origin
    - Use when: You need to capture documentation, code, or specs
+   - **FAILS when**: URLs don't exist (404), timeouts, connection errors
 
 2. **Validator Agent** (`validator_agent` tool)
    - Checks everything is in place
@@ -277,7 +307,7 @@ For each request, follow this SEQUENTIAL pattern:
 
 **Remember:** You are preparing data for HUMAN verification. Provide context to help humans eliminate ambiguity. The human will align data across sources to establish TRUTH. Only human-verified data enters the knowledge graph.
 
-CRITICAL: Capture EVERYTHING. Flag concerns. Let humans decide truth.
+CRITICAL: Capture EVERYTHING. Flag concerns. Let humans decide truth. BUT if extraction keeps failing, STOP and report the issue.
 
 ## ERV Relationship Types
 
@@ -343,6 +373,11 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
         tool_messages: list[ToolMessage] = []
         deferred_storage: list[dict[str, Any]] = []
 
+        # Track failures
+        extractor_failures = state.get("extractor_failures", 0)
+        last_error = state.get("last_error")
+        had_extractor_failure = False
+
         for tool_call in last_message.tool_calls:
             tool_name = tool_call.get("name")
             tool_call_id = tool_call.get("id")
@@ -363,7 +398,20 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
             # Execute tool immediately (no gates on storage - capture all raw data)
             try:
                 result = tool_map[tool_name].invoke(args)
-                tool_messages.append(ToolMessage(content=str(result), tool_call_id=tool_call_id))
+                result_str = str(result)
+                tool_messages.append(ToolMessage(content=result_str, tool_call_id=tool_call_id))
+
+                # Check if extractor returned an error
+                if tool_name == "extractor_agent":
+                    error_indicators = [
+                        "EXTRACTOR ERROR", "404", "not found", "error fetching",
+                        "failed to", "unable to", "timeout", "connection error"
+                    ]
+                    if any(indicator.lower() in result_str.lower() for indicator in error_indicators):
+                        had_extractor_failure = True
+                        last_error = result_str[:200]  # Store first 200 chars of error
+                        print(f"[FAILURE TRACKER] Extractor failure detected. Count: {extractor_failures + 1}")
+
             except Exception as e:
                 tool_messages.append(
                     ToolMessage(
@@ -371,12 +419,34 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
                         tool_call_id=tool_call_id,
                     )
                 )
+                if tool_name == "extractor_agent":
+                    had_extractor_failure = True
+                    last_error = str(e)[:200]
+                    print(f"[FAILURE TRACKER] Extractor exception. Count: {extractor_failures + 1}")
+
+        # Update failure counter
+        if had_extractor_failure:
+            extractor_failures += 1
+        else:
+            # Reset counter on success
+            extractor_failures = 0
+            last_error = None
+
+        # Check if we've exceeded threshold
+        if extractor_failures >= 5:
+            print(f"[FAILURE TRACKER] ⚠️ ABORT THRESHOLD REACHED: {extractor_failures} consecutive failures")
+            print(f"[FAILURE TRACKER] Last error: {last_error}")
 
         updates: dict[str, Any] = {}
         if tool_messages:
             updates["messages"] = tool_messages
         if deferred_storage:
             updates["deferred_storage"] = deferred_storage
+
+        # Always update failure tracking
+        updates["extractor_failures"] = extractor_failures
+        updates["last_error"] = last_error
+
         return updates
 
     def request_human_approval(state: CuratorState):

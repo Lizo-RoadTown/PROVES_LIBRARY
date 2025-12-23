@@ -57,7 +57,7 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
     print()
     result = graph.invoke({
         "messages": [{"role": "user", "content": task}]
-    }, config)
+    }, config, {"recursion_limit": 10})
 
     # Loop to handle all interrupts
     while True:
@@ -104,7 +104,7 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
             # Resume with decision
             if decision in ['yes', 'y']:
                 print("Resuming with approval...")
-                result = graph.invoke(Command(resume="approved"), config)
+                result = graph.invoke(Command(resume="approved"), config, {"recursion_limit": 10})
             elif decision in ['edit', 'e']:
                 print()
                 print("=" * 60)
@@ -144,7 +144,7 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
 
                 if not correction_text:
                     print("No correction provided, approving as-is...")
-                    result = graph.invoke(Command(resume="approved"), config)
+                    result = graph.invoke(Command(resume="approved"), config, {"recursion_limit": 10})
                 else:
                     # Try to parse as JSON, otherwise wrap in task object
                     try:
@@ -159,10 +159,10 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
                     print()
                     print(f"Submitting correction: {json.dumps(correction_data, indent=2)[:200]}...")
                     print("This will be logged as GOLD training data!")
-                    result = graph.invoke(Command(resume=correction_data), config)
+                    result = graph.invoke(Command(resume=correction_data), config, {"recursion_limit": 10})
             else:
                 print("Resuming with rejection...")
-                result = graph.invoke(Command(resume="rejected"), config)
+                result = graph.invoke(Command(resume="rejected"), config, {"recursion_limit": 10})
 
     # Show final results
     print()
