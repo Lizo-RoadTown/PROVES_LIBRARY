@@ -6,9 +6,14 @@ Supports:
 - Local file reading
 - Web page fetching (docs sites)
 - GitHub file fetching (source repos)
+
+All fetched content is stored in raw_snapshots for auditability.
 """
 import os
 import re
+import hashlib
+import uuid
+from datetime import datetime
 import httpx
 from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
@@ -16,23 +21,121 @@ from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
 
 
+def get_db_connection():
+    """Get a database connection from environment."""
+    import psycopg
+    from dotenv import load_dotenv
+    
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+    load_dotenv(os.path.join(project_root, '.env'))
+    
+    db_url = os.environ.get('NEON_DATABASE_URL')
+    if not db_url:
+        raise ValueError("NEON_DATABASE_URL not set")
+    return psycopg.connect(db_url)
+
+
+def get_or_create_pipeline_run(conn, run_name: str = "curator_extraction") -> str:
+    """Get or create a pipeline run for tracking. Returns run_id."""
+    import json
+    with conn.cursor() as cur:
+        # Check for existing active run
+        cur.execute("""
+            SELECT id FROM pipeline_runs 
+            WHERE run_name = %s AND score_status = 'pending'
+            ORDER BY created_at DESC LIMIT 1
+        """, (run_name,))
+        existing = cur.fetchone()
+        if existing:
+            return str(existing[0])
+        
+        # Create new run
+        cur.execute("""
+            INSERT INTO pipeline_runs (run_name, run_type, triggered_by)
+            VALUES (%s, 'extraction', 'extractor_agent')
+            RETURNING id
+        """, (run_name,))
+        return str(cur.fetchone()[0])
+
+
+def store_raw_snapshot(source_url: str, source_type: str, ecosystem: str, content: str, content_hash: str) -> str:
+    """Store raw content in raw_snapshots table. Returns snapshot_id."""
+    import json
+    try:
+        conn = get_db_connection()
+        
+        with conn.cursor() as cur:
+            # Check if we already have this exact content
+            cur.execute("""
+                SELECT id FROM raw_snapshots 
+                WHERE content_hash = %s AND status = 'captured'::snapshot_status
+            """, (content_hash,))
+            existing = cur.fetchone()
+            
+            if existing:
+                conn.close()
+                return str(existing[0])  # Return existing snapshot ID
+            
+            # Get or create pipeline run
+            run_id = get_or_create_pipeline_run(conn)
+            
+            # Store content as JSONB payload
+            payload = json.dumps({"content": content, "format": "text"})
+            
+            # Insert new snapshot
+            cur.execute("""
+                INSERT INTO raw_snapshots (
+                    source_url, source_type, ecosystem,
+                    content_hash, payload, payload_size_bytes,
+                    captured_by_run_id, status
+                ) VALUES (
+                    %s, %s::source_type, %s::ecosystem_type,
+                    %s, %s::jsonb, %s,
+                    %s::uuid, 'captured'::snapshot_status
+                )
+                RETURNING id
+            """, (
+                source_url, source_type, ecosystem,
+                content_hash, payload, len(content.encode('utf-8')),
+                run_id
+            ))
+            snapshot_id = cur.fetchone()[0]
+        conn.commit()
+        conn.close()
+        return str(snapshot_id)
+    except Exception as e:
+        return f"ERROR: {str(e)}"
+
+
 @tool
 def read_document(doc_path: str) -> str:
-    """Read and return the contents of a local documentation file."""
+    """Read and return the contents of a local documentation file.
+    
+    Content is stored in raw_snapshots for auditability.
+    """
     try:
         with open(doc_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
         lines = content.split('\n')
         chars = len(content)
+        
+        # Store in raw_snapshots
+        content_hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
+        snapshot_id = store_raw_snapshot(
+            source_url=f"file://{doc_path}",
+            source_type="local_file",
+            ecosystem="unknown",  # Will be classified during extraction
+            content=content,
+            content_hash=content_hash
+        )
 
         # Return full content up to 50K chars (enough for most docs)
-        # This allows the extractor to actually analyze dependencies
         max_chars = 50000
         if chars > max_chars:
             content = content[:max_chars] + f"\n\n... (truncated, showing first {max_chars} of {chars} characters)"
         
-        return f"Document: {doc_path}\nSize: {chars} characters, {len(lines)} lines\n\nFull Content:\n{content}"
+        return f"Document: {doc_path}\nSnapshot ID: {snapshot_id}\nSize: {chars} characters, {len(lines)} lines\n\nFull Content:\n{content}"
     except Exception as e:
         return f"Error reading document: {str(e)}"
 
@@ -47,6 +150,7 @@ def fetch_webpage(url: str) -> str:
     - https://docs.proveskit.space/...
     - https://fprime.jpl.nasa.gov/...
     
+    Content is stored in raw_snapshots for auditability.
     Returns the page content with the source URL for citation.
     """
     try:
@@ -61,8 +165,26 @@ def fetch_webpage(url: str) -> str:
         content = response.text
         chars = len(content)
         
+        # Detect ecosystem from URL
+        ecosystem = "unknown"
+        if "fprime" in url.lower() or "nasa.github.io" in url.lower():
+            ecosystem = "fprime"
+        elif "proveskit" in url.lower():
+            ecosystem = "proveskit"
+        elif "pysquared" in url.lower():
+            ecosystem = "pysquared"
+        
+        # Store raw HTML in raw_snapshots
+        content_hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
+        snapshot_id = store_raw_snapshot(
+            source_url=url,
+            source_type="docs_webpage",
+            ecosystem=ecosystem,
+            content=content,
+            content_hash=content_hash
+        )
+        
         # Strip HTML tags for cleaner extraction (basic approach)
-        # Keep the raw content but also provide a text version
         text_content = re.sub(r'<script[^>]*>.*?</script>', '', content, flags=re.DOTALL)
         text_content = re.sub(r'<style[^>]*>.*?</style>', '', text_content, flags=re.DOTALL)
         text_content = re.sub(r'<[^>]+>', ' ', text_content)
@@ -72,7 +194,7 @@ def fetch_webpage(url: str) -> str:
         if len(text_content) > max_chars:
             text_content = text_content[:max_chars] + f"\n\n... (truncated, showing first {max_chars} of {len(text_content)} characters)"
         
-        return f"Source URL: {url}\nSize: {chars} characters\n\nContent:\n{text_content}"
+        return f"Source URL: {url}\nSnapshot ID: {snapshot_id}\nSize: {chars} characters\n\nContent:\n{text_content}"
     except Exception as e:
         return f"Error fetching {url}: {str(e)}"
 
@@ -81,6 +203,8 @@ def fetch_webpage(url: str) -> str:
 def fetch_github_file(owner: str, repo: str, path: str, branch: str = "main") -> str:
     """
     Fetch a file directly from a GitHub repository without cloning.
+    
+    Content is stored in raw_snapshots for auditability.
     
     Examples:
     - fetch_github_file("nasa", "fprime", "Svc/CmdDispatcher/CmdDispatcher.fpp")
@@ -116,11 +240,30 @@ def fetch_github_file(owner: str, repo: str, path: str, branch: str = "main") ->
         chars = len(content)
         lines = content.count('\n') + 1
         
+        # Detect ecosystem from repo
+        ecosystem = "unknown"
+        if owner.lower() == "nasa" and repo.lower() == "fprime":
+            ecosystem = "fprime"
+        elif "proveskit" in owner.lower() or "proveskit" in repo.lower():
+            ecosystem = "proveskit"
+        elif "pysquared" in repo.lower():
+            ecosystem = "pysquared"
+        
+        # Store in raw_snapshots
+        content_hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
+        snapshot_id = store_raw_snapshot(
+            source_url=github_url,
+            source_type="github_file",
+            ecosystem=ecosystem,
+            content=content,
+            content_hash=content_hash
+        )
+        
         max_chars = 50000
         if chars > max_chars:
             content = content[:max_chars] + f"\n\n... (truncated, showing first {max_chars} of {chars} characters)"
         
-        return f"Source: {github_url}\nRepository: {owner}/{repo}\nPath: {path}\nBranch: {branch}\nSize: {chars} characters, {lines} lines\n\nContent:\n{content}"
+        return f"Source: {github_url}\nSnapshot ID: {snapshot_id}\nRepository: {owner}/{repo}\nPath: {path}\nBranch: {branch}\nSize: {chars} characters, {lines} lines\n\nContent:\n{content}"
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 404:
             return f"File not found: {owner}/{repo}/{path} on branch {branch}. Check the path and branch name."
