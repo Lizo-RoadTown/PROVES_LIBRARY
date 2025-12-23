@@ -1,0 +1,22 @@
+{
+  "metadata": {
+    "created": "2025-12-23T00:00:00Z",
+    "last_updated": "2025-12-23T00:00:00Z",
+    "total_pages": 60,
+    "completed_pages": 0,
+    "skipped_pages": 0,
+    "failed_pages": 0,
+    "current_phase": "Phase 1: Hardware Foundation"
+  },
+  "completed": [],
+  "skipped": [],
+  "failed": [],
+  "next_page": {
+    "url": "https://docs.proveskit.space/en/latest/core_documentation/hardware/index.md",
+    "title": "Hardware Overview",
+    "phase": "Phase 1: Hardware Foundation",
+    "priority": 1,
+    "reason": "Start with hardware overview to get component list"
+  },
+  "extraction_history": []
+}
