@@ -25,6 +25,7 @@ University CubeSat programs face a brutal reality:
 **LLM-powered dependency extraction → Knowledge graph → Continuous monitoring**
 
 This project uses AI agents to automatically extract dependencies from technical documentation, validate them against a structured schema, and build a queryable knowledge graph that reveals the hidden connections between spacecraft systems.
+That layered capture becomes the basis for a future graph neural network risk model used to assess mission-operations impact.
 
 ---
 
