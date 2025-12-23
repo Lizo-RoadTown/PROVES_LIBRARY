@@ -32,7 +32,8 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ### Organizational Structure
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     subgraph "NASA/JPL"
         JPL_CORE[F´ Core Team<br/>⭐ Permanent Staff]
         JPL_DOC[Documentation Team]
@@ -101,7 +102,8 @@ flowchart-elk TB
 ### F´ Team ↔ PROVES Kit Team
 
 ```mermaid
-flowchart-elk LR
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart LR
     subgraph "F´ Knowledge"
         F_PUB[Public Documentation<br/>✅ Versioned<br/>✅ Comprehensive]
         F_CODE[GitHub Repository<br/>✅ nasa/fprime<br/>✅ Well-maintained]
@@ -166,8 +168,8 @@ This flowchart shows the journey developers take when they need integration know
 ### Where Integration Knowledge Lives
 
 ```mermaid
-%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     START[Integration Knowledge Needed]
 
     DOC_F{Check F´ Docs}
@@ -392,7 +394,8 @@ sequenceDiagram
 ### What Gets Captured vs. Lost
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     subgraph "Mission Lifecycle"
         DESIGN[Design Decisions]
         IMPL[Implementation]
@@ -531,7 +534,8 @@ quadrantChart
 ### How This System Addresses Team Boundary Issues
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     subgraph "Traditional Approach (Failed)"
         TRAD_TEAM[Team Knowledge]
         TRAD_GRAD[Graduation]

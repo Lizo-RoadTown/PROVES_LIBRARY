@@ -31,7 +31,8 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 ### Complete Dependency Path
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     subgraph "Layer 1: Application"
         APP[Application Component<br/>Requests IMU data]
     end
@@ -213,7 +214,8 @@ sequenceDiagram
 ### Failure Modes
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     START[main calls configureTopology]
 
     CASE1{Does code call<br/>LSM.turn_on?}
@@ -256,7 +258,8 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
 ### When I2C Read Fails
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     START[RateGroup.run every 100ms]
 
     subgraph "F´ System"
@@ -339,7 +342,8 @@ This diagram shows how F´'s build system creates your code. When you run `fprim
 ### Compilation Dependency Chain
 
 ```mermaid
-flowchart-elk LR
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart LR
     subgraph "User Commands"
         USER[Developer runs:<br/>fprime-util build]
     end

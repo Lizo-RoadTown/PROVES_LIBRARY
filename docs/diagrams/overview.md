@@ -37,7 +37,8 @@ Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Ki
 **What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     APP[Application Components<br/>Your mission code that needs sensor data]
 
     DM[ImuManager - Device Manager<br/>Knows how to talk to the IMU sensor<br/>Uses: busWriteRead, busWrite ports<br/>Returns: ImuData, GeometricVector3]
@@ -67,7 +68,8 @@ flowchart-elk TB
 **What you're looking at:** Three types of configuration that all need to match up correctly.
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     subgraph BUILD["Build System - Compiles the code"]
         FPUTIL[fprime-util<br/>Build command]
         FPP[FPP files<br/>Component definitions]
@@ -107,7 +109,8 @@ flowchart-elk TB
 **What you're looking at:** How the PROVES Kit software controls power to different subsystems.
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     LSM[LoadSwitchManager<br/>Main power control class<br/>Written in Python]
 
     subgraph TOOLS["Software Tools It Uses"]

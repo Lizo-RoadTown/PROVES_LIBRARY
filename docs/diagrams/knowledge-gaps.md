@@ -86,7 +86,8 @@ sequenceDiagram
 ### Real-World Impact
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     START[New developer integrates IMU]
 
     CASE1{Does developer<br/>add delay?}
@@ -142,7 +143,8 @@ This diagram shows electrical characteristics that software developers never thi
 ### The Missing Specification
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     subgraph "Power Supply Characteristics"
         V_NOM[Nominal Voltage<br/>3.3V]
         V_RIPPLE[Ripple: ??? mV]
@@ -325,7 +327,8 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ### The Missing Architecture
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
         BUS[I2C Bus /dev/i2c-1<br/>SDA/SCL]
 
@@ -450,7 +453,8 @@ This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare meta
 ### The Missing Cross-Platform Guide
 
 ```mermaid
-flowchart-elk LR
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart LR
     subgraph "F´ Framework"
         F_LINUX[LinuxI2cDriver<br/>Linux]
         F_ZEPHYR[ZephyrI2cDriver<br/>Zephyr RTOS]

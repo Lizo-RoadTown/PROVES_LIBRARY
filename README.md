@@ -32,7 +32,8 @@ That layered capture becomes the basis for a future graph neural network risk mo
 ## Architecture: Truth Layer System
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
   A[Raw Sources] --> B[Capture Layer (Extractor)]
   B --> C[Staging Layer (Validator)]
   C --> D[Routing (Decision Maker)]
@@ -84,7 +85,8 @@ flowchart-elk TB
 As humans verify data, agents learn what "truth" looks like. Confidence grows, human involvement tapers:
 
 ```mermaid
-flowchart-elk TB
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TB
   subgraph Phase1[" Phase 1: Cold Start"]
     A1["Agent Confidence: LOW"]
     A2["Human Verifies: 100%"]
@@ -165,7 +167,8 @@ python run_with_approval.py
 ### The Workflow
 
 ```mermaid
-flowchart-elk TD
+%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+flowchart TD
   A["Raw Sources<br/>(GitHub, docs, specs)"] --> B["Extractor Agent<br/>Capture ALL + categorize"]
   B --> C["Validator Agent<br/>Check confidence, flag anomalies"]
   C --> D["Decision Maker<br/>Route to staging tables"]
