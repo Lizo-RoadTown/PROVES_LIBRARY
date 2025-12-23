@@ -50,8 +50,8 @@ CREATE TYPE decider_type AS ENUM (
 -- ============================================================================
 -- STAGING EXTRACTIONS (Consolidated staging table)
 -- ============================================================================
--- Note: This is essentially the same as raw_extractions in 12_extraction_confidence.sql
--- but renamed for clarity. You can use either naming convention.
+-- Note: This is the canonical staging table for all extraction candidates.
+-- ENUMs are defined in 12_extraction_enums.sql.
 
 CREATE TABLE staging_extractions (
     -- Primary key
