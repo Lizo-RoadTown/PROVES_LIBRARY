@@ -73,13 +73,69 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
         if interrupt_data.get("type") == "dependency_approval":
             print()
             print("=" * 80)
-            print("VERIFICATION REQUIRED - STAGED ARCHITECTURE DATA")
+            print("EXTRACTION FOR VERIFICATION")
             print("=" * 80)
             print()
-            print(f"Task: {interrupt_data['task']}")
-            print(f"Confidence: {interrupt_data.get('criticality', 'Not specified')}")
+
+            # Source Information
+            print(f"Source: {interrupt_data.get('source_url', 'Unknown')}")
+            print(f"Type: {interrupt_data.get('entity_type', 'unknown')} | Key: {interrupt_data.get('entity_key', 'unknown')}")
+            print(f"Ecosystem: {interrupt_data.get('ecosystem', 'unknown')}")
             print()
-            print(f"Agent found: {interrupt_data['message']}")
+
+            # Evidence (exact quote from source)
+            evidence = interrupt_data.get('evidence_quote', '')
+            print("Evidence (from source):")
+            print("─" * 40)
+            print(evidence[:500] + "..." if len(evidence) > 500 else evidence)
+            print("─" * 40)
+            print()
+
+            # Confidence & Reasoning
+            conf_score = interrupt_data.get('confidence_score', 0.0)
+            conf_reason = interrupt_data.get('confidence_reason', 'Not specified')
+            print(f"Confidence: {conf_score:.2f} / 1.0")
+            print(f"Reasoning: {conf_reason}")
+            print()
+
+            # Agent Reasoning Trail (if available)
+            reasoning_trail = interrupt_data.get('reasoning_trail', {})
+            if reasoning_trail:
+                print("Agent Consulted:")
+                verified_entities = reasoning_trail.get('verified_entities_consulted', [])
+                staging_reviewed = reasoning_trail.get('staging_examples_reviewed', 0)
+                comparison_logic = reasoning_trail.get('comparison_logic', '')
+                uncertainty = reasoning_trail.get('uncertainty_factors', [])
+
+                if verified_entities:
+                    print(f"  • Verified entities: {len(verified_entities)} ({', '.join(verified_entities[:3])}...)")
+                if staging_reviewed > 0:
+                    print(f"  • Staging examples: {staging_reviewed}")
+                if comparison_logic:
+                    print(f"  • Comparison: {comparison_logic}")
+                if uncertainty:
+                    print(f"  • Uncertainties: {', '.join(uncertainty[:2])}")
+                print()
+
+            # Duplicate Check (if available)
+            dup_check = interrupt_data.get('duplicate_check', {})
+            if dup_check:
+                recommendation = dup_check.get('recommendation', 'not_checked')
+                similar = dup_check.get('similar_entities', [])
+                print(f"Duplicate Check: {recommendation}")
+                if similar:
+                    print(f"  Similar: {len(similar)} entities found")
+                print()
+
+            # Properties/Payload
+            properties = interrupt_data.get('properties', {})
+            if properties:
+                import json
+                print("Properties:")
+                print(json.dumps(properties, indent=2)[:300])
+                print()
+
+            print("=" * 80)
             print()
             print("You decide: Is this accurate? What's the mission impact?")
             print()

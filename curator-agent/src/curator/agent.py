@@ -80,10 +80,11 @@ from .subagents import create_extractor_agent, create_validator_agent, create_st
 
 class CuratorState(TypedDict):
     messages: Annotated[list, add_messages]
-    deferred_storage: NotRequired[list[dict[str, Any]]]
+    deferred_storage: NotRequired[list[dict[str, Any]]]  # Legacy - kept for backward compatibility
     storage_approval: NotRequired[str | None]
     human_correction: NotRequired[dict[str, Any] | None]  # For corrected extractions
     current_interaction_id: NotRequired[str | None]  # Track for training data
+    current_extraction_id: NotRequired[str | None]  # Track current extraction being reviewed
     extractor_failures: NotRequired[int]  # Track consecutive extractor failures
     last_error: NotRequired[str | None]  # Track what error occurred
 
@@ -471,51 +472,175 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
         return updates
 
     def request_human_approval(state: CuratorState):
-        deferred = state.get("deferred_storage") or []
-        if not deferred:
-            return {"storage_approval": None, "current_interaction_id": None}
+        """
+        Query database for pending extractions and request human approval.
+        Passes FULL metadata to help human make informed decision.
+        """
+        import psycopg
+        import json
+        from dotenv import load_dotenv
 
-        # Only approve one at a time for now (simple + predictable).
-        pending = deferred[0]
-        task = pending.get("task", "")
+        # Get database connection
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        load_dotenv(os.path.join(project_root, '.env'))
+        db_url = os.environ.get('NEON_DATABASE_URL')
 
-        # Log the interaction BEFORE interrupt for training data collection
-        logger = get_training_logger()
-        interaction_id = None
-        if logger:
+        try:
+            conn = psycopg.connect(db_url)
+            with conn.cursor() as cur:
+                # Get one pending extraction (FIFO)
+                cur.execute("""
+                    SELECT
+                        extraction_id,
+                        candidate_type::text,
+                        candidate_key,
+                        candidate_payload,
+                        ecosystem::text,
+                        confidence_score,
+                        confidence_reason,
+                        evidence,
+                        evidence_type::text,
+                        snapshot_id,
+                        created_at
+                    FROM staging_extractions
+                    WHERE status = 'pending'::candidate_status
+                    ORDER BY created_at ASC
+                    LIMIT 1
+                """)
+                row = cur.fetchone()
+            conn.close()
+
+            if not row:
+                # No pending extractions
+                return {"storage_approval": None, "current_interaction_id": None, "current_extraction_id": None}
+
+            # Unpack extraction data
+            (extraction_id, candidate_type, candidate_key, candidate_payload,
+             ecosystem, confidence_score, confidence_reason, evidence,
+             evidence_type, snapshot_id, created_at) = row
+
+            # Parse JSONB fields
+            evidence_data = evidence if isinstance(evidence, dict) else {}
+            properties = candidate_payload if isinstance(candidate_payload, dict) else {}
+
+            # Extract metadata from evidence JSONB
+            raw_evidence = evidence_data.get("raw_text", "")
+            reasoning_trail = evidence_data.get("reasoning_trail", {})
+            duplicate_check = evidence_data.get("duplicate_check", {})
+            source_metadata = evidence_data.get("source_metadata", {})
+
+            # Get source URL from raw_snapshots
+            source_url = source_metadata.get("source_url", "Unknown")
             try:
-                interaction_id = logger.log_interaction(
-                    thread_id=state.get("current_interaction_id", "unknown"),
-                    session_type="dependency_storage",
-                    doc_chunk=task[:5000] if task else None,  # Truncate to 5K chars
-                    ai_extraction=pending,  # The deferred storage data
-                    model_used="claude-sonnet-4-5"
-                )
-                print(f"[Training] Logged interaction {interaction_id}")
-            except Exception as e:
-                print(f"[Training] Could not log interaction: {e}")
+                conn = psycopg.connect(db_url)
+                with conn.cursor() as cur:
+                    cur.execute("SELECT source_url FROM raw_snapshots WHERE id = %s::uuid", (str(snapshot_id),))
+                    snapshot_row = cur.fetchone()
+                    if snapshot_row:
+                        source_url = snapshot_row[0]
+                conn.close()
+            except:
+                pass
 
-        print("[HITL] Requesting human verification for staged data...")
-        approval = interrupt({
-            "type": "dependency_approval",
-            "task": task,
-            "criticality": "STAGED",
-            "message": "This data is staged for human verification. Review before promoting to truth graph.",
-            "instructions": "Reply with 'approved', 'rejected', or provide corrections as JSON."
-        })
+            # Build task string for legacy training logger
+            task = f"Extract {candidate_type}: {candidate_key} from {ecosystem}"
 
-        return {"storage_approval": approval, "current_interaction_id": interaction_id}
+            # Log the interaction BEFORE interrupt for training data collection
+            logger = get_training_logger()
+            interaction_id = None
+            if logger:
+                try:
+                    interaction_id = logger.log_interaction(
+                        thread_id=state.get("current_interaction_id", "unknown"),
+                        session_type="dependency_storage",
+                        doc_chunk=raw_evidence[:5000] if raw_evidence else None,
+                        ai_extraction={
+                            "extraction_id": str(extraction_id),
+                            "candidate_type": candidate_type,
+                            "candidate_key": candidate_key,
+                            "ecosystem": ecosystem,
+                            "confidence_score": float(confidence_score),
+                            "confidence_reason": confidence_reason
+                        },
+                        model_used="claude-sonnet-4-5"
+                    )
+                    print(f"[Training] Logged interaction {interaction_id}")
+                except Exception as e:
+                    print(f"[Training] Could not log interaction: {e}")
+
+            print("[HITL] Requesting human verification for staged extraction...")
+
+            # Pass FULL metadata to human (reduces ambiguity!)
+            approval = interrupt({
+                "type": "dependency_approval",
+
+                # Legacy fields (for backward compatibility)
+                "task": task,
+                "criticality": "STAGED",
+                "message": "Review extraction before promoting to truth graph.",
+                "instructions": "Reply with 'approved', 'rejected', or provide corrections as JSON.",
+
+                # NEW METADATA - What human needs to verify
+                # Source Information
+                "source_url": source_url,
+                "source_type": source_metadata.get("source_type", "unknown"),
+                "snapshot_id": str(snapshot_id),
+                "fetch_timestamp": source_metadata.get("fetch_timestamp", ""),
+
+                # Extraction Details
+                "extraction_id": str(extraction_id),
+                "entity_type": candidate_type,
+                "entity_key": candidate_key,
+                "ecosystem": ecosystem,
+                "properties": properties,
+
+                # Evidence (exact quote from source)
+                "evidence_quote": raw_evidence,
+                "evidence_type": evidence_type,
+
+                # Confidence & Reasoning
+                "confidence_score": float(confidence_score),
+                "confidence_reason": confidence_reason,
+                "reasoning_trail": reasoning_trail,
+
+                # Duplicate Check Results
+                "duplicate_check": duplicate_check,
+            })
+
+            return {
+                "storage_approval": approval,
+                "current_interaction_id": interaction_id,
+                "current_extraction_id": str(extraction_id)
+            }
+
+        except Exception as e:
+            print(f"[HITL] Error retrieving pending extraction: {e}")
+            return {"storage_approval": None, "current_interaction_id": None, "current_extraction_id": None}
 
     def commit_deferred_storage(state: CuratorState):
-        deferred = state.get("deferred_storage") or []
-        if not deferred:
+        """
+        Commit human's decision on staged extraction.
+        - approved: Promote to core_entities
+        - rejected: Mark as rejected
+        - corrected: Update and promote
+        """
+        import psycopg
+        from dotenv import load_dotenv
+
+        extraction_id = state.get("current_extraction_id")
+        if not extraction_id:
+            # No extraction to commit
             return {}
 
         approval = state.get("storage_approval")
         human_correction = state.get("human_correction")
         interaction_id = state.get("current_interaction_id")
-        task = (deferred[0] or {}).get("task", "")
-        
+
+        # Get database connection
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        load_dotenv(os.path.join(project_root, '.env'))
+        db_url = os.environ.get('NEON_DATABASE_URL')
+
         # Get training logger for feedback recording
         logger = get_training_logger()
 
@@ -525,8 +650,8 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
         )
 
         if approval == "approved":
-            print("[HITL] Approved - executing deferred storage_agent now...")
-            
+            print(f"[HITL] Approved - promoting extraction {extraction_id} to core_entities...")
+
             # Record approval in training data
             if logger and interaction_id:
                 try:
@@ -538,34 +663,39 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
                     print(f"[Training] Recorded approval for {interaction_id}")
                 except Exception as e:
                     print(f"[Training] Could not record feedback: {e}")
-            
+
             try:
-                storage_result = call_storage_agent(task)
+                # Promote to core_entities using storage agent's promote_to_core tool
+                from .subagents.storage import promote_to_core
+                promote_result = promote_to_core.invoke({"extraction_id": extraction_id})
+
                 return {
                     "messages": [
                         AIMessage(
                             content=(
-                                "[HITL] Human verified staged data. "
+                                f"[HITL] Human verified extraction {extraction_id}. "
                                 "Promoted to truth graph.\n\n"
-                                f"{storage_result}"
+                                f"{promote_result}"
                             )
                         )
                     ],
                     "deferred_storage": [],
                     "storage_approval": None,
                     "current_interaction_id": None,
+                    "current_extraction_id": None,
                 }
             except Exception as e:
                 return {
-                    "messages": [AIMessage(content=f"[HITL] ERROR executing deferred storage_agent: {e}")],
+                    "messages": [AIMessage(content=f"[HITL] ERROR promoting extraction: {e}")],
                     "deferred_storage": [],
                     "storage_approval": None,
                     "current_interaction_id": None,
+                    "current_extraction_id": None,
                 }
-        
+
         elif is_correction:
-            print("[HITL] Correction received - applying human edits...")
-            
+            print(f"[HITL] Correction received - updating extraction {extraction_id}...")
+
             # Parse correction if it's a string (could be JSON)
             corrected_data = approval
             if isinstance(approval, str):
@@ -573,9 +703,9 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
                     import json
                     corrected_data = json.loads(approval)
                 except json.JSONDecodeError:
-                    # Not JSON, treat as corrected task string
-                    corrected_data = {"task": approval}
-            
+                    # Not JSON, treat as note
+                    corrected_data = {"note": approval}
+
             # Record correction in training data - THIS IS GOLD for fine-tuning!
             if logger and interaction_id:
                 try:
@@ -588,39 +718,71 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
                     print(f"[Training] Recorded correction for {interaction_id} - GOLD DATA!")
                 except Exception as e:
                     print(f"[Training] Could not record correction: {e}")
-            
-            # Use corrected data for storage
-            corrected_task = corrected_data.get("task", task) if isinstance(corrected_data, dict) else task
-            
+
             try:
-                storage_result = call_storage_agent(corrected_task)
+                # Update extraction with corrections
+                conn = psycopg.connect(db_url)
+                with conn.cursor() as cur:
+                    # Apply corrections to candidate_payload if provided
+                    if isinstance(corrected_data, dict):
+                        import json
+                        # Update fields that were corrected
+                        if "candidate_key" in corrected_data:
+                            cur.execute("""
+                                UPDATE staging_extractions
+                                SET candidate_key = %s
+                                WHERE extraction_id = %s::uuid
+                            """, (corrected_data["candidate_key"], extraction_id))
+
+                        if "properties" in corrected_data:
+                            cur.execute("""
+                                UPDATE staging_extractions
+                                SET candidate_payload = %s::jsonb
+                                WHERE extraction_id = %s::uuid
+                            """, (json.dumps(corrected_data["properties"]), extraction_id))
+
+                        if "confidence_score" in corrected_data:
+                            cur.execute("""
+                                UPDATE staging_extractions
+                                SET confidence_score = %s
+                                WHERE extraction_id = %s::uuid
+                            """, (corrected_data["confidence_score"], extraction_id))
+
+                conn.commit()
+                conn.close()
+
+                # Now promote the corrected extraction
+                from .subagents.storage import promote_to_core
+                promote_result = promote_to_core.invoke({"extraction_id": extraction_id})
+
                 return {
                     "messages": [
                         AIMessage(
                             content=(
-                                "[HITL] Human provided corrections. Applied edits and executed storage_agent.\n\n"
-                                f"Original: {task[:200]}...\n"
-                                f"Corrected: {corrected_task[:200]}...\n\n"
-                                f"{storage_result}"
+                                f"[HITL] Human provided corrections to extraction {extraction_id}. "
+                                "Applied edits and promoted to truth graph.\n\n"
+                                f"{promote_result}"
                             )
                         )
                     ],
                     "deferred_storage": [],
                     "storage_approval": None,
                     "current_interaction_id": None,
+                    "current_extraction_id": None,
                     "human_correction": None,
                 }
             except Exception as e:
                 return {
-                    "messages": [AIMessage(content=f"[HITL] ERROR executing corrected storage_agent: {e}")],
+                    "messages": [AIMessage(content=f"[HITL] ERROR applying corrections: {e}")],
                     "deferred_storage": [],
                     "storage_approval": None,
                     "current_interaction_id": None,
+                    "current_extraction_id": None,
                 }
 
         else:
-            print("[HITL] Rejected - skipping deferred storage_agent")
-            
+            print(f"[HITL] Rejected - marking extraction {extraction_id} as rejected")
+
             # Record rejection in training data
             if logger and interaction_id:
                 try:
@@ -633,13 +795,34 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
                     print(f"[Training] Recorded rejection for {interaction_id}")
                 except Exception as e:
                     print(f"[Training] Could not record rejection: {e}")
-            
-            return {
-                "messages": [AIMessage(content="[HITL] Human rejected staged data. Not promoted to truth graph.")],
-                "deferred_storage": [],
-                "storage_approval": None,
-                "current_interaction_id": None,
-            }
+
+            try:
+                # Mark extraction as rejected in database
+                conn = psycopg.connect(db_url)
+                with conn.cursor() as cur:
+                    cur.execute("""
+                        UPDATE staging_extractions
+                        SET status = 'rejected'::candidate_status
+                        WHERE extraction_id = %s::uuid
+                    """, (extraction_id,))
+                conn.commit()
+                conn.close()
+
+                return {
+                    "messages": [AIMessage(content=f"[HITL] Human rejected extraction {extraction_id}. Not promoted to truth graph.")],
+                    "deferred_storage": [],
+                    "storage_approval": None,
+                    "current_interaction_id": None,
+                    "current_extraction_id": None,
+                }
+            except Exception as e:
+                return {
+                    "messages": [AIMessage(content=f"[HITL] ERROR marking extraction as rejected: {e}")],
+                    "deferred_storage": [],
+                    "storage_approval": None,
+                    "current_interaction_id": None,
+                    "current_extraction_id": None,
+                }
 
     # Build the graph
     workflow = StateGraph(CuratorState)

@@ -71,15 +71,18 @@ def store_extraction(
     properties: dict = None,
     confidence_score: float = 0.8,
     confidence_reason: str = "LLM extraction",
-    evidence_type: str = "definition_spec"
+    evidence_type: str = "definition_spec",
+    reasoning_trail: dict = None,
+    duplicate_check: dict = None,
+    source_metadata: dict = None
 ) -> str:
     """
     Store an extracted entity in staging_extractions.
-    
+
     STORE EVERYTHING - validator decides what's promoted to core.
-    
+
     Args:
-        candidate_type: 'component', 'port', 'command', 'telemetry', 'event', 'parameter', 
+        candidate_type: 'component', 'port', 'command', 'telemetry', 'event', 'parameter',
                         'data_type', 'dependency', 'connection', 'inheritance'
         candidate_key: Entity name/key (e.g., "I2CDriver", "PowerManager")
         raw_evidence: Exact quote from source (REQUIRED - this is the evidence)
@@ -88,23 +91,61 @@ def store_extraction(
         properties: JSON dict of entity-specific properties (ports, commands, etc.)
         confidence_score: How confident the extractor is (0.0 to 1.0)
         confidence_reason: Why this confidence level
-        evidence_type: 'definition_spec', 'interface_contract', 'example', 'narrative', 
+        evidence_type: 'definition_spec', 'interface_contract', 'example', 'narrative',
                        'table_diagram', 'comment', 'inferred'
-    
+        reasoning_trail: Agent's reasoning process (NEW - helps human understand logic):
+            {
+                "verified_entities_consulted": ["entity_123", "entity_456"],
+                "staging_examples_reviewed": 8,
+                "validation_patterns_checked": ["i2c_address_required"],
+                "comparison_logic": "Matched structure of 3 verified I2C components",
+                "uncertainty_factors": ["No driver implementation found"]
+            }
+        duplicate_check: Results of duplicate checking (NEW - helps human decide merge vs create):
+            {
+                "exact_matches": [],
+                "similar_entities": [{"id": "entity_abc", "similarity": 0.73}],
+                "recommendation": "create_new" | "merge_with" | "needs_review"
+            }
+        source_metadata: Source document metadata (NEW - helps human verify):
+            {
+                "source_url": "https://...",
+                "source_type": "webpage",
+                "fetch_timestamp": "2025-12-23T10:45:32Z"
+            }
+
     Returns:
         Confirmation with extraction ID, or error message
     """
     try:
         import json
         conn = get_db_connection()
-        
+
         # Get or create pipeline run
         run_id = get_or_create_pipeline_run(conn)
-        
+
         with conn.cursor() as cur:
             payload = json.dumps(properties) if properties else '{}'
-            evidence = json.dumps({"raw_text": raw_evidence})
-            
+
+            # Build evidence JSONB with metadata for human verification
+            evidence_data = {
+                "raw_text": raw_evidence
+            }
+
+            # Add agent reasoning trail (helps human understand logic)
+            if reasoning_trail:
+                evidence_data["reasoning_trail"] = reasoning_trail
+
+            # Add duplicate check results (helps human decide merge vs create)
+            if duplicate_check:
+                evidence_data["duplicate_check"] = duplicate_check
+
+            # Add source metadata (helps human verify source)
+            if source_metadata:
+                evidence_data["source_metadata"] = source_metadata
+
+            evidence = json.dumps(evidence_data)
+
             cur.execute("""
                 INSERT INTO staging_extractions (
                     pipeline_run_id, snapshot_id, agent_id, agent_version,
@@ -126,9 +167,9 @@ def store_extraction(
             extraction_id = cur.fetchone()[0]
         conn.commit()
         conn.close()
-        
+
         return f"[STAGED] Extraction recorded (ID: {extraction_id})\n  Type: {candidate_type}\n  Key: {candidate_key}\n  Confidence: {confidence_score}"
-        
+
     except Exception as e:
         return f"Error storing extraction: {str(e)}"
 
