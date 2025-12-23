@@ -28,33 +28,37 @@ This project uses AI agents to automatically extract dependencies from technical
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture: Truth Layer System
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    PROVES Library System                        │
+│                                                                 │
+│        "Context is EVERYTHING. Agents assist. Humans verify."   │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  📄 Documentation Sources                                       │
+│  📄 RAW SOURCES (capture everything)                            │
 │     ├── F´ Framework (NASA/JPL flight software)                │
-│     └── PROVES Kit (Cal Poly Pomona CubeSat hardware)          │
+│     ├── PROVES Kit (Cal Poly Pomona CubeSat hardware)          │
+│     └── GitHub repos, docs, specs, datasheets...               │
 │                          ↓                                      │
-│  🤖 Deep Agent System (LangGraph + Claude)                      │
-│     ┌─────────────────────────────────────────┐                │
-│     │  Main Curator Agent (Sonnet 4.5)        │                │
-│     │     ↓ spawns as tools                   │                │
-│     │  ├── Extractor (Sonnet 4.5)             │                │
-│     │  ├── Validator (Haiku 3.5) ← 90% cheaper│                │
-│     │  └── Storage   (Haiku 3.5) ← 90% cheaper│                │
-│     └─────────────────────────────────────────┘                │
+│  🤖 CAPTURE LAYER (Extractor Agent)                             │
+│     └── Grab ALL data, smart categorization, add lineage       │
 │                          ↓                                      │
-│  👤 Human-in-the-Loop (HITL)                                    │
-│     └── HIGH criticality deps require approval                 │
+│  🔍 STAGING LAYER (Validator Agent)                             │
+│     └── Check confidence, flag anomalies, note pattern breaks  │
 │                          ↓                                      │
-│  🗄️ Neon PostgreSQL + pgvector                                 │
-│     ├── kg_nodes (components, hardware, patterns)              │
-│     ├── kg_relationships (ERV dependency types)                │
-│     └── library_entries (source documentation)                 │
+│  📋 ROUTING (Decision Maker)                                    │
+│     ├── Clean data → staging table                             │
+│     └── Suspect data → flagged table with reasoning            │
+│                          ↓                                      │
+│  👤 HUMAN VERIFICATION (THE TRUTH GATE)                         │
+│     └── Human reviews EACH piece, aligns across sources        │
+│                          ↓                                      │
+│  ✅ TRUTH LAYER (Knowledge Graph)                               │
+│     ├── Only human-verified data enters                        │
+│     ├── Aligned layers create clean GNN matrix                 │
+│     └── kg_nodes, kg_relationships, library_entries            │
 │                          ↓                                      │
 │  🌐 GitHub Pages (Interactive Visualizations)                   │
 │                                                                 │
@@ -65,10 +69,11 @@ This project uses AI agents to automatically extract dependencies from technical
 
 | Decision | Rationale |
 |----------|-----------|
+| **Capture EVERYTHING** | Sources won't match in language - we need all data to cross-reference |
+| **Agents provide context** | Smart categorization helps humans eliminate ambiguity |
+| **Humans verify EACH piece** | Only human-aligned data becomes truth |
 | **Sub-agents as tools** | Context isolation — each agent is an expert at one thing |
-| **Haiku for validation/storage** | 90% cost savings on simple tasks; Sonnet only where reasoning matters |
-| **HITL for HIGH criticality** | Mission-critical dependencies need human eyes before storage |
-| **Deferred storage pattern** | Ensures tool_use/tool_result pairing for reliable interrupts |
+| **Haiku for validation/storage** | 90% cost savings on simple tasks |
 
 ---
 
@@ -89,7 +94,7 @@ This project uses AI agents to automatically extract dependencies from technical
 ### 🔄 Phase 3: Curator Agent — IN DEVELOPMENT
 - LangGraph orchestration with sub-agents-as-tools pattern
 - Claude Sonnet 4.5 (curator/extractor) + Haiku 3.5 (validator/storage)
-- Human-in-the-loop framework for HIGH criticality dependencies
+- Truth Layer: Capture ALL → Stage → Human Verify EVERY piece
 - **Current focus:** Agent workflow refinement and testing
 
 ### 🔮 Phase 4: Training Pipeline — PLANNED
@@ -143,64 +148,64 @@ python run_with_approval.py
 ### The Workflow
 
 ```mermaid
-flowchart-elk TD
-  A[📄 Documentation] --> B[🤖 Curator Agent]
-  B --> C[Extractor Sub-Agent]
-  C --> D[Validator Sub-Agent]
-  D -->|LOW/MEDIUM| E[Storage Sub-Agent]
-  D -->|HIGH criticality| F[👤 Human Review]
-  F -->|Approved| E
-  F -->|Rejected| G[Skip Storage]
-  E --> H[🗄️ Knowledge Graph]
-  H --> I[📊 Visualizations & Queries]
+flowchart TD
+  A["📄 Raw Sources<br/>(GitHub, docs, specs)"] --> B["🤖 Extractor Agent<br/>Capture ALL + categorize"]
+  B --> C["🔍 Validator Agent<br/>Check confidence, flag anomalies"]
+  C --> D["📋 Decision Maker<br/>Route to staging tables"]
+  D -->|Clean data| E["📦 Staging Table"]
+  D -->|Suspect data| F["⚠️ Flagged Table<br/>with reasoning"]
+  E --> G["👤 Human Verification<br/>Review EACH piece"]
+  F --> G
+  G -->|Verified + Aligned| H["✅ Truth Graph<br/>Knowledge Graph"]
+  G -->|Rejected| I["❌ Discarded"]
+  H --> J["📊 Visualizations & Queries"]
 ```
 
-**Current pipeline behavior:**
-- Extractor writes candidates to `staging_extractions` with evidence + confidence.
-- Validator updates status (accept/reject/needs_more_evidence) and can loop for refinement.
-- Storage promotes approved items into domain tables and core graph entities.
-- MCP server reads from the graph and uses `source_registry.yaml` for targeted lookups.
+**Truth Layer Pipeline:**
+- **Extractor** captures ALL raw data with smart categorization and lineage.
+- **Validator** checks confidence, flags anomalies, notes pattern breaks.
+- **Decision Maker** routes to clean staging or flagged table with reasoning.
+- **Human** reviews EACH piece, aligns across sources to establish TRUTH.
+- Only human-verified data enters the knowledge graph.
 
 ### Lifecycle: Curation Run
 
 ```mermaid
 sequenceDiagram
-  participant Doc as Documentation
-  participant Curator
-  participant Extractor
-  participant Validator
-  participant Review as Human Review
-  participant Storage
-  participant Graph as Knowledge Graph
+  participant Sources as Raw Sources
+  participant Extractor as Extractor Agent
+  participant Validator as Validator Agent
+  participant Decision as Decision Maker
+  participant Staging as Staging Tables
+  participant Human as Human Verification
+  participant Graph as Truth Graph
 
-  Doc->>Curator: Ingest source
-  Curator->>Extractor: Extract dependencies + citations
-  Extractor-->>Curator: Candidate list
-  Curator->>Validator: Normalize to ERV + de-dup
-  Validator-->>Curator: Validated candidates
-  alt High criticality or conflict
-    Curator->>Review: Request approval
-    Review-->>Curator: Approve or reject
-  end
-  Curator->>Storage: Write approved items
-  Storage->>Graph: Upsert nodes + relationships
-  Graph-->>Storage: Ack
-  Storage-->>Curator: Stored summary
+  Sources->>Extractor: Capture ALL raw data
+  Extractor->>Extractor: Smart categorization + lineage
+  Extractor->>Validator: Pass candidates with context
+  Validator->>Validator: Check confidence, flag anomalies
+  Validator->>Decision: Pass with flags/notes
+  Decision->>Staging: Route (clean or flagged)
+  Staging->>Human: Present for review
+  Human->>Human: Verify EACH piece, align across sources
+  Human->>Graph: Verified data becomes TRUTH
+  Graph-->>Human: Ack
 ```
 
-### Lifecycle: Curator Job State
+### Lifecycle: Data State
 
 ```mermaid
 stateDiagram-v2
-  [*] --> Ingested
-  Ingested --> Extracted: dependencies parsed
-  Extracted --> Validated: ERV normalization
-  Validated --> ReviewPending: high or conflict
-  Validated --> Stored: low/medium
-  ReviewPending --> Stored: approved
-  ReviewPending --> Rejected: needs rewrite
-  Stored --> [*]
-  Rejected --> [*]
+  [*] --> Captured: Raw data captured
+  Captured --> Validated: Confidence checked
+  Validated --> StagedClean: High confidence
+  Validated --> StagedFlagged: Low confidence/anomaly
+  StagedClean --> HumanReview: Awaiting verification
+  StagedFlagged --> HumanReview: Awaiting verification
+  HumanReview --> Truth: Human verified + aligned
+  HumanReview --> Discarded: Human rejected
+  Truth --> [*]
+  Discarded --> [*]
 ```
 
 ### ERV Relationship Types
@@ -216,13 +221,15 @@ The knowledge graph uses **Entity-Relationship-Value (ERV)** semantics:
 | `mitigates` | Reduces risk | `Watchdog` mitigates `InfiniteLoop` |
 | `causes` | Leads to effect | `BrownoutReset` causes `StateCorruption` |
 
-### Criticality Levels
+### Criticality Levels (Post-Verification Metadata)
 
-| Level | Meaning | HITL Required? |
-|-------|---------|----------------|
-| **HIGH** | Mission-critical — failure = mission loss | ✅ Yes |
-| **MEDIUM** | Important — affects functionality | ❌ No |
-| **LOW** | Nice-to-have — minor impact | ❌ No |
+| Level | Meaning | Assigned By |
+|-------|---------|-------------|
+| **HIGH** | Mission-critical — failure = mission loss | Human during verification |
+| **MEDIUM** | Important — affects functionality | Human during verification |
+| **LOW** | Nice-to-have — minor impact | Human during verification |
+
+> **Note:** Criticality is metadata assigned by humans AFTER verification, not a gate for capture.
 
 ---
 

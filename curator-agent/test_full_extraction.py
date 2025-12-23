@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 FULL EXTRACTION TEST - Extract ALL dependencies from a document
-Shows that MEDIUM/LOW are stored automatically, only HIGH requires approval
+All dependencies are staged for human verification before entering truth graph.
 """
 
 import os
@@ -19,29 +19,29 @@ from src.curator.agent import graph
 
 
 def test_full_extraction():
-    """Extract ALL dependencies from fprime I2C driver (not just one)."""
+    """Extract ALL dependencies from fprime I2C driver and stage for verification."""
 
     task = """Extract ALL dependencies from ../trial_docs/fprime_i2c_driver_full.md.
 
-Extract every dependency you can find - HIGH, MEDIUM, and LOW criticality.
+Extract every dependency you can find - capture ALL of them.
 
 For each dependency:
 1. Extract the relationship (depends_on, requires, etc.)
-2. Assess criticality based on impact
-3. Store it (HIGH will require approval, MEDIUM/LOW auto-store)
+2. Note characteristics (mission impact, confidence, cross-system?)
+3. Stage for human verification
 
 Be thorough - find all dependencies in the document."""
 
     config = {"configurable": {"thread_id": "full-extraction-test"}}
 
-    print("=" * 80)
+    print("=", * 80)
     print("FULL EXTRACTION TEST")
     print("=" * 80)
     print()
     print("Task: Extract ALL dependencies from fprime I2C driver")
-    print("Expected: Multiple dependencies found")
-    print("  - HIGH criticality → approval prompts")
-    print("  - MEDIUM/LOW → auto-stored")
+    print("Expected: All dependencies captured and staged")
+    print("  - ALL go to staging tables")
+    print("  - Human verifies EVERY piece before truth graph")
     print()
     print("-" * 80)
     print()
@@ -78,7 +78,7 @@ Be thorough - find all dependencies in the document."""
         print()
 
         # Auto-approve for test
-        print(f"Auto-approving HIGH dependency #{approval_count}...")
+        print(f"Auto-approving staged item #{approval_count}...")
         result = graph.invoke(Command(resume="approved"), config)
         state = graph.get_state(config)
 
@@ -96,8 +96,8 @@ Be thorough - find all dependencies in the document."""
 
     print()
     print("-" * 80)
-    print(f"Total HIGH criticality approvals: {approval_count}")
-    print("(MEDIUM/LOW dependencies were auto-stored without approval)")
+    print(f"Total items staged for verification: {approval_count}")
+    print("(All dependencies staged - humans verify before truth graph entry)")
     print()
 
     return result

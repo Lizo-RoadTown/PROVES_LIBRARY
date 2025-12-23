@@ -13,7 +13,7 @@ This roadmap outlines the implementation of the PROVES Library system - a knowle
 **Current Stack:**
 - **LangGraph + Claude Sonnet 4.5** (curator agent with sub-agents)
 - **Neon PostgreSQL** (knowledge graph + checkpointer tables)
-- **Human-in-the-Loop (HITL)** (for HIGH criticality dependencies)
+- **Human Verification** (humans review ALL staged data to establish truth)
 
 **What's Done:**
 - ✅ Database infrastructure with 9 tables + checkpointer tables
@@ -58,12 +58,12 @@ See: [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](../trial_docs/COMPREHENSIVE_DE
 **What's Built:**
 - LangGraph orchestration with sub-agents-as-tools pattern
 - Claude Sonnet 4.5 (curator/extractor) + Haiku 3.5 (validator/storage)
-- Human-in-the-loop framework for HIGH criticality
+- Agents capture ALL data, provide context for human verification
 - PostgresSaver checkpointer (Neon-hosted)
 
 **Current Work:**
 - [ ] Agent workflow refinement (stop conditions, state management)
-- [ ] Task/outcome definition clarity
+- [ ] Human review interface for staged data
 - [ ] Integration testing with trial documents
 
 **Entry Point:** `curator-agent/run_with_approval.py`
@@ -87,6 +87,7 @@ See: [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](../trial_docs/COMPREHENSIVE_DE
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    PROVES Library System                        │
+│                    (Truth Layer Architecture)                   │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  📄 Documentation Sources                                       │
@@ -97,17 +98,19 @@ See: [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](../trial_docs/COMPREHENSIVE_DE
 │     ┌─────────────────────────────────────┐                    │
 │     │  Main Curator (Sonnet 4.5)          │                    │
 │     │     ↓ spawns as tools               │                    │
-│     │  ├── Extractor (Sonnet 4.5)         │                    │
-│     │  ├── Validator (Haiku 3.5)          │                    │
-│     │  └── Storage   (Haiku 3.5)          │                    │
+│     │  ├── Extractor - Capture ALL data   │                    │
+│     │  ├── Validator - Flag anomalies     │                    │
+│     │  └── Storage   - Route to staging   │                    │
 │     └─────────────────────────────────────┘                    │
 │                          ↓                                      │
-│  👤 Human-in-the-Loop (HITL)                                    │
-│     └── HIGH criticality deps require approval                 │
+│  📋 Staging Tables (ALL captured data)                          │
 │                          ↓                                      │
-│  🗄️ Neon PostgreSQL                                             │
-│     ├── Knowledge graph (kg_nodes, kg_relationships)           │
-│     └── Checkpointer (checkpoints, checkpoint_blobs, etc.)     │
+│  👤 Human Verification (EVERY piece)                            │
+│     └── Align sources → establish truth                        │
+│                          ↓                                      │
+│  🗄️ Truth Graph (Only verified data)                            │
+│     ├── core_entities (human-verified)                         │
+│     └── kg_relationships (aligned sources)                     │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```

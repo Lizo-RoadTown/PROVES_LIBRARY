@@ -86,13 +86,15 @@ Raw Sources → Agent Capture → Agent Staging → Human Verification → Truth
 ### 2.3 Trust-Building Phases
 
 ```
-Phase 1: Supervised      → Agent asks approval for EVERY action
-Phase 2: Semi-Autonomous → Agent handles LOW/MEDIUM automatically
-Phase 3: Autonomous      → Agent works independently, human reviews after
-Phase 4: Full Autonomy   → Human spot-checks periodically
+Phase 1: Full Review      → Human reviews ALL data (current phase)
+Phase 2: Assisted Review  → Agents pre-sort, humans verify
+Phase 3: Spot-Check       → Humans spot-check agent categorizations
+Phase 4: Exception-Based  → Humans review only flagged anomalies
 ```
 
-Each phase builds confidence in agent judgment before granting more autonomy.
+Each phase builds confidence in agent categorization before reducing human review scope.
+
+> **Note:** Even at Phase 4, humans establish truth. Agents always assist, never decide.
 
 ---
 
@@ -152,9 +154,9 @@ Output: Agent extracts new dependencies using learned methodology
 **Console Output Patterns:**
 ```
 [CURATOR] Starting analysis of {document}...
-[CURATOR] Found {n} potential dependencies
-[CURATOR] Requesting approval for HIGH criticality: {description}
-[CURATOR] Stored {n} dependencies successfully
+[CURATOR] Captured {n} dependencies → staging tables
+[CURATOR] Flagged {n} items with anomalies for review
+[CURATOR] All data staged for human verification
 ```
 
 ---

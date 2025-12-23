@@ -4,14 +4,14 @@
 
 ## Overview
 
-The Curator Agent analyzes technical documentation (F´ framework, PROVES Kit) and extracts dependency relationships into a knowledge graph. It uses a sub-agents-as-tools pattern with human-in-the-loop for HIGH criticality dependencies.
+The Curator Agent analyzes technical documentation (F´ framework, PROVES Kit) and extracts dependency relationships into a knowledge graph. It captures ALL data to staging tables, then humans verify EVERY piece before it enters the truth graph.
 
 ## Quick Start
 
 ```bash
 # 1. Ensure .env is configured (see ../GETTING_STARTED.md)
 
-# 2. Run with human approval for HIGH criticality items
+# 2. Run with human verification for staged items
 python run_with_approval.py
 
 # 3. Or run the test script
@@ -24,8 +24,8 @@ python test_agent.py
 ┌─────────────────────────────────────────────────────────────┐
 │  CURATOR AGENT (Claude Sonnet 4.5)                          │
 │  - Coordinates sub-agents                                   │
-│  - Requests human approval for HIGH criticality             │
-│  - Manages extraction workflow                              │
+│  - Prepares data for HUMAN verification                     │
+│  - Provides context to eliminate ambiguity                  │
 └───────┬──────────────┬──────────────┬──────────────────────┘
         │              │              │
         ▼              ▼              ▼
@@ -33,10 +33,22 @@ python test_agent.py
 │ EXTRACTOR │  │VALIDATOR │  │   STORAGE    │
 │(Sonnet 4.5)  │(Haiku 3.5)  │ (Haiku 3.5)  │
 │             │             │               │
-│ Analyzes   │  │ Checks   │  │ Stores to   │
-│ docs for   │  │ for      │  │ Neon DB     │
-│ deps       │  │duplicates│  │             │
+│ Captures   │  │ Flags    │  │ Routes to   │
+│ ALL data   │  │ anomalies│  │ staging     │
+│ + context  │  │ + notes  │  │ tables      │
 └───────────┘  └──────────┘  └──────────────┘
+        │              │              │
+        └──────────────┴──────────────┘
+                       ▼
+              ┌──────────────────┐
+              │ HUMAN VERIFICATION │
+              │ (Reviews EACH piece)│
+              └────────┬─────────┘
+                       ▼
+              ┌──────────────────┐
+              │   TRUTH GRAPH      │
+              │  (Neon PostgreSQL) │
+              └──────────────────┘
 ```
 
 **Cost Optimization:** Haiku for simple tasks = 90% savings on sub-agents!
@@ -62,11 +74,12 @@ curator-agent/
 
 ## How It Works
 
-1. **Input:** Path to documentation file (markdown)
-2. **Extractor:** Reads document, identifies dependencies with ERV relationship types
-3. **Validator:** Checks for duplicates, validates schema compliance
-4. **HITL Check:** HIGH criticality items require human approval
-5. **Storage:** Approved items stored to Neon PostgreSQL knowledge graph
+1. **Input:** Path to documentation file (markdown, code, specs)
+2. **Extractor:** Captures ALL raw data with smart categorization and lineage
+3. **Validator:** Checks confidence, flags anomalies, notes pattern breaks
+4. **Storage:** Routes to staging tables (clean or flagged with reasoning)
+5. **Human Verification:** Human reviews EACH piece, aligns across sources
+6. **Truth Graph:** Only human-verified data enters the knowledge graph
 
 ### ERV Relationship Types
 
@@ -79,13 +92,15 @@ curator-agent/
 | `mitigates` | Reduces risk | Watchdog → InfiniteLoop |
 | `causes` | Leads to | BrownoutReset → StateCorruption |
 
-### Criticality Levels
+### Criticality Levels (Post-Verification Metadata)
 
-| Level | Meaning | HITL Required? |
-|-------|---------|----------------|
-| **HIGH** | Mission-critical | ✅ Yes |
-| **MEDIUM** | Important | ❌ No |
-| **LOW** | Minor impact | ❌ No |
+| Level | Meaning | Assigned By |
+|-------|---------|-------------|
+| **HIGH** | Mission-critical | Human during verification |
+| **MEDIUM** | Important | Human during verification |
+| **LOW** | Minor impact | Human during verification |
+
+> **Note:** Criticality is metadata assigned by humans AFTER verification.
 
 ## Configuration
 

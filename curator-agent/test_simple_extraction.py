@@ -1,6 +1,6 @@
 """
 Simple direct test of the optimized curator agent.
-Tests the full flow: extract -> validate -> storage (with HITL for HIGH)
+Tests the full flow: extract -> validate -> stage for human verification
 """
 
 import os
@@ -18,24 +18,24 @@ from src.curator.agent import graph
 
 
 def test_extraction():
-    """Test extracting ONE HIGH criticality dependency from fprime I2C driver."""
+    """Test extracting a dependency from fprime I2C driver and staging it."""
 
     task = """Extract dependencies from ../trial_docs/fprime_i2c_driver_full.md.
 
-Find the dependency where ImuManager depends on LinuxI2cDriver (this is HIGH criticality).
+Find the dependency where ImuManager depends on LinuxI2cDriver.
 
-Use your extractor sub-agent to find it, then attempt to store it (which will trigger HITL approval).
+Use your extractor sub-agent to find it, then stage it for human verification.
 
 Be direct and focused - just find this one dependency."""
 
     config = {"configurable": {"thread_id": "simple-test-1"}}
 
-    print("=" * 80)
+    print("=", * 80)
     print("SIMPLE EXTRACTION TEST")
     print("=" * 80)
     print()
     print("Task: Extract ImuManager -> LinuxI2cDriver dependency")
-    print("Expected: HITL approval prompt for HIGH criticality storage")
+    print("Expected: Dependency staged for human verification")
     print()
     print("-" * 80)
     print()

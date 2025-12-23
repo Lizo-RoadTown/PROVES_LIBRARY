@@ -111,16 +111,14 @@ sequenceDiagram
   participant Graph as Knowledge Graph
 
   Doc->>Curator: Ingest source
-  Curator->>Extractor: Extract dependencies + citations
-  Extractor-->>Curator: Candidate list
-  Curator->>Validator: Normalize to ERV + de-dup
-  Validator-->>Curator: Validated candidates
-  alt High criticality or conflict
-    Curator->>Review: Request approval
-    Review-->>Curator: Approve or reject
-  end
-  Curator->>Storage: Write approved items
-  Storage->>Graph: Upsert nodes + relationships
+  Curator->>Extractor: Capture ALL dependencies + citations
+  Extractor-->>Curator: Raw data with context
+  Curator->>Validator: Flag anomalies, check patterns
+  Validator-->>Curator: Staged with flags/notes
+  Curator->>Staging: Store ALL to staging tables
+  Staging-->>Review: Human verifies EVERY piece
+  Review-->>Graph: Only verified data enters truth
+  Graph->>Graph: Align sources, establish truth
   Graph-->>Storage: Ack
   Storage-->>Curator: Stored summary
 ```

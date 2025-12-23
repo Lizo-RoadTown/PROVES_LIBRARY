@@ -112,10 +112,10 @@ Extract and store dependencies from a specific document:
 ```
 
 The agent will:
-- Extract all dependencies
-- Validate each one
-- Store HIGH criticality dependencies first
-- Provide summary of what was stored
+- Capture ALL dependencies to staging
+- Validate and flag anomalies
+- Stage everything for human verification
+- Provide summary of what was captured
 
 ### 3. Interactive Mode
 Chat with the agent:
@@ -137,10 +137,10 @@ You: Extract from trial_docs/fprime_i2c_driver_full.md
 Curator: [Calls extract_from_document tool]
 Extracted 25 dependencies from 'fprime_i2c_driver_full.md'...
 
-You: Store the HIGH criticality ones
+You: Stage these for human review
 
-Curator: [Validates and stores each HIGH dependency]
-Stored 15 HIGH criticality dependencies to knowledge graph.
+Curator: [Validates and stages all dependencies]
+Staged 15 dependencies for human verification. All data awaits review.
 ```
 
 ## Environment Requirements
@@ -191,15 +191,15 @@ View traces at: https://smith.langchain.com (PROVES_Library project)
 
 **Agent Execution:**
 1. Calls `extract_from_document("trial_docs/fprime_i2c_driver_full.md")`
-   - Extracts 25 dependencies
-   - 15 HIGH, 8 MEDIUM, 2 LOW
-2. For each HIGH dependency:
+   - Captures ALL 25 dependencies with context
+   - Categorizes and adds lineage metadata
+2. For each dependency:
    - Calls `validate_dependency(source, target, type)`
-   - If OK, calls `store_dependency(...)`
-   - If duplicate, skips it
+   - Flags anomalies, checks patterns
+   - Stages to `staging_extractions`
 3. Returns summary:
-   - "Stored 12 new HIGH criticality dependencies"
-   - "Skipped 3 duplicates"
+   - "Staged 25 dependencies for human verification"
+   - "Flagged 3 with anomalies for review"
    - "Full trace in LangSmith"
 
 ## Troubleshooting

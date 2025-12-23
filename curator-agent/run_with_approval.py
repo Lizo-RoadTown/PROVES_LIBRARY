@@ -1,15 +1,15 @@
 """
-Curator Agent with CLI-based Human-in-the-Loop Approval
+Curator Agent with CLI-based Human Verification
 
 This script runs the curator agent with command-line prompts for
-approving HIGH criticality dependencies before they're stored.
+verifying ALL staged data before it enters the truth graph.
 
 Usage:
     python run_with_approval.py
 
 Features:
-- Pauses execution when HIGH criticality dependencies are detected
-- Shows dependency details for human review
+- Captures ALL dependencies to staging tables
+- Humans verify EVERY staged item before truth graph entry
 - Supports: approve, reject, or CORRECT (edit the AI's output)
 - Maintains conversation state via PostgreSQL checkpointer (Neon)
 - Collects training data for local LLM fine-tuning
@@ -33,7 +33,7 @@ from src.curator.agent import graph
 
 def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
     """
-    Run curator agent with CLI-based human approval for HIGH criticality dependencies.
+    Run curator agent with CLI-based human verification for ALL staged data.
 
     Args:
         task: The task to give the curator (e.g., "Extract dependencies from trial_docs/fprime_i2c_driver_full.md")
@@ -73,7 +73,7 @@ def run_curator_with_approval(task: str, thread_id: str = "curator-session-1"):
         if interrupt_data.get("type") == "dependency_approval":
             print()
             print("=" * 80)
-            print("APPROVAL REQUIRED - HIGH CRITICALITY DEPENDENCY")
+            print("VERIFICATION REQUIRED - STAGED DATA")
             print("=" * 80)
             print()
             print(f"Task: {interrupt_data['task']}")
@@ -204,13 +204,13 @@ LEGACY TEST - Basic connectivity check.
 Read this local file and extract a few dependencies to verify the pipeline works:
 File: {doc_path}
 
-Extract ALL dependencies you find (not just HIGH criticality).
-For each dependency, assess criticality based on mission impact:
-- HIGH: If this fails, mission fails (requires HITL approval before storage)
-- MEDIUM: Degraded operation possible
-- LOW: Convenience/optimization
+Capture ALL dependencies you find to staging tables.
+For each dependency, note its characteristics:
+- Mission impact: If this fails, what happens?
+- Source confidence: How clear is the documentation?
+- Cross-system: Does this span F´/PROVES boundaries?
 
-This is a connectivity test. Store what you find.
+This is a connectivity test. Stage what you find for human verification.
 """
 
     thread_id = f"test-{uuid.uuid4().hex[:8]}"
@@ -245,7 +245,7 @@ Option C: Improve the ontology
 YOU DECIDE: Use your sub-agents (extractor, validator, storage) to execute your chosen approach.
 
 Think step-by-step and explain your reasoning.
-IMPORTANT: Only extract and store HIGH criticality dependencies for this test.
+Capture ALL facts you find to staging tables for human verification.
 """
 
     run_curator_with_approval(task, thread_id="autonomous-exploration-1")
@@ -278,7 +278,7 @@ EXTRACTION FOCUS:
 
 For this test, process at most 3 components to verify the tools work.
 
-Store only HIGH criticality dependencies (they will require approval).
+Capture ALL dependencies to staging tables for human verification.
 For each fact you extract, CITE THE SOURCE URL.
 """
 
@@ -313,7 +313,7 @@ EXTRACTION FOCUS:
 
 For this test, process at most 3 pages/files to verify the tools work.
 
-Store only HIGH criticality dependencies (they will require approval).
+Capture ALL dependencies to staging tables for human verification.
 For each fact you extract, CITE THE SOURCE URL.
 """
 
@@ -327,7 +327,7 @@ if __name__ == "__main__":
 
     print()
     print("Available tests:")
-    print("1. Simple test (extract HIGH criticality from local fprime I2C driver)")
+    print("1. Simple test (extract from local fprime I2C driver)")
     print("2. Autonomous exploration (agent decides what to do)")
     print("3. F' web crawl (fetch from nasa/fprime GitHub repo)")
     print("4. ProvesKit web crawl (fetch from docs.proveskit.space)")

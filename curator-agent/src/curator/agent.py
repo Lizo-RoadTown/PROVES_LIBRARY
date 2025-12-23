@@ -395,12 +395,12 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
             except Exception as e:
                 print(f"[Training] Could not log interaction: {e}")
 
-        print("[HITL] Requesting human approval for HIGH criticality dependency...")
+        print("[HITL] Requesting human verification for staged data...")
         approval = interrupt({
             "type": "dependency_approval",
             "task": task,
-            "criticality": "HIGH",
-            "message": "This dependency is marked as HIGH criticality (mission-critical). Review before storing.",
+            "criticality": "STAGED",
+            "message": "This data is staged for human verification. Review before promoting to truth graph.",
             "instructions": "Reply with 'approved', 'rejected', or provide corrections as JSON."
         })
 
@@ -445,8 +445,8 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
                     "messages": [
                         AIMessage(
                             content=(
-                                "[HITL] Human approved HIGH criticality dependency. "
-                                "Executed storage_agent.\n\n"
+                                "[HITL] Human verified staged data. "
+                                "Promoted to truth graph.\n\n"
                                 f"{storage_result}"
                             )
                         )
@@ -535,7 +535,7 @@ Humans verify EACH piece and align across sources. Only human-verified data beco
                     print(f"[Training] Could not record rejection: {e}")
             
             return {
-                "messages": [AIMessage(content="[HITL] Human rejected HIGH criticality dependency. Skipped storage.")],
+                "messages": [AIMessage(content="[HITL] Human rejected staged data. Not promoted to truth graph.")],
                 "deferred_storage": [],
                 "storage_approval": None,
                 "current_interaction_id": None,
