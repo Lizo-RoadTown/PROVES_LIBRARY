@@ -32,6 +32,12 @@ library/
 - No attribution to individuals (structure owns outcomes)
 - Tags for searchability
 
+**Curation Pipeline (Database):**
+- Extractor writes candidates to `staging_extractions` with evidence + confidence
+- Validator updates status and can request more evidence
+- Storage promotes approved items into domain tables and core entities
+- Schema is created by `scripts/setup_domain_tables.py`
+
 ### 2. MCP Server
 
 **Purpose:** Make the library interrogatable through structured queries
@@ -48,38 +54,29 @@ flowchart-elk TB
     end
 
     subgraph Server[MCP Server]
-        API[FastAPI Endpoints]
-        Search[Search Engine]
-        Indexer[Library Indexer]
+        MCP[FastMCP Tools]
+        Registry[source_registry.yaml]
         Cache[Response Cache]
     end
 
     subgraph Storage[Data Layer]
-        Files[(Markdown Files)]
-        DB[(SQLite Metadata)]
-        Embeddings[(Vector Store)]
+        Graph[(Neon PostgreSQL + pgvector)]
+        Library[(Library entries)]
     end
 
-    VSCode -->|search, fetch| API
-    Scanner -->|search, get_artifacts| API
-    CLI -->|list, fetch| API
-    Builder -->|search patterns| API
+    VSCode -->|search, fetch| MCP
+    Scanner -->|search, evidence| MCP
+    CLI -->|list, fetch| MCP
+    Builder -->|search patterns| MCP
 
-    API --> Search
-    API --> Indexer
-    API --> Cache
+    MCP --> Graph
+    MCP --> Registry
+    MCP --> Cache
+    Graph --> Library
 
-    Search --> DB
-    Search --> Embeddings
-    Indexer --> Files
-    Indexer --> DB
-    Indexer --> Embeddings
-
-    Cache -.Cache hits.-> API
-
-    style API fill:#4D96FF
-    style Search fill:#6BCB77
-    style Files fill:#FFD93D
+    style MCP fill:#4D96FF
+    style Graph fill:#6BCB77
+    style Library fill:#FFD93D
 ```
 
 **Key Endpoints:**
@@ -89,9 +86,9 @@ flowchart-elk TB
 - `get_artifacts(entry_id)` - Fetch related artifacts
 
 **Technology:**
-- Python FastAPI or similar
-- SQLite for metadata indexing
-- Embeddings for semantic search (sentence-transformers)
+- FastMCP server (Python)
+- Neon PostgreSQL + pgvector
+- `source_registry.yaml` for pre-mapped lookups
 - MCP protocol implementation
 
 **Why MCP?**

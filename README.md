@@ -84,6 +84,7 @@ This project uses AI agents to automatically extract dependencies from technical
 - Neon PostgreSQL database with knowledge graph schema (9 tables)
 - LangGraph checkpointer tables for agent state persistence
 - Scripts for database management and schema application
+- Staging + domain tables for evidence, confidence, and promotion workflow
 
 ### 🔄 Phase 3: Curator Agent — IN DEVELOPMENT
 - LangGraph orchestration with sub-agents-as-tools pattern
@@ -127,6 +128,7 @@ cp .env.example .env
 
 # Initialize database
 python scripts/apply_schema.py
+python scripts/setup_domain_tables.py
 python scripts/setup_checkpointer.py
 
 # Run the curator agent
@@ -152,6 +154,12 @@ flowchart-elk TD
   E --> H[🗄️ Knowledge Graph]
   H --> I[📊 Visualizations & Queries]
 ```
+
+**Current pipeline behavior:**
+- Extractor writes candidates to `staging_extractions` with evidence + confidence.
+- Validator updates status (accept/reject/needs_more_evidence) and can loop for refinement.
+- Storage promotes approved items into domain tables and core graph entities.
+- MCP server reads from the graph and uses `source_registry.yaml` for targeted lookups.
 
 ### Lifecycle: Curation Run
 

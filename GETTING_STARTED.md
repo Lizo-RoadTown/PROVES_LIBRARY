@@ -10,6 +10,7 @@
 - ✅ Neon PostgreSQL knowledge graph (cloud-hosted)
 - ✅ LangGraph checkpointer for agent state persistence
 - ✅ Infrastructure utilities for database operations
+- ✅ Domain staging tables (evidence + confidence workflow)
 
 ---
 
@@ -81,6 +82,7 @@ cp .env.example .env
 ```bash
 # Apply knowledge graph schema to Neon database
 python scripts/apply_schema.py
+python scripts/setup_domain_tables.py
 
 # Create LangGraph checkpointer tables
 python scripts/setup_checkpointer.py
@@ -160,6 +162,7 @@ PROVES_LIBRARY/
 │   ├── db_connector.py  # Database connection pooling
 │   ├── graph_manager.py # Knowledge graph CRUD
 │   ├── apply_schema.py  # Schema initialization
+│   ├── setup_domain_tables.py  # Staging + domain tables
 │   └── setup_checkpointer.py  # LangGraph tables
 │
 ├── notebooks/           # Jupyter notebooks

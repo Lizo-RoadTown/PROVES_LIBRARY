@@ -25,6 +25,7 @@ PROVES_LIBRARY/
 │   └── README.md               # MCP server documentation
 ├── scripts/                    # Infrastructure utilities
 │   ├── apply_schema.py         # Initialize knowledge graph schema
+│   ├── setup_domain_tables.py  # Staging + domain tables (evidence/confidence)
 │   ├── setup_checkpointer.py   # Create LangGraph checkpoint tables
 │   ├── db_connector.py         # PostgreSQL connection pooling
 │   └── graph_manager.py        # Knowledge graph CRUD
@@ -168,6 +169,7 @@ curator-agent/
 - `db_connector.py` - Database connection pooling for Neon PostgreSQL
 - `graph_manager.py` - Knowledge graph CRUD operations
 - `apply_schema.py` - Database initialization and schema application
+- `setup_domain_tables.py` - Staging + domain tables (evidence/confidence)
 
 **Documentation Sync (Keep):**
 - `doc_sync_manager.py` - Documentation synchronization framework
@@ -388,7 +390,7 @@ archive/
 │   ├── agents/             # Original agents/ directory
 │   └── curator_agent.py    # Standalone curator (pre-LangGraph)
 ├── design-docs/            # Unimplemented designs
-│   ├── mcp-server/         # MCP server design
+│   ├── mcp-server/         # Legacy MCP server design (pre-implementation)
 │   └── risk-scanner/       # Risk scanner design
 ├── outdated-docs/          # Superseded documentation
 └── old-configs/            # Deprecated configurations
@@ -511,7 +513,7 @@ Don't update for:
 
 ### 2024-12-21: Initial Folder Structure Definition
 - Archived old agents/ directory (superseded by curator-agent/)
-- Archived mcp-server/ and risk-scanner/ (design-only, not implemented)
+  - Archived design-only MCP server docs (implementation now in /mcp-server) and risk-scanner design
 - Moved .env.template to archive (contains outdated Neo4j config)
 - Established curator-agent/ as primary agent implementation
 - Created archive/ structure with READMEs
