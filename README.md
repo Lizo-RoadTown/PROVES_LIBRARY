@@ -43,6 +43,55 @@ They need three technical areas:
 
 ---
 
+## Theoretical Foundation: Nearly Decomposable Systems
+
+Our approach is grounded in **Herbert Simon's theory of nearly decomposable systems** - complex systems that can be analyzed as subsystems with specific interaction patterns.
+
+### Three-Layer Dependency Model
+
+We track dependencies across three layers simultaneously:
+
+1. **Digital Layer** - Code, APIs, protocols, data flows
+   - Example: "I2C driver function calls power management API"
+
+2. **Organizational Layer** - Teams, processes, documentation, knowledge transfer
+   - Example: "Team A's code changes require Team B's review due to shared I2C bus"
+
+3. **Physical Layer** - Hardware, sensors, actuators, physical constraints
+   - Example: "MSP430 GPIO pin physically connected to RP2350 wake signal"
+
+### Rich Dependency Types
+
+Rather than simple "A depends on B", we capture:
+
+- **Interfaces** - How subsystems communicate (API calls, message passing, shared state)
+- **Couplings** - Strength and type of interaction (tight/loose, synchronous/asynchronous)
+- **Bonds** - Dependencies that hold the system together (power, timing, data flow)
+
+Each dependency is characterized by:
+- **Type** - depends_on, enables, conflicts_with, mitigates, causes
+- **Layer** - digital, organizational, physical
+- **Strength** - tight coupling (failure cascades) vs loose coupling (isolated failures)
+- **Direction** - unidirectional, bidirectional, cyclic
+
+### Why This Matters
+
+**Nearly decomposable systems theory** explains why hidden dependencies cause failures:
+- Systems appear independent (subsystems are "nearly" decomposable)
+- But they interact through subtle cross-layer dependencies
+- Changes in one subsystem cascade unpredictably to others
+- Traditional documentation captures only obvious dependencies within one layer
+
+**Our solution:** Build a multi-layer dependency graph that reveals the hidden coupling structure, enabling:
+- **Risk assessment** - Predict failure cascades from proposed changes
+- **Impact analysis** - Identify all affected subsystems across layers
+- **Optimization** - Reduce tight coupling, strengthen critical bonds
+- **GNN training** - Learn patterns in how dependencies cause failures
+
+This transforms the dependency graph from a static knowledge base into a **predictive model** of system behavior.
+
+---
+
 ## Our Solution: Truth Layer Architecture
 
 We've built a **knowledge graph construction pipeline** with three innovations:
@@ -152,19 +201,22 @@ flowchart TB
 - Retroactive verification of existing data ([retroactive_verify_lineage.py](curator-agent/retroactive_verify_lineage.py))
 - Complete design document ([ID_LINEAGE_SYSTEM.md](curator-agent/ID_LINEAGE_SYSTEM.md))
 
-### Phase 2: Relationship Extraction ✅
-**Problem:** Dependencies exist before all entities are extracted. How do you capture them?
+### Phase 2: Rich Dependency Extraction ✅
+**Problem:** Dependencies exist before all entities are extracted. How do you capture them with full context?
 
-**Solution:** Forward-looking relationship staging
+**Solution:** Forward-looking relationship staging with multi-layer dependency characterization
 - `staging_relationships` table stores relationships with text references
+- Captures **interfaces, couplings, and bonds** (nearly decomposable systems framework)
+- Tracks **layer** (digital, organizational, physical) and **strength** (tight/loose coupling)
 - Auto-resolution trigger matches text to entities when extracted
 - Tracks resolution status (unresolved → partially_resolved → resolved)
 - Handles ambiguity (multiple possible matches flagged for human review)
 
 **Enables:**
-- Complete dependency graph from incomplete knowledge
-- Graph neural network preparation
-- Cross-system dependency analysis
+- **Rich dependency graph** - Not just "A depends on B" but type, layer, strength, direction
+- **Cross-layer analysis** - Reveal hidden dependencies that span digital/org/physical boundaries
+- **GNN preparation** - Training data for predictive models (risk, impact, optimization)
+- **Nearly decomposable systems analysis** - Identify tight coupling that causes failure cascades
 
 ### Phase 3: Notion Human-in-the-Loop ✅
 **Problem:** How do you give humans oversight without slowing down the pipeline?
@@ -532,11 +584,89 @@ This is open research. Contributions welcome!
 - [ ] Semantic relationship matching
 - [ ] Cross-system dependency analysis
 
-### Q3 2026: Graph Neural Network
-- [ ] Train GNN on verified relationships
-- [ ] Predict failure cascades from proposed changes
-- [ ] Validate predictions against historical failures
-- [ ] Measure precision/recall
+### Q3 2026: Graph Neural Network for Predictive Modeling
+
+The rich multi-layer dependency graph becomes training data for multiple types of predictive models.
+
+**Why Rich Dependencies Enable Better Models:**
+
+Traditional dependency graphs store "A depends on B" as a binary edge. Our graph captures:
+
+- **Type** (depends_on, enables, conflicts_with, mitigates, causes)
+- **Layer** (digital, organizational, physical)
+- **Strength** (tight coupling → failure cascades, loose coupling → isolated failures)
+- **Direction** (unidirectional, bidirectional, cyclic)
+
+These become **feature vectors** for the GNN, enabling it to learn:
+
+- *"Tight digital coupling + organizational dependency → 85% cascade probability"*
+- *"Physical bond + loose digital coupling → safe to modify"*
+- *"Bidirectional dependency + high strength → critical bond, must maintain"*
+
+**Model Types We'll Train:**
+
+1. **Risk Prediction Model**
+   - Input: Proposed change to entity X
+   - Output: Probability distribution of failure cascades to entities Y, Z, W...
+   - Training: Historical failures with known cascades
+   - Validation: Predict known incidents, measure precision/recall
+
+2. **Impact Analysis Model**
+   - Input: Modified entity + modification type
+   - Output: All affected subsystems ranked by impact severity, grouped by layer
+   - Training: Change logs + downstream effects
+   - Validation: Against documented integration issues
+
+3. **Coupling Optimization Model**
+   - Input: Current dependency graph
+   - Output: Recommended decoupling actions ranked by risk reduction
+   - Training: Successful refactorings that reduced failures
+   - Validation: Simulate changes, measure coupling metrics
+
+4. **Cross-Layer Dependency Discovery**
+   - Input: Known dependencies in 1-2 layers
+   - Output: Predicted hidden dependencies in other layers
+   - Training: Complete multi-layer graphs
+   - Validation: Against expert-identified dependencies
+
+**GNN Architecture Guided by Nearly Decomposable Systems:**
+
+Herbert Simon's theory suggests:
+
+- Subsystems have **strong internal coupling** (within subsystems)
+- Subsystems have **weak cross-coupling** (between subsystems)
+- But these weak couplings cause **unexpected cascades**
+
+Our GNN architecture reflects this:
+
+- **Node features:** Entity type, layer memberships, centrality
+- **Edge features:** Type, layer, strength, direction (the rich dependency data)
+- **Graph attention:** Learn which weak couplings matter most
+- **Multi-layer message passing:** Propagate information across digital/org/physical layers
+- **Cascade prediction:** Model failure propagation paths through weak cross-couplings
+
+**Implementation Roadmap:**
+
+- [ ] Build training dataset from verified dependency graph
+- [ ] Train GNN on rich dependency features (type, layer, strength, direction)
+- [ ] Implement risk prediction model (failure cascade forecasting)
+- [ ] Validate predictions against CubeSat historical failures
+- [ ] Expand to impact analysis and optimization models
+- [ ] Measure precision/recall/F1 for each model type
+- [ ] Publish results comparing binary edges vs rich dependencies
+
+**Why This Matters:**
+
+A dependency graph with only "A depends on B" can tell you *what* is connected.
+
+A rich multi-layer dependency graph with type/layer/strength/direction can tell you:
+
+- **Why** they're connected (enables, depends_on, conflicts_with)
+- **How tightly** they're coupled (predicts cascade probability)
+- **At what level** the coupling exists (digital code? organizational process? physical wire?)
+- **What happens if you break it** (tight coupling → cascades, loose → safe)
+
+This transforms the graph from a **static knowledge base** into a **predictive model** of system behavior - exactly what's needed for risk assessment and failure prevention.
 
 ### Q4 2026: Generalization
 - [ ] Apply to second domain (software ecosystem? medical knowledge?)
