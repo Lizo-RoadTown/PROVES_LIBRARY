@@ -28,19 +28,6 @@ This isn't just a CubeSat problem. It's a **knowledge integration problem** that
 
 **The challenge:** How do you take unstructured, fragmented knowledge and build a composable, provably-correct knowledge graph that reveals hidden relationships and enables risk assessment?
 
-### This Is a Hard Problem
-
-Even DARPA is struggling with this. Their [DARPAVERSE program](https://sam.gov/opp/c5f384f7d1234d9497e8f9c6e9e7c5c5/view) seeks to solve nearly the same problem for multi-domain military simulations:
-
-> *"DARPAVERSE challenges the current operating assumption that multi-domain models must be derived from **stove-piped and monolithic simulation environments** that result in models that are **not maintainable, not factorable, and not composable**..."*
-
-They need three technical areas:
-1. **TA1: Adaptive Software Repository** - Composable reduced-order models from complex systems
-2. **TA2: Adaptive Co-Design and Orchestration** - Formal methods for correctness and composition
-3. **TA3: Adaptive Definition and Visualization** - Natural language interface for non-experts
-
-**We're solving the same problem, just in a different domain.**
-
 ---
 
 ## Theoretical Foundation: Nearly Decomposable Systems
@@ -229,20 +216,7 @@ flowchart TB
 **Curator Workflow:**
 - **Daily (5 min):** Check errors, generate metrics summary
 - **Weekly (15 min):** Trend analysis, identify optimization opportunities
-- **As-needed:** Custom observations (tool gaps, restrictions, cost savings)
-
-**Budget:** $17/month (under $20 target) - all three databases fit in Notion free tier
-
-### Phase 4: Cost Optimization ✅
-**Problem:** LLM costs can explode at scale. How do you stay under budget?
-
-**Solution:** Isolated threads + prompt caching + result eviction
-- **Isolated threads** - One thread per page (predictable costs)
-- **Prompt caching** - 10x cost reduction on repeated context
-- **Result eviction** - Long outputs saved to files, not held in context
-- **Model selection** - Sonnet 4.5 for extraction, Haiku 3.5 for validation (90% cheaper)
-
-**Result:** $0.20/page × 60 pages = $12/month extraction cost
+- **As-needed:** Custom observations (tool gaps, restrictions, optimization opportunities)
 
 ---
 
@@ -292,21 +266,6 @@ We're applying this to prevent CubeSat mission failures (88% failure rate):
 - GNN trained on verified relationships
 - Predicts: "Changing X will break Y with Z% confidence"
 - Human validation: Correct predictions improve model, errors get flagged
-
-### This Is What DARPA Needs
-
-| DARPAVERSE TA | PROVES Library Equivalent | Status |
-|---------------|---------------------------|--------|
-| **TA1: Adaptive Software Repository** | Entity extraction + composable graph | ✅ Built |
-| **TA2: Adaptive Co-Design & Orchestration** | Relationship validation + lineage tracking | ✅ Built |
-| **TA3: Adaptive Definition & Visualization** | LLM extraction + Notion oversight | ✅ Built |
-| Integration | Graph Neural Network | 📋 Planned |
-
-We've solved the core problems:
-- ✅ Composable knowledge from fragmented sources
-- ✅ Correctness verification (lineage tracking)
-- ✅ Human-in-the-loop for truth validation
-- ✅ Cost-effective at scale ($17/month)
 
 ---
 
@@ -493,8 +452,6 @@ CREATE TRIGGER auto_resolve
 | **Lineage Confidence** | 0.67 avg | Retroactive verification (honest assessment) |
 | **Database Tables** | 30+ | Including lineage, relationships, aliases |
 | **Notion Databases** | 3 | Extraction Review, Error Log, Curator Observations |
-| **Monthly Cost** | $17 | Under $20 budget |
-| **Budget Breakdown** | $12 extraction + $5 Notion | Notion free tier for databases |
 
 ### Trial Results (Manual Analysis)
 
@@ -523,10 +480,7 @@ CREATE TRIGGER auto_resolve
 3. **Composition:** Can we build relationships before all entities exist?
    - **Answer so far:** Yes, forward-looking relationship staging with auto-resolution
 
-4. **Scalability:** Can this work at $20/month budget for 60 pages?
-   - **Answer so far:** Yes, isolated threads + prompt caching = $17/month projected
-
-5. **Generalization:** Can this methodology apply to other domains?
+4. **Generalization:** Can this methodology apply to other domains?
    - **Answer so far:** TBD - CubeSat is proving ground, next: multi-ecosystem, then cross-domain
 
 ### Why This Is Publishable Research
@@ -534,15 +488,9 @@ CREATE TRIGGER auto_resolve
 **Novel Contributions:**
 1. **Cryptographic lineage tracking** for LLM-extracted knowledge (SHA256 + byte offsets)
 2. **Forward-looking relationship extraction** (capture before entities exist)
-3. **Cost-optimized pipeline** ($0.20/page with isolated threads + prompt caching)
+3. **Multi-layer dependency modeling** (digital, organizational, physical layers with rich characterization)
 4. **Human-in-the-loop at scale** (Notion integration with curator oversight)
 5. **Truth layer architecture** (progressive refinement with provable correctness)
-
-**Comparison to DARPA DARPAVERSE:**
-- Same problem (fragmented knowledge → composable models)
-- Same challenges (correctness, composition, usability)
-- Different domain (CubeSats vs military simulations)
-- **Proof that this is hard:** Government funding multi-year program to solve it
 
 **Potential Publications:**
 - IEEE Aerospace Conference (CubeSat application)
@@ -705,14 +653,13 @@ eosborn@cpp.edu
 
 ## Acknowledgments
 
-This project demonstrates that hard problems in knowledge integration are solvable with:
-- LLMs for extraction (not perfect, but verifiable)
-- Cryptographic lineage for correctness
-- Human-in-the-loop for truth validation
-- Cost optimization for scalability
+This project demonstrates a methodology for knowledge integration across fragmented systems:
 
-If DARPA is funding a multi-year program to solve this for military simulations, and we're solving it for CubeSats on a student budget, **the methodology is the real contribution**.
+- LLM extraction with cryptographic lineage verification
+- Multi-layer dependency modeling grounded in nearly decomposable systems theory
+- Human-in-the-loop truth validation at scale
+- Forward-looking relationship extraction enabling composition before complete knowledge
 
-The knowledge graph is just the beginning. The real value is proving we can integrate fragmented knowledge at scale with provable correctness.
+The knowledge graph is the foundation. The real contribution is demonstrating that we can integrate fragmented knowledge at scale with provable correctness, revealing hidden dependencies that cause system failures.
 
-That's what makes this publishable, generalizable, and impactful beyond just CubeSats.
+This methodology is generalizable beyond CubeSats to any domain facing knowledge fragmentation: enterprise systems, supply chains, medical knowledge, or scientific research.
