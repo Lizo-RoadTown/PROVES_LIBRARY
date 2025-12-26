@@ -267,57 +267,36 @@ We're applying this to prevent CubeSat mission failures (88% failure rate):
 
 ---
 
-## Quick Start
+## Installation
 
-### Prerequisites
-- Python 3.11+
-- API keys: [Anthropic](https://console.anthropic.com/), [Neon PostgreSQL](https://neon.tech/)
-- (Optional) [Notion](https://www.notion.so/) for human review interface
+### Requirements
 
-### Setup
+**Python 3.11+**
 
+**Core Dependencies:**
+- **LangGraph & LangChain** - Agentic pipeline orchestration
+- **Anthropic Claude** - LLM extraction and validation
+- **PostgreSQL (Neon)** - Knowledge graph storage
+- **pgvector** - Vector embeddings for semantic search
+- **Notion API** (optional) - Human review interface
+
+**Key Libraries:**
 ```bash
-# Clone repository
-git clone https://github.com/Lizo-RoadTown/PROVES_LIBRARY.git
-cd PROVES_LIBRARY
-
-# Create virtual environment
-python -m venv .venv
-.venv\Scripts\activate  # Windows
-# source .venv/bin/activate # macOS/Linux
-
-# Install dependencies
+# Install all dependencies
 pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-# Edit .env with your API keys:
-# ANTHROPIC_API_KEY=sk-ant-...
-# NEON_DATABASE_URL=postgresql://...
-
-# Initialize database
-cd curator-agent
-python -c "
-import psycopg, os
-from dotenv import load_dotenv
-load_dotenv('../.env')
-conn = psycopg.connect(os.environ['NEON_DATABASE_URL'])
-with open('migrations/001_add_lineage_and_relationships.sql') as f:
-    conn.execute(f.read())
-conn.commit()
-print('Database schema initialized')
-"
-
-# Run extraction
-python daily_extraction.py  # Extracts from first page
-
-# (Optional) Set up Notion human review
-# Follow: curator-agent/NOTION_SETUP_GUIDE.md
 ```
 
-### Verify Setup
+Main packages installed:
+- `langgraph` - Agentic workflow orchestration
+- `langchain-anthropic` - Claude integration
+- `psycopg[binary,pool]` - PostgreSQL connectivity
+- `pgvector` - Vector similarity search
+- `sentence-transformers` - Embeddings
+- `fastapi` - MCP server
+- `tree-sitter` - AST parsing for code analysis
+- `langsmith` - Observability and tracing
 
-Check the [COMPLETE_NOTION_INTEGRATION.md](curator-agent/COMPLETE_NOTION_INTEGRATION.md) guide for detailed verification steps and troubleshooting.
+For detailed setup instructions, see [COMPLETE_NOTION_INTEGRATION.md](curator-agent/COMPLETE_NOTION_INTEGRATION.md).
 
 ---
 
