@@ -669,16 +669,7 @@ This project demonstrates a methodology for knowledge integration across fragmen
 
 This work draws inspiration from graph neural network research in Earth observation systems:
 
-```bibtex
-@misc{armin_mehrabian_2025,
-  author       = { Armin Mehrabian },
-  title        = { nasa-eosdis-heterogeneous-gnn (Revision 7e71e62) },
-  year         = 2025,
-  url          = { https://huggingface.co/arminmehrabian/nasa-eosdis-heterogeneous-gnn },
-  doi          = { 10.57967/hf/6789 },
-  publisher    = { Hugging Face }
-}
-```
+> Armin Mehrabian. (2025). *nasa-eosdis-heterogeneous-gnn* (Revision 7e71e62). Hugging Face. [https://huggingface.co/arminmehrabian/nasa-eosdis-heterogeneous-gnn](https://huggingface.co/arminmehrabian/nasa-eosdis-heterogeneous-gnn). DOI: [10.57967/hf/6789](https://doi.org/10.57967/hf/6789)
 
 ### Contribution
 
