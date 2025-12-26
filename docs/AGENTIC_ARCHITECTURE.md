@@ -3,7 +3,7 @@
 ## System Overview
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     subgraph Query[User Query Layer]
         User[University Team Query]
@@ -145,7 +145,7 @@ POST /graph/cascade
 ### Hybrid RAG: Graph + Vector
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart LR
     Query[User Query] --> Router[Query Router]
     Router -->|Structural query| Graph[Graph Query Engine]

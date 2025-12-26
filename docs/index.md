@@ -45,7 +45,7 @@ cross-team failures when critical knowledge disappears.
 ## dY?-‹,? Agentic AI Structure
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
   subgraph Sources
     A1[F Prime docs]

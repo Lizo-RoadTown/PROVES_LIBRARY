@@ -53,7 +53,7 @@ Neither F´ documentation nor PROVES Kit documentation mentions the other system
 ### The Hidden Dependency
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart LR
     subgraph "F´ System (NASA/JPL)"
         IM[ImuManager<br/>I2C Device Manager]
@@ -203,7 +203,7 @@ No alert that power sequencing is wrong
 ### Bus Sharing Conflicts
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     subgraph "F´ Configuration"
         IM_ADDR[ImuManager<br/>Address: 0x68]
@@ -278,7 +278,7 @@ Attitude determination fails
 ### Missing Integration
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     START[F´ I2C Read Operation]
     READ{I2C Status}
@@ -358,7 +358,7 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 ### Team Interface Strength
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart LR
     subgraph "NASA/JPL Team"
         F_TEAM[F´ Core Team]

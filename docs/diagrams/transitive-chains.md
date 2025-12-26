@@ -31,7 +31,7 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 ### Complete Dependency Path
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     subgraph "Layer 1: Application"
         APP[Application Component<br/>Requests IMU data]
@@ -214,7 +214,7 @@ sequenceDiagram
 ### Failure Modes
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     START[main calls configureTopology]
 
@@ -258,7 +258,7 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
 ### When I2C Read Fails
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     START[RateGroup.run every 100ms]
 
@@ -342,7 +342,7 @@ This diagram shows how F´'s build system creates your code. When you run `fprim
 ### Compilation Dependency Chain
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart LR
     subgraph "User Commands"
         USER[Developer runs:<br/>fprime-util build]

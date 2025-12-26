@@ -45,7 +45,7 @@ library/
 **Location:** `/mcp-server/`
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     subgraph Clients[MCP Clients]
         VSCode[VS Code Extension]
@@ -105,7 +105,7 @@ flowchart TB
 **Location:** `/risk-scanner/`
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     subgraph Input[Scan Input]
         Repo[Repository Code]
@@ -193,7 +193,7 @@ flowchart TB
 ## Data Flow
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart LR
     Team[University Team] --> Scanner[Risk Scanner]
     Scanner -->|PUSH: Alert| Team
@@ -247,7 +247,7 @@ sequenceDiagram
 ## Future: Agentic Systems
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     subgraph Phase4[Phase 4 - Agentic Automation]
         Curator[Curator Agent<br/>LLM-powered normalization]

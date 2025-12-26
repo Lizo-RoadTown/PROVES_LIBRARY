@@ -117,6 +117,7 @@ Raw Sources → AI Extraction → Validation → Human Review → Truth Graph
 ## Architecture Overview
 
 ```mermaid
+%%{init: {'flowchart': {'curve': 'linear'}}}%%
 flowchart TB
   subgraph Sources["Fragmented Sources"]
     A1[Documentation]
@@ -521,6 +522,7 @@ Our GNN architecture reflects this:
 **Architecture Diagram:**
 
 ```mermaid
+%%{init: {'flowchart': {'curve': 'linear'}}}%%
 flowchart TB
   subgraph PROVES_LIBRARY["PROVES_LIBRARY (This Repo)"]
     A[Documentation Sources]

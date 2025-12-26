@@ -84,6 +84,7 @@ Jekyll Cayman theme is mobile-friendly and works on all devices.
 3. Add Mermaid diagrams:
    ````markdown
    ```mermaid
+%%{init: {'flowchart': {'curve': 'linear'}}}%%
    graph TB
        A[Start] --> B[End]
    ```

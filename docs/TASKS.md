@@ -5,7 +5,7 @@ This document breaks down the work needed to build the PROVES Library system.
 ## Implementation Phases Overview
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart LR
     P1[Phase 1<br/>Foundation]
     P2[Phase 2<br/>Core Functionality]
@@ -25,7 +25,7 @@ flowchart LR
 ## Phase Dependencies
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
 flowchart TB
     subgraph Phase1[Phase 1 - Foundation]
         P1A[Library Structure]
