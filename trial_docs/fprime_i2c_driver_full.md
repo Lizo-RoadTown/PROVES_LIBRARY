@@ -30,7 +30,29 @@ Consider an [MPU6050 IMU sensor](https://cdn-learn.adafruit.com/downloads/pdf/mp
 - The application layer uses the device manager component to obtain sensor data when needed.
 
 ```mermaid
-%%{init: {'flowchart': {'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 graph LR
     subgraph SW["F´ Software"]
         A[Application Layer] -->|Read sensor data| B[ImuManager<br/>Device Manager]

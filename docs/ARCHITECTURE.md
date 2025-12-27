@@ -45,7 +45,29 @@ library/
 **Location:** `/mcp-server/`
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     subgraph Clients[MCP Clients]
         VSCode[VS Code Extension]
@@ -105,7 +127,29 @@ flowchart TB
 **Location:** `/risk-scanner/`
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     subgraph Input[Scan Input]
         Repo[Repository Code]
@@ -193,7 +237,29 @@ flowchart TB
 ## Data Flow
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart LR
     Team[University Team] --> Scanner[Risk Scanner]
     Scanner -->|PUSH: Alert| Team
@@ -207,6 +273,27 @@ flowchart LR
 ## Push/Pull Mechanism
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'actorBkg': '#e3f2fd',
+    'actorBorder': '#1976d2',
+    'actorTextColor': '#1a1a1a',
+    'signalColor': '#546e7a',
+    'signalTextColor': '#1a1a1a',
+    'labelBoxBkgColor': '#fff8e1',
+    'labelBoxBorderColor': '#f9a825',
+    'loopTextColor': '#1a1a1a',
+    'noteBkgColor': '#f3e5f5',
+    'noteBorderColor': '#7b1fa2',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'sequence': {
+    'mirrorActors': false,
+    'messageAlign': 'center'
+  }
+}}%%
 sequenceDiagram
     participant Team as University Team
     participant Repo as Team Repository
@@ -247,7 +334,29 @@ sequenceDiagram
 ## Future: Agentic Systems
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     subgraph Phase4[Phase 4 - Agentic Automation]
         Curator[Curator Agent<br/>LLM-powered normalization]

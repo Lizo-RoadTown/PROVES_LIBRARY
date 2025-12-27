@@ -5,7 +5,29 @@ This document breaks down the work needed to build the PROVES Library system.
 ## Implementation Phases Overview
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart LR
     P1[Phase 1<br/>Foundation]
     P2[Phase 2<br/>Core Functionality]
@@ -25,7 +47,29 @@ flowchart LR
 ## Phase Dependencies
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     subgraph Phase1[Phase 1 - Foundation]
         P1A[Library Structure]

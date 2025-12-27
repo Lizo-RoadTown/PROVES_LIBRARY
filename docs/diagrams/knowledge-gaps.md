@@ -34,6 +34,27 @@ This sequence diagram shows the power-on process for an I2C device, with all the
 ### The Missing Specification
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'actorBkg': '#e3f2fd',
+    'actorBorder': '#1976d2',
+    'actorTextColor': '#1a1a1a',
+    'signalColor': '#546e7a',
+    'signalTextColor': '#1a1a1a',
+    'labelBoxBkgColor': '#fff8e1',
+    'labelBoxBorderColor': '#f9a825',
+    'loopTextColor': '#1a1a1a',
+    'noteBkgColor': '#f3e5f5',
+    'noteBorderColor': '#7b1fa2',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'sequence': {
+    'mirrorActors': false,
+    'messageAlign': 'center'
+  }
+}}%%
 sequenceDiagram
     participant LSM as LoadSwitchManager
     participant Power as Power Supply
@@ -86,7 +107,29 @@ sequenceDiagram
 ### Real-World Impact
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     START[New developer integrates IMU]
 
@@ -143,7 +186,29 @@ This diagram shows electrical characteristics that software developers never thi
 ### The Missing Specification
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     subgraph "Power Supply Characteristics"
         V_NOM[Nominal Voltage<br/>3.3V]
@@ -234,6 +299,16 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
 ### The Missing Integration
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryBorderColor': '#1976d2',
+    'lineColor': '#546e7a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  }
+}}%%
 stateDiagram-v2
     [*] --> Normal: System boot
 
@@ -327,7 +402,29 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ### The Missing Architecture
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
         BUS[I2C Bus /dev/i2c-1<br/>SDA/SCL]
@@ -385,6 +482,27 @@ flowchart TB
 ### Conflict Scenarios
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'actorBkg': '#e3f2fd',
+    'actorBorder': '#1976d2',
+    'actorTextColor': '#1a1a1a',
+    'signalColor': '#546e7a',
+    'signalTextColor': '#1a1a1a',
+    'labelBoxBkgColor': '#fff8e1',
+    'labelBoxBorderColor': '#f9a825',
+    'loopTextColor': '#1a1a1a',
+    'noteBkgColor': '#f3e5f5',
+    'noteBorderColor': '#7b1fa2',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'sequence': {
+    'mirrorActors': false,
+    'messageAlign': 'center'
+  }
+}}%%
 sequenceDiagram
     participant App as Application
     participant IMU as IMU Manager
@@ -453,7 +571,29 @@ This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare meta
 ### The Missing Cross-Platform Guide
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart LR
     subgraph "F´ Framework"
         F_LINUX[LinuxI2cDriver<br/>Linux]
@@ -550,7 +690,13 @@ flowchart LR
 ### Gap Distribution
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#ff6b6b', 'pie2':'#ffa500', 'pie3':'#ffd700', 'pie4':'#ff8c42', 'pie5':'#ffb347'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  }
+}}%%
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
     "Hardware Parameters" : 5
@@ -572,6 +718,13 @@ pie title Knowledge Gaps by Category
 ### Time to Discover
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  }
+}}%%
 gantt
     title Typical Discovery Timeline for Knowledge Gaps
     dateFormat YYYY-MM-DD

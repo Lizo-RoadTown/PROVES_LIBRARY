@@ -31,7 +31,29 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 ### Complete Dependency Path
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     subgraph "Layer 1: Application"
         APP[Application Component<br/>Requests IMU data]
@@ -146,6 +168,27 @@ This sequence diagram shows what happens when your system boots up. The tricky p
 ### Initialization Dependency Chain
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'actorBkg': '#e3f2fd',
+    'actorBorder': '#1976d2',
+    'actorTextColor': '#1a1a1a',
+    'signalColor': '#546e7a',
+    'signalTextColor': '#1a1a1a',
+    'labelBoxBkgColor': '#fff8e1',
+    'labelBoxBorderColor': '#f9a825',
+    'loopTextColor': '#1a1a1a',
+    'noteBkgColor': '#f3e5f5',
+    'noteBorderColor': '#7b1fa2',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'sequence': {
+    'mirrorActors': false,
+    'messageAlign': 'center'
+  }
+}}%%
 sequenceDiagram
     autonumber
     participant Main as main()<br/>Startup
@@ -214,7 +257,29 @@ sequenceDiagram
 ### Failure Modes
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     START[main calls configureTopology]
 
@@ -258,7 +323,29 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
 ### When I2C Read Fails
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
     START[RateGroup.run every 100ms]
 
@@ -342,7 +429,29 @@ This diagram shows how F´'s build system creates your code. When you run `fprim
 ### Compilation Dependency Chain
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart LR
     subgraph "User Commands"
         USER[Developer runs:<br/>fprime-util build]
@@ -411,7 +520,13 @@ flowchart LR
 ### 1. Hidden Coupling
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#90ee90', 'pie2':'#ffa500', 'pie3':'#ff6b6b'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  }
+}}%%
 pie title Dependency Visibility
     "Direct (visible in code)" : 15
     "Transitive (hidden)" : 27

@@ -364,6 +364,16 @@ For detailed historical phase plans and design documents, see:
 
 2. **Create agent workflow graph**
    ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryBorderColor': '#1976d2',
+    'lineColor': '#546e7a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  }
+}}%%
    stateDiagram-v2
        [*] --> Router
        Router --> CascadeAnalyzer: cascade query

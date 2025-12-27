@@ -45,7 +45,29 @@ cross-team failures when critical knowledge disappears.
 ## dY?-‹,? Agentic AI Structure
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}}}%%
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#e3f2fd',
+    'primaryTextColor': '#1a1a1a',
+    'primaryBorderColor': '#1976d2',
+    'secondaryColor': '#fff8e1',
+    'secondaryBorderColor': '#f9a825',
+    'tertiaryColor': '#f3e5f5',
+    'tertiaryBorderColor': '#7b1fa2',
+    'lineColor': '#546e7a',
+    'textColor': '#1a1a1a',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'flowchart': {
+    'curve': 'linear',
+    'nodeSpacing': 40,
+    'rankSpacing': 60,
+    'padding': 15,
+    'htmlLabels': true
+  }
+}}%%
 flowchart TB
   subgraph Sources
     A1[F Prime docs]
@@ -102,6 +124,27 @@ flowchart TB
 ## dY` Lifecycle: Curation Run
 
 ```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'actorBkg': '#e3f2fd',
+    'actorBorder': '#1976d2',
+    'actorTextColor': '#1a1a1a',
+    'signalColor': '#546e7a',
+    'signalTextColor': '#1a1a1a',
+    'labelBoxBkgColor': '#fff8e1',
+    'labelBoxBorderColor': '#f9a825',
+    'loopTextColor': '#1a1a1a',
+    'noteBkgColor': '#f3e5f5',
+    'noteBorderColor': '#7b1fa2',
+    'fontFamily': 'system-ui, -apple-system, sans-serif',
+    'fontSize': '14px'
+  },
+  'sequence': {
+    'mirrorActors': false,
+    'messageAlign': 'center'
+  }
+}}%%
 sequenceDiagram
   participant Doc as Documentation
   participant Curator
