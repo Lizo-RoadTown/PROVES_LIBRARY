@@ -1,6 +1,6 @@
 <!-- start custom head snippets -->
 
-<!-- Mermaid Diagrams -->
+<!-- Mermaid Diagrams - Professional Theme -->
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -8,46 +8,253 @@
       startOnLoad: true,
       theme: 'base',
       securityLevel: 'loose',
+      
+      // Flowchart config - ALWAYS straight lines
       flowchart: { 
         useMaxWidth: true, 
         htmlLabels: true, 
         curve: 'linear',
-        nodeSpacing: 40,
-        rankSpacing: 60,
-        padding: 15
+        nodeSpacing: 50,
+        rankSpacing: 70,
+        padding: 20,
+        diagramPadding: 8
       },
+      
+      // Sequence diagram config
       sequence: {
         mirrorActors: false,
-        messageAlign: 'center'
+        messageAlign: 'center',
+        actorMargin: 80,
+        boxMargin: 10,
+        boxTextMargin: 5,
+        noteMargin: 10,
+        messageMargin: 35,
+        useMaxWidth: true
       },
+      
+      // Gantt config
+      gantt: {
+        titleTopMargin: 25,
+        barHeight: 30,
+        barGap: 6,
+        topPadding: 50,
+        leftPadding: 75,
+        gridLineStartPadding: 35,
+        fontSize: 14,
+        sectionFontSize: 16,
+        numberSectionStyles: 4,
+        useMaxWidth: true
+      },
+      
+      // Pie config
+      pie: {
+        useMaxWidth: true,
+        textPosition: 0.75
+      },
+      
+      // State diagram config
+      state: {
+        useMaxWidth: true,
+        dividerMargin: 10,
+        sizeUnit: 5,
+        padding: 8,
+        textHeight: 10,
+        titleShift: -15,
+        noteMargin: 10,
+        forkWidth: 70,
+        forkHeight: 7,
+        miniPadding: 2,
+        fontSizeFactor: 5.02,
+        fontSize: 24,
+        labelHeight: 16,
+        edgeLengthFactor: '20',
+        compositTitleSize: 35,
+        radius: 5,
+        defaultRenderer: 'dagre'
+      },
+      
+      // Professional color theme
       themeVariables: {
-        primaryColor: 'transparent',
-        primaryTextColor: '#ffffff',
-        primaryBorderColor: '#fc6423',
-        lineColor: '#fc6423',
-        secondaryColor: 'transparent',
-        tertiaryColor: 'transparent',
-        background: 'transparent',
-        mainBkg: 'transparent',
-        secondBkg: 'transparent',
-        nodeBorder: '#fc6423',
-        clusterBkg: 'transparent',
-        clusterBorder: '#fc6423',
-        titleColor: '#ffffff',
-        edgeLabelBackground: '#2a2a2a',
-        textColor: '#ffffff',
-        nodeTextColor: '#ffffff',
-        actorBkg: 'transparent',
-        actorBorder: '#fc6423',
-        actorTextColor: '#ffffff',
-        signalColor: '#fc6423',
-        signalTextColor: '#ffffff',
-        labelBoxBkgColor: '#2a2a2a',
-        labelBoxBorderColor: '#fc6423',
-        noteBkgColor: '#2a2a2a',
-        noteBorderColor: '#fc6423'
+        // === DARK MODE BASE ===
+        darkMode: true,
+        background: '#1e1e2e',
+        
+        // === TYPOGRAPHY ===
+        fontFamily: '"Inter", "Segoe UI", system-ui, -apple-system, sans-serif',
+        fontSize: '15px',
+        
+        // === PRIMARY COLORS (Blue - main nodes) ===
+        primaryColor: '#1e3a5f',
+        primaryTextColor: '#e8f4fd',
+        primaryBorderColor: '#4fc3f7',
+        
+        // === SECONDARY COLORS (Teal - supporting elements) ===
+        secondaryColor: '#1a3d3d',
+        secondaryTextColor: '#e0f2f1',
+        secondaryBorderColor: '#4db6ac',
+        
+        // === TERTIARY COLORS (Purple - subgraphs/clusters) ===
+        tertiaryColor: '#2d1f3d',
+        tertiaryTextColor: '#f3e5f5',
+        tertiaryBorderColor: '#ba68c8',
+        
+        // === GENERAL TEXT & LINES ===
+        lineColor: '#78909c',
+        textColor: '#eceff1',
+        mainBkg: '#1e3a5f',
+        
+        // === NOTES (Amber accent) ===
+        noteBkgColor: '#3d2e1a',
+        noteTextColor: '#fff8e1',
+        noteBorderColor: '#ffb74d',
+        
+        // === ERROR STATES ===
+        errorBkgColor: '#3d1a1a',
+        errorTextColor: '#ffcdd2',
+        
+        // === FLOWCHART SPECIFIC ===
+        nodeBorder: '#4fc3f7',
+        nodeTextColor: '#e8f4fd',
+        clusterBkg: '#1a1a2e',
+        clusterBorder: '#ba68c8',
+        defaultLinkColor: '#78909c',
+        titleColor: '#b0bec5',
+        edgeLabelBackground: '#2a2a3e',
+        
+        // === SEQUENCE DIAGRAM SPECIFIC ===
+        actorBkg: '#1e3a5f',
+        actorBorder: '#4fc3f7',
+        actorTextColor: '#e8f4fd',
+        actorLineColor: '#4fc3f7',
+        signalColor: '#78909c',
+        signalTextColor: '#eceff1',
+        labelBoxBkgColor: '#2a2a3e',
+        labelBoxBorderColor: '#4fc3f7',
+        labelTextColor: '#e8f4fd',
+        loopTextColor: '#b0bec5',
+        activationBorderColor: '#4db6ac',
+        activationBkgColor: '#1a3d3d',
+        sequenceNumberColor: '#1e1e2e',
+        
+        // === STATE DIAGRAM SPECIFIC ===
+        labelColor: '#eceff1',
+        altBackground: '#252538',
+        
+        // === CLASS DIAGRAM SPECIFIC ===
+        classText: '#eceff1',
+        
+        // === PIE CHART COLORS (Vibrant palette) ===
+        pie1: '#4fc3f7',
+        pie2: '#81c784',
+        pie3: '#ffb74d',
+        pie4: '#ba68c8',
+        pie5: '#4db6ac',
+        pie6: '#ff8a65',
+        pie7: '#7986cb',
+        pie8: '#aed581',
+        pie9: '#f06292',
+        pie10: '#ffd54f',
+        pie11: '#4dd0e1',
+        pie12: '#dce775',
+        pieTitleTextSize: '20px',
+        pieTitleTextColor: '#eceff1',
+        pieSectionTextSize: '14px',
+        pieSectionTextColor: '#1e1e2e',
+        pieLegendTextSize: '14px',
+        pieLegendTextColor: '#eceff1',
+        pieStrokeColor: '#1e1e2e',
+        pieStrokeWidth: '2px',
+        pieOuterStrokeWidth: '2px',
+        pieOuterStrokeColor: '#78909c',
+        pieOpacity: '0.9',
+        
+        // === USER JOURNEY COLORS ===
+        fillType0: '#1e3a5f',
+        fillType1: '#1a3d3d',
+        fillType2: '#3d2e1a',
+        fillType3: '#2d1f3d',
+        fillType4: '#1e4a4a',
+        fillType5: '#3d1a2e',
+        fillType6: '#2e3d1a',
+        fillType7: '#1a2e3d',
+        
+        // === GANTT CHART COLORS ===
+        sectionBkgColor: '#1e3a5f',
+        altSectionBkgColor: '#2d1f3d',
+        sectionBkgColor2: '#1a3d3d',
+        gridColor: '#404050',
+        doneTaskBkgColor: '#2e7d32',
+        doneTaskBorderColor: '#81c784',
+        activeTaskBkgColor: '#1565c0',
+        activeTaskBorderColor: '#4fc3f7',
+        critBkgColor: '#c62828',
+        critBorderColor: '#ef5350',
+        taskBkgColor: '#1e3a5f',
+        taskBorderColor: '#4fc3f7',
+        taskTextColor: '#e8f4fd',
+        taskTextLightColor: '#e8f4fd',
+        taskTextDarkColor: '#1e1e2e',
+        taskTextOutsideColor: '#eceff1',
+        taskTextClickableColor: '#4fc3f7',
+        todayLineColor: '#ffb74d',
+        
+        // === QUADRANT CHART ===
+        quadrant1Fill: '#1e3a5f',
+        quadrant2Fill: '#1a3d3d',
+        quadrant3Fill: '#2d1f3d',
+        quadrant4Fill: '#3d2e1a',
+        quadrant1TextFill: '#e8f4fd',
+        quadrant2TextFill: '#e0f2f1',
+        quadrant3TextFill: '#f3e5f5',
+        quadrant4TextFill: '#fff8e1',
+        quadrantPointFill: '#4fc3f7',
+        quadrantPointTextFill: '#1e1e2e',
+        quadrantXAxisTextFill: '#b0bec5',
+        quadrantYAxisTextFill: '#b0bec5',
+        quadrantTitleFill: '#eceff1',
+        quadrantInternalBorderStrokeFill: '#404050',
+        quadrantExternalBorderStrokeFill: '#78909c',
+        
+        // === REQUIREMENT DIAGRAM ===
+        requirementBackground: '#1e3a5f',
+        requirementBorderColor: '#4fc3f7',
+        requirementBorderSize: '2px',
+        requirementTextColor: '#e8f4fd',
+        relationColor: '#78909c',
+        relationLabelBackground: '#2a2a3e',
+        relationLabelColor: '#eceff1',
+        
+        // === GIT GRAPH ===
+        git0: '#4fc3f7',
+        git1: '#81c784',
+        git2: '#ffb74d',
+        git3: '#ba68c8',
+        git4: '#4db6ac',
+        git5: '#ff8a65',
+        git6: '#7986cb',
+        git7: '#f06292',
+        gitBranchLabel0: '#1e1e2e',
+        gitBranchLabel1: '#1e1e2e',
+        gitBranchLabel2: '#1e1e2e',
+        gitBranchLabel3: '#1e1e2e',
+        gitBranchLabel4: '#1e1e2e',
+        gitBranchLabel5: '#1e1e2e',
+        gitBranchLabel6: '#1e1e2e',
+        gitBranchLabel7: '#1e1e2e',
+        gitInv0: '#1e3a5f',
+        gitInv1: '#1a3d3d',
+        gitInv2: '#3d2e1a',
+        gitInv3: '#2d1f3d',
+        commitLabelColor: '#eceff1',
+        commitLabelBackground: '#2a2a3e',
+        commitLabelFontSize: '12px',
+        tagLabelColor: '#1e1e2e',
+        tagLabelBackground: '#ffb74d',
+        tagLabelBorder: '#ffb74d',
+        tagLabelFontSize: '12px'
       }
     });
+    
     // Find all mermaid code blocks and render them
     document.querySelectorAll('pre code.language-mermaid').forEach(function(el) {
       var container = document.createElement('div');
@@ -58,234 +265,387 @@
   });
 </script>
 
-<!-- Custom centering styles -->
+<!-- Professional Mermaid CSS Overrides -->
 <style>
+  /* === LAYOUT === */
   .article__content {
-    max-width: 900px;
+    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
   }
+  
   .mermaid {
     text-align: center;
     margin: 2rem 0;
-    background: transparent;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #1e1e2e 0%, #252538 100%);
+    border-radius: 12px;
+    border: 1px solid #404050;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
+  
   .mermaid svg {
     max-width: 100%;
     background: transparent;
   }
   
-  /* Node styling - orange accents, white text, transparent backgrounds */
+  /* === FLOWCHART NODES === */
   .mermaid .node rect,
   .mermaid .node polygon,
   .mermaid .node circle,
-  .mermaid .node ellipse {
-    fill: transparent !important;
-    stroke: #fc6423 !important;
-    stroke-width: 2px !important;
-    transition: filter 0.2s ease, stroke-width 0.2s ease;
+  .mermaid .node ellipse,
+  .mermaid .node path {
+    transition: all 0.25s ease;
   }
   
-  /* Hover glow effect on nodes */
   .mermaid .node:hover rect,
   .mermaid .node:hover polygon,
   .mermaid .node:hover circle,
-  .mermaid .node:hover ellipse {
-    filter: drop-shadow(0 0 12px #fc6423) drop-shadow(0 0 6px #ff8a50);
-    stroke-width: 3px !important;
+  .mermaid .node:hover ellipse,
+  .mermaid .node:hover path {
+    filter: drop-shadow(0 0 15px rgba(79, 195, 247, 0.7)) drop-shadow(0 0 8px rgba(79, 195, 247, 0.5));
     cursor: pointer;
   }
   
-  /* Cluster/subgraph styling */
+  /* === CLUSTERS/SUBGRAPHS === */
   .mermaid .cluster rect {
-    fill: transparent !important;
-    stroke: #fc6423 !important;
-    stroke-width: 1px !important;
-    transition: filter 0.2s ease;
+    transition: all 0.25s ease;
   }
   
-  /* Hover glow on clusters */
   .mermaid .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(252, 100, 35, 0.6));
+    filter: drop-shadow(0 0 12px rgba(186, 104, 200, 0.5));
     cursor: pointer;
   }
   
-  /* Text styling */
-  .mermaid .nodeLabel,
-  .mermaid .label,
-  .mermaid text {
-    fill: #ffffff !important;
-    color: #ffffff !important;
-  }
-  
-  /* Edge/arrow styling */
-  .mermaid .edgePath .path {
-    stroke: #fc6423 !important;
-    stroke-width: 2px !important;
-  }
-  .mermaid .arrowheadPath {
-    fill: #fc6423 !important;
-  }
-  
-  /* Edge labels - padding, border, background */
+  /* === EDGE LABELS === */
   .mermaid .edgeLabel {
-    background-color: #2a2a2a !important;
+    background-color: #2a2a3e !important;
   }
-  .mermaid .edgeLabel .label {
-    padding: 5px 8px !important;
-    border: 1px solid #fc6423 !important;
-    border-radius: 4px !important;
-    background-color: #2a2a2a !important;
-    color: #ffffff !important;
-  }
+  
   .mermaid .edgeLabel foreignObject {
     overflow: visible !important;
   }
-  .mermaid .edgeLabel span {
-    padding: 5px 8px !important;
-    border: 1px solid #fc6423 !important;
-    border-radius: 4px !important;
-    background-color: #2a2a2a !important;
-    color: #ffffff !important;
+  
+  .mermaid .edgeLabel span,
+  .mermaid .edgeLabel .label,
+  .mermaid .edgeLabel p {
     display: inline-block !important;
+    padding: 6px 10px !important;
+    border: 1px solid #4fc3f7 !important;
+    border-radius: 6px !important;
+    background-color: #2a2a3e !important;
+    color: #e8f4fd !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
   }
   
-  /* Cluster label styling */
-  .mermaid .cluster-label text {
-    fill: #fc6423 !important;
-    font-weight: bold !important;
-  }
-  
-  /* Sequence diagram actors */
+  /* === SEQUENCE DIAGRAM === */
   .mermaid .actor {
-    fill: transparent !important;
-    stroke: #fc6423 !important;
-    stroke-width: 2px !important;
-    transition: filter 0.2s ease;
+    transition: all 0.25s ease;
   }
+  
   .mermaid .actor:hover {
-    filter: drop-shadow(0 0 12px #fc6423) drop-shadow(0 0 6px #ff8a50);
+    filter: drop-shadow(0 0 15px rgba(79, 195, 247, 0.7));
     cursor: pointer;
   }
   
-  /* Sequence diagram messages/signals */
   .mermaid .messageText {
-    fill: #ffffff !important;
-  }
-  .mermaid .messageLine0,
-  .mermaid .messageLine1 {
-    stroke: #fc6423 !important;
-    stroke-width: 2px !important;
+    font-size: 13px !important;
   }
   
-  /* Sequence diagram notes */
   .mermaid .note {
-    fill: #2a2a2a !important;
-    stroke: #fc6423 !important;
-    transition: filter 0.2s ease;
+    transition: all 0.25s ease;
   }
+  
   .mermaid .note:hover {
-    filter: drop-shadow(0 0 8px rgba(252, 100, 35, 0.6));
-  }
-  .mermaid .noteText {
-    fill: #ffffff !important;
+    filter: drop-shadow(0 0 10px rgba(255, 183, 77, 0.6));
   }
   
-  /* Sequence diagram loop/alt boxes */
-  .mermaid .loopText,
-  .mermaid .labelText {
-    fill: #ffffff !important;
+  .mermaid .activation0,
+  .mermaid .activation1,
+  .mermaid .activation2 {
+    fill: #1a3d3d !important;
+    stroke: #4db6ac !important;
   }
-  .mermaid .loopLine,
-  .mermaid .labelBox {
-    stroke: #fc6423 !important;
-  }
+  
   .mermaid rect.labelBox {
-    fill: #2a2a2a !important;
-    stroke: #fc6423 !important;
-    border: 1px solid #fc6423 !important;
+    fill: #2a2a3e !important;
+    stroke: #4fc3f7 !important;
+    rx: 4px;
+    ry: 4px;
   }
   
-  /* State diagram states */
-  .mermaid .stateGroup rect,
-  .mermaid .stateGroup circle {
-    fill: transparent !important;
-    stroke: #fc6423 !important;
+  /* Sequence loop/alt boxes */
+  .mermaid .loopLine {
+    stroke: #ba68c8 !important;
     stroke-width: 2px !important;
-    transition: filter 0.2s ease;
   }
+  
+  .mermaid .loopText tspan {
+    fill: #f3e5f5 !important;
+    font-weight: 600 !important;
+  }
+  
+  /* === STATE DIAGRAM === */
+  .mermaid .stateGroup rect,
+  .mermaid .stateGroup circle,
+  .mermaid .stateGroup polygon {
+    transition: all 0.25s ease;
+  }
+  
   .mermaid .stateGroup:hover rect,
-  .mermaid .stateGroup:hover circle {
-    filter: drop-shadow(0 0 12px #fc6423) drop-shadow(0 0 6px #ff8a50);
+  .mermaid .stateGroup:hover circle,
+  .mermaid .stateGroup:hover polygon {
+    filter: drop-shadow(0 0 15px rgba(79, 195, 247, 0.7));
     cursor: pointer;
   }
   
-  /* State diagram transition labels */
-  .mermaid .transition-label,
-  .mermaid .statediagram-state .state-title {
-    padding: 5px 8px !important;
-    background-color: #2a2a2a !important;
+  .mermaid .statediagram-cluster rect {
+    fill: #252538 !important;
+    stroke: #ba68c8 !important;
   }
   
-  /* Pie chart slices */
+  .mermaid .state-note rect {
+    fill: #3d2e1a !important;
+    stroke: #ffb74d !important;
+  }
+  
+  /* State transition labels */
+  .mermaid .transition {
+    stroke: #78909c !important;
+  }
+  
+  .mermaid .stateLabel .label {
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+  }
+  
+  /* === PIE CHART === */
   .mermaid .slice {
-    transition: filter 0.2s ease;
+    transition: all 0.25s ease;
+    stroke-width: 2px;
   }
+  
   .mermaid .slice:hover {
-    filter: drop-shadow(0 0 10px rgba(252, 100, 35, 0.7));
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
     cursor: pointer;
+    transform-origin: center;
   }
   
-  /* Gantt chart bars */
+  .mermaid .pieTitleText {
+    font-weight: 600 !important;
+    font-size: 18px !important;
+  }
+  
+  .mermaid .legend text {
+    font-size: 14px !important;
+  }
+  
+  /* === GANTT CHART === */
+  .mermaid .section0,
+  .mermaid .section1,
+  .mermaid .section2,
+  .mermaid .section3 {
+    transition: all 0.25s ease;
+  }
+  
   .mermaid .task {
-    transition: filter 0.2s ease;
+    transition: all 0.25s ease;
+    rx: 4px;
+    ry: 4px;
   }
+  
   .mermaid .task:hover {
-    filter: drop-shadow(0 0 8px rgba(252, 100, 35, 0.6));
+    filter: drop-shadow(0 0 10px rgba(79, 195, 247, 0.6));
     cursor: pointer;
   }
   
-  /* Quadrant chart points */
+  .mermaid .taskText {
+    font-weight: 500 !important;
+  }
+  
+  .mermaid .taskTextOutsideRight,
+  .mermaid .taskTextOutsideLeft {
+    fill: #eceff1 !important;
+  }
+  
+  .mermaid .sectionTitle {
+    font-weight: 600 !important;
+    font-size: 15px !important;
+  }
+  
+  .mermaid .grid .tick line {
+    stroke: #404050 !important;
+    stroke-opacity: 0.5;
+  }
+  
+  .mermaid .todayMarker {
+    stroke: #ffb74d !important;
+    stroke-width: 3px !important;
+  }
+  
+  /* Gantt milestones */
+  .mermaid .milestone {
+    fill: #ffb74d !important;
+    stroke: #ff9800 !important;
+  }
+  
+  /* === QUADRANT CHART === */
   .mermaid .quadrant-point {
-    transition: filter 0.2s ease;
+    transition: all 0.25s ease;
   }
+  
   .mermaid .quadrant-point:hover {
-    filter: drop-shadow(0 0 10px rgba(252, 100, 35, 0.7));
+    filter: drop-shadow(0 0 12px rgba(79, 195, 247, 0.7));
+    cursor: pointer;
+    r: 8;
+  }
+  
+  .mermaid .quadrant-label {
+    font-weight: 600 !important;
+  }
+  
+  /* === GIT GRAPH === */
+  .mermaid .commit-id,
+  .mermaid .commit-msg {
+    font-size: 12px !important;
+  }
+  
+  .mermaid .branch-label {
+    font-weight: 600 !important;
+  }
+  
+  /* === USER JOURNEY === */
+  .mermaid .journey-section {
+    transition: all 0.25s ease;
+  }
+  
+  .mermaid .journey-section:hover {
+    filter: drop-shadow(0 0 8px rgba(79, 195, 247, 0.4));
+  }
+  
+  .mermaid .actor-man circle,
+  .mermaid .actor-man line {
+    stroke: #4fc3f7 !important;
+    fill: #1e3a5f !important;
+  }
+  
+  /* === MINDMAP === */
+  .mermaid .mindmap-node {
+    transition: all 0.25s ease;
+  }
+  
+  .mermaid .mindmap-node:hover {
+    filter: drop-shadow(0 0 12px rgba(79, 195, 247, 0.6));
     cursor: pointer;
   }
   
-  /* Responsive card grids */
+  /* === ENTITY RELATIONSHIP === */
+  .mermaid .er.entityBox {
+    transition: all 0.25s ease;
+  }
+  
+  .mermaid .er.entityBox:hover {
+    filter: drop-shadow(0 0 12px rgba(79, 195, 247, 0.6));
+  }
+  
+  .mermaid .er.attributeBoxOdd,
+  .mermaid .er.attributeBoxEven {
+    fill: #252538 !important;
+  }
+  
+  /* === CLASS DIAGRAM === */
+  .mermaid .classGroup rect {
+    transition: all 0.25s ease;
+  }
+  
+  .mermaid .classGroup:hover rect {
+    filter: drop-shadow(0 0 12px rgba(79, 195, 247, 0.6));
+    cursor: pointer;
+  }
+  
+  .mermaid .divider {
+    stroke: #4fc3f7 !important;
+  }
+  
+  /* === REQUIREMENT DIAGRAM === */
+  .mermaid .requirement rect,
+  .mermaid .element rect {
+    transition: all 0.25s ease;
+  }
+  
+  .mermaid .requirement:hover rect,
+  .mermaid .element:hover rect {
+    filter: drop-shadow(0 0 12px rgba(79, 195, 247, 0.6));
+    cursor: pointer;
+  }
+  
+  /* === TIMELINE === */
+  .mermaid .timeline-node {
+    transition: all 0.25s ease;
+  }
+  
+  .mermaid .timeline-node:hover {
+    filter: drop-shadow(0 0 10px rgba(79, 195, 247, 0.6));
+    cursor: pointer;
+  }
+  
+  /* === SANKEY === */
+  .mermaid .sankey-node rect {
+    transition: all 0.25s ease;
+  }
+  
+  .mermaid .sankey-node:hover rect {
+    filter: drop-shadow(0 0 10px rgba(79, 195, 247, 0.6));
+    cursor: pointer;
+  }
+  
+  .mermaid .sankey-link {
+    transition: all 0.25s ease;
+  }
+  
+  .mermaid .sankey-link:hover {
+    opacity: 1 !important;
+  }
+  
+  /* === RESPONSIVE === */
   .card-grid {
     display: grid;
     gap: 1.5rem;
     margin: 2rem 0;
   }
+  
   .card-grid-3 {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
+  
   .card-grid-2 {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
+  
   .card {
-    border: 1px solid #fc6423;
+    border: 1px solid #4fc3f7;
     padding: 1.5rem;
     border-radius: 8px;
-  }
-  .card h3 {
-    margin-top: 0;
+    background: linear-gradient(135deg, #1e1e2e 0%, #252538 100%);
   }
   
-  /* Responsive tables */
+  .card h3 {
+    margin-top: 0;
+    color: #4fc3f7;
+  }
+  
   .article__content table {
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
   
-  /* Prevent horizontal scroll */
   .article__content {
     overflow-x: hidden;
   }
+  
   .article__content img,
   .article__content svg {
     max-width: 100%;
