@@ -8,10 +8,33 @@ Provably-correct knowledge graph pipeline for space systems and other complex, f
 
 ---
 
-## Why this exists
+## What we are making
 
-Space systems knowledge lives in scattered docs, tribal memory, and half-written notes.
-PROVES turns those fragments into a verified dependency graph so teams can see hidden couplings before they break a mission.
+A truth-layer pipeline that turns scattered technical knowledge into a verified dependency graph.
+That graph becomes high-quality training data for a Graph Neural Network (GNN) that can predict risk, impact, and hidden coupling before a mission breaks.
+
+---
+
+## Why a Graph Neural Network
+
+Space systems are graphs already: components, interfaces, timing, power, teams. A GNN learns from both the structure and the features of each node and relationship, so it can:
+
+- Predict cascade risk when a subsystem changes.
+- Surface weak cross-team and cross-layer dependencies.
+- Generalize patterns across different missions and hardware stacks.
+
+---
+
+## Why data quality matters
+
+A GNN is only as good as the graph it learns from.
+
+- Bad edges teach the model the wrong physics.
+- Missing lineage makes results impossible to trust.
+- Inconsistent labels destroy signal in training.
+- Verified sources turn the graph into evidence, not guesses.
+
+This repo is the data engine that makes the GNN possible.
 
 ---
 
@@ -25,19 +48,22 @@ PROVES turns those fragments into a verified dependency graph so teams can see h
 
 ---
 
-## What it does
-
-- Extracts entities and relationships from messy technical documentation.
-- Tracks cryptographic lineage back to original sources.
-- Keeps humans in the loop before facts enter the truth graph.
-
----
-
 ## How it works
 
 ```
 Sources -> Extract -> Validate -> Human Review -> Truth Graph
 ```
+
+---
+
+## Cool diagrams
+
+- `docs/diagrams/overview.md` - dependency overview
+- `docs/diagrams/cross-system.md` - cross-system dependencies
+- `docs/diagrams/knowledge-gaps.md` - hidden gaps
+- `docs/diagrams/gnn-molecule.md` - GNN as molecular model
+- `docs/diagrams/team-boundaries.md` - team boundary map
+- `docs/diagrams/transitive-chains.md` - transitive chains
 
 ---
 
