@@ -105,19 +105,19 @@ flowchart TB
 %%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart LR
     subgraph "F´ Knowledge"
-        F_PUB[Public Documentation<br/>✅ Versioned<br/>✅ Comprehensive]
-        F_CODE[GitHub Repository<br/>✅ nasa/fprime<br/>✅ Well-maintained]
-        F_COM[Community Forums<br/>✅ Active support]
+        F_PUB[Public Documentation<br/>[YES] Versioned<br/>[YES] Comprehensive]
+        F_CODE[GitHub Repository<br/>[YES] nasa/fprime<br/>[YES] Well-maintained]
+        F_COM[Community Forums<br/>[YES] Active support]
     end
 
     subgraph "Interface"
-        INT[❌ No Integration Docs<br/>❌ No Cross-References<br/>❌ No Joint Testing<br/>❌ No Shared Examples]
+        INT[[NO] No Integration Docs<br/>[NO] No Cross-References<br/>[NO] No Joint Testing<br/>[NO] No Shared Examples]
     end
 
     subgraph "PROVES Knowledge"
-        P_PUB[Public Documentation<br/>⚠️ Growing<br/>⚠️ Gaps exist]
-        P_CODE[GitHub Repository<br/>✅ proveskit/pysquared<br/>⚠️ Active but small team]
-        P_COM[Community<br/>⚠️ Mostly university teams]
+        P_PUB[Public Documentation<br/>[WARNING] Growing<br/>[WARNING] Gaps exist]
+        P_CODE[GitHub Repository<br/>[YES] proveskit/pysquared<br/>[WARNING] Active but small team]
+        P_COM[Community<br/>[WARNING] Mostly university teams]
     end
 
     F_PUB -.->|weak| INT
@@ -140,12 +140,12 @@ flowchart LR
 **Interface Strength Score: 2/10 (WEAK)**
 
 **Evidence:**
-- ❌ F´ documentation doesn't mention PROVES Kit
-- ❌ PROVES Kit documentation doesn't mention F´
-- ❌ No shared integration guide
-- ❌ No joint GitHub issues/discussions
-- ❌ No cross-team code reviews
-- ❌ No coordinated releases
+- [NO] F´ documentation doesn't mention PROVES Kit
+- [NO] PROVES Kit documentation doesn't mention F´
+- [NO] No shared integration guide
+- [NO] No joint GitHub issues/discussions
+- [NO] No cross-team code reviews
+- [NO] No coordinated releases
 
 **Knowledge at Risk:**
 - Integration patterns (how F´ + PROVES work together)
@@ -161,7 +161,7 @@ flowchart LR
 
 ### What You're Looking At
 
-This flowchart shows the journey developers take when they need integration knowledge. Start at the top: check F´ docs (not found), check PROVES docs (not found), ask tribal experts. The problem is that the tribal knowledge path leads to either (1) PROVES maintainers who know but are overloaded, (2) JPL engineers who don't know PROVES, or (3) students who are also learning. Eventually, everyone ends up at "Discover Through Failure" → knowledge gets captured in email/chat → then LOST at graduation.
+This flowchart shows the journey developers take when they need integration knowledge. Start at the top: check F´ docs (not found), check PROVES docs (not found), ask tribal experts. The problem is that the tribal knowledge path leads to either (1) PROVES maintainers who know but are overloaded, (2) JPL engineers who don't know PROVES, or (3) students who are also learning. Eventually, everyone ends up at "Discover Through Failure" -> knowledge gets captured in email/chat -> then LOST at graduation.
 
 **Think of it like:** Trying to find a recipe your grandmother used to make. Check the cookbook (not there), check online (not there), ask family members (some remember pieces), eventually you try to recreate it yourself and write it down... on a sticky note that falls behind the fridge.
 
@@ -178,9 +178,9 @@ flowchart TB
     TRIBAL[Ask Experienced Engineer]
     WHO{Who to Ask?}
 
-    JPL_ENG[JPL Engineer<br/>❌ Doesn't know PROVES]
-    PROVES_ENG[PROVES Maintainer<br/>⚠️ Knows integration]
-    UNI_ENG[University Student<br/>❌ Learning both]
+    JPL_ENG[JPL Engineer<br/>[NO] Doesn't know PROVES]
+    PROVES_ENG[PROVES Maintainer<br/>[WARNING] Knows integration]
+    UNI_ENG[University Student<br/>[NO] Learning both]
 
     DISCOVER[Discover Through Failure]
     CAPTURE[Capture in Email/Chat]
@@ -303,8 +303,8 @@ sequenceDiagram
     TeamA->>TeamA: Tests and validates<br/>(works with delay)
 
     rect rgb(255, 200, 200)
-        Note over TeamA,Docs: ❌ GAP: Knowledge not captured
-        TeamA->>Docs: Commit code with delay<br/>❌ No comment explaining why
+        Note over TeamA,Docs: [NO] GAP: Knowledge not captured
+        TeamA->>Docs: Commit code with delay<br/>[NO] No comment explaining why
     end
 
     Note over TeamA: May 2021: Team graduates
@@ -316,12 +316,12 @@ sequenceDiagram
     Note over TeamB: January 2022: New team starts
 
     TeamB->>Docs: Read documentation
-    Docs-->>TeamB: ❌ No explanation of delay
+    Docs-->>TeamB: [NO] No explanation of delay
 
     TeamB->>TeamB: "This 200ms delay seems<br/>arbitrary and slow"
 
     rect rgb(255, 200, 200)
-        Note over TeamB: ❌ Optimizes delay to 10ms
+        Note over TeamB: [NO] Optimizes delay to 10ms
         TeamB->>Docs: Commit change<br/>"Optimize power-on sequence"
     end
 
@@ -335,7 +335,7 @@ sequenceDiagram
         System--XSystem: Mission failure
     end
 
-    Note over TeamA,System: ⚠️ Team A knew, but knowledge didn't flow
+    Note over TeamA,System: [WARNING] Team A knew, but knowledge didn't flow
 ```
 
 **Root Cause:** WEAK interface between Team A and Team B + inadequate documentation
@@ -367,25 +367,25 @@ sequenceDiagram
 ### Scoring Criteria
 
 **STRONG Interface (8-10):**
-- ✅ Comprehensive documentation
-- ✅ Regular communication
-- ✅ Shared tooling
-- ✅ Code reviews
-- ✅ Joint testing
-- ✅ Coordinated releases
+- [YES] Comprehensive documentation
+- [YES] Regular communication
+- [YES] Shared tooling
+- [YES] Code reviews
+- [YES] Joint testing
+- [YES] Coordinated releases
 
 **MEDIUM Interface (5-7):**
-- ⚠️ Some documentation
-- ⚠️ Occasional communication
-- ⚠️ Separate tools but compatible
-- ⚠️ Knowledge exists but not always accessible
+- [WARNING] Some documentation
+- [WARNING] Occasional communication
+- [WARNING] Separate tools but compatible
+- [WARNING] Knowledge exists but not always accessible
 
 **WEAK Interface (0-4):**
-- ❌ Little to no documentation
-- ❌ Minimal communication
-- ❌ Incompatible or unknown tools
-- ❌ Knowledge in individuals' heads
-- ❌ High risk of knowledge loss
+- [NO] Little to no documentation
+- [NO] Minimal communication
+- [NO] Incompatible or unknown tools
+- [NO] Knowledge in individuals' heads
+- [NO] High risk of knowledge loss
 
 ---
 
@@ -405,22 +405,22 @@ flowchart TB
     end
 
     subgraph "Captured (30%)"
-        CODE[Code Repository<br/>✅ Preserved]
-        SCHEMA[Schematics<br/>✅ Preserved]
-        FORMAL_DOC[Formal Documentation<br/>⚠️ Often outdated]
+        CODE[Code Repository<br/>[YES] Preserved]
+        SCHEMA[Schematics<br/>[YES] Preserved]
+        FORMAL_DOC[Formal Documentation<br/>[WARNING] Often outdated]
     end
 
     subgraph "Partially Captured (20%)"
-        ISSUES[GitHub Issues<br/>⚠️ Searchable but dispersed]
-        CHAT[Chat Logs<br/>⚠️ Saved but not indexed]
-        EMAIL[Email Threads<br/>⚠️ Private, not shared]
+        ISSUES[GitHub Issues<br/>[WARNING] Searchable but dispersed]
+        CHAT[Chat Logs<br/>[WARNING] Saved but not indexed]
+        EMAIL[Email Threads<br/>[WARNING] Private, not shared]
     end
 
     subgraph "Lost (50%)"
-        TRIBAL[Tribal Knowledge<br/>❌ In people's heads]
-        WORKAROUND[Workarounds<br/>❌ Undocumented]
-        FAILURES[Failure Lessons<br/>❌ Not written down]
-        WHY[Design Rationale<br/>❌ Not explained]
+        TRIBAL[Tribal Knowledge<br/>[NO] In people's heads]
+        WORKAROUND[Workarounds<br/>[NO] Undocumented]
+        FAILURES[Failure Lessons<br/>[NO] Not written down]
+        WHY[Design Rationale<br/>[NO] Not explained]
     end
 
     DESIGN --> CODE
@@ -479,9 +479,9 @@ quadrantChart
 ```
 
 **Critical Risk Zone (Quadrant 1):**
-- **University Team → Team:** EXTREME knowledge loss risk
-- **PROVES → University Teams:** HIGH knowledge loss risk
-- **F´ → PROVES:** EXTREME integration knowledge loss risk
+- **University Team -> Team:** EXTREME knowledge loss risk
+- **PROVES -> University Teams:** HIGH knowledge loss risk
+- **F´ -> PROVES:** EXTREME integration knowledge loss risk
 
 ---
 
@@ -592,12 +592,12 @@ flowchart TB
 ```
 
 **Key Features:**
-- ✅ Captures knowledge from ALL sources (not just docs)
-- ✅ Tracks WHICH TEAM contributed knowledge
-- ✅ Preserves DESIGN RATIONALE (why decisions were made)
-- ✅ Survives team turnover (knowledge in graph, not heads)
-- ✅ Alerts on knowledge at risk
-- ✅ Makes tribal knowledge searchable
+- [YES] Captures knowledge from ALL sources (not just docs)
+- [YES] Tracks WHICH TEAM contributed knowledge
+- [YES] Preserves DESIGN RATIONALE (why decisions were made)
+- [YES] Survives team turnover (knowledge in graph, not heads)
+- [YES] Alerts on knowledge at risk
+- [YES] Makes tribal knowledge searchable
 
 ---
 

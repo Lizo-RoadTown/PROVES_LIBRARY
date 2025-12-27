@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-**Status:** ✅ First page successfully extracted
+**Status:** [YES] First page successfully extracted
 **Pages Processed:** 1 of 60
 **Extractions Staged:** 6 items awaiting human verification
 **Progress:** 1.7% complete
@@ -20,7 +20,7 @@ After resolving database schema mismatches and workflow issues, the curator agen
 
 ### 1. PROVES Prime Mainboard
 **URL:** https://docs.proveskit.space/en/latest/core_documentation/hardware/proves_prime/
-**Status:** ✅ Success (after 3 retry attempts)
+**Status:** [YES] Success (after 3 retry attempts)
 **Extractions:** 6 items staged for verification
 **Phase:** Phase 1: Hardware Foundation
 **Priority:** P1 (Main board - central component)
@@ -63,9 +63,9 @@ Review each extraction in the database for:
 **Problem:** Multiple schema mismatches between code and database
 **Impact:** Extractor and validator agents failing with "column does not exist" errors
 **Resolution:**
-- Fixed `core_entities` queries: `properties` → `attributes`
+- Fixed `core_entities` queries: `properties` -> `attributes`
 - Fixed `validation_decisions` queries: added `decision_reason`, `confidence_at_decision`
-- Fixed `raw_snapshots` queries: `snapshot_id` → `id`, `fetch_timestamp` → `captured_at`
+- Fixed `raw_snapshots` queries: `snapshot_id` -> `id`, `fetch_timestamp` -> `captured_at`
 - Made `storage.py` auto-find snapshots by URL when `snapshot_id` not provided
 
 ### Workflow Recovery Tools Added
@@ -132,7 +132,7 @@ Review each extraction in the database for:
 - **In Queue:** 59
 
 ### Phase 1: Hardware Foundation
-- **PROVES Prime:** ✅ Complete (6 extractions)
+- **PROVES Prime:** [YES] Complete (6 extractions)
 - **FC Board:** ⏳ Next
 - **Battery Board:** ⏳ Queued
 - Additional hardware pages: ⏳ Queued

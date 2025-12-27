@@ -226,7 +226,7 @@ Every dependency tracked with precise source locations:
 ## Navigation
 
 - [← Back to Home](../index.html)
-- [Next: Cross-System Dependencies →](cross-system.html)
+- [Next: Cross-System Dependencies ->](cross-system.html)
 
 ---
 

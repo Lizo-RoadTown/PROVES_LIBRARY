@@ -51,7 +51,7 @@ The `source_registry.yaml` file pre-maps all knowledge sources so agents know ex
 
 - F' component locations (`Svc/CmdDispatcher/`, `Drv/LinuxI2cDriver/`, etc.)
 - ProvesKit hardware mappings (RV3032, BNO085, etc.)
-- Query mappings (user asks about "I2C" → search these paths)
+- Query mappings (user asks about "I2C" -> search these paths)
 - Known conflict patterns
 
 ## Installation
@@ -126,15 +126,15 @@ Add to your MCP configuration:
 ```
 User: "What conflicts with the MS5611 barometer?"
 
-→ search_library(query="MS5611 conflicts")
-→ Returns: "MS5611 uses I2C address 0x76, which conflicts with BME280..."
+-> search_library(query="MS5611 conflicts")
+-> Returns: "MS5611 uses I2C address 0x76, which conflicts with BME280..."
 
 User: "How does F' handle command dispatching?"
 
-→ deep_search(query="F' command dispatching")
-→ Agent searches source_registry.yaml → finds Svc/CmdDispatcher/
-→ Fetches and extracts relevant patterns
-→ Returns synthesized answer + caches to DB
+-> deep_search(query="F' command dispatching")
+-> Agent searches source_registry.yaml -> finds Svc/CmdDispatcher/
+-> Fetches and extracts relevant patterns
+-> Returns synthesized answer + caches to DB
 ```
 
 ## Development

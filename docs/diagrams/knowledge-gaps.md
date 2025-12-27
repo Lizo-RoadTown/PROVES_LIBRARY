@@ -44,18 +44,18 @@ sequenceDiagram
     Power->>Power: GPIO goes HIGH
     Power->>Device: Voltage ramps up
 
-    Note over Power,Device: ❌ GAP: How long does this take?
+    Note over Power,Device: [NO] GAP: How long does this take?
     rect rgb(255, 200, 200)
         Power-->>Device: t_rise = ??? ms
         Device-->>Device: Internal power-on reset
-        Note over Device: ❌ GAP: How long for POR?
+        Note over Device: [NO] GAP: How long for POR?
         Device-->>Device: t_por = ??? ms
         Device-->>Device: Initialize registers
-        Note over Device: ❌ GAP: Ready delay?
+        Note over Device: [NO] GAP: Ready delay?
         Device-->>Device: t_ready = ??? ms
     end
 
-    Note over Device,Driver: ❌ GAP: Total delay unknown
+    Note over Device,Driver: [NO] GAP: Total delay unknown
     Driver->>Device: I2C address probe
     alt Device Ready
         Device-->>Driver: ACK
@@ -68,10 +68,10 @@ sequenceDiagram
 
 | Parameter | F´ Docs | PROVES Docs | Typical Value | Impact if Unknown |
 |-----------|---------|-------------|---------------|-------------------|
-| **t_rise** - Voltage rise time | ❌ | ❌ | 1-10ms | Race condition |
-| **t_por** - Power-on reset duration | ❌ | ❌ | 10-100ms | Device not initialized |
-| **t_ready** - Ready after POR | ❌ | ❌ | 1-50ms | I2C communication fails |
-| **t_total** - Safe delay before I2C | ❌ | ❌ | 50-200ms | **Intermittent failures** |
+| **t_rise** - Voltage rise time | [NO] | [NO] | 1-10ms | Race condition |
+| **t_por** - Power-on reset duration | [NO] | [NO] | 10-100ms | Device not initialized |
+| **t_ready** - Ready after POR | [NO] | [NO] | 1-50ms | I2C communication fails |
+| **t_total** - Safe delay before I2C | [NO] | [NO] | 50-200ms | **Intermittent failures** |
 
 ### Where This Knowledge Lives
 
@@ -95,15 +95,15 @@ flowchart TB
     CASE3{Test coverage?}
 
     TOO_SHORT[Delay too short<br/>50ms]
-    WORKS_BENCH[✅ Works on bench<br/>warm start]
-    FAILS_FLIGHT[❌ Fails in flight<br/>cold start slower]
+    WORKS_BENCH[[YES] Works on bench<br/>warm start]
+    FAILS_FLIGHT[[NO] Fails in flight<br/>cold start slower]
 
     NO_DELAY[No delay added]
-    WORKS_LINUX[✅ Works on Linux<br/>scheduler slow enough]
-    FAILS_RTOS[❌ Fails on RTOS<br/>too fast]
+    WORKS_LINUX[[YES] Works on Linux<br/>scheduler slow enough]
+    FAILS_RTOS[[NO] Fails on RTOS<br/>too fast]
 
     CORRECT[Delay adequate<br/>200ms]
-    SUCCESS[✅ Always works]
+    SUCCESS[[YES] Always works]
 
     START --> CASE1
     CASE1 -->|Yes| CASE2
@@ -181,11 +181,11 @@ flowchart TB
 
 | Parameter | Required For | F´ Docs | PROVES Docs | Impact |
 |-----------|--------------|---------|-------------|--------|
-| **V_ripple** | Clean I2C signals | ❌ | ❌ | Bit errors |
-| **V_dropout** | Load regulation | ❌ | ❌ | Brownout |
-| **I_spike** | Inrush current | ❌ | ❌ | Voltage sag |
-| **R_ON** | Switch resistance | ❌ | ❌ | Power loss |
-| **V_IH, V_IL** | I2C thresholds | ❌ | ❌ | Communication errors |
+| **V_ripple** | Clean I2C signals | [NO] | [NO] | Bit errors |
+| **V_dropout** | Load regulation | [NO] | [NO] | Brownout |
+| **I_spike** | Inrush current | [NO] | [NO] | Voltage sag |
+| **R_ON** | Switch resistance | [NO] | [NO] | Power loss |
+| **V_IH, V_IL** | I2C thresholds | [NO] | [NO] | Communication errors |
 
 ### Where This Knowledge Lives
 
@@ -271,9 +271,9 @@ stateDiagram-v2
 | Decision Point | Question | F´ Docs | PROVES Docs | Current Reality |
 |----------------|----------|---------|-------------|-----------------|
 | **Error Detection** | Which errors are recoverable? | Logs error | N/A | Unknown |
-| **Recovery Strategy** | Should power cycle on I2C error? | ❌ | ❌ | No recovery |
-| **Retry Count** | How many retries before giving up? | ❌ | ❌ | Give up immediately |
-| **Timing** | How long to wait after power cycle? | ❌ | ❌ | N/A |
+| **Recovery Strategy** | Should power cycle on I2C error? | [NO] | [NO] | No recovery |
+| **Retry Count** | How many retries before giving up? | [NO] | [NO] | Give up immediately |
+| **Timing** | How long to wait after power cycle? | [NO] | [NO] | N/A |
 | **Escalation** | When to alert operator? | Logs event | N/A | Every error (noisy) |
 
 ### Missing Decision Tree
@@ -376,11 +376,11 @@ flowchart TB
 
 | Aspect | Information Needed | F´ Docs | PROVES Docs | Impact if Unknown |
 |--------|-------------------|---------|-------------|-------------------|
-| **Bus Topology** | Which devices on which bus? | ❌ | ❌ | Wrong bus configured |
-| **Address Map** | All I2C addresses | Partial (0x68) | ❌ | Address conflicts |
-| **Power Sequence** | Order to enable devices | ❌ | ❌ | Bus contention |
-| **Simultaneity** | Can devices operate together? | ❌ | ❌ | Data corruption |
-| **Priority** | Which device has priority? | ❌ | ❌ | Starvation |
+| **Bus Topology** | Which devices on which bus? | [NO] | [NO] | Wrong bus configured |
+| **Address Map** | All I2C addresses | Partial (0x68) | [NO] | Address conflicts |
+| **Power Sequence** | Order to enable devices | [NO] | [NO] | Bus contention |
+| **Simultaneity** | Can devices operate together? | [NO] | [NO] | Data corruption |
+| **Priority** | Which device has priority? | [NO] | [NO] | Starvation |
 
 ### Conflict Scenarios
 
@@ -407,7 +407,7 @@ sequenceDiagram
     Bus-->>IMU: Data corrupted
     Bus-->>Mag: Data corrupted
 
-    Note over App,HW_MAG: ❌ Both reads fail, no indication why
+    Note over App,HW_MAG: [NO] Both reads fail, no indication why
 
     Note over App,HW_MAG: Scenario 2: Power-On Glitch (UNDOCUMENTED)
 
@@ -425,7 +425,7 @@ sequenceDiagram
     HW_IMU--XHW_IMU: Brownout / latchup
     HW_MAG--XHW_MAG: Brownout / latchup
 
-    Note over App,HW_MAG: ❌ Devices damaged, mission loss
+    Note over App,HW_MAG: [NO] Devices damaged, mission loss
 ```
 
 ### Where This Knowledge Lives
@@ -492,9 +492,9 @@ flowchart LR
 
 | Integration | F´ Platform | PROVES Platform | Documented? | Challenge |
 |-------------|-------------|-----------------|-------------|-----------|
-| **Desktop Sim** | Linux + Python | CircuitPython sim | ❌ | How to mock hardware? |
-| **Flight Target** | Zephyr RTOS + C++ | C + registers | ❌ | How to share GPIO? |
-| **Lab Test** | Linux + Python | Hardware board | ❌ | How to communicate? |
+| **Desktop Sim** | Linux + Python | CircuitPython sim | [NO] | How to mock hardware? |
+| **Flight Target** | Zephyr RTOS + C++ | C + registers | [NO] | How to share GPIO? |
+| **Lab Test** | Linux + Python | Hardware board | [NO] | How to communicate? |
 
 ### Missing Integration Examples
 
@@ -502,7 +502,7 @@ flowchart LR
 
 1. **How F´ C++ calls PROVES CircuitPython:**
    ```cpp
-   // ❌ NOT DOCUMENTED
+   // [NO] NOT DOCUMENTED
    // In F´ configureTopology():
    void configureTopology() {
        // How to call Python LoadSwitchManager from C++?
@@ -515,7 +515,7 @@ flowchart LR
 
 2. **How to share GPIO control:**
    ```
-   ❌ NOT DOCUMENTED
+   [NO] NOT DOCUMENTED
    - Does F´ control GPIO directly?
    - Does PROVES control GPIO and F´ requests power?
    - Is there a hardware abstraction layer?
@@ -524,7 +524,7 @@ flowchart LR
 
 3. **Build system integration:**
    ```cmake
-   # ❌ NOT DOCUMENTED
+   # [NO] NOT DOCUMENTED
    # How to build F´ + PROVES together?
    # - Separate processes?
    # - Linked libraries?
@@ -651,7 +651,7 @@ gantt
 
 - [← Back to Home](../index.html)
 - [← Previous: Transitive Dependency Chains](transitive-chains.html)
-- [Next: Team Boundaries →](team-boundaries.html)
+- [Next: Team Boundaries ->](team-boundaries.html)
 
 ---
 

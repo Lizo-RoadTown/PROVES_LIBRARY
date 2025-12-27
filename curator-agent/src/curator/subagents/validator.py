@@ -5,7 +5,7 @@ Specialized agent for validating extractions and recording decisions
 DOMAIN TABLE WORKFLOW (2024-12-22):
 1. Review staging_extractions awaiting validation
 2. Record decisions in validation_decisions table
-3. Approved extractions → promoted to core_entities by storage agent
+3. Approved extractions -> promoted to core_entities by storage agent
 """
 import sys
 import os
@@ -16,7 +16,7 @@ from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
-from graph_manager import GraphManager
+from scripts.core.graph_manager import GraphManager
 
 
 def get_db_connection():
@@ -192,11 +192,11 @@ def check_for_duplicates(entity_name: str, entity_type: str) -> str:
         result = f"Duplicate check for '{entity_name}' ({entity_type}):\n\n"
         
         if exact:
-            result += "⚠️ EXACT MATCHES:\n"
+            result += "[WARNING] EXACT MATCHES:\n"
             for eid, key, name, etype, eco in exact:
                 result += f"  - {name} (key: {key}, {etype}, {eco}) ID: {eid}\n"
         else:
-            result += "✓ No exact matches\n"
+            result += "[OK] No exact matches\n"
         
         if similar:
             result += "\n📊 Similar entities:\n"
@@ -240,19 +240,15 @@ def check_if_dependency_exists(source: str, target: str, relationship_type: str)
 
 
 @tool
-def verify_schema_compliance(component: str, depends_on: str, relationship_type: str, criticality: str) -> str:
+def verify_schema_compliance(component: str, depends_on: str, relationship_type: str, criticality: str = None) -> str:
     """Verify that a dependency follows ERV schema and naming conventions."""
     # Valid ERV types
     valid_types = ['depends_on', 'requires', 'enables', 'conflicts_with', 'mitigates', 'causes']
-    valid_criticalities = ['HIGH', 'MEDIUM', 'LOW']
 
     issues = []
 
     if relationship_type not in valid_types:
         issues.append(f"Invalid relationship type '{relationship_type}'. Must be one of: {', '.join(valid_types)}")
-
-    if criticality not in valid_criticalities:
-        issues.append(f"Invalid criticality '{criticality}'. Must be one of: {', '.join(valid_criticalities)}")
 
     if not component or not depends_on:
         issues.append("Component and depends_on cannot be empty")
@@ -263,7 +259,7 @@ def verify_schema_compliance(component: str, depends_on: str, relationship_type:
     if issues:
         return f"[INVALID] Schema issues:\n" + "\n".join(f"  - {issue}" for issue in issues)
 
-    return f"[VALID] Schema compliant: {component} --[{relationship_type}]--> {depends_on} ({criticality})"
+    return f"[VALID] Schema compliant: {component} --[{relationship_type}]--> {depends_on}"
 
 
 @tool
@@ -305,13 +301,13 @@ def query_verified_entities(
 
     Examples:
     - query_verified_entities(entity_type='component', ecosystem='proveskit')
-      → See all verified PROVES Kit components
+      -> See all verified PROVES Kit components
 
     - query_verified_entities(name_pattern='%I2C%')
-      → Find entities related to I2C
+      -> Find entities related to I2C
 
     - query_verified_entities(entity_type='component', limit=10)
-      → Get 10 examples of verified components
+      -> Get 10 examples of verified components
 
     Returns: Entity details including canonical_key, ecosystem, attributes
     """
@@ -386,13 +382,13 @@ def query_staging_history(
 
     Examples:
     - query_staging_history(status='accepted', candidate_type='component')
-      → See what components were accepted
+      -> See what components were accepted
 
     - query_staging_history(status='rejected')
-      → Learn from rejections
+      -> Learn from rejections
 
     - query_staging_history(min_confidence=0.8, status='accepted')
-      → See high-confidence items that were accepted
+      -> See high-confidence items that were accepted
 
     Returns: Extraction details with confidence scores and reasons
     """
@@ -471,10 +467,10 @@ def query_validation_decisions(
 
     Examples:
     - query_validation_decisions(decision_type='reject')
-      → Learn why things were rejected
+      -> Learn why things were rejected
 
     - query_validation_decisions(reasoning_contains='duplicate')
-      → See duplicate-related decisions
+      -> See duplicate-related decisions
 
     Returns: Validation reasoning and decisions
     """
@@ -543,10 +539,10 @@ def query_raw_snapshots(
 
     Examples:
     - query_raw_snapshots(source_url_pattern='%proveskit.space%')
-      → See what PROVES Kit pages were fetched
+      -> See what PROVES Kit pages were fetched
 
     - query_raw_snapshots(source_type='webpage')
-      → See all webpage snapshots
+      -> See all webpage snapshots
 
     Returns: Source URLs and fetch timestamps
     """
@@ -604,14 +600,14 @@ def create_validator_agent():
     Create the validator sub-agent
 
     This agent specializes in:
-    - get_pending_extractions() → review staging_extractions
-    - record_validation_decision() → approve/reject with audit trail
-    - check_for_duplicates() → detect entities already in core
+    - get_pending_extractions() -> review staging_extractions
+    - record_validation_decision() -> approve/reject with audit trail
+    - check_for_duplicates() -> detect entities already in core
 
     Legacy tools (for backward compatibility):
-    - check_if_dependency_exists() → kg_nodes lookup
-    - verify_schema_compliance() → ERV schema validation
-    - search_similar_dependencies() → kg_nodes search
+    - check_if_dependency_exists() -> kg_nodes lookup
+    - verify_schema_compliance() -> ERV schema validation
+    - search_similar_dependencies() -> kg_nodes search
 
     Uses Claude Haiku 3.5 for cost optimization (validation is pattern matching)
     """

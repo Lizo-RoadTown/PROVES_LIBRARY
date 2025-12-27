@@ -72,3 +72,7 @@ package-lock.json
 # Local artifacts
 curator_checkpoints.db
 nul
+
+# External reference repos and archives
+.deepagents-repo/
+.archive/

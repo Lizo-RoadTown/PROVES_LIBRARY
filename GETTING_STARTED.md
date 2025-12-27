@@ -6,11 +6,11 @@
 
 ## What You'll Set Up
 
-- ✅ Curator Agent system (LangGraph + Claude Sonnet 4.5)
-- ✅ Neon PostgreSQL knowledge graph (cloud-hosted)
-- ✅ LangGraph checkpointer for agent state persistence
-- ✅ Infrastructure utilities for database operations
-- ✅ Domain staging tables (evidence + confidence workflow)
+- [YES] Curator Agent system (LangGraph + Claude Sonnet 4.5)
+- [YES] Neon PostgreSQL knowledge graph (cloud-hosted)
+- [YES] LangGraph checkpointer for agent state persistence
+- [YES] Infrastructure utilities for database operations
+- [YES] Domain staging tables (evidence + confidence workflow)
 
 ---
 
@@ -185,7 +185,7 @@ python scripts/db_connector.py
 
 **Expected output:**
 ```
-✅ Connected to Neon PostgreSQL
+[YES] Connected to Neon PostgreSQL
 Database: proves
 Tables: kg_nodes, kg_relationships, library_entries
 ```
@@ -198,7 +198,7 @@ python scripts/graph_manager.py
 
 **Expected output:**
 ```
-✅ Knowledge graph initialized
+[YES] Knowledge graph initialized
 Nodes: 6, Relationships: 3
 ```
 
@@ -490,7 +490,7 @@ Every agent execution is traced in LangSmith:
 
 ## Next Steps
 
-1. ✅ Complete this setup guide
+1. [YES] Complete this setup guide
 2. Read [FOLDER_STRUCTURE.md](FOLDER_STRUCTURE.md) for project organization
 3. Read [curator-agent/README.md](curator-agent/README.md) for Deep Agent details
 4. Explore [trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md](trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md) for example analysis

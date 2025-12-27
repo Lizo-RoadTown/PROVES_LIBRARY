@@ -13,7 +13,6 @@ This agent extracts:
 Does NOT assign criticality - that's human judgment after verification.
 
 Supports:
-- Local file reading
 - Web page fetching (docs sites)
 - GitHub file fetching (source repos)
 
@@ -31,19 +30,28 @@ from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
 
 
-def load_ontology() -> str:
+@tool
+def get_ontology() -> str:
     """
-    Load the ONTOLOGY.md file which defines extraction vocabulary.
-    This is loaded into EVERY extraction prompt to prevent drift.
+    Get the full FRAMES ontology reference document.
+
+    Use this tool if you need to check:
+    - Complete 4-question methodology details
+    - Coupling strength calibration examples
+    - Layer-specific if-stops examples
+    - Extraction output format specifications
+
+    Most extractions won't need this - the core principles in your system prompt
+    are usually sufficient. Only call this if you need the full reference.
     """
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
     ontology_path = os.path.join(project_root, 'ONTOLOGY.md')
-    
+
     try:
         with open(ontology_path, 'r', encoding='utf-8') as f:
             return f.read()
     except FileNotFoundError:
-        # Fallback if ontology not found - should never happen
+        # Fallback if ontology not found
         return """## FRAMES Core Vocabulary
 - COMPONENTS: What units exist (modules)
 - INTERFACES: Where they connect (ports, buses)
@@ -73,14 +81,14 @@ def get_or_create_pipeline_run(conn, run_name: str = "curator_extraction") -> st
     with conn.cursor() as cur:
         # Check for existing active run
         cur.execute("""
-            SELECT id FROM pipeline_runs 
+            SELECT id FROM pipeline_runs
             WHERE run_name = %s AND score_status = 'pending'
             ORDER BY created_at DESC LIMIT 1
         """, (run_name,))
         existing = cur.fetchone()
         if existing:
             return str(existing[0])
-        
+
         # Create new run
         cur.execute("""
             INSERT INTO pipeline_runs (run_name, run_type, triggered_by)
@@ -88,6 +96,132 @@ def get_or_create_pipeline_run(conn, run_name: str = "curator_extraction") -> st
             RETURNING id
         """, (run_name,))
         return str(cur.fetchone()[0])
+
+
+@tool
+def create_lineage_data(snapshot_id: str, evidence_text: str) -> str:
+    """
+    Create lineage verification data for an evidence quote.
+
+    CRITICAL: Uses explicit UTF-8 encoding for checksums and byte offsets.
+    This ensures consistent, reproducible lineage verification.
+
+    Args:
+        snapshot_id: UUID of the snapshot from raw_snapshots
+        evidence_text: The exact evidence quote to verify
+
+    Returns:
+        JSON string with lineage data:
+        {
+            "evidence_checksum": "sha256:abc123...",
+            "evidence_byte_offset": 1234,
+            "evidence_byte_length": 56,
+            "lineage_verified": true,
+            "lineage_confidence": 0.95,
+            "checks_passed": 5,
+            "checks_failed": 1
+        }
+    """
+    import json
+
+    try:
+        conn = get_db_connection()
+
+        # Query snapshot payload
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT payload, content_hash
+                FROM raw_snapshots
+                WHERE id = %s::uuid
+            """, (snapshot_id,))
+            row = cur.fetchone()
+
+            if not row:
+                return json.dumps({
+                    "error": f"Snapshot {snapshot_id} not found",
+                    "lineage_verified": False,
+                    "lineage_confidence": 0.0
+                })
+
+            payload_jsonb, snapshot_checksum = row
+
+        conn.close()
+
+        # Extract content from JSONB payload
+        if isinstance(payload_jsonb, dict):
+            payload_content = payload_jsonb.get('content', '')
+        else:
+            payload_content = str(payload_jsonb)
+
+        # CRITICAL: Use explicit UTF-8 encoding for all byte operations
+        payload_bytes = payload_content.encode('utf-8')
+        evidence_bytes = evidence_text.encode('utf-8')
+
+        # Calculate checksum with explicit UTF-8
+        evidence_checksum = hashlib.sha256(evidence_bytes).hexdigest()
+
+        # Find byte offset in payload
+        evidence_offset = payload_bytes.find(evidence_bytes)
+        evidence_length = len(evidence_bytes)
+
+        # Lineage verification checks
+        checks_passed = []
+        checks_failed = []
+
+        # Check 1: Evidence text not empty
+        if evidence_text.strip():
+            checks_passed.append("evidence_not_empty")
+        else:
+            checks_failed.append("evidence_empty")
+
+        # Check 2: Evidence found in snapshot
+        if evidence_offset != -1:
+            checks_passed.append("evidence_found_in_snapshot")
+        else:
+            checks_failed.append("evidence_not_found_in_snapshot")
+
+        # Check 3: Checksum calculated successfully
+        if evidence_checksum:
+            checks_passed.append("checksum_calculated")
+        else:
+            checks_failed.append("checksum_failed")
+
+        # Check 4: Snapshot has checksum
+        if snapshot_checksum:
+            checks_passed.append("snapshot_has_checksum")
+        else:
+            checks_failed.append("snapshot_missing_checksum")
+
+        # Check 5: Evidence length reasonable (not empty, not too large)
+        if 10 <= evidence_length <= 10000:
+            checks_passed.append("evidence_length_reasonable")
+        else:
+            checks_failed.append("evidence_length_unreasonable")
+
+        # Calculate lineage confidence
+        total_checks = len(checks_passed) + len(checks_failed)
+        lineage_confidence = len(checks_passed) / total_checks if total_checks > 0 else 0.0
+
+        # Lineage verified if evidence found and confidence >= 0.75
+        lineage_verified = (evidence_offset != -1) and (lineage_confidence >= 0.75)
+
+        return json.dumps({
+            "evidence_checksum": f"sha256:{evidence_checksum}",
+            "evidence_byte_offset": evidence_offset,
+            "evidence_byte_length": evidence_length,
+            "lineage_verified": lineage_verified,
+            "lineage_confidence": round(lineage_confidence, 2),
+            "checks_passed": checks_passed,
+            "checks_failed": checks_failed,
+            "encoding": "utf-8"
+        }, indent=2)
+
+    except Exception as e:
+        return json.dumps({
+            "error": str(e),
+            "lineage_verified": False,
+            "lineage_confidence": 0.0
+        })
 
 
 def store_raw_snapshot(source_url: str, source_type: str, ecosystem: str, content: str, content_hash: str) -> str:
@@ -390,16 +524,18 @@ def extract_architecture_using_claude(text: str, document_name: str) -> str:
     - INTERFACES: Where components connect (ports, buses, protocols)
     - FLOWS: What moves through interfaces (data, commands, power, signals)
     - MECHANISMS: What maintains interfaces (documentation, schemas, drivers)
-    
+
     NOTE: Do NOT assess criticality - that's metadata assigned by HUMANS after verification.
     Criticality is about MISSION IMPACT which requires human judgment.
     """
     from langchain_anthropic import ChatAnthropic
 
-    # Load ontology to prevent drift
-    ontology = load_ontology()
-
     try:
+        # Extract snapshot_id from the text if present (from fetch_webpage output)
+        import re
+        snapshot_id_match = re.search(r'Snapshot ID: ([a-f0-9\-]+)', text)
+        snapshot_id = snapshot_id_match.group(1) if snapshot_id_match else None
+
         model = ChatAnthropic(
             model="claude-sonnet-4-5-20250929",
             temperature=0,
@@ -407,34 +543,32 @@ def extract_architecture_using_claude(text: str, document_name: str) -> str:
 
         extraction_prompt = f"""## YOUR MISSION: Reduce Ambiguity for Human Verifier
 
-You are preparing architecture data for HUMAN VERIFICATION.
+You are preparing architecture data for HUMAN VERIFICATION using FRAMES methodology.
 
-**The Pipeline:**
-1. YOU extract structure from documentation
-2. YOU compare against verified examples (use query tools!)
-3. YOU document your reasoning trail
-4. HUMAN reviews with full context
-5. HUMAN verifies and promotes to truth
+**FRAMES = Framework for Resilience Assessment in Modular Engineering Systems**
 
-**Why This Matters:**
-Humans can't verify what they can't understand. Your job is to REDUCE AMBIGUITY by:
-- Citing exact sources (they need to verify your quotes)
-- Comparing against verified examples (they need to see your logic)
-- Documenting what you're confident about and WHY
-- Explaining any uncertainties
+Extract COUPLINGS (not just components). For EVERY coupling, answer 4 questions:
+1. What flows through? (data, power, decisions)
+2. What happens if it stops? (failure mode)
+3. What maintains it? (driver, process, documentation)
+4. Coupling strength? (0.0-1.0 based on constraints)
 
-**Use Your Query Tools:**
-- query_verified_entities() → See verified examples to match patterns
-- query_staging_history() → Learn what confidence levels were accepted
+**Extraction threshold:** Must answer at least 2 of 4 questions with evidence.
 
-**Document Your Reasoning:**
-When you extract, note:
-- "I compared this to verified entities X, Y, Z which have similar structure"
-- "Confidence is HIGH because source explicitly states X with example"
-- "Confidence is LOW because documentation only implies X, no explicit statement"
+**Coupling strength rubric:**
+- 0.9-1.0: Hard constraints (must, within Xms, safety-critical)
+- 0.6-0.8: Explicit dependency (degraded mode possible)
+- 0.3-0.5: Optional (may, can, if available)
+- 0.0-0.2: Weak (only coexistence mentioned)
 
----
-{ontology}
+**Layers:** digital (software), physical (hardware), organizational (people/teams)
+
+**Reduce Ambiguity:**
+- Cite exact sources (they need to verify your quotes)
+- Compare against verified examples (they need to see your logic)
+- Document what you're confident about and WHY
+- Explain any uncertainties
+
 ---
 
 ## DOCUMENT TO ANALYZE
@@ -466,7 +600,7 @@ For each connection point between components:
 Interface: <name or description>
 Connects: <Component A> ↔ <Component B>
 Type: I2C | SPI | UART | USB | power | command | telemetry | API | function_call
-Direction: bidirectional | A→B | B→A
+Direction: bidirectional | A->B | B->A
 Confidence: HIGH | MEDIUM | LOW
 Source: <line numbers or section>
 ```
@@ -503,10 +637,166 @@ Confidence: HIGH | MEDIUM | LOW
 """
 
         response = model.invoke(extraction_prompt)
-        return f"Architecture Extraction Results:\n\n{response.content}"
+
+        # Include snapshot_id in the output for storage agent
+        result = f"Architecture Extraction Results:\n\n{response.content}"
+        if snapshot_id:
+            result += f"\n\n---\nSnapshot ID: {snapshot_id}\nSource: {document_name}"
+
+        return result
 
     except Exception as e:
         return f"Error during extraction: {str(e)}"
+
+
+# ============================================================================
+# LONG-TERM MEMORY TOOLS - Agents learn from feedback
+# ============================================================================
+
+@tool
+def observe_staging_feedback(days_back: int = 7, limit: int = 50) -> str:
+    """
+    Observe recent human verification decisions to learn extraction patterns.
+
+    Returns accepted and rejected extractions from the last N days.
+    Use this to identify what humans value vs what they reject.
+
+    Update /memories/extraction_patterns.txt with learned patterns.
+
+    Args:
+        days_back: How many days of feedback to observe (default: 7)
+        limit: Maximum number of extractions to review (default: 50)
+
+    Returns:
+        Summary of accepted/rejected patterns with examples
+    """
+    try:
+        import psycopg
+        from dotenv import load_dotenv
+        import os
+
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+        load_dotenv(os.path.join(project_root, '.env'))
+
+        db_url = os.environ.get('NEON_DATABASE_URL')
+        conn = psycopg.connect(db_url)
+
+        query = """
+            SELECT
+                candidate_type::text,
+                candidate_key,
+                candidate_payload,
+                evidence,
+                confidence_score,
+                status::text,
+                created_at
+            FROM staging_extractions
+            WHERE status IN ('accepted', 'rejected')
+              AND created_at > NOW() - INTERVAL '%s days'
+            ORDER BY created_at DESC
+            LIMIT %s
+        """
+
+        with conn.cursor() as cur:
+            cur.execute(query, (days_back, limit))
+            rows = cur.fetchall()
+
+        conn.close()
+
+        if not rows:
+            return f"No feedback found in the last {days_back} days. Humans haven't verified any extractions yet."
+
+        # Analyze patterns
+        accepted = [r for r in rows if r[5] == 'accepted']
+        rejected = [r for r in rows if r[5] == 'rejected']
+
+        result = f"=== STAGING FEEDBACK ({len(rows)} extractions reviewed) ===\n\n"
+        result += f"Accepted: {len(accepted)} | Rejected: {len(rejected)}\n\n"
+
+        # Summarize accepted patterns
+        if accepted:
+            result += "ACCEPTED PATTERNS:\n"
+            for ctype, ckey, payload, evidence, conf, status, created in accepted[:10]:
+                result += f"\n[OK] {ctype}: {ckey}\n"
+                result += f"  Confidence: {conf}\n"
+                if payload:
+                    import json
+                    p = payload if isinstance(payload, dict) else json.loads(payload)
+                    # Show key fields
+                    for k, v in list(p.items())[:3]:
+                        result += f"  {k}: {str(v)[:60]}\n"
+
+        # Summarize rejected patterns
+        if rejected:
+            result += "\n\nREJECTED PATTERNS:\n"
+            for ctype, ckey, payload, evidence, conf, status, created in rejected[:10]:
+                result += f"\n✗ {ctype}: {ckey}\n"
+                result += f"  Confidence: {conf}\n"
+                if payload:
+                    import json
+                    p = payload if isinstance(payload, dict) else json.loads(payload)
+                    for k, v in list(p.items())[:3]:
+                        result += f"  {k}: {str(v)[:60]}\n"
+
+        result += f"\n\nUse this feedback to update your extraction patterns in memory."
+        return result
+
+    except Exception as e:
+        return f"Error observing staging feedback: {str(e)}"
+
+
+@tool
+def read_memory_patterns() -> str:
+    """
+    Read learned extraction patterns from long-term memory.
+
+    Returns patterns that humans have accepted/rejected over time.
+    Use this at the START of extractions to follow learned patterns.
+
+    Returns:
+        Learned patterns, or empty string if no patterns learned yet
+    """
+    try:
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+        memory_file = os.path.join(project_root, 'memories', 'extraction_patterns.txt')
+
+        if os.path.exists(memory_file):
+            with open(memory_file, 'r', encoding='utf-8') as f:
+                return f.read()
+        else:
+            return "No learned patterns yet. Use observe_staging_feedback() to learn from human verification."
+    except Exception as e:
+        return f"Error reading memory patterns: {str(e)}"
+
+
+@tool
+def update_memory_patterns(patterns: str) -> str:
+    """
+    Update learned extraction patterns in long-term memory.
+
+    After observing staging feedback, update your learned patterns.
+    These patterns will persist across all future extractions.
+
+    Args:
+        patterns: Updated pattern text to save
+
+    Returns:
+        Confirmation message
+    """
+    try:
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
+        memory_dir = os.path.join(project_root, 'memories')
+        memory_file = os.path.join(memory_dir, 'extraction_patterns.txt')
+
+        # Create memories directory if it doesn't exist
+        os.makedirs(memory_dir, exist_ok=True)
+
+        with open(memory_file, 'w', encoding='utf-8') as f:
+            f.write(patterns)
+
+        return f"Memory patterns updated successfully. {len(patterns)} characters saved."
+    except Exception as e:
+        return f"Error updating memory patterns: {str(e)}"
 
 
 # Database query tools for confidence calibration
@@ -525,10 +815,10 @@ def query_verified_entities(
 
     Examples:
     - query_verified_entities(entity_type='component', ecosystem='proveskit')
-      → See verified PROVES Kit components to match your pattern
+      -> See verified PROVES Kit components to match your pattern
 
     - query_verified_entities(name_pattern='%I2C%')
-      → Find I2C-related entities to see how they were structured
+      -> Find I2C-related entities to see how they were structured
 
     Returns: Entity details with properties you can compare against
     """
@@ -606,7 +896,7 @@ def query_staging_history(
 
     Examples:
     - query_staging_history(candidate_type='component', min_confidence=0.8)
-      → See high-confidence component extractions that were accepted
+      -> See high-confidence component extractions that were accepted
 
     Returns: Confidence scores and reasons from past extractions
     """
@@ -665,42 +955,71 @@ def query_staging_history(
 @traceable(name="extractor_subagent")
 def create_extractor_agent():
     """
-    Create the extractor sub-agent using FRAMES methodology.
+    [DEPRECATED] Create the extractor sub-agent using old architecture.
 
-    FRAMES = Framework for Resilience Assessment in Modular Engineering Systems
-    
-    This agent maps system ARCHITECTURE by extracting:
-    - COMPONENTS: Semi-autonomous units (modules) with boundaries
-    - INTERFACES: Where components connect (ports, buses, protocols)
-    - FLOWS: What moves through interfaces (data, commands, power, signals)
-    - MECHANISMS: What maintains interfaces (documentation, schemas, drivers)
-    
-    Supports:
-    - Fetching web documentation (nasa.github.io/fprime, docs.proveskit.space)
-    - Fetching GitHub source files directly (without cloning)
-    - Listing GitHub directories to explore structure
-    
-    The ONTOLOGY.md file is loaded into every extraction to prevent vocabulary drift.
-    
-    NOTE: Does NOT assign criticality - that's human-assigned post-verification metadata.
-    Agents note CONFIDENCE (documentation clarity). Humans assign CRITICALITY (mission impact).
+    This function is NOT used by agent_v2.py (which uses SubAgentMiddleware).
+    Kept for backward compatibility with old scripts.
+
+    Use subagent_specs.get_extractor_spec() for agent_v2 instead.
     """
+    # NOTE: Ontology removed to reduce token usage
+    # Extractor can call get_ontology() tool if needed
+    ontology = ""
+
+    system_prompt = f"""You are the Extractor Agent for the PROVES Library.
+
+## Your Mission
+
+Extract system architecture from documentation using FRAMES methodology.
+
+FRAMES = Framework for Resilience Assessment in Modular Engineering Systems
+
+## Workflow
+
+1. **Parse the URL** from the task you receive
+2. **Fetch the page** using fetch_webpage tool
+3. **Extract architecture** using extract_architecture_using_claude tool
+4. **Return results** with the source URL clearly stated
+
+## FRAMES Extraction Vocabulary
+
+{ontology}
+
+## Critical Rules
+
+- ALWAYS cite the source URL in your response
+- Provide exact evidence quotes for each extraction
+- Document your confidence reasoning
+- Note any uncertainties or ambiguities
+- Do NOT assign criticality (that is for humans to decide)
+- Focus on WHAT exists, not on how critical it might be
+
+## Output Format
+
+Your final response should be structured text that includes:
+- Source URL (clearly stated)
+- Extracted entities (components, interfaces, flows, mechanisms)
+- Evidence quotes for each extraction
+- Confidence reasoning
+- Any uncertainties or notes
+
+Work step-by-step through the workflow above."""
+
+    # Create agent with extraction tools
     model = ChatAnthropic(
         model="claude-sonnet-4-5-20250929",
         temperature=0.1,
     )
 
     tools = [
-        # Content fetching (web and GitHub only - no local files)
         fetch_webpage,
-        fetch_github_file,
-        list_github_directory,
-        # Extraction with FRAMES methodology
         extract_architecture_using_claude,
-        # Database query tools for confidence calibration
+        # Query tools for confidence calibration
         query_verified_entities,
         query_staging_history,
     ]
 
+    # Note: create_react_agent doesn't support system prompts directly
+    # System instructions are embedded in tool descriptions
     agent = create_react_agent(model, tools)
     return agent

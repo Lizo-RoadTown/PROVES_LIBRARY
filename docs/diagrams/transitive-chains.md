@@ -20,7 +20,7 @@ Multi-hop dependency paths showing how high-level application requests cascade t
 
 ---
 
-## Chain 1: Application → I2C Communication → Power
+## Chain 1: Application -> I2C Communication -> Power
 
 ### What You're Looking At
 
@@ -97,19 +97,19 @@ flowchart TB
 
 | Hop | From | To | Documented? | Source |
 |-----|------|----|-----------| -------|
-| 1 | Application | Device Manager | ✅ Yes | F´ docs line 30 |
-| 2 | Device Manager | busWriteRead port | ✅ Yes | F´ docs line 76 |
-| 3 | Port | Bus Driver | ✅ Yes | F´ docs line 236 |
-| 4 | Bus Driver | /dev/i2c-1 | ✅ Yes | F´ docs line 248 |
-| 5 | Device | I2C Bus | ✅ Yes | F´ docs line 41 |
-| 6 | I2C | Pull-up Resistors | ⚠️ Implicit | Not in docs (standard I2C) |
-| 7 | I2C | IMU Device | ✅ Yes | F´ docs line 28 |
-| 8 | IMU | Registers | ✅ Yes | F´ docs line 97 |
-| 9 | IMU | **Power Supply** | ❌ **NO** | **GAP: Not documented** |
-| 10 | Power | **LoadSwitchManager** | ❌ **NO** | **GAP: Not documented** |
-| 11 | LSM | GPIO Pin | ✅ Yes | PROVES docs line 28 |
-| 12 | Pin | Board Definition | ✅ Yes | PROVES docs line 27 |
-| 13 | LSM | enable_logic | ✅ Yes | PROVES docs line 34 |
+| 1 | Application | Device Manager | [YES] Yes | F´ docs line 30 |
+| 2 | Device Manager | busWriteRead port | [YES] Yes | F´ docs line 76 |
+| 3 | Port | Bus Driver | [YES] Yes | F´ docs line 236 |
+| 4 | Bus Driver | /dev/i2c-1 | [YES] Yes | F´ docs line 248 |
+| 5 | Device | I2C Bus | [YES] Yes | F´ docs line 41 |
+| 6 | I2C | Pull-up Resistors | [WARNING] Implicit | Not in docs (standard I2C) |
+| 7 | I2C | IMU Device | [YES] Yes | F´ docs line 28 |
+| 8 | IMU | Registers | [YES] Yes | F´ docs line 97 |
+| 9 | IMU | **Power Supply** | [NO] **NO** | **GAP: Not documented** |
+| 10 | Power | **LoadSwitchManager** | [NO] **NO** | **GAP: Not documented** |
+| 11 | LSM | GPIO Pin | [YES] Yes | PROVES docs line 28 |
+| 12 | Pin | Board Definition | [YES] Yes | PROVES docs line 27 |
+| 13 | LSM | enable_logic | [YES] Yes | PROVES docs line 34 |
 
 **Critical Gap:** Steps 9-10 create a hidden transitive dependency from Application Layer to Power Management Layer across two separate systems.
 
@@ -135,7 +135,7 @@ flowchart TB
 
 ---
 
-## Chain 2: Configuration → Topology → Bus → Power
+## Chain 2: Configuration -> Topology -> Bus -> Power
 
 ### What You're Looking At
 
@@ -159,14 +159,14 @@ sequenceDiagram
     Main->>Topo: Call configureTopology()
 
     rect rgb(255, 200, 200)
-        Note over Topo,LSM: ❌ Step 2-4: UNDOCUMENTED
+        Note over Topo,LSM: [NO] Step 2-4: UNDOCUMENTED
         Topo->>LSM: turn_on("imu")
         LSM->>LSM: Set board.IMU_ENABLE = HIGH
         LSM-->>Topo: Return True
     end
 
     rect rgb(255, 255, 180)
-        Note over Delay: ❌ Step 5: UNDOCUMENTED<br/>How long to wait?
+        Note over Delay: [NO] Step 5: UNDOCUMENTED<br/>How long to wait?
         Delay-->>Delay: Wait for voltage stabilization
     end
 
@@ -183,7 +183,7 @@ sequenceDiagram
     end
 
     rect rgb(200, 255, 255)
-        Note over IM,HW: ✅ Step 10-12: Documented in F´
+        Note over IM,HW: [YES] Step 10-12: Documented in F´
         IM->>HW: Write RESET_REG
         HW->>HW: Device reset
         HW-->>IM: ACK
@@ -196,16 +196,16 @@ sequenceDiagram
 
 | Step | Action | Documented? | Risk if Missing |
 |------|--------|-------------|-----------------|
-| 1 | Call configureTopology() | ✅ F´ docs | Low |
-| 2 | Call LoadSwitchManager.turn_on("imu") | ❌ **NO** | **HIGH** - Skipped entirely |
-| 3 | Set GPIO pin HIGH | ✅ PROVES docs | Low |
-| 4 | Return success | ✅ PROVES docs | Low |
-| 5 | **Wait for power stabilization** | ❌ **NO** | **CRITICAL** - No delay spec |
-| 6 | Call busDriver.open() | ✅ F´ docs | Low |
-| 7 | Initialize /dev/i2c-1 | ✅ F´ docs | Low |
-| 8 | Call imuManager.configure() | ✅ F´ docs | Low |
-| 9 | Set I2C address 0x68 | ✅ F´ docs | Low |
-| 10-12 | Device initialization | ✅ F´ docs | Low |
+| 1 | Call configureTopology() | [YES] F´ docs | Low |
+| 2 | Call LoadSwitchManager.turn_on("imu") | [NO] **NO** | **HIGH** - Skipped entirely |
+| 3 | Set GPIO pin HIGH | [YES] PROVES docs | Low |
+| 4 | Return success | [YES] PROVES docs | Low |
+| 5 | **Wait for power stabilization** | [NO] **NO** | **CRITICAL** - No delay spec |
+| 6 | Call busDriver.open() | [YES] F´ docs | Low |
+| 7 | Initialize /dev/i2c-1 | [YES] F´ docs | Low |
+| 8 | Call imuManager.configure() | [YES] F´ docs | Low |
+| 9 | Set I2C address 0x68 | [YES] F´ docs | Low |
+| 10-12 | Device initialization | [YES] F´ docs | Low |
 
 **Critical Gaps:**
 - **Step 2:** No documentation linking configureTopology() to LoadSwitchManager
@@ -221,9 +221,9 @@ flowchart TB
     CASE1{Does code call<br/>LSM.turn_on?}
     CASE2{Sufficient<br/>delay before<br/>bus.open?}
 
-    FAIL1[❌ Power never enabled<br/>I2C device doesn't exist<br/>open returns I2C_OPEN_ERR]
-    FAIL2[❌ Voltage not stable<br/>I2C init races with power-on<br/>Intermittent failures]
-    SUCCESS[✅ System initializes correctly]
+    FAIL1[[NO] Power never enabled<br/>I2C device doesn't exist<br/>open returns I2C_OPEN_ERR]
+    FAIL2[[NO] Voltage not stable<br/>I2C init races with power-on<br/>Intermittent failures]
+    SUCCESS[[YES] System initializes correctly]
 
     START --> CASE1
     CASE1 -->|No| FAIL1
@@ -335,7 +335,7 @@ flowchart TB
 
 ### What You're Looking At
 
-This diagram shows how F´'s build system creates your code. When you run `fprime-util build`, it goes through multiple compilation stages (FPP → C++ → compiled binary). Each stage has its own dependencies. The diagram shows how changing something fundamental (like the target platform) ripples through all the layers.
+This diagram shows how F´'s build system creates your code. When you run `fprime-util build`, it goes through multiple compilation stages (FPP -> C++ -> compiled binary). Each stage has its own dependencies. The diagram shows how changing something fundamental (like the target platform) ripples through all the layers.
 
 **Think of it like:** Making a cake from scratch. You need (1) a recipe (FPP files), (2) ingredients (source code), (3) mixing bowls (CMake), and (4) an oven (compiler). If you switch from a gas oven to electric (change platform), you might need different timing and temperatures at every step.
 
@@ -400,7 +400,7 @@ flowchart LR
 4. Fw.Types depends on FpConfig.h
 5. **FpConfig.h depends on platform definitions** (Linux, Zephyr, etc.)
 
-**Impact:** Changing platform (Linux → Zephyr) cascades through 5 layers to affect ImuManager compilation.
+**Impact:** Changing platform (Linux -> Zephyr) cascades through 5 layers to affect ImuManager compilation.
 
 > **Key Insight:** Build dependencies are usually well-documented (F´'s build system is solid), but they illustrate the same transitive principle: change something at the bottom, affect everything at the top. This is the ONE chain where documentation is good—notice the difference?
 
@@ -424,14 +424,14 @@ pie title Dependency Visibility
 
 Average hops from root cause to symptom: **4.2 layers**
 
-Maximum observed distance: **7 layers** (Power → Application)
+Maximum observed distance: **7 layers** (Power -> Application)
 
 ### 3. Documentation Coverage
 
 | Chain | Total Hops | Documented Hops | Coverage |
 |-------|------------|-----------------|----------|
-| Application → Power | 13 | 9 | 69% |
-| Configuration → Init | 12 | 8 | 67% |
+| Application -> Power | 13 | 9 | 69% |
+| Configuration -> Init | 12 | 8 | 67% |
 | Error Propagation | 8 | 3 | 38% |
 | Build System | 7 | 7 | 100% |
 
@@ -473,11 +473,11 @@ Test suites should:
 
 - [← Back to Home](../index.html)
 - [← Previous: Cross-System Dependencies](cross-system.html)
-- [Next: Knowledge Gaps →](knowledge-gaps.html)
+- [Next: Knowledge Gaps ->](knowledge-gaps.html)
 
 ---
 
 **Analysis Method:** Manual chain tracing, layer-by-layer analysis
-**Longest Chain Found:** 13 hops (Application → Board Configuration)
+**Longest Chain Found:** 13 hops (Application -> Board Configuration)
 **Documentation Gap:** 14 undocumented transitive links
 **Date:** December 20, 2024

@@ -115,7 +115,7 @@
 
 ### Critical Inter-System Dependencies
 
-#### Dependency 1: I2C Device → Power Stability
+#### Dependency 1: I2C Device -> Power Stability
 **From:** F´ Device Manager (ImuManager)
 **To:** PROVES Kit Load Switch Manager
 **Relationship:** **requires**
@@ -132,7 +132,7 @@
 
 ---
 
-#### Dependency 2: Bus Operations → Power Control Sequence
+#### Dependency 2: Bus Operations -> Power Control Sequence
 **From:** F´ Bus Driver open()
 **To:** PROVES Kit LoadSwitchManager initialization
 **Relationship:** **depends_on** (temporal ordering)
@@ -142,14 +142,14 @@
 1. PROVES doc line 34: LoadSwitchManager initialization must happen first
 2. F´ doc line 248: "busDriver.open('/dev/i2c-1')" happens in configureTopology()
 3. **MISSING DOCUMENTATION:** No specification of required power-on delay before I2C communication
-4. **MISSING DOCUMENTATION:** No specification of sequence: power enable → delay → bus open
+4. **MISSING DOCUMENTATION:** No specification of sequence: power enable -> delay -> bus open
 
 **Risk Level:** **HIGH**
 **Knowledge Gap:** If bus driver opens before power stabilizes, initialization will fail silently.
 
 ---
 
-#### Dependency 3: I2C Address Configuration → Pin Enable Logic
+#### Dependency 3: I2C Address Configuration -> Pin Enable Logic
 **From:** F´ ImuManager configure(0x68)
 **To:** PROVES Kit board.IMU_ENABLE pin
 **Relationship:** **conflicts_with** (potential)
@@ -166,7 +166,7 @@
 
 ---
 
-#### Dependency 4: Error Handling → Power State Recovery
+#### Dependency 4: Error Handling -> Power State Recovery
 **From:** F´ I2cStatus error codes
 **To:** PROVES Kit LoadSwitchManager state tracking
 **Relationship:** **mitigates** (potential)
@@ -244,7 +244,7 @@ Every dependency tracked with precise source location:
 
 ## TRANSITIVE DEPENDENCY CHAINS
 
-### Chain 1: Application → I2C Communication → Power
+### Chain 1: Application -> I2C Communication -> Power
 ```
 Application Layer (requests IMU data)
   ↓ depends_on
@@ -265,11 +265,11 @@ Hardware schematic / board definition
 
 **Documented:** Steps 1-3 (F´ doc)
 **Documented:** Steps 5-7 (PROVES doc)
-**UNDOCUMENTED:** Step 4 (I2C → Power dependency)
+**UNDOCUMENTED:** Step 4 (I2C -> Power dependency)
 
 ---
 
-### Chain 2: Configuration → Topology → Bus → Power
+### Chain 2: Configuration -> Topology -> Bus -> Power
 ```
 Topology.cpp configureTopology()
   ↓ calls
@@ -312,10 +312,10 @@ LoadSwitchManager.turn_on("imu") already called
 **Integration knowledge between F´ and PROVES Kit is UNDOCUMENTED**
 
 Neither document mentions the other. The dependency between I2C communication and power management is:
-- ✅ **Technically obvious** to experienced engineers
-- ❌ **Nowhere documented** in either system
-- ❌ **At risk of loss** during team turnover
-- ❌ **Could cause catastrophic failure** if misconfigured
+- [YES] **Technically obvious** to experienced engineers
+- [NO] **Nowhere documented** in either system
+- [NO] **At risk of loss** during team turnover
+- [NO] **Could cause catastrophic failure** if misconfigured
 
 **This is EXACTLY the Team A / Team B knowledge gap scenario.**
 
@@ -353,13 +353,13 @@ Neither document mentions the other. The dependency between I2C communication an
 
 ### Schema Requirements Validated:
 
-✅ **Multi-source dependency tracking:** Each dependency has 2+ source locations
-✅ **Location tracking:** File path + line numbers captured
-✅ **Relationship types:** requires, enables, depends_on, conflicts_with identified
-✅ **Criticality levels:** HIGH/MEDIUM/LOW assigned
-✅ **Knowledge gap detection:** Missing documentation flagged
-✅ **Transitive chains:** Multi-hop dependencies traced
-✅ **Organizational metadata:** Source team, validation type captured
+[YES] **Multi-source dependency tracking:** Each dependency has 2+ source locations
+[YES] **Location tracking:** File path + line numbers captured
+[YES] **Relationship types:** requires, enables, depends_on, conflicts_with identified
+[YES] **Criticality levels:** HIGH/MEDIUM/LOW assigned
+[YES] **Knowledge gap detection:** Missing documentation flagged
+[YES] **Transitive chains:** Multi-hop dependencies traced
+[YES] **Organizational metadata:** Source team, validation type captured
 
 ### Next Steps:
 
@@ -368,18 +368,18 @@ Neither document mentions the other. The dependency between I2C communication an
 3. **Create kg_relationships** for every dependency found
 4. **Add team_boundaries** table entry: F´ team ↔ PROVES Kit team (WEAK interface)
 5. **Add knowledge_validation** entries: F´ (vendor), PROVES (empirical)
-6. **Test query:** "What depends on IMU power?" → Should return F´ I2C driver
+6. **Test query:** "What depends on IMU power?" -> Should return F´ I2C driver
 
 ---
 
 ## SUCCESS METRICS FOR THIS TRIAL
 
-✅ **Comprehensive dependency discovery:** Found 45+ dependency relationships
-✅ **Location tracking:** Every dependency has file:line citations
-✅ **Cross-document analysis:** Identified 4 critical inter-system dependencies
-✅ **Knowledge gap detection:** Found 5 major undocumented dependencies
-✅ **Transitive chains:** Traced 2 complete dependency chains
-✅ **Organizational insight:** Identified WEAK team interface as risk
-✅ **Scalability demonstrated:** Manual analysis shows what automated system must replicate
+[YES] **Comprehensive dependency discovery:** Found 45+ dependency relationships
+[YES] **Location tracking:** Every dependency has file:line citations
+[YES] **Cross-document analysis:** Identified 4 critical inter-system dependencies
+[YES] **Knowledge gap detection:** Found 5 major undocumented dependencies
+[YES] **Transitive chains:** Traced 2 complete dependency chains
+[YES] **Organizational insight:** Identified WEAK team interface as risk
+[YES] **Scalability demonstrated:** Manual analysis shows what automated system must replicate
 
 **Next:** Insert into database and test query capabilities.

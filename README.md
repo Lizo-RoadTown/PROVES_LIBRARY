@@ -83,7 +83,7 @@ We've built a **knowledge graph construction pipeline** with three innovations:
 
 ### 1. Cryptographic Lineage Tracking
 Every extracted entity is provably traceable to its source with:
-- **UUID chains** - snapshot_id → extraction_id → entity_id
+- **UUID chains** - snapshot_id -> extraction_id -> entity_id
 - **SHA256 checksums** - Evidence integrity verification
 - **Byte offset tracking** - Exact source location in original document
 - **Lineage confidence scoring** - 0.0 to 1.0 confidence that extraction is traceable
@@ -102,7 +102,7 @@ We capture relationships **before** all entities exist:
 ### 3. Human-in-the-Loop Truth Layer
 Progressive refinement with human verification:
 ```
-Raw Sources → AI Extraction → Validation → Human Review → Truth Graph
+Raw Sources -> AI Extraction -> Validation -> Human Review -> Truth Graph
 ```
 
 - **Capture ALL** - LLM agents extract entities, interfaces, flows, mechanisms (FRAMES methodology)
@@ -172,13 +172,13 @@ flowchart TB
 
 ## What We've Built
 
-### Phase 1: Lineage Tracking System ✅
+### Phase 1: Lineage Tracking System [YES]
 **Problem:** LLMs hallucinate. How do you trust extracted knowledge?
 
 **Solution:** Cryptographic verification chain
 - SHA256 checksums for evidence integrity
 - Byte offset tracking for exact source location
-- 5-level verification (extraction exists → snapshot linked → evidence found → checksums match → lineage verified)
+- 5-level verification (extraction exists -> snapshot linked -> evidence found -> checksums match -> lineage verified)
 - Confidence scoring (0.0-1.0) - honest assessment of traceability
 
 **Implementation:**
@@ -186,7 +186,7 @@ flowchart TB
 - Retroactive verification of existing data ([retroactive_verify_lineage.py](curator-agent/retroactive_verify_lineage.py))
 - Complete design document ([ID_LINEAGE_SYSTEM.md](curator-agent/ID_LINEAGE_SYSTEM.md))
 
-### Phase 2: Rich Dependency Extraction ✅
+### Phase 2: Rich Dependency Extraction [YES]
 **Problem:** Dependencies exist before all entities are extracted. How do you capture them with full context?
 
 **Solution:** Forward-looking relationship staging with multi-layer dependency characterization
@@ -194,7 +194,7 @@ flowchart TB
 - Captures **interfaces, couplings, and bonds** (nearly decomposable systems framework)
 - Tracks **layer** (digital, organizational, physical) and **strength** (tight/loose coupling)
 - Auto-resolution trigger matches text to entities when extracted
-- Tracks resolution status (unresolved → partially_resolved → resolved)
+- Tracks resolution status (unresolved -> partially_resolved -> resolved)
 - Handles ambiguity (multiple possible matches flagged for human review)
 
 **Enables:**
@@ -203,7 +203,7 @@ flowchart TB
 - **GNN preparation** - Training data for predictive models (risk, impact, optimization)
 - **Nearly decomposable systems analysis** - Identify tight coupling that causes failure cascades
 
-### Phase 3: Notion Human-in-the-Loop ✅
+### Phase 3: Notion Human-in-the-Loop [YES]
 **Problem:** How do you give humans oversight without slowing down the pipeline?
 
 **Solution:** Three-database Notion integration
@@ -225,7 +225,7 @@ We're applying this to prevent CubeSat mission failures (88% failure rate):
 **The Problem:**
 - University CubeSat programs have fragmented knowledge across teams
 - Hidden dependencies cause cascading failures
-- Example: Power management change breaks I2C sensors 2 weeks before launch → 6-month delay
+- Example: Power management change breaks I2C sensors 2 weeks before launch -> 6-month delay
 
 **Our Approach:**
 1. Extract entities from documentation (components, interfaces, flows, mechanisms)
@@ -247,7 +247,7 @@ We're applying this to prevent CubeSat mission failures (88% failure rate):
 
 ### The Generalization Path
 
-**Phase 1 (Current):** CubeSat documentation → Knowledge graph
+**Phase 1 (Current):** CubeSat documentation -> Knowledge graph
 - Proves: Extraction works, lineage is verifiable, human oversight scales
 
 **Phase 2 (Next):** Multi-ecosystem composition
@@ -362,7 +362,7 @@ CREATE TRIGGER auto_resolve
 **Enables:**
 - Capture relationships before all entities extracted
 - Build complete dependency graph incrementally
-- Handle ambiguity (multiple possible matches → human review)
+- Handle ambiguity (multiple possible matches -> human review)
 
 ---
 
@@ -467,14 +467,14 @@ Traditional dependency graphs store "A depends on B" as a binary edge. Our graph
 
 - **Type** (depends_on, enables, conflicts_with, mitigates, causes)
 - **Layer** (digital, organizational, physical)
-- **Strength** (tight coupling → failure cascades, loose coupling → isolated failures)
+- **Strength** (tight coupling -> failure cascades, loose coupling -> isolated failures)
 - **Direction** (unidirectional, bidirectional, cyclic)
 
 These become **feature vectors** for the GNN, enabling it to learn:
 
-- *"Tight digital coupling + organizational dependency → 85% cascade probability"*
-- *"Physical bond + loose digital coupling → safe to modify"*
-- *"Bidirectional dependency + high strength → critical bond, must maintain"*
+- *"Tight digital coupling + organizational dependency -> 85% cascade probability"*
+- *"Physical bond + loose digital coupling -> safe to modify"*
+- *"Bidirectional dependency + high strength -> critical bond, must maintain"*
 
 **Model Types We'll Train:**
 
@@ -591,7 +591,7 @@ A rich multi-layer dependency graph with type/layer/strength/direction can tell 
 - **Why** they're connected (enables, depends_on, conflicts_with)
 - **How tightly** they're coupled (predicts cascade probability)
 - **At what level** the coupling exists (digital code? organizational process? physical wire?)
-- **What happens if you break it** (tight coupling → cascades, loose → safe)
+- **What happens if you break it** (tight coupling -> cascades, loose -> safe)
 
 This transforms the graph from a **static knowledge base** into a **predictive model** of system behavior - exactly what's needed for risk assessment and failure prevention.
 

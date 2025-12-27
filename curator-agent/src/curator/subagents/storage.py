@@ -23,7 +23,7 @@ from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
-from graph_manager import GraphManager
+from scripts.core.graph_manager import GraphManager
 
 
 def get_db_connection():
@@ -77,9 +77,16 @@ def store_extraction(
     source_metadata: dict = None
 ) -> str:
     """
-    Store an extracted entity in staging_extractions.
+    Deliver an extracted entity to the human review inbox (staging_extractions table).
 
-    STORE EVERYTHING - validator decides what's promoted to core.
+    Your job: Deliver clear, unambiguous information to humans.
+    Include relationships that help identify what this entity is.
+    Humans will review and decide - you just deliver the information.
+
+    CRITICAL: You MUST provide source_metadata with 'source_url' key.
+    The system will auto-find the snapshot from the URL.
+
+    Example: source_metadata={'source_url': 'https://docs.proveskit.space/...'}
 
     Args:
         candidate_type: 'component', 'port', 'command', 'telemetry', 'event', 'parameter',
@@ -88,7 +95,18 @@ def store_extraction(
         raw_evidence: Exact quote from source (REQUIRED - this is the evidence)
         source_snapshot_id: ID from raw_snapshots (auto-found from source_url if not provided)
         ecosystem: 'fprime', 'proveskit', 'pysquared', 'cubesat_general', 'external'
-        properties: JSON dict of entity-specific properties (ports, commands, etc.)
+        properties: JSON dict of entity-specific properties
+
+                   For dependencies/relationships, properties MUST include:
+                   {
+                       "source": "ComponentA",
+                       "target": "ComponentB",
+                       "relationship_type": "depends_on|requires|enables|conflicts_with|mitigates|causes"
+                   }
+
+                   DO NOT include "criticality" field - humans assign that post-verification.
+                   DO NOT use "dependency" as relationship_type - use one of the enum values above.
+
         confidence_score: How confident the extractor is (0.0 to 1.0)
         confidence_reason: Why this confidence level
         evidence_type: 'definition_spec', 'interface_contract', 'example', 'narrative',
@@ -107,12 +125,21 @@ def store_extraction(
                 "similar_entities": [{"id": "entity_abc", "similarity": 0.73}],
                 "recommendation": "create_new" | "merge_with" | "needs_review"
             }
-        source_metadata: Source document metadata (NEW - helps human verify):
+        source_metadata: Source document metadata (REQUIRED - helps human verify):
             {
-                "source_url": "https://...",
+                "source_url": "https://..." (REQUIRED - used to find snapshot),
                 "source_type": "webpage",
                 "fetch_timestamp": "2025-12-23T10:45:32Z"
             }
+
+    Lineage Computation (AUTOMATIC):
+        This function automatically computes lineage verification data:
+        - evidence_checksum: SHA256 hash with explicit UTF-8 encoding
+        - evidence_byte_offset: Byte position in snapshot (exact or normalized match)
+        - evidence_byte_length: Length in bytes
+        - lineage_verified: TRUE if exact/normalized match found
+        - lineage_confidence: 1.0 (exact), 0.85 (normalized), 0.7 (ambiguous), 0.0 (not found)
+        - lineage_verification_details: JSONB with method, hashes, match locations
 
     Returns:
         Confirmation with extraction ID, or error message
@@ -140,11 +167,160 @@ def store_extraction(
         if not source_snapshot_id:
             return "Error: source_snapshot_id required (or provide source_url in source_metadata)"
 
+        # ========================================================================
+        # DETERMINISTIC LINEAGE COMPUTATION (pure code, not agent behavior)
+        # ========================================================================
+        import re
+        lineage_verification_details = {}
+
+        if not raw_evidence or not raw_evidence.strip():
+            # No evidence provided - cannot compute lineage
+            evidence_checksum = None
+            evidence_byte_offset = None
+            evidence_byte_length = 0
+            lineage_verified = False
+            lineage_confidence = 0.0
+            lineage_verification_details = {
+                "method": "not_found",
+                "notes": "No evidence text provided"
+            }
+        else:
+            # Fetch snapshot content for lineage computation
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT payload, content_hash
+                    FROM raw_snapshots
+                    WHERE id = %s::uuid
+                """, (source_snapshot_id,))
+                snapshot_row = cur.fetchone()
+
+                if not snapshot_row:
+                    # Snapshot not found - cannot verify lineage
+                    evidence_checksum = None
+                    evidence_byte_offset = None
+                    evidence_byte_length = len(raw_evidence.encode('utf-8'))
+                    lineage_verified = False
+                    lineage_confidence = 0.0
+                    lineage_verification_details = {
+                        "method": "not_found",
+                        "notes": f"Snapshot {source_snapshot_id} not found in database"
+                    }
+                else:
+                    payload_jsonb, snapshot_content_hash = snapshot_row
+
+                    # Extract content from JSONB payload
+                    if isinstance(payload_jsonb, dict):
+                        snapshot_text = payload_jsonb.get('content', '')
+                    else:
+                        snapshot_text = str(payload_jsonb)
+
+                    # CRITICAL: Always use explicit UTF-8 encoding
+                    snapshot_bytes = snapshot_text.encode('utf-8')
+                    evidence_bytes = raw_evidence.encode('utf-8')
+
+                    # Calculate evidence checksum and length
+                    evidence_checksum = f"sha256:{hashlib.sha256(evidence_bytes).hexdigest()}"
+                    evidence_byte_length = len(evidence_bytes)
+
+                    # STEP 1: Exact match (byte-for-byte)
+                    exact_matches = []
+                    search_start = 0
+                    while True:
+                        found_offset = snapshot_bytes.find(evidence_bytes, search_start)
+                        if found_offset == -1:
+                            break
+                        exact_matches.append(found_offset)
+                        search_start = found_offset + 1
+
+                    if len(exact_matches) == 1:
+                        # Found exactly once - perfect lineage
+                        evidence_byte_offset = exact_matches[0]
+                        lineage_verified = True
+                        lineage_confidence = 1.0
+                        lineage_verification_details = {
+                            "method": "exact",
+                            "snapshot_content_hash": f"sha256:{snapshot_content_hash}" if snapshot_content_hash else None,
+                            "evidence_checksum": evidence_checksum,
+                            "matches_found": 1,
+                            "match_locations": exact_matches,
+                            "normalizations_applied": [],
+                            "fuzzy_score": None,
+                            "notes": "Exact byte-for-byte match found once."
+                        }
+                    elif len(exact_matches) > 1:
+                        # Found multiple times - ambiguous but verified
+                        evidence_byte_offset = exact_matches[0]  # Use first match
+                        lineage_verified = True
+                        lineage_confidence = 0.7
+                        lineage_verification_details = {
+                            "method": "exact",
+                            "snapshot_content_hash": f"sha256:{snapshot_content_hash}" if snapshot_content_hash else None,
+                            "evidence_checksum": evidence_checksum,
+                            "matches_found": len(exact_matches),
+                            "match_locations": exact_matches,
+                            "normalizations_applied": [],
+                            "fuzzy_score": None,
+                            "notes": f"Evidence found {len(exact_matches)} times in snapshot (ambiguous). Using first occurrence."
+                        }
+                    else:
+                        # STEP 2: Normalized match (formatting-only normalization)
+                        def normalize_text(text: str) -> str:
+                            """STRICT formatting-only normalization."""
+                            # Normalize line endings
+                            text = text.replace('\r\n', '\n').replace('\r', '\n')
+                            # Collapse repeated whitespace to single spaces
+                            text = re.sub(r'\s+', ' ', text)
+                            # Strip leading/trailing whitespace
+                            text = text.strip()
+                            return text
+
+                        snapshot_normalized = normalize_text(snapshot_text)
+                        evidence_normalized = normalize_text(raw_evidence)
+
+                        normalized_offset = snapshot_normalized.find(evidence_normalized)
+                        if normalized_offset != -1:
+                            # Found after normalization
+                            evidence_byte_offset = None  # Cannot reliably map to raw bytes
+                            lineage_verified = True
+                            lineage_confidence = 0.85
+                            lineage_verification_details = {
+                                "method": "normalized",
+                                "snapshot_content_hash": f"sha256:{snapshot_content_hash}" if snapshot_content_hash else None,
+                                "evidence_checksum": evidence_checksum,
+                                "matches_found": 1,
+                                "match_locations": [],  # Not available for normalized
+                                "normalizations_applied": ["newline", "whitespace_collapse", "strip"],
+                                "fuzzy_score": None,
+                                "notes": "Match found after strict formatting normalization. Byte offset not available."
+                            }
+                        else:
+                            # STEP 3: Not found
+                            evidence_byte_offset = None
+                            lineage_verified = False
+                            lineage_confidence = 0.0
+                            lineage_verification_details = {
+                                "method": "not_found",
+                                "snapshot_content_hash": f"sha256:{snapshot_content_hash}" if snapshot_content_hash else None,
+                                "evidence_checksum": evidence_checksum,
+                                "matches_found": 0,
+                                "match_locations": [],
+                                "normalizations_applied": [],
+                                "fuzzy_score": None,
+                                "notes": "Evidence quote not found in snapshot. Possible issues: wrong snapshot, quote modified, encoding mismatch."
+                            }
+
+        # Set lineage_verified_at if verified
+        lineage_verified_at = datetime.now() if lineage_verified else None
+
         # Get or create pipeline run
         run_id = get_or_create_pipeline_run(conn)
 
         with conn.cursor() as cur:
-            payload = json.dumps(properties) if properties else '{}'
+            payload_dict = properties if properties else {}
+            if isinstance(payload_dict, dict):
+                payload_dict = dict(payload_dict)
+                payload_dict.pop("criticality", None)
+            payload = json.dumps(payload_dict)
 
             # Build evidence JSONB with metadata for human verification
             evidence_data = {
@@ -170,18 +346,27 @@ def store_extraction(
                     pipeline_run_id, snapshot_id, agent_id, agent_version,
                     candidate_type, candidate_key, candidate_payload,
                     ecosystem, confidence_score, confidence_reason,
-                    evidence, evidence_type, status
+                    evidence, evidence_type, status,
+                    evidence_checksum, evidence_byte_offset, evidence_byte_length,
+                    lineage_verified, lineage_confidence, lineage_verified_at,
+                    lineage_verification_details
                 ) VALUES (
                     %s::uuid, %s::uuid, %s, %s,
                     %s::candidate_type, %s, %s::jsonb,
                     %s::ecosystem_type, %s, %s,
-                    %s::jsonb, %s::evidence_type, 'pending'::candidate_status
+                    %s::jsonb, %s::evidence_type, 'pending'::candidate_status,
+                    %s, %s, %s,
+                    %s, %s, %s,
+                    %s::jsonb
                 ) RETURNING extraction_id
             """, (
                 run_id, source_snapshot_id, 'storage_agent', '1.0',
                 candidate_type, candidate_key, payload,
                 ecosystem, confidence_score, confidence_reason,
-                evidence, evidence_type
+                evidence, evidence_type,
+                evidence_checksum, evidence_byte_offset, evidence_byte_length,
+                lineage_verified, lineage_confidence, lineage_verified_at,
+                json.dumps(lineage_verification_details)
             ))
             extraction_id = cur.fetchone()[0]
         conn.commit()
@@ -270,7 +455,7 @@ def promote_to_core(
         conn.commit()
         conn.close()
         
-        return f"[PROMOTED] {final_name} → core_entities (ID: {entity_id})"
+        return f"[PROMOTED] {final_name} -> core_entities (ID: {entity_id})"
         
     except Exception as e:
         return f"Error promoting extraction: {str(e)}"
@@ -625,15 +810,15 @@ def create_storage_agent():
     Create the storage sub-agent
 
     This agent specializes in:
-    - store_extraction() → staging_extractions (new primary workflow)
-    - promote_to_core() → core_entities (after validation)
-    - store_equivalence() → core_equivalences (cross-ecosystem links)
-    - get_staging_statistics() → domain table stats
+    - store_extraction() -> staging_extractions (new primary workflow)
+    - promote_to_core() -> core_entities (after validation)
+    - store_equivalence() -> core_equivalences (cross-ecosystem links)
+    - get_staging_statistics() -> domain table stats
 
     Legacy tools (backward compatible):
-    - store_finding() → findings table
-    - legacy_store_equivalence() → equivalences table
-    - record_crawled_source() → crawled_sources
+    - store_finding() -> findings table
+    - legacy_store_equivalence() -> equivalences table
+    - record_crawled_source() -> crawled_sources
 
     Uses Claude Haiku 3.5 for cost optimization (storage is simple database operations)
     """
@@ -643,18 +828,12 @@ def create_storage_agent():
     )
 
     tools = [
-        # NEW domain table workflow
-        store_extraction,
-        promote_to_core,
-        store_equivalence,
-        get_staging_statistics,
-        # Legacy tools for backward compatibility
-        store_finding,
-        legacy_store_equivalence,
-        record_crawled_source,
-        get_findings_statistics,
-        # Legacy kg operations
-        get_graph_statistics,
+        # Extraction workflow - ONLY store, don't promote (human review required)
+        store_extraction,        # Stage extractions for human review
+        get_staging_statistics,  # Query database stats
+        # REMOVED: promote_to_core - only called by separate script after human approval
+        # REMOVED: store_equivalence - only used after entities are in core
+        # Legacy tools REMOVED - they cause schema confusion
     ]
 
     agent = create_react_agent(model, tools)
