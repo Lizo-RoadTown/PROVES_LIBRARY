@@ -4,7 +4,7 @@
 ##############################
 text_skin: dark # "default", "dark", "forest", "ocean", "chocolate", "orange"
 highlight_theme: tomorrow-night # "default", "tomorrow", "tomorrow-night", "tomorrow-night-eighties"
-url: https://lizo-roadtown.github.io
+url: https://phantom-man.github.io
 baseurl: /PROVES_LIBRARY
 title: PROVES Library
 description: >
@@ -21,16 +21,16 @@ timezone: America/Los_Angeles
 author:
   type: person
   name: Elizabeth Osborn
-  url: https://lizo-roadtown.github.io/PROVES_LIBRARY
+  url: https://phantom-man.github.io/PROVES_LIBRARY
   bio: Researcher developing agentic curation systems for mission knowledge
   email: eosborn@cpp.edu
-  github: Lizo-RoadTown
+  github: phantom-man
   linkedin:
 
 ## => GitHub Repository
 ##############################
-repository: Lizo-RoadTown/PROVES_LIBRARY
-repository_tree: master
+repository: phantom-man/PROVES_LIBRARY
+repository_tree: main
 
 ## => Paths
 ##############################
