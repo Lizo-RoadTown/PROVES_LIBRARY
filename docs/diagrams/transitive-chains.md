@@ -44,14 +44,38 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -177,13 +201,35 @@ This sequence diagram shows what happens when your system boots up. The tricky p
     'signalColor': '#546e7a',
     'signalTextColor': '#1a1a1a',
     'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#f9a825',
+    'labelBoxBorderColor': '#000',
     'loopTextColor': '#1a1a1a',
     'noteBkgColor': '#f3e5f5',
     'noteBorderColor': '#7b1fa2',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
   },
+  'themeCSS': `
+    .actor {
+      transition: filter 0.2s ease;
+    }
+    .actor:hover {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .note {
+      transition: filter 0.2s ease;
+    }
+    .note:hover {
+      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
+    }
+    .labelBox {
+      stroke: #000 !important;
+      stroke-width: 1px;
+    }
+    .labelText {
+      padding: 5px;
+    }
+  `,
   'sequence': {
     'mirrorActors': false,
     'messageAlign': 'center'
@@ -270,14 +316,38 @@ sequenceDiagram
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -336,14 +406,38 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -442,14 +536,38 @@ This diagram shows how F´'s build system creates your code. When you run `fprim
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart LR
@@ -525,7 +643,16 @@ flowchart LR
   'themeVariables': {
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
-  }
+  },
+  'themeCSS': `
+    .slice, .pieTitleText {
+      transition: filter 0.2s ease;
+    }
+    .slice:hover {
+      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+      cursor: pointer;
+    }
+  `
 }}%%
 pie title Dependency Visibility
     "Direct (visible in code)" : 15

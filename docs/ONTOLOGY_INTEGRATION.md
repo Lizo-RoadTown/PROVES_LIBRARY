@@ -30,14 +30,38 @@ This document analyzes how the **FRAMES Theoretical Ontology** (from the FRAMES 
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -198,14 +222,38 @@ F Prime systems form a **component topology** that can be analyzed using FRAMES 
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -284,13 +332,35 @@ The scanner can extract **much richer context** by treating git history as digit
     'signalColor': '#546e7a',
     'signalTextColor': '#1a1a1a',
     'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#f9a825',
+    'labelBoxBorderColor': '#000',
     'loopTextColor': '#1a1a1a',
     'noteBkgColor': '#f3e5f5',
     'noteBorderColor': '#7b1fa2',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
   },
+  'themeCSS': `
+    .actor {
+      transition: filter 0.2s ease;
+    }
+    .actor:hover {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .note {
+      transition: filter 0.2s ease;
+    }
+    .note:hover {
+      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
+    }
+    .labelBox {
+      stroke: #000 !important;
+      stroke-width: 1px;
+    }
+    .labelText {
+      padding: 5px;
+    }
+  `,
   'sequence': {
     'mirrorActors': false,
     'messageAlign': 'center'
@@ -456,14 +526,38 @@ def generate_component(requirements, team_context):
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TD

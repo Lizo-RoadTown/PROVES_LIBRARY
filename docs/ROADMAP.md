@@ -371,8 +371,24 @@ For detailed historical phase plans and design documents, see:
     'primaryBorderColor': '#1976d2',
     'lineColor': '#546e7a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  }
+    'fontSize': '14px',
+    'labelBackgroundColor': '#fff8e1'
+  },
+  'themeCSS': `
+    .stateGroup rect, .stateGroup circle {
+      transition: filter 0.2s ease;
+    }
+    .stateGroup:hover rect, .stateGroup:hover circle {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .transition-label {
+      padding: 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+  `
 }}%%
    stateDiagram-v2
        [*] --> Router

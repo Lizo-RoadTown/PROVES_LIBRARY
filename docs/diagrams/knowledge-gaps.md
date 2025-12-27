@@ -43,13 +43,35 @@ This sequence diagram shows the power-on process for an I2C device, with all the
     'signalColor': '#546e7a',
     'signalTextColor': '#1a1a1a',
     'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#f9a825',
+    'labelBoxBorderColor': '#000',
     'loopTextColor': '#1a1a1a',
     'noteBkgColor': '#f3e5f5',
     'noteBorderColor': '#7b1fa2',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
   },
+  'themeCSS': `
+    .actor {
+      transition: filter 0.2s ease;
+    }
+    .actor:hover {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .note {
+      transition: filter 0.2s ease;
+    }
+    .note:hover {
+      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
+    }
+    .labelBox {
+      stroke: #000 !important;
+      stroke-width: 1px;
+    }
+    .labelText {
+      padding: 5px;
+    }
+  `,
   'sequence': {
     'mirrorActors': false,
     'messageAlign': 'center'
@@ -120,14 +142,38 @@ sequenceDiagram
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -199,14 +245,38 @@ This diagram shows electrical characteristics that software developers never thi
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -306,8 +376,24 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
     'primaryBorderColor': '#1976d2',
     'lineColor': '#546e7a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
-  }
+    'fontSize': '14px',
+    'labelBackgroundColor': '#fff8e1'
+  },
+  'themeCSS': `
+    .stateGroup rect, .stateGroup circle {
+      transition: filter 0.2s ease;
+    }
+    .stateGroup:hover rect, .stateGroup:hover circle {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .transition-label {
+      padding: 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+  `
 }}%%
 stateDiagram-v2
     [*] --> Normal: System boot
@@ -415,14 +501,38 @@ This diagram shows an I2C bus topology where multiple devices share the same com
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -491,13 +601,35 @@ flowchart TB
     'signalColor': '#546e7a',
     'signalTextColor': '#1a1a1a',
     'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#f9a825',
+    'labelBoxBorderColor': '#000',
     'loopTextColor': '#1a1a1a',
     'noteBkgColor': '#f3e5f5',
     'noteBorderColor': '#7b1fa2',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
   },
+  'themeCSS': `
+    .actor {
+      transition: filter 0.2s ease;
+    }
+    .actor:hover {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .note {
+      transition: filter 0.2s ease;
+    }
+    .note:hover {
+      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
+    }
+    .labelBox {
+      stroke: #000 !important;
+      stroke-width: 1px;
+    }
+    .labelText {
+      padding: 5px;
+    }
+  `,
   'sequence': {
     'mirrorActors': false,
     'messageAlign': 'center'
@@ -584,14 +716,38 @@ This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare meta
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart LR
@@ -695,7 +851,16 @@ flowchart LR
   'themeVariables': {
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
-  }
+  },
+  'themeCSS': `
+    .slice, .pieTitleText {
+      transition: filter 0.2s ease;
+    }
+    .slice:hover {
+      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+      cursor: pointer;
+    }
+  `
 }}%%
 pie title Knowledge Gaps by Category
     "Timing Specifications" : 3
@@ -723,7 +888,16 @@ pie title Knowledge Gaps by Category
   'themeVariables': {
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
-  }
+  },
+  'themeCSS': `
+    .slice, .pieTitleText {
+      transition: filter 0.2s ease;
+    }
+    .slice:hover {
+      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+      cursor: pointer;
+    }
+  `
 }}%%
 gantt
     title Typical Discovery Timeline for Knowledge Gaps

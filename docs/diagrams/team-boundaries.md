@@ -45,14 +45,38 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -137,14 +161,38 @@ flowchart TB
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart LR
@@ -225,14 +273,38 @@ This flowchart shows the journey developers take when they need integration know
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -302,7 +374,16 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
   'themeVariables': {
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
-  }
+  },
+  'themeCSS': `
+    .slice, .pieTitleText {
+      transition: filter 0.2s ease;
+    }
+    .slice:hover {
+      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+      cursor: pointer;
+    }
+  `
 }}%%
 gantt
     title University Team Knowledge Retention
@@ -345,7 +426,16 @@ gantt
   'themeVariables': {
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
-  }
+  },
+  'themeCSS': `
+    .slice, .pieTitleText {
+      transition: filter 0.2s ease;
+    }
+    .slice:hover {
+      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+      cursor: pointer;
+    }
+  `
 }}%%
 pie title Knowledge Retention After Team Graduation
     "Lost (graduated)" : 70
@@ -379,13 +469,35 @@ This sequence diagram tells the story of an actual failure caused by team bounda
     'signalColor': '#546e7a',
     'signalTextColor': '#1a1a1a',
     'labelBoxBkgColor': '#fff8e1',
-    'labelBoxBorderColor': '#f9a825',
+    'labelBoxBorderColor': '#000',
     'loopTextColor': '#1a1a1a',
     'noteBkgColor': '#f3e5f5',
     'noteBorderColor': '#7b1fa2',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
   },
+  'themeCSS': `
+    .actor {
+      transition: filter 0.2s ease;
+    }
+    .actor:hover {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .note {
+      transition: filter 0.2s ease;
+    }
+    .note:hover {
+      filter: drop-shadow(0 0 8px rgba(123, 31, 162, 0.5));
+    }
+    .labelBox {
+      stroke: #000 !important;
+      stroke-width: 1px;
+    }
+    .labelText {
+      padding: 5px;
+    }
+  `,
   'sequence': {
     'mirrorActors': false,
     'messageAlign': 'center'
@@ -507,14 +619,38 @@ sequenceDiagram
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
@@ -590,7 +726,16 @@ flowchart TB
   'themeVariables': {
     'fontFamily': 'system-ui, -apple-system, sans-serif',
     'fontSize': '14px'
-  }
+  },
+  'themeCSS': `
+    .slice, .pieTitleText {
+      transition: filter 0.2s ease;
+    }
+    .slice:hover {
+      filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+      cursor: pointer;
+    }
+  `
 }}%%
 quadrantChart
     title Knowledge Loss Risk by Interface Strength
@@ -676,14 +821,38 @@ quadrantChart
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB

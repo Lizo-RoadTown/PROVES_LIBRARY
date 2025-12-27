@@ -18,14 +18,38 @@ This document breaks down the work needed to build the PROVES Library system.
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart LR
@@ -60,14 +84,38 @@ flowchart LR
     'lineColor': '#546e7a',
     'textColor': '#1a1a1a',
     'fontFamily': 'system-ui, -apple-system, sans-serif',
-    'fontSize': '14px'
+    'fontSize': '14px',
+    'edgeLabelBackground': '#fff8e1'
   },
+  'themeCSS': `
+    .edgeLabel foreignObject { overflow: visible; }
+    .edgeLabel .label { 
+      padding: 5px 5px;
+      border: 1px solid #000;
+      border-radius: 3px;
+      background: #fff8e1;
+    }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      transition: filter 0.2s ease;
+    }
+    .node:hover rect, .node:hover circle, .node:hover ellipse, .node:hover polygon, .node:hover path {
+      filter: drop-shadow(0 0 10px #1976d2) drop-shadow(0 0 5px #64b5f6);
+      cursor: pointer;
+    }
+    .cluster rect {
+      transition: filter 0.2s ease;
+    }
+    .cluster:hover rect {
+      filter: drop-shadow(0 0 8px rgba(25, 118, 210, 0.5));
+    }
+  `,
   'flowchart': {
     'curve': 'linear',
     'nodeSpacing': 40,
     'rankSpacing': 60,
     'padding': 15,
-    'htmlLabels': true
+    'htmlLabels': true,
+    'useMaxWidth': false
   }
 }}%%
 flowchart TB
