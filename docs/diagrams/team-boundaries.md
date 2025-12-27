@@ -32,7 +32,6 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ### Organizational Structure
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     subgraph "NASA/JPL"
         JPL_CORE[F´ Core Team<br/>⭐ Permanent Staff]
@@ -102,7 +101,6 @@ flowchart TB
 ### F´ Team ↔ PROVES Kit Team
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart LR
     subgraph "F´ Knowledge"
         F_PUB[Public Documentation<br/>[YES] Versioned<br/>[YES] Comprehensive]
@@ -168,7 +166,6 @@ This flowchart shows the journey developers take when they need integration know
 ### Where Integration Knowledge Lives
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     START[Integration Knowledge Needed]
 
@@ -267,7 +264,6 @@ gantt
 ### Knowledge Loss Calculation
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#ff6b6b', 'pie2':'#ffa500', 'pie3':'#90ee90'}}}%%
 pie title Knowledge Retention After Team Graduation
     "Lost (graduated)" : 70
     "Degraded (partially remembered)" : 20
@@ -394,7 +390,6 @@ sequenceDiagram
 ### What Gets Captured vs. Lost
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     subgraph "Mission Lifecycle"
         DESIGN[Design Decisions]
@@ -534,7 +529,6 @@ quadrantChart
 ### How This System Addresses Team Boundary Issues
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     subgraph "Traditional Approach (Failed)"
         TRAD_TEAM[Team Knowledge]

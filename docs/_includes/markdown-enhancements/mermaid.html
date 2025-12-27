@@ -5,7 +5,8 @@
     mermaid.initialize({
       startOnLoad: true,
       theme: 'dark',
-      securityLevel: 'loose'
+      securityLevel: 'loose',
+      flowchart: { curve: 'linear' }
     });
     // Mermaid 10+ uses run() instead of init()
     if (typeof mermaid.run === 'function') {

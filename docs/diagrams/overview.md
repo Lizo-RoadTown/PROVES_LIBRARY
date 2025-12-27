@@ -37,7 +37,6 @@ Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Ki
 **What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     APP[Application Components<br/>Your mission code that needs sensor data]
 
@@ -68,7 +67,6 @@ flowchart TB
 **What you're looking at:** Three types of configuration that all need to match up correctly.
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     subgraph BUILD["Build System - Compiles the code"]
         FPUTIL[fprime-util<br/>Build command]
@@ -109,7 +107,6 @@ flowchart TB
 **What you're looking at:** How the PROVES Kit software controls power to different subsystems.
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart TB
     LSM[LoadSwitchManager<br/>Main power control class<br/>Written in Python]
 
@@ -186,7 +183,6 @@ sequenceDiagram
 ### By Criticality
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'pie1':'#ff6b6b', 'pie2':'#ffa500', 'pie3':'#ffd700'}}}%%
 pie title Dependency Criticality Distribution
     "HIGH" : 28
     "MEDIUM" : 11
