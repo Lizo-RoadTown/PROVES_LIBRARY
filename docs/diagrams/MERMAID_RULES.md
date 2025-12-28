@@ -377,16 +377,85 @@ flowchart LR
 
 ## Validation Checklist
 
-- [ ] No `<br/>` tags in flowcharts
-- [ ] No HTML tags in any nodes
-- [ ] No colons in node labels (except links)
-- [ ] No `::` double colons anywhere
-- [ ] Word "end" is capitalized or quoted
-- [ ] Subgraph syntax has space: `subgraph id [label]`
-- [ ] All quotes are properly closed
-- [ ] Comments start with `%%`
-- [ ] Direction specified (TB/LR/etc)
-- [ ] Special characters escaped or quoted
+### Pre-Commit Diagram Validation
+
+Run these checks BEFORE committing any Mermaid diagrams:
+
+#### 1. Flowchart Validation
+- [ ] **No HTML tags**: Search for `<br/>`, `<span>`, `<div>` in flowchart nodes
+- [ ] **No unquoted paths**: Search for `/dev/`, `/sys/`, file paths without quotes
+- [ ] **No colons in subgraph labels**: `subgraph "Layer 1: App"` → FAILS
+- [ ] **No colons in node labels**: Except in link text
+- [ ] **No double colons**: `Status::OK` → FAILS
+- [ ] **Quote special characters**: Parentheses, slashes, special symbols need quotes
+- [ ] **Word "end" capitalized or quoted**
+
+#### 2. Sequence Diagram Validation  
+- [ ] **No colons in note text**: `Note over A: Step 1: Details` → FAILS (use `Step 1 Details`)
+- [ ] **`<br/>` allowed**: Line breaks are OK in sequence diagrams
+- [ ] **No double colons in messages**
+
+#### 3. Pie Chart Validation
+- [ ] **Quote labels with parentheses**: `Direct (visible) : 15` → FAILS
+- [ ] **Proper syntax**: `"Label text" : value`
+- [ ] **Check for colons**: Use quotes if label contains special chars
+
+#### 4. Gantt Chart Validation
+- [ ] **Colons in task names OK**: `Task name :milestone, crit, 2024-01, 0d` works
+- [ ] **Check dateFormat**: Must be valid format
+- [ ] **Section names**: Plain text, no quotes needed
+
+#### 5. Universal Checks (All Diagram Types)
+- [ ] **Test in Mermaid Live Editor**: https://mermaid.live/
+- [ ] **Check rendering on GitHub**: After push, verify actual rendering
+- [ ] **All quotes properly closed**: Balance `"` marks
+- [ ] **Comments start with `%%`**: Inline comments not supported
+
+### Systematic Validation Commands
+
+Run these grep searches to find potential issues:
+
+```bash
+# Find unquoted parentheses in pie charts
+grep -E '^\s+[^"]*\([^)]+\)[^"]*\s*:' docs/diagrams/*.md
+
+# Find potential path issues (forward slashes)
+grep -E '\[/dev/|\[/sys/|http://[^"]' docs/diagrams/*.md
+
+# Find colons in subgraph labels
+grep -E 'subgraph.*:' docs/diagrams/*.md
+
+# Find double colons anywhere
+grep -E '::' docs/diagrams/*.md
+
+# Find HTML tags in flowcharts (context sensitive - check manually)
+grep -E '<br/>|<span|<div' docs/diagrams/*.md
+
+# Find sequence note colons (potential issues)
+grep -E 'Note over.*:.*:' docs/diagrams/*.md
+```
+
+### Common Issues Found During Validation
+
+1. **Parentheses without quotes** (pie charts, node labels)
+   - ❌ `Direct (visible) : 15`
+   - ✅ `"Direct (visible)" : 15`
+
+2. **Forward slashes without quotes**
+   - ❌ `DEV[/dev/i2c-1]`
+   - ✅ `DEV["/dev/i2c-1"]`
+
+3. **Colons in subgraph labels**
+   - ❌ `subgraph "Layer 1: Application"`
+   - ✅ `subgraph "Layer 1 Application"`
+
+4. **Colons in sequence notes**
+   - ❌ `Note over A: Step 1: Initialize`
+   - ✅ `Note over A: Step 1 Initialize`
+
+5. **Double colons**
+   - ❌ `I2cStatus::OK`
+   - ✅ `I2C_OK`
 
 ## Resources
 
