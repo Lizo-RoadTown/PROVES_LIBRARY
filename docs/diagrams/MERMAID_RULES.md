@@ -9,16 +9,30 @@ Comprehensive rules compiled from official Mermaid documentation (v10+).
 - ✅ Use simple text or markdown formatting with backticks
 - Exception: `<br/>` is ONLY allowed in sequence diagrams for line breaks
 
-### 2. Special Characters
+### 2. Special Characters - CRITICAL
 
-#### Colons (`:`)
-- ❌ Colons in node labels can break parsing
-- ❌ Double colons (`::`) are NOT valid syntax
-- ✅ Remove or use entity code `#58;`
-- ✅ Colons are OK in link text: `A -->|Link: text| B`
+#### Colons (`:`) - Multiple Breaking Contexts
+- ❌ **Colons in subgraph labels break parsing**: `subgraph "Layer 1: App"` → FAILS
+- ✅ **Remove colons from subgraph labels**: `subgraph "Layer 1 App"` → WORKS
+- ❌ **Double colons in text ALWAYS break**: `Status::OK` → FAILS
+- ✅ **Remove double colons**: `Status OK` or `Status_OK` → WORKS
+- ❌ **Colons in sequence note text after first colon**: `Note over A: Step 1: Details` → FAILS
+- ✅ **Remove colons from note content**: `Note over A: Step 1 Details` → WORKS
+- ✅ **Single colon separating label from text is OK**: `Note over A: Some text` → WORKS
+- ✅ **Colons OK in link text**: `A -->|Status: OK| B` → WORKS
 
-#### Quotes
-- ✅ Use double quotes for special characters: `id["Text with (parens)"]`
+#### Forward Slashes (`/`) - Breaking in Node Labels
+- ❌ **File paths without quotes break parsing**: `DEV[/dev/i2c-1]` → FAILS
+- ✅ **Quote all paths with slashes**: `DEV["/dev/i2c-1"]` → WORKS
+- ❌ **URLs without quotes can break**: `NODE[http://example.com]` → FAILS
+- ✅ **Quote URLs in node labels**: `NODE["http://example.com"]` → WORKS
+- ✅ **Slashes in shape syntax are OK**: `A[/Parallelogram/]` → WORKS (defined shape)
+- ⚠️ **Slashes in plain text or tables are OK** (not in diagram code)
+
+#### Quotes - When Required
+- ✅ **Quote text with forward slashes**: `id["/path/to/file"]`
+- ✅ **Quote text with parentheses**: `id["Text with (parens)"]`
+- ✅ **Quote text with special symbols**: `id["Price: $50"]`
 - ✅ Use entity codes: `#` (e.g., `#9829;` for ♥)
 - ✅ For markdown: Use backticks: `` id["`**Bold** text`"] ``
 
@@ -33,8 +47,9 @@ subgraph id [Label Text]
 end
 ```
 - ✅ Must have space between id and bracket
-- ❌ NO colons in labels: `subgraph "Layer 1: App"` → `subgraph "Layer 1 App"`
-- ✅ Labels can be quoted for special chars
+- ❌ **NO colons in labels**: `subgraph "Layer 1: App"` → BREAKS - use `subgraph "Layer 1 App"`
+- ✅ Labels can be quoted for special chars: `subgraph "System/Network"`
+- ✅ Plain text labels work: `subgraph id` or `subgraph "Text Label"`
 
 ### 4. Node Labels
 
@@ -214,6 +229,10 @@ Note right of Alice: Text
 Note left of Alice: Text
 Note over Alice,Bob: Text
 ```
+- ⚠️ **CRITICAL**: Text after first colon cannot contain more colons
+- ❌ **BREAKS**: `Note over A: Step 1: Initialize device` 
+- ✅ **WORKS**: `Note over A: Step 1 Initialize device`
+- ✅ **Single colon separating label is OK**: `Note over A: Any text here`
 
 ### Loops/Alt/Par
 ```mermaid
@@ -237,7 +256,10 @@ end
 ## Common Errors and Fixes
 
 ### Error: "Unable to render rich display"
-**Cause:** HTML tags, colons, or syntax errors
+**Causes:** 
+- HTML tags like `<br/>` in flowcharts
+- Colons in subgraph labels or node text
+- Unquoted special characters
 
 **Fix:**
 ```mermaid
@@ -246,6 +268,7 @@ flowchart LR
     A[Line 1<br/>Line 2]
     B["Layer 1: Application"]
     C[Status::OK]
+    D[/dev/i2c-1]
 
 %% GOOD
 flowchart LR
@@ -253,16 +276,46 @@ flowchart LR
     Line 2`"]
     B["Layer 1 Application"]
     C[Status OK]
+    D["/dev/i2c-1"]
 ```
 
 ### Error: "Unexpected character at offset X"
-**Cause:** Special character in wrong place (often colons in labels)
+**Causes:**
+- Colons in subgraph labels: `subgraph "Layer 1: App"`
+- Colons after colon in sequence notes: `Note over A: Step 1: Details`
+- Unquoted forward slashes: `/dev/i2c-1`
 
 **Fix:**
 ```mermaid
 %% BAD
 subgraph "API: v2"
     node[Address: 0x68]
+end
+Note over A: Step 1: Initialize
+
+%% GOOD
+subgraph "API v2"
+    node[Address 0x68]
+end
+Note over A: Step 1 Initialize
+```
+
+### Error: "Lexical error on line X. Unrecognized text"
+**Causes:**
+- Forward slashes without quotes: `node[/path/to/file]`
+- File paths or URLs without quotes: `/dev/i2c-1`
+
+**Fix:**
+```mermaid
+%% BAD
+flowchart LR
+    DEV[/dev/i2c-1 device]
+    URL[http://example.com]
+
+%% GOOD
+flowchart LR
+    DEV["/dev/i2c-1 device"]
+    URL["http://example.com"]
 end
 
 %% GOOD
