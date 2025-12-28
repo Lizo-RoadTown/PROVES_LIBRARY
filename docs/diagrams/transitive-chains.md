@@ -32,37 +32,37 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 
 ```mermaid
 flowchart TB
-    subgraph "Layer 1: Application"
+    subgraph "Layer 1 Application"
         APP[Application Component Requests IMU data]
     end
 
-    subgraph "Layer 2: Device Manager"
+    subgraph "Layer 2 Device Manager"
         DM[ImuManager.read]
         PORT[busWriteRead_out port]
     end
 
-    subgraph "Layer 3: Bus Driver"
+    subgraph "Layer 3 Bus Driver"
         BD[LinuxI2cDriver.writeRead]
         DEV["/dev/i2c-1" device]
     end
 
-    subgraph "Layer 4: Hardware Bus"
+    subgraph "Layer 4 Hardware Bus"
         I2C[I2C Physical Bus SDA/SCL pins]
         PULLUP[Pull-up Resistors 4.7kΩ]
     end
 
-    subgraph "Layer 5: Device"
+    subgraph "Layer 5 Device"
         IMU[MPU6050 IMU Address 0x68]
         REG[Device Registers DATA_REG 0x10]
     end
 
-    subgraph "Layer 6: Power (PROVES Kit)"
+    subgraph "Layer 6 Power (PROVES Kit)"
         PWR[3.3V Power Supply]
         LSM[LoadSwitchManager turn_on]
         PIN[board.IMU_ENABLE GPIO Pin]
     end
 
-    subgraph "Layer 7: Board Configuration"
+    subgraph "Layer 7 Board Configuration"
         BOARD[Board Definition Pin Mapping]
         LOGIC[enable_logic Active High/Low]
     end
