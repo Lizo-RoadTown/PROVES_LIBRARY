@@ -244,7 +244,7 @@ sequenceDiagram
     Frames->>Frames: Recognize successful strategy
     Frames->>Library: Create rich module with reasoning path
 
-    Note over Frames,Library: Not just "what worked" but "how they figured it out"
+    Note over Frames,Library: Not just what worked but how they figured it out
 ```
 
 **Enhanced Capture:**
