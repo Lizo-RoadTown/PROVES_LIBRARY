@@ -140,29 +140,29 @@ Mission continues without IMU (silent failure)
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Topology as Topology.cpp<br/>configureTopology()
-    participant LSM as LoadSwitchManager<br/>(PROVES Kit)
-    participant Power as Hardware<br/>Power Supply
-    participant BusDrv as LinuxI2cDriver<br/>(F´)
-    participant I2C as I2C Bus<br/>/dev/i2c-1
+    participant Topology as Topology.cpp configureTopology
+    participant LSM as LoadSwitchManager PROVES Kit
+    participant Power as Hardware Power Supply
+    participant BusDrv as LinuxI2cDriver F Prime
+    participant I2C as I2C Bus /dev/i2c-1
 
-    Note over Topology: [NO] UNDOCUMENTED ORDER
+    Note over Topology: UNDOCUMENTED ORDER
 
     rect rgb(255, 200, 200)
-        Topology->>LSM: turn_on("imu")
+        Topology->>LSM: turn_on imu
         LSM->>Power: Enable IMU power
         Note over Power: ⏱️ UNDOCUMENTED DELAY
-        Power-->>Power: Voltage stabilizes (how long?)
+        Power-->>Power: Voltage stabilizes - how long?
     end
 
     rect rgb(200, 255, 200)
-        Topology->>BusDrv: open("/dev/i2c-1")
+        Topology->>BusDrv: open /dev/i2c-1
         BusDrv->>I2C: Initialize I2C device
         I2C-->>BusDrv: Device ready
-        BusDrv-->>Topology: I2cStatus::I2C_OK
+        BusDrv-->>Topology: I2cStatus I2C_OK
     end
 
-    Note over Topology,I2C: [WARNING] If order reversed, initialization fails silently
+    Note over Topology,I2C: If order reversed initialization fails silently
 ```
 
 ### Evidence Chain

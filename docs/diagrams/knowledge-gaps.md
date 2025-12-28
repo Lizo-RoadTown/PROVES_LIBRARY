@@ -40,27 +40,27 @@ sequenceDiagram
     participant Device as I2C Device
     participant Driver as I2C Bus Driver
 
-    LSM->>Power: turn_on("imu")
+    LSM->>Power: turn_on imu
     Power->>Power: GPIO goes HIGH
     Power->>Device: Voltage ramps up
 
-    Note over Power,Device: [NO] GAP: How long does this take?
+    Note over Power,Device: GAP: How long does this take?
     rect rgb(255, 200, 200)
         Power-->>Device: t_rise = ??? ms
         Device-->>Device: Internal power-on reset
-        Note over Device: [NO] GAP: How long for POR?
+        Note over Device: GAP: How long for POR?
         Device-->>Device: t_por = ??? ms
         Device-->>Device: Initialize registers
-        Note over Device: [NO] GAP: Ready delay?
+        Note over Device: GAP: Ready delay?
         Device-->>Device: t_ready = ??? ms
     end
 
-    Note over Device,Driver: [NO] GAP: Total delay unknown
+    Note over Device,Driver: GAP: Total delay unknown
     Driver->>Device: I2C address probe
     alt Device Ready
         Device-->>Driver: ACK
     else Device Not Ready
-        Device-->>Driver: No response (bus timeout)
+        Device-->>Driver: No response - bus timeout
     end
 ```
 
@@ -398,15 +398,15 @@ sequenceDiagram
     par Simultaneous I2C Transactions
         IMU->>Bus: Start transaction to 0x68
     and
-        Mag->>Bus: Start transaction to 0x68 (conflict!)
+        Mag->>Bus: Start transaction to 0x68 conflict
     end
 
     Bus-->>IMU: Data corrupted
     Bus-->>Mag: Data corrupted
 
-    Note over App,HW_MAG: [NO] Both reads fail, no indication why
+    Note over App,HW_MAG: Both reads fail no indication why
 
-    Note over App,HW_MAG: Scenario 2: Power-On Glitch (UNDOCUMENTED)
+    Note over App,HW_MAG: Scenario 2 Power-On Glitch UNDOCUMENTED
 
     App->>IMU: turn_on IMU
     App->>Mag: turn_on MAG
@@ -417,7 +417,7 @@ sequenceDiagram
         HW_MAG->>HW_MAG: Inrush current spike
     end
 
-    Note over HW_IMU,HW_MAG: Combined current exceeds<br/>load switch rating
+    Note over HW_IMU,HW_MAG: Combined current exceeds load switch rating
 
     HW_IMU--XHW_IMU: Brownout / latchup
     HW_MAG--XHW_MAG: Brownout / latchup

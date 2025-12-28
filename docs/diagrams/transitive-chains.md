@@ -188,7 +188,7 @@ sequenceDiagram
         HW-->>IM: ACK
     end
 
-    Main->>Main: Start RateGroups<br/>(Begin periodic IMU reads)
+    Main->>Main: Start RateGroups - Begin periodic IMU reads
 ```
 
 ### Documented vs. Undocumented Steps

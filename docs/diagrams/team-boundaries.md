@@ -289,49 +289,49 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 ```mermaid
 sequenceDiagram
     autonumber
-    participant TeamA as Team A<br/>(2020)
-    participant Docs as Documentation<br/>(GitHub)
-    participant TeamB as Team B<br/>(2022)
-    participant System as Integrated<br/>System
+    participant TeamA as Team A 2020
+    participant Docs as Documentation GitHub
+    participant TeamB as Team B 2022
+    participant System as Integrated System
 
-    Note over TeamA: Discovers: IMU needs 200ms<br/>power-on delay
+    Note over TeamA: Discovers IMU needs 200ms power-on delay
 
-    TeamA->>TeamA: Tests and validates<br/>(works with delay)
+    TeamA->>TeamA: Tests and validates - works with delay
 
     rect rgb(255, 200, 200)
-        Note over TeamA,Docs: [NO] GAP: Knowledge not captured
-        TeamA->>Docs: Commit code with delay<br/>[NO] No comment explaining why
+        Note over TeamA,Docs: GAP: Knowledge not captured
+        TeamA->>Docs: Commit code with delay - No comment explaining why
     end
 
-    Note over TeamA: May 2021: Team graduates
+    Note over TeamA: May 2021 Team graduates
 
     rect rgb(255, 255, 180)
         Note over Docs,TeamB: 6 month gap
     end
 
-    Note over TeamB: January 2022: New team starts
+    Note over TeamB: January 2022 New team starts
 
     TeamB->>Docs: Read documentation
-    Docs-->>TeamB: [NO] No explanation of delay
+    Docs-->>TeamB: No explanation of delay
 
-    TeamB->>TeamB: "This 200ms delay seems<br/>arbitrary and slow"
+    TeamB->>TeamB: This 200ms delay seems arbitrary and slow
 
     rect rgb(255, 200, 200)
-        Note over TeamB: [NO] Optimizes delay to 10ms
-        TeamB->>Docs: Commit change<br/>"Optimize power-on sequence"
+        Note over TeamB: Optimizes delay to 10ms
+        TeamB->>Docs: Commit change - Optimize power-on sequence
     end
 
-    TeamB->>System: Bench test<br/>(warm start - works!)
+    TeamB->>System: Bench test - warm start works
 
     TeamB->>System: Ship to orbit
 
     rect rgb(220, 150, 150)
         System-->>TeamB: Cold boot in orbit
-        Note over System: 10ms too short<br/>I2C init fails
+        Note over System: 10ms too short - I2C init fails
         System--XSystem: Mission failure
     end
 
-    Note over TeamA,System: [WARNING] Team A knew, but knowledge didn't flow
+    Note over TeamA,System: Team A knew but knowledge did not flow
 ```
 
 **Root Cause:** WEAK interface between Team A and Team B + inadequate documentation
