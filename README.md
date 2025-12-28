@@ -1,6 +1,6 @@
 # PROVES Library
 
-**Autonomous knowledge graph curation system that feeds a multi-domain Graph Neural Network for mission success prediction.**
+**Knowledge graph extraction pipeline for training Graph Neural Networks on CubeSat system dependencies.**
 
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://lizo-roadtown.github.io/PROVES_LIBRARY/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
@@ -8,40 +8,33 @@
 
 ---
 
-## The Vision
+## Overview
 
-We're building a **Graph Neural Network** inspired by NASA's GraphSAGE framework for satellite systems - but designed to work across **any fragmented technical domain** where hidden dependencies cause catastrophic failures.
+This repository builds a knowledge graph from technical documentation (F´, PROVES Kit, CubeSat hardware) to train a GraphSAGE neural network for predicting cascade failures in space systems.
 
-The core insight: **Complex systems are already graphs.** Components, interfaces, power flows, thermal coupling, team boundaries - all connected through relationships that cascade in unexpected ways.
+**The problem**: Graph Neural Networks need high-quality training data. Missing edges, inconsistent labels, and unverified relationships teach the model wrong patterns.
+
+**Our approach**: Multi-agent extraction pipeline with full lineage tracking, human verification, and a five-attribute edge model that captures conditional dependencies.
 
 ### Why GraphSAGE?
 
-GraphSAGE (Graph Sample and Aggregate) learns from both:
-- **Node features**: What each component is, its properties, constraints
-- **Graph structure**: How components connect, what flows between them, cascade paths
+GraphSAGE (Graph Sample and Aggregate) learns from both node features and graph structure, making it suitable for predicting how changes propagate through coupled systems (power → thermal → timing → software).
 
-This lets the model:
-- **Predict cascade risk** before a subsystem change breaks the mission
-- **Surface hidden coupling** across layers (software → power → thermal → timing)
-- **Generalize patterns** from one mission/domain to another
-
-**Our approach**: Use the GraphSAGE foundation but extend it beyond satellites to **any domain with verifiable dependency graphs** - manufacturing pipelines, infrastructure systems, software architectures, organizational structures.
+We're using NASA's heterogeneous GNN implementation as a foundation, initially focused on CubeSat systems with potential application to other technical domains with verifiable dependency graphs.
 
 ---
 
-## What We've Built: An Intelligent Data Engine
+## What We've Built
 
-The challenge: **A GNN is only as good as its training data.** Bad edges teach wrong physics. Missing lineage destroys trust. Inconsistent labels kill signal.
+A multi-agent extraction pipeline that:
 
-So we built an **autonomous agentic system** that doesn't just collect data - it **trains itself** to:
+1. **Crawls documentation** - Identifies high-quality technical pages (find_good_urls.py)
+2. **Extracts structure** - LLM agents identify components, interfaces, flows using FRAMES ontology (process_extractions.py)
+3. **Validates lineage** - Tracks every extraction back to source with evidence checksums
+4. **Routes for review** - Staged extractions go to human verification via project management integration
+5. **Analyzes patterns** - Meta-learning loop identifies extraction quality issues (improvement_analyzer.py)
 
-1. **Locate quality sources** - Intelligent web crawler finds high-signal documentation
-2. **Extract structure** - Identifies components, interfaces, flows, mechanisms using FRAMES ontology
-3. **Validate integrity** - Checks lineage, flags anomalies, verifies evidence traceability
-4. **Self-correct methodology** - Meta-learning system analyzes extraction patterns and improves
-5. **Align ontology** - Adapts categorization to work WITH the neural network's needs
-
-**Key insight**: The agentic curator IS a learning system preparing data FOR a learning system.
+**What makes this different from standard knowledge graphs**: Five-attribute edges (directionality, strength, mechanism, knownness, scope) that let the GNN learn conditional relationships, not just binary connections.
 
 ### Current Phase: Graph Embedding Pipeline
 
@@ -256,11 +249,9 @@ python production/scripts/improvement_analyzer.py
 
 From [canon/CANON.md](canon/CANON.md):
 
-### 1. Autonomous Intelligence, Not Automation
+### 1. Human Verification Layer
 
-> "Give goals, not instructions."
-
-Agents understand objectives and decide how to achieve them. They adapt to unexpected input, learn from feedback, and get smarter over time.
+Agents extract and categorize, but humans establish truth. This separation ensures the knowledge graph reflects verified physics, not LLM hallucinations.
 
 ### 2. Truth Layer Architecture
 
@@ -295,35 +286,18 @@ Every relationship has:
 4. **Knownness**: Known (verified), assumed, unknown, disproved?
 5. **Scope**: Version tuple, hardware revision, mission profile?
 
-Example:
-```yaml
-RadioTX --CONSUMES--> PowerRail_3V3
-  directionality: forward (radio affects rail, not reverse)
-  strength: sometimes (only during transmission)
-  mechanism: electrical
-  knownness: verified (oscilloscope measurement)
-  scope: fprime@v3.4.3, board_rev_c, TX_duty_cycle > 50%
-```
-
 This granularity lets the GNN learn **conditional dependencies** and **mode-specific behavior**.
 
 ---
 
 ## Who This Is For
 
-- **CubeSat builders** drowning in interface specifications and failure modes
-- **Systems engineers** who know cascading failures start at hidden boundaries
-- **University space labs** where students only see fragments of the full stack
-- **AI/ML researchers** who want real-world graph data with verified ground truth
-- **NASA enthusiasts** who want to see how truth-checked data changes mission outcomes
+- CubeSat teams working with F´, PROVES Kit, or similar modular systems
+- Systems engineers analyzing cascade failures and cross-layer dependencies
+- ML researchers who need graph datasets with provenance and ground truth
+- Students in space systems programs learning how components interact
 
-**Multi-domain potential**:
-- Manufacturing: Bill-of-materials → process dependencies → quality cascades
-- Infrastructure: Power grids → network topology → failure propagation
-- Software: Microservices → API contracts → performance coupling
-- Organizations: Team structures → communication patterns → decision bottlenecks
-
-**Same framework, different domain**: If it's a graph with verifiable edges, this pipeline can prepare it for GNN training.
+**Potential applications beyond CubeSat**: The extraction pipeline and five-attribute edge model could work for other domains with technical documentation and verifiable dependencies (manufacturing, infrastructure, software systems). Currently focused on space systems.
 
 ---
 
@@ -383,8 +357,11 @@ Pham, M. & Bronco Space Lab. (2025). PROVES Kit - Open-Source CubeSat Developmen
 **Application Domain**:
 CubeSat systems, F´ framework, PROVES Kit hardware stack.
 
-**Innovation**:
-Autonomous agent-based graph curation with self-improving methodology, preparing verified training data for multi-domain GNN generalization.
+**Key Contributions**:
+
+- Five-attribute edge model for conditional dependencies
+- Inference-embodiment boundary framework for chunking strategy
+- Full lineage tracking from graph edges to source documentation
 
 ---
 
@@ -400,7 +377,4 @@ MIT License - see [LICENSE](LICENSE)
 eosborn@cpp.edu
 California State Polytechnic University, Pomona
 
-
 ---
-
-*Building trustworthy AI for complex systems, one verified edge at a time.*
