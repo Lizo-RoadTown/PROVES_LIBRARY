@@ -466,11 +466,11 @@ quadrantChart
     quadrant-2 Monitor
     quadrant-3 Low Risk
     quadrant-4 Moderate Risk
-    F´ Core Docs: [0.1, 0.9]
-    F´ to PROVES: [0.3, 0.2]
-    PROVES to Uni Teams: [0.8, 0.2]
-    Uni Team to Team: [0.9, 0.1]
-    External Users: [0.5, 0.15]
+    "F´ Core Docs": [0.1, 0.9]
+    "F´ to PROVES": [0.3, 0.2]
+    "PROVES to Uni Teams": [0.8, 0.2]
+    "Uni Team to Team": [0.9, 0.1]
+    "External Users": [0.5, 0.15]
 ```
 
 **Critical Risk Zone (Quadrant 1):**
