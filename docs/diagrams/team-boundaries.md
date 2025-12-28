@@ -175,9 +175,9 @@ flowchart TB
     TRIBAL[Ask Experienced Engineer]
     WHO{Who to Ask?}
 
-    JPL_ENG[JPL Engineer [NO] Doesn't know PROVES]
-    PROVES_ENG[PROVES Maintainer [WARNING] Knows integration]
-    UNI_ENG[University Student [NO] Learning both]
+    JPL_ENG["JPL Engineer [NO] Doesn't know PROVES"]
+    PROVES_ENG["PROVES Maintainer [WARNING] Knows integration"]
+    UNI_ENG["University Student [NO] Learning both"]
 
     DISCOVER[Discover Through Failure]
     CAPTURE[Capture in Email/Chat]
@@ -400,22 +400,22 @@ flowchart TB
     end
 
     subgraph "Captured (30%)"
-        CODE[Code Repository [YES] Preserved]
-        SCHEMA[Schematics [YES] Preserved]
-        FORMAL_DOC[Formal Documentation [WARNING] Often outdated]
+        CODE["Code Repository [YES] Preserved"]
+        SCHEMA["Schematics [YES] Preserved"]
+        FORMAL_DOC["Formal Documentation [WARNING] Often outdated"]
     end
 
     subgraph "Partially Captured (20%)"
-        ISSUES[GitHub Issues [WARNING] Searchable but dispersed]
-        CHAT[Chat Logs [WARNING] Saved but not indexed]
-        EMAIL[Email Threads [WARNING] Private, not shared]
+        ISSUES["GitHub Issues [WARNING] Searchable but dispersed"]
+        CHAT["Chat Logs [WARNING] Saved but not indexed"]
+        EMAIL["Email Threads [WARNING] Private, not shared"]
     end
 
     subgraph "Lost (50%)"
-        TRIBAL[Tribal Knowledge [NO] In people's heads]
-        WORKAROUND[Workarounds [NO] Undocumented]
-        FAILURES[Failure Lessons [NO] Not written down]
-        WHY[Design Rationale [NO] Not explained]
+        TRIBAL["Tribal Knowledge [NO] In people's heads"]
+        WORKAROUND["Workarounds [NO] Undocumented"]
+        FAILURES["Failure Lessons [NO] Not written down"]
+        WHY["Design Rationale [NO] Not explained"]
     end
 
     DESIGN --> CODE
