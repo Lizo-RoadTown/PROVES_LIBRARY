@@ -408,9 +408,9 @@ flowchart LR
 
 ```mermaid
 pie title Dependency Visibility
-    Direct (visible in code) : 15
-    Transitive (hidden) : 27
-    Cross-system (undocumented) : 4
+    "Direct (visible in code)" : 15
+    "Transitive (hidden)" : 27
+    "Cross-system (undocumented)" : 4
 ```
 
 **64% of dependencies are not immediately visible** in component code.
