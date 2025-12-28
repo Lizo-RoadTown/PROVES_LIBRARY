@@ -547,11 +547,11 @@ flowchart LR
 
 ```mermaid
 pie title Knowledge Gaps by Category
-    Timing Specifications : 3
-    Hardware Parameters : 5
-    Software Integration : 4
-    Error Handling : 2
-    Platform Specifics : 3
+    "Timing Specifications" : 3
+    "Hardware Parameters" : 5
+    "Software Integration" : 4
+    "Error Handling" : 2
+    "Platform Specifics" : 3
 ```
 
 ### Risk Matrix
