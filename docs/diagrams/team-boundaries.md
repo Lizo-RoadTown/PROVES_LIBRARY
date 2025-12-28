@@ -103,9 +103,9 @@ flowchart TB
 ```mermaid
 flowchart LR
     subgraph "F´ Knowledge"
-        F_PUB[Public Documentation [YES] Versioned [YES] Comprehensive]
-        F_CODE[GitHub Repository [YES] nasa/fprime [YES] Well-maintained]
-        F_COM[Community Forums [YES] Active support]
+        F_PUB["Public Documentation [YES] Versioned [YES] Comprehensive"]
+        F_CODE["GitHub Repository [YES] nasa/fprime [YES] Well-maintained"]
+        F_COM["Community Forums [YES] Active support"]
     end
 
     subgraph "Interface"
@@ -113,9 +113,9 @@ flowchart LR
     end
 
     subgraph "PROVES Knowledge"
-        P_PUB[Public Documentation [WARNING] Growing [WARNING] Gaps exist]
-        P_CODE[GitHub Repository [YES] proveskit/pysquared [WARNING] Active but small team]
-        P_COM[Community [WARNING] Mostly university teams]
+        P_PUB["Public Documentation [WARNING] Growing [WARNING] Gaps exist"]
+        P_CODE["GitHub Repository [YES] proveskit/pysquared [WARNING] Active but small team"]
+        P_COM["Community [WARNING] Mostly university teams"]
     end
 
     F_PUB -.->|weak| INT
