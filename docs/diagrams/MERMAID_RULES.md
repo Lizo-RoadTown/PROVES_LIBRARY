@@ -135,7 +135,7 @@ e1@{ animate: true }
 ```
 
 ### 7. Comments
-```mermaid
+```
 %% This is a comment
 %% Must start line with %%
 flowchart LR
