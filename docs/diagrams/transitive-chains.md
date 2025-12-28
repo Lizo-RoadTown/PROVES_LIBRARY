@@ -341,10 +341,10 @@ This diagram shows how F´'s build system creates your code. When you run `fprim
 ```mermaid
 flowchart LR
     subgraph "User Commands"
-        USER[Developer runs:<br/>fprime-util build]
+        USER[Developer runs fprime-util build]
     end
 
-    subgraph "F´ Build System"
+    subgraph "F Prime Build System"
         FPP[FPP Compiler]
         CMAKE[CMake]
         GCC[GCC/Clang]
