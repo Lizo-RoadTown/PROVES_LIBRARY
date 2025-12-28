@@ -251,8 +251,8 @@ gantt
     Active mission     :active, c3, 2024-06, 2024-12
 
     section Knowledge Gaps
-    Gap: Team A leaves :milestone, crit, 2021-05, 0d
-    Gap: Team B leaves :milestone, crit, 2023-08, 0d
+    Gap Team A leaves :milestone, crit, 2021-05, 0d
+    Gap Team B leaves :milestone, crit, 2023-08, 0d
     Potential gap 2025 :milestone, crit, 2025-05, 0d
 ```
 
