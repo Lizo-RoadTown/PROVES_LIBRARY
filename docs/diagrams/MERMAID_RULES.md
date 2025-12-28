@@ -122,14 +122,14 @@ participant A as Alice<br/>Johnson
 ```
 
 #### Link text
-```mermaid
+```
 A -->|Text on link| B
 A -- Text --- B
 A ---|Text| B
 ```
 
 #### Edge IDs (v11.3.0+)
-```mermaid
+```
 A e1@--> B
 e1@{ animate: true }
 ```
