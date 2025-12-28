@@ -184,9 +184,9 @@ sequenceDiagram
 
 ```mermaid
 pie title Dependency Criticality Distribution
-    "HIGH" : 28
-    "MEDIUM" : 11
-    "LOW" : 3
+    HIGH : 28
+    MEDIUM : 11
+    LOW : 3
 ```
 
 ### By Relationship Type
