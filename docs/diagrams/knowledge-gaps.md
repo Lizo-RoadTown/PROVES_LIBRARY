@@ -256,7 +256,7 @@ stateDiagram-v2
 
     Give_Up --> Degraded_Mode: Continue without IMU
 
-    Log_Warning --> [*]: Currently: No recovery implemented
+    Log_Warning --> [*]: Currently No recovery implemented
 
     style GAP fill:#ffebee
     style Log_Warning fill:#fff9c4
