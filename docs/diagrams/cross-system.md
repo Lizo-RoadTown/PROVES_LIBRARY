@@ -283,7 +283,7 @@ flowchart TB
     LOG[log_WARNING_HI_ImuReadError]
     CONTINUE[Continue without IMU data]
 
-    MISSING[[NO] MISSING:<br/>Power Cycle Recovery]
+    MISSING["✗ MISSING:<br/>Power Cycle Recovery"]
     POWER_OFF[LoadSwitchManager.turn_off]
     DELAY[Wait for power drain]
     POWER_ON[LoadSwitchManager.turn_on]

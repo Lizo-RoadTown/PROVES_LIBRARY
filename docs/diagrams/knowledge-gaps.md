@@ -94,15 +94,15 @@ flowchart TB
     CASE3{Test coverage?}
 
     TOO_SHORT[Delay too short<br/>50ms]
-    WORKS_BENCH[[YES] Works on bench<br/>warm start]
-    FAILS_FLIGHT[[NO] Fails in flight<br/>cold start slower]
+    WORKS_BENCH["✓ Works on bench<br/>warm start"]
+    FAILS_FLIGHT["✗ Fails in flight<br/>cold start slower"]
 
     NO_DELAY[No delay added]
-    WORKS_LINUX[[YES] Works on Linux<br/>scheduler slow enough]
-    FAILS_RTOS[[NO] Fails on RTOS<br/>too fast]
+    WORKS_LINUX["✓ Works on Linux<br/>scheduler slow enough"]
+    FAILS_RTOS["✗ Fails on RTOS<br/>too fast"]
 
     CORRECT[Delay adequate<br/>200ms]
-    SUCCESS[[YES] Always works]
+    SUCCESS["✓ Always works"]
 
     START --> CASE1
     CASE1 -->|Yes| CASE2

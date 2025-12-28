@@ -219,9 +219,9 @@ flowchart TB
     CASE1{Does code call<br/>LSM.turn_on?}
     CASE2{Sufficient<br/>delay before<br/>bus.open?}
 
-    FAIL1[[NO] Power never enabled<br/>I2C device doesn't exist<br/>open returns I2C_OPEN_ERR]
-    FAIL2[[NO] Voltage not stable<br/>I2C init races with power-on<br/>Intermittent failures]
-    SUCCESS[[YES] System initializes correctly]
+    FAIL1["✗ Power never enabled<br/>I2C device doesn't exist<br/>open returns I2C_OPEN_ERR"]
+    FAIL2["✗ Voltage not stable<br/>I2C init races with power-on<br/>Intermittent failures"]
+    SUCCESS["✓ System initializes correctly"]
 
     START --> CASE1
     CASE1 -->|No| FAIL1

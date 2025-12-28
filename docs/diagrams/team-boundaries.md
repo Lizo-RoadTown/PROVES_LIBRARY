@@ -109,7 +109,7 @@ flowchart LR
     end
 
     subgraph "Interface"
-        INT[[NO] No Integration Docs<br/>[NO] No Cross-References<br/>[NO] No Joint Testing<br/>[NO] No Shared Examples]
+        INT["✗ No Integration Docs<br/>✗ No Cross-References<br/>✗ No Joint Testing<br/>✗ No Shared Examples"]
     end
 
     subgraph "PROVES Knowledge"
