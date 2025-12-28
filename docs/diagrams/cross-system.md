@@ -144,7 +144,7 @@ sequenceDiagram
     participant LSM as LoadSwitchManager PROVES Kit
     participant Power as Hardware Power Supply
     participant BusDrv as LinuxI2cDriver F Prime
-    participant I2C as I2C Bus /dev/i2c-1
+    participant I2C as "I2C Bus /dev/i2c-1"
 
     Note over Topology: UNDOCUMENTED ORDER
 
@@ -205,7 +205,7 @@ No alert that power sequencing is wrong
 flowchart TB
     subgraph "F´ Configuration"
         IM_ADDR[ImuManager Address 0x68]
-        BUS[I2C Bus /dev/i2c-1 Shared Resource]
+        BUS["I2C Bus /dev/i2c-1 Shared Resource"]
     end
 
     subgraph "PROVES Kit Power"

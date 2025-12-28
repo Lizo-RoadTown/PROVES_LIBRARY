@@ -44,7 +44,7 @@ flowchart TB
 
     BD[LinuxI2cDriver Bus Driver - Low-level I2C communication - Implements Drv.I2c interface - Returns I2cStatus success/error codes]
 
-    I2C_BUS[I2C Hardware Bus /dev/i2c-1 - Physical wires SDA and SCL]
+    I2C_BUS["I2C Hardware Bus /dev/i2c-1 - Physical wires SDA and SCL"]
 
     HW[MPU6050 IMU Sensor - Hardware device at address 0x68 - Measures acceleration and rotation]
 

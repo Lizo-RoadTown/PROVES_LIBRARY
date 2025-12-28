@@ -43,7 +43,7 @@ flowchart TB
 
     subgraph "Layer 3 Bus Driver"
         BD[LinuxI2cDriver.writeRead]
-        DEV[/dev/i2c-1 device]
+        DEV["/dev/i2c-1 device"]
     end
 
     subgraph "Layer 4 Hardware Bus"

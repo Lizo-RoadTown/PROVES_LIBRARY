@@ -327,7 +327,7 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ```mermaid
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
-        BUS[I2C Bus /dev/i2c-1<br/>SDA/SCL]
+        BUS["I2C Bus /dev/i2c-1 SDA/SCL"]
 
         DEV1[Device 1 IMU Addr 0x68]
         DEV2[Device 2 Magnetometer Addr ???]
