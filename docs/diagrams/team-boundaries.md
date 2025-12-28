@@ -32,6 +32,11 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ### Organizational Structure
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     subgraph "NASA/JPL"
         JPL_CORE[F´ Core Team ⭐ Permanent Staff]
@@ -101,6 +106,11 @@ flowchart TB
 ### F´ Team ↔ PROVES Kit Team
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart LR
     subgraph "F´ Knowledge"
         F_PUB["Public Documentation [YES] Versioned [YES] Comprehensive"]
@@ -166,6 +176,11 @@ This flowchart shows the journey developers take when they need integration know
 ### Where Integration Knowledge Lives
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     START[Integration Knowledge Needed]
 
@@ -390,6 +405,11 @@ sequenceDiagram
 ### What Gets Captured vs. Lost
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     subgraph "Mission Lifecycle"
         DESIGN[Design Decisions]
@@ -529,6 +549,11 @@ quadrantChart
 ### How This System Addresses Team Boundary Issues
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     subgraph "Traditional Approach (Failed)"
         TRAD_TEAM[Team Knowledge]

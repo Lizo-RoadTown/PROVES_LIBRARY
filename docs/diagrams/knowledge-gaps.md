@@ -86,6 +86,11 @@ sequenceDiagram
 ### Real-World Impact
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     START[New developer integrates IMU]
 
@@ -142,6 +147,11 @@ This diagram shows electrical characteristics that software developers never thi
 ### The Missing Specification
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     subgraph "Power Supply Characteristics"
         V_NOM[Nominal Voltage 3.3V]
@@ -325,6 +335,11 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ### The Missing Architecture
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
         BUS["I2C Bus /dev/i2c-1 SDA/SCL"]
@@ -450,6 +465,11 @@ This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare meta
 ### The Missing Cross-Platform Guide
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart LR
     subgraph "F´ Framework"
         F_LINUX[LinuxI2cDriver<br/>Linux]

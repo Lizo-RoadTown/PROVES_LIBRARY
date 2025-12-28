@@ -37,6 +37,11 @@ Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Ki
 **What you're looking at:** How software layers stack on top of each other to talk to a sensor. Each layer only talks to the layer directly below it.
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     APP[Application Components - Your mission code that needs sensor data]
 
@@ -67,6 +72,11 @@ flowchart TB
 **What you're looking at:** Three types of configuration that all need to match up correctly.
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     subgraph BUILD ["Build System - Compiles the code"]
         FPUTIL[fprime-util Build command]
@@ -107,6 +117,11 @@ flowchart TB
 **What you're looking at:** How the PROVES Kit software controls power to different subsystems.
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
 flowchart TB
     LSM[LoadSwitchManager - Main power control class - Written in Python]
 
