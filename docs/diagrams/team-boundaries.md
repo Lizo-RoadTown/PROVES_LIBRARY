@@ -265,9 +265,9 @@ gantt
 
 ```mermaid
 pie title Knowledge Retention After Team Graduation
-    Lost (graduated) : 70
-    Degraded (partially remembered) : 20
-    Retained (documented or passed on) : 10
+    "Lost (graduated)" : 70
+    "Degraded (partially remembered)" : 20
+    "Retained (documented or passed on)" : 10
 ```
 
 **Only 10% of tribal knowledge is captured and passed to next team.**
