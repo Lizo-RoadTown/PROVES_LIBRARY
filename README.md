@@ -1,6 +1,6 @@
 # PROVES Library
 
-Provably-correct knowledge graph pipeline for space systems and other complex, fragmented domains.
+**Autonomous knowledge graph curation system that feeds a multi-domain Graph Neural Network for mission success prediction.**
 
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://lizo-roadtown.github.io/PROVES_LIBRARY/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
@@ -8,109 +8,370 @@ Provably-correct knowledge graph pipeline for space systems and other complex, f
 
 ---
 
-## What we are making
+## The Vision
 
-A truth-layer pipeline that turns scattered technical knowledge into a verified dependency graph.
-That graph becomes high-quality training data for a Graph Neural Network (GNN) that can predict risk, impact, and hidden coupling before a mission breaks.
+We're building a **Graph Neural Network** inspired by NASA's GraphSAGE framework for satellite systems - but designed to work across **any fragmented technical domain** where hidden dependencies cause catastrophic failures.
 
----
+The core insight: **Complex systems are already graphs.** Components, interfaces, power flows, thermal coupling, team boundaries - all connected through relationships that cascade in unexpected ways.
 
-## Why a Graph Neural Network
+### Why GraphSAGE?
 
-Space systems are graphs already: components, interfaces, timing, power, teams. A GNN learns from both the structure and the features of each node and relationship, so it can:
+GraphSAGE (Graph Sample and Aggregate) learns from both:
+- **Node features**: What each component is, its properties, constraints
+- **Graph structure**: How components connect, what flows between them, cascade paths
 
-- Predict cascade risk when a subsystem changes.
-- Surface weak cross-team and cross-layer dependencies.
-- Generalize patterns across different missions and hardware stacks.
+This lets the model:
+- **Predict cascade risk** before a subsystem change breaks the mission
+- **Surface hidden coupling** across layers (software → power → thermal → timing)
+- **Generalize patterns** from one mission/domain to another
 
----
-
-## Why data quality matters
-
-A GNN is only as good as the graph it learns from.
-
-- Bad edges teach the model the wrong physics.
-- Missing lineage makes results impossible to trust.
-- Inconsistent labels destroy signal in training.
-- Verified sources turn the graph into evidence, not guesses.
-
-This repo is the data engine that makes the GNN possible.
+**Our approach**: Use the GraphSAGE foundation but extend it beyond satellites to **any domain with verifiable dependency graphs** - manufacturing pipelines, infrastructure systems, software architectures, organizational structures.
 
 ---
 
-## Who this is for
+## What We've Built: An Intelligent Data Engine
 
-- CubeSat and LEO builders who live inside interfaces and failure modes.
-- Astrophysics and systems folks who know the real story is in the details.
-- Students in space labs who only ever see slices of the stack.
-- AI/ML/CS students who want to apply models to real, messy data.
-- NASA lovers who want to see how truth-checked data changes outcomes.
+The challenge: **A GNN is only as good as its training data.** Bad edges teach wrong physics. Missing lineage destroys trust. Inconsistent labels kill signal.
 
----
+So we built an **autonomous agentic system** that doesn't just collect data - it **trains itself** to:
 
-## How it works
+1. **Locate quality sources** - Intelligent web crawler finds high-signal documentation
+2. **Extract structure** - Identifies components, interfaces, flows, mechanisms using FRAMES ontology
+3. **Validate integrity** - Checks lineage, flags anomalies, verifies evidence traceability
+4. **Self-correct methodology** - Meta-learning system analyzes extraction patterns and improves
+5. **Align ontology** - Adapts categorization to work WITH the neural network's needs
 
+**Key insight**: The agentic curator IS a learning system preparing data FOR a learning system.
+
+### Current Phase: Graph Embedding Pipeline
+
+We're currently in the **chunking and embedding phase** - preparing the knowledge graph for neural network training:
+
+```mermaid
+graph LR
+    A[Documentation Sources] --> B[Smart Crawler]
+    B --> C[LLM Extraction Agent]
+    C --> D[Validation & Staging]
+    D --> E[Human Verification]
+    E --> F[Knowledge Graph]
+    F --> G[Graph Chunking]
+    G --> H[Vector Embeddings]
+    H --> I[GNN Training Data]
+    I --> J[GraphSAGE Model]
+
+    style F fill:#4D96FF
+    style J fill:#FFD93D
 ```
-Sources -> Extract -> Validate -> Human Review -> Truth Graph
+
+The agents autonomously:
+- Find documentation pages (production/scripts/find_good_urls.py)
+- Extract dependency candidates (production/scripts/process_extractions.py)
+- Flag quality issues and suggest improvements (production/scripts/improvement_analyzer.py)
+- Sync to Notion for human truth establishment
+- Build verified graph nodes and edges with full lineage
+
+---
+
+## How It Works: Agent → Graph → Neural Network
+
+### 1. Intelligent Source Discovery
+
+```bash
+python production/scripts/find_good_urls.py --fprime --proveskit --max-pages 50
 ```
 
+Smart crawler analyzes documentation quality, finds high-signal pages, queues for extraction.
+
+### 2. Autonomous Extraction
+
+```bash
+python production/scripts/process_extractions.py --limit 10
+```
+
+Multi-agent system (Extractor → Validator → Storage) extracts:
+- **Components**: Discrete modules (drivers, sensors, boards)
+- **Interfaces**: Connection points (I2C bus, SPI, power rails)
+- **Flows**: What moves through interfaces (data, power, commands, heat)
+- **Mechanisms**: What maintains connections (protocols, documentation, tests)
+
+**NOT** "Component A depends on Component B" (too vague)
+**YES** "RadioTX CONSUMES PowerRail_3V3 via electrical mechanism, sometimes (during TX), knownness: verified"
+
+### 3. Human Truth Layer
+
+Extracted candidates appear in Notion for human review:
+- Agents provide rich context and confidence scores
+- Humans verify evidence and align across conflicting sources
+- Only human-verified data enters the truth graph
+
+**Why this matters**: The GNN learns from verified physics, not agent guesses.
+
+### 4. Meta-Learning Improvement
+
+```bash
+python production/scripts/improvement_analyzer.py
+```
+
+System analyzes extraction patterns:
+- Which sources yield high-quality data?
+- What extraction patterns lead to validation failures?
+- How can ontology adapt to graph structure?
+- What methodology improvements would increase accuracy?
+
+**The agent is training itself** to become better at preparing GNN training data.
+
+### 5. Graph Embedding (Current Phase)
+
+The verified knowledge graph gets:
+- **Chunked**: Into trainable subgraphs
+- **Embedded**: Node and edge features vectorized
+- **Indexed**: In pgvector database for efficient retrieval
+- **Fed**: To GraphSAGE model for training
+
 ---
 
-## Cool diagrams
+## Why Data Quality Defines GNN Success
 
-- [Dependency overview](docs/diagrams/overview.md)
-- [Cross-system dependencies](docs/diagrams/cross-system.md)
-- [Hidden gaps](docs/diagrams/knowledge-gaps.md)
-- [Team boundary map](docs/diagrams/team-boundaries.md)
-- [Transitive chains](docs/diagrams/transitive-chains.md)
+| Bad Data In | Bad Predictions Out |
+|-------------|---------------------|
+| Missing edges | Model can't learn cascade paths |
+| Inconsistent labels | Signal drowns in noise |
+| No lineage | Impossible to debug failures |
+| Unverified "facts" | Model learns hallucinations |
 
----
+| Verified Data In | Reliable Predictions Out |
+|------------------|--------------------------|
+| Complete subgraphs | Model learns full cascade chains |
+| Consistent ontology | Clear training signal |
+| Full provenance | Debuggable, improvable |
+| Human-verified truth | Model learns real physics |
 
-## Repository map
+**Our obsession**: Lineage, verification, provenance. Every graph edge traces to source code, documentation, or test results.
 
-- `curator-agent/production/` - production pipeline and deployment notes
-- `curator-agent/src/` - agent implementations and subagents
-- `docs/` - architecture and guides
-- `trial_docs/` - trial outputs and results
 
----
 
 ## Quickstart
 
+### Prerequisites
+
 ```bash
-pip install -r requirements.txt
+# Python 3.11+
+python --version
+
+# PostgreSQL (Neon cloud database)
+# Anthropic API key (Claude Sonnet for extraction)
+# Notion API key (human verification interface)
 ```
 
-See:
-- `curator-agent/production/README.md`
-- `docs/guides/MCP_SETUP_GUIDE.md`
+### Setup
+
+```bash
+# Clone repository
+git clone https://github.com/Lizo-RoadTown/PROVES_LIBRARY.git
+cd PROVES_LIBRARY
+
+# Install dependencies
+pip install -r production/pyproject.toml
+
+# Configure environment (copy .env.template to .env)
+cp .env.template .env
+# Add: NEON_DATABASE_URL, ANTHROPIC_API_KEY, NOTION_API_KEY, LANGCHAIN_API_KEY
+```
+
+### Run the Pipeline
+
+```bash
+# 1. Find high-quality documentation pages
+python production/scripts/find_good_urls.py 
+
+# 2. Extract dependency candidates (runs autonomous agent)
+python production/scripts/process_extractions.py 
+
+# 3. Review extractions in Notion (human verification step)
+# Visit your Notion workspace → PROVES Library databases
+
+# 4. Analyze extraction quality and improve
+python production/scripts/improvement_analyzer.py
+```
 
 ---
 
-## Status
+## Current Status & Results
 
-- Active research.
-- Initial CubeSat trial found 45+ dependencies and 4 critical cross-system gaps.
-- Current focus: scale extraction across documentation sets.
+### Phase 1: Foundation ✅ Complete
+
+- Multi-agent curator system operational
+- Smart web crawler finding quality sources
+- Lineage tracking and evidence verification
+- Human-in-the-loop via Project Management integration
+- Meta-learning improvement analyzer
+- Error logging and quality monitoring
+
+**Results**:
+- 45+ verified dependencies extracted from CubeSat documentation
+- 4 critical cross-system gaps discovered
+- 23 high-quality pages queued for extraction
+- Agent methodology improving through meta-learning
+
+### Phase 2: Graph Embedding 🚧 In Progress
+
+- Chunking verified graph into training subgraphs
+- Embedding node/edge features with vector models
+- pgvector integration for efficient retrieval
+- Preparing training data for GraphSAGE model
+
+### Phase 3: GNN Training 📋 Planned
+
+- GraphSAGE model implementation (see [Proves_AI repo](https://github.com/Lizo-RoadTown/Proves_AI))
+- Cascade risk prediction
+- Hidden coupling detection
+- Multi-domain generalization
 
 ---
 
-## Links
+## Design Principles
 
-- Docs: https://lizo-roadtown.github.io/PROVES_LIBRARY/
-- GNN stack: https://github.com/Lizo-RoadTown/Proves_AI
-- Architecture: `docs/architecture/AGENTIC_ARCHITECTURE.md`
-- Trial results: `trial_docs/COMPREHENSIVE_DEPENDENCY_MAP.md`
-- Issues: https://github.com/Lizo-RoadTown/PROVES_LIBRARY/issues
+From [canon/CANON.md](canon/CANON.md):
+
+### 1. Autonomous Intelligence, Not Automation
+
+> "Give goals, not instructions."
+
+Agents understand objectives and decide how to achieve them. They adapt to unexpected input, learn from feedback, and get smarter over time.
+
+### 2. Truth Layer Architecture
+
+> "Agents provide context. Humans establish truth."
+
+```
+Raw Sources → Agent Capture → Agent Staging → Human Verification → Truth Graph
+     ↑              ↑               ↑                ↑
+  (all data)   (categorize)    (flag/context)   (align/verify)
+```
+
+### 3. FRAMES Ontology (Foundational)
+
+Based on "FRAMES: A Structural Diagnostic for Resilience in Modular University Space Programs" (Osborn, 2025):
+
+- **Components**: Discrete modules (what exists)
+- **Interfaces**: Connection points (where they touch)
+- **Flows**: What moves through interfaces (data, power, heat, signals)
+- **Mechanisms**: What maintains connections (protocols, docs, processes)
+- **Coupling**: Strength of bonds (measured via graph edge attributes)
+
+**The fundamental question**: "What MOVES through this system, and through which interfaces?"
+
+NOT: "What depends on what?" (human judgment assigns criticality AFTER understanding structure)
+
+### 4. Five-Attribute Edge Model
+
+Every relationship has:
+1. **Directionality**: Does it flow both ways?
+2. **Strength**: Always, sometimes, never?
+3. **Mechanism**: Electrical, thermal, timing, protocol, software state?
+4. **Knownness**: Known (verified), assumed, unknown, disproved?
+5. **Scope**: Version tuple, hardware revision, mission profile?
+
+Example:
+```yaml
+RadioTX --CONSUMES--> PowerRail_3V3
+  directionality: forward (radio affects rail, not reverse)
+  strength: sometimes (only during transmission)
+  mechanism: electrical
+  knownness: verified (oscilloscope measurement)
+  scope: fprime@v3.4.3, board_rev_c, TX_duty_cycle > 50%
+```
+
+This granularity lets the GNN learn **conditional dependencies** and **mode-specific behavior**.
+
+---
+
+## Who This Is For
+
+- **CubeSat builders** drowning in interface specifications and failure modes
+- **Systems engineers** who know cascading failures start at hidden boundaries
+- **University space labs** where students only see fragments of the full stack
+- **AI/ML researchers** who want real-world graph data with verified ground truth
+- **NASA enthusiasts** who want to see how truth-checked data changes mission outcomes
+
+**Multi-domain potential**:
+- Manufacturing: Bill-of-materials → process dependencies → quality cascades
+- Infrastructure: Power grids → network topology → failure propagation
+- Software: Microservices → API contracts → performance coupling
+- Organizations: Team structures → communication patterns → decision bottlenecks
+
+**Same framework, different domain**: If it's a graph with verifiable edges, this pipeline can prepare it for GNN training.
+
+---
+
+## Documentation
+
+- [Architecture](docs/architecture/AGENTIC_ARCHITECTURE.md) - Full system design
+- [Knowledge Graph Schema](docs/architecture/KNOWLEDGE_GRAPH_SCHEMA.md) - ERV relationship model
+- [CANON](canon/CANON.md) - Permanent design principles
+- [Production README](production/README.md) - How to run the curator
+- [Notion Integration](production/docs/NOTION_INTEGRATION_GUIDE.md) - Human verification setup
+
+### Visualizations
+
+- [Dependency Overview](docs/diagrams/overview.md)
+- [Cross-System Dependencies](docs/diagrams/cross-system.md)
+- [Knowledge Gaps](docs/diagrams/knowledge-gaps.md)
+- [Team Boundaries](docs/diagrams/team-boundaries.md)
+- [Transitive Chains](docs/diagrams/transitive-chains.md)
+
+---
+
+## Related Projects
+
+- **[Proves_AI](https://github.com/Lizo-RoadTown/Proves_AI)**: GraphSAGE GNN implementation for mission outcome prediction
+- **[PROVES Kit](https://docs.proveskit.space/)**: Open-source CubeSat development framework (primary data source)
+- **[F´ (F Prime)](https://nasa.github.io/fprime/)**: NASA's flight software framework (secondary data source)
+
+---
+
+## Contributing
+
+This is active research. Contributions welcome in:
+
+- **New data sources**: Identify high-quality technical documentation for extraction
+- **Ontology refinement**: Improve FRAMES categorization for your domain
+- **GNN architecture**: Enhance GraphSAGE model for cascade prediction
+- **Validation tools**: Better lineage verification and quality checks
+
+See [Issues](https://github.com/Lizo-RoadTown/PROVES_LIBRARY/issues) for current work.
+
+---
+
+## Research Foundation
+
+**FRAMES Methodology**:
+Osborn, E. (2025). "FRAMES: A Structural Diagnostic for Resilience in Modular University Space Programs."
+
+**GraphSAGE Foundation**:
+Hamilton, W., Ying, Z., & Leskovec, J. (2017). "Inductive Representation Learning on Large Graphs." NeurIPS.
+
+**Application Domain**:
+CubeSat systems, F´ framework, PROVES Kit hardware stack.
+
+**Innovation**:
+Autonomous agent-based graph curation with self-improving methodology, preparing verified training data for multi-domain GNN generalization.
 
 ---
 
 ## License
 
-MIT License - see `LICENSE`.
+MIT License - see [LICENSE](LICENSE)
 
 ---
 
 ## Contact
 
-Elizabeth Osborn - eosborn@cpp.edu
+**Elizabeth Osborn**
+eosborn@cpp.edu
+California State Polytechnic University, Pomona
+
+
+---
+
+*Building trustworthy AI for complex systems, one verified edge at a time.*
