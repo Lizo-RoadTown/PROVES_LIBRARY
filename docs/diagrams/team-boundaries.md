@@ -105,19 +105,19 @@ flowchart TB
 %%{init: {'flowchart': {'defaultRenderer': 'elk'}}}%%
 flowchart LR
     subgraph "F´ Knowledge"
-        F_PUB[Public Documentation<br/>[YES] Versioned<br/>[YES] Comprehensive]
-        F_CODE[GitHub Repository<br/>[YES] nasa/fprime<br/>[YES] Well-maintained]
-        F_COM[Community Forums<br/>[YES] Active support]
+        F_PUB[Public Documentation<br/>YES: Versioned<br/>YES: Comprehensive]
+        F_CODE[GitHub Repository<br/>YES: nasa/fprime<br/>YES: Well-maintained]
+        F_COM[Community Forums<br/>YES: Active support]
     end
 
     subgraph "Interface"
-        INT[[NO] No Integration Docs<br/>[NO] No Cross-References<br/>[NO] No Joint Testing<br/>[NO] No Shared Examples]
+        INT[[NO: No Integration Docs<br/>NO: No Cross-References<br/>NO: No Joint Testing<br/>NO: No Shared Examples]]
     end
 
     subgraph "PROVES Knowledge"
-        P_PUB[Public Documentation<br/>[WARNING] Growing<br/>[WARNING] Gaps exist]
-        P_CODE[GitHub Repository<br/>[YES] proveskit/pysquared<br/>[WARNING] Active but small team]
-        P_COM[Community<br/>[WARNING] Mostly university teams]
+        P_PUB[Public Documentation<br/>WARN: Growing<br/>WARN: Gaps exist]
+        P_CODE[GitHub Repository<br/>YES: proveskit/pysquared<br/>WARN: Active but small team]
+        P_COM[Community<br/>WARN: Mostly university teams]
     end
 
     F_PUB -.->|weak| INT
@@ -178,9 +178,9 @@ flowchart TB
     TRIBAL[Ask Experienced Engineer]
     WHO{Who to Ask?}
 
-    JPL_ENG[JPL Engineer<br/>[NO] Doesn't know PROVES]
-    PROVES_ENG[PROVES Maintainer<br/>[WARNING] Knows integration]
-    UNI_ENG[University Student<br/>[NO] Learning both]
+    JPL_ENG[JPL Engineer<br/>NO: Doesn't know PROVES]
+    PROVES_ENG[PROVES Maintainer<br/>WARN: Knows integration]
+    UNI_ENG[University Student<br/>NO: Learning both]
 
     DISCOVER[Discover Through Failure]
     CAPTURE[Capture in Email/Chat]
@@ -405,22 +405,22 @@ flowchart TB
     end
 
     subgraph "Captured (30%)"
-        CODE[Code Repository<br/>[YES] Preserved]
-        SCHEMA[Schematics<br/>[YES] Preserved]
-        FORMAL_DOC[Formal Documentation<br/>[WARNING] Often outdated]
+        CODE[Code Repository<br/>YES: Preserved]
+        SCHEMA[Schematics<br/>YES: Preserved]
+        FORMAL_DOC[Formal Documentation<br/>WARN: Often outdated]
     end
 
     subgraph "Partially Captured (20%)"
-        ISSUES[GitHub Issues<br/>[WARNING] Searchable but dispersed]
-        CHAT[Chat Logs<br/>[WARNING] Saved but not indexed]
-        EMAIL[Email Threads<br/>[WARNING] Private, not shared]
+        ISSUES[GitHub Issues<br/>WARN: Searchable but dispersed]
+        CHAT[Chat Logs<br/>WARN: Saved but not indexed]
+        EMAIL[Email Threads<br/>WARN: Private, not shared]
     end
 
     subgraph "Lost (50%)"
-        TRIBAL[Tribal Knowledge<br/>[NO] In people's heads]
-        WORKAROUND[Workarounds<br/>[NO] Undocumented]
-        FAILURES[Failure Lessons<br/>[NO] Not written down]
-        WHY[Design Rationale<br/>[NO] Not explained]
+        TRIBAL[Tribal Knowledge<br/>NO: In people's heads]
+        WORKAROUND[Workarounds<br/>NO: Undocumented]
+        FAILURES[Failure Lessons<br/>NO: Not written down]
+        WHY[Design Rationale<br/>NO: Not explained]
     end
 
     DESIGN --> CODE

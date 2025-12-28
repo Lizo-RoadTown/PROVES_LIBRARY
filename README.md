@@ -61,7 +61,6 @@ Sources -> Extract -> Validate -> Human Review -> Truth Graph
 - [Dependency overview](docs/diagrams/overview.md)
 - [Cross-system dependencies](docs/diagrams/cross-system.md)
 - [Hidden gaps](docs/diagrams/knowledge-gaps.md)
-- [GNN as molecular model](docs/diagrams/gnn-molecule.md)
 - [Team boundary map](docs/diagrams/team-boundaries.md)
 - [Transitive chains](docs/diagrams/transitive-chains.md)
 
