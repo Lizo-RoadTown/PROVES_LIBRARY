@@ -63,6 +63,29 @@ graph LR
     style J fill:#FFD93D
 ```
 
+---
+
+### 🎯 Current Work: Representation Before Interpretation
+
+**Inference is intentionally deferred until after knowledge has been represented without interpretation.** This separation enables an embodiment-aware chunking strategy, where chunks are formed based on observed structural boundaries and relationships rather than inferred meaning or semantic similarity.
+
+This design ensures that chunking reflects **how the system is described**, not how it is prematurely understood. Inference and meaning-making are introduced only after stable representation is established.
+
+#### The Inference-Embodiment Boundary
+
+**Inference** refers to knowledge that is already expressible symbolically (text, equations, specifications) and can be directly operated on by an AI system. All AI reasoning occurs in this space.
+
+**Embodiment** refers to knowledge that exists through physical interaction, practice, intuition, or lived experience, and is not natively symbolic. For humans, many domains are primarily embodied rather than inferential.
+
+**Domains differ in where the inference–embodiment boundary lies:**
+
+- Domains that are already largely inferential (software APIs, protocol specs) are straightforward to extract and chunk
+- Domains that are highly embodied (brownout behavior under load, thermal coupling in vacuum) make **extraction the primary challenge**, not chunking
+
+**This pipeline treats chunking as a boundary operation**: domain knowledge remains purely inferential up to chunk formation. A central open problem we're addressing is whether embodied knowledge can be extracted in a way that preserves meaning while remaining universally translatable—what we call **embodied inference**.
+
+---
+
 The agents autonomously:
 - Find documentation pages (production/scripts/find_good_urls.py)
 - Extract dependency candidates (production/scripts/process_extractions.py)
@@ -350,6 +373,12 @@ Osborn, E. (2025). "FRAMES: A Structural Diagnostic for Resilience in Modular Un
 
 **GraphSAGE Foundation**:
 Hamilton, W., Ying, Z., & Leskovec, J. (2017). "Inductive Representation Learning on Large Graphs." NeurIPS.
+
+**NASA GNN Implementation**:
+Mehrabian, A. (2025). nasa-eosdis-heterogeneous-gnn (Revision 7e71e62). Hugging Face. [Model Repository](https://huggingface.co/arminmehrabian/nasa-eosdis-heterogeneous-gnn) DOI: 10.57967/hf/6789
+
+**PROVES Kit Framework**:
+Pham, M. & Bronco Space Lab. (2025). PROVES Kit - Open-Source CubeSat Development Framework. California State Polytechnic University, Pomona. [Documentation](https://docs.proveskit.space/en/latest/)
 
 **Application Domain**:
 CubeSat systems, F´ framework, PROVES Kit hardware stack.
