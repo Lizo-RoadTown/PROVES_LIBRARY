@@ -576,16 +576,16 @@ gantt
     Code implementation     :2024-01-08, 14d
     section Testing
     Bench testing          :2024-01-22, 7d
-    Discovery: Timing gap  :milestone, 2024-01-26, 0d
+    Discovery Timing gap  :milestone, 2024-01-26, 0d
     section Integration
     System integration     :2024-01-29, 14d
-    Discovery: Bus conflict:milestone, 2024-02-05, 0d
+    Discovery Bus conflict:milestone, 2024-02-05, 0d
     section Flight Prep
     Environmental testing  :2024-02-12, 21d
-    Discovery: Voltage gap :milestone, 2024-02-28, 0d
+    Discovery Voltage gap :milestone, 2024-02-28, 0d
     section Operations
     Launch and operations  :2024-03-05, 7d
-    Discovery: Error handling gap :crit, 2024-03-08, 0d
+    Discovery Error handling gap :crit, 2024-03-08, 0d
 ```
 
 **Average Discovery Time:** 45-60 days after project start

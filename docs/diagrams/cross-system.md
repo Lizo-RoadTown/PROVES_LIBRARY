@@ -423,10 +423,10 @@ quadrantChart
     quadrant-2 Critical
     quadrant-3 Accept
     quadrant-4 Mitigate
-    Power Stability: [0.9, 0.8]
-    Power Sequence: [0.8, 0.7]
-    Bus Sharing: [0.6, 0.4]
-    Error Recovery: [0.7, 0.5]
+    "Power Stability": [0.9, 0.8]
+    "Power Sequence": [0.8, 0.7]
+    "Bus Sharing": [0.6, 0.4]
+    "Error Recovery": [0.7, 0.5]
 ```
 
 **Criticality Assessment:**
