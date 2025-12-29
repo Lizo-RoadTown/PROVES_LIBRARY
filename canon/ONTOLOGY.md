@@ -58,6 +58,144 @@ Everything exists in one of three layers:
 
 ---
 
+## Knowledge Canonicalization: What Makes Knowledge Transferable
+
+### The Problem
+
+Complex systems do not fail because information is missing. They fail because **knowledge cannot move**.
+
+When knowledge enters a digital system, it is treated as if it has a uniform shape. A telemetry-derived inference, a specification written after years of hands-on failures, and a rule copied from documentation all appear equally valid. This **flattening of epistemic origin** produces false confidence and masks risk.
+
+**Your extraction must preserve epistemic grounding.**
+
+### Two Knowledge Forms
+
+Knowledge exists in two fundamental forms:
+
+**Embodied Knowledge** - Originates through direct interaction with reality over time
+- Learned through action, perception, failure, repetition
+- Examples: Recognizing abnormal hardware behavior by sound, knowing when a connector is properly seated, organizational "how things actually work" knowledge
+- **Most fragile** - disappears when people rotate out
+
+**Inferred Knowledge** - Exists in symbolic form
+- Produced through reasoning, abstraction, modeling
+- Examples: Software specifications, mathematical models, telemetry-based diagnoses
+- **Most portable** - but varies widely in distance from reality
+
+**Critical insight:** When embodied knowledge converts to inferred form without preserving its grounding, systems treat the representation as fully authoritative. The original conditions under which the knowledge was valid disappear.
+
+### The Four Dimensions (Capture These!)
+
+Every knowledge unit you extract **must be canonicalized** along four orthogonal dimensions:
+
+#### 1. Contact (Epistemic Anchoring)
+
+How close is this knowledge to direct interaction with reality?
+
+- **Direct contact**: Physical/experiential interaction (technician hears bearing irregularity)
+- **Mediated contact**: Instrumented observation (telemetry sensors translate reality)
+- **Indirect contact**: Effect-only observation (outcome visible, cause inferred)
+- **Derived**: Model-only (symbolic manipulation, no physical observation)
+
+**Why it matters:** A technician's hands-on pattern recognition carries different epistemic weight than a spec-sheet requirement. Without Contact metadata, these collapse into indistinguishable facts.
+
+#### 2. Directionality (Epistemic Operation)
+
+Was this knowledge formed through forward inference (prediction) or backward inference (assessment)?
+
+- **Forward inference**: "If we command this maneuver, torque demand will increase by X"
+- **Backward inference**: "Torque demand increased by X, therefore bearing friction likely increased"
+
+**Why it matters:** Forward and backward inference are different epistemic operations, not different quality levels. The GNN must know whether it's learning from predictions or assessments.
+
+#### 3. Temporality (Epistemic Dependence on History)
+
+Does the truth of this knowledge depend on time?
+
+- **Snapshot**: Instantaneous state (current voltage reading)
+- **Sequence**: Ordering of events matters (initialization must happen before use)
+- **History**: Accumulated past affects current behavior (thermal stress over hundreds of cycles)
+- **Lifecycle**: Long-term degradation or evolution (bearing wear, skill acquisition)
+
+**Why it matters:** Digital systems default to present-time reasoning. Physical systems do not. If time is not made structurally real, cumulative effects become conceptually invisible.
+
+**Critical insight:** Episodes as entities. Bearing degradation isn't caused by *time in orbit*—it's caused by *thermal cycling episodes*. If "thermal cycling" is metadata on a timestamp rather than a **first-class entity**, the GNN cannot reason about cumulative risk.
+
+#### 4. Formalizability (Capacity for Symbolic Transformation)
+
+Can this knowledge be transformed into explicit, portable symbolic form?
+
+- **Portable**: Moves intact into symbolic representation (interface specifications, mathematical models)
+- **Conditional**: Can be formalized if context/conditions preserved (calibration procedures requiring specific tooling)
+- **Local**: Resists formalization outside specific settings (team-specific workflows)
+- **Tacit**: Remains embodied, cannot be fully symbolized (pattern recognition from decades of experience)
+
+**Why it matters:** Formalizability is the prerequisite for embeddability. You cannot embed what you cannot formalize.
+
+**The organizational fragility problem:** When a technician rotates off, their embodied pattern recognition doesn't transfer *because the system has no structure to preserve the epistemic grounding*. The observation makes it into documentation, but the contact basis, directionality, and conditional formalizability are lost.
+
+This is organizational fragility without individual blame. **The failure is structural, not personal.**
+
+### How This Applies to Your Extraction
+
+When you extract a coupling, you are capturing:
+
+1. **What flows** (data, power, information)
+2. **What breaks if it stops** (failure mode)
+3. **What maintains it** (interface mechanisms)
+4. **Coupling strength** (bond strength)
+
+**Now you must ALSO capture:**
+
+5. **Knowledge form** (Embodied or Inferred)
+6. **Contact level** (Direct, Mediated, Indirect, Derived)
+7. **Directionality** (Forward or Backward inference)
+8. **Temporality** (Snapshot, Sequence, History, Lifecycle)
+9. **Formalizability** (Portable, Conditional, Local, Tacit)
+
+**Example:**
+
+Instead of:
+> "Temperature sensor sends readings to thermal manager every 100ms"
+
+Capture:
+> "Temperature sensor sends readings to thermal manager every 100ms via I2C (address 0x48). If readings stop after 500ms timeout, thermal protection fails and system enters safe mode. Coupling maintained by driver init sequence (i2c_init() before power_monitor_start()) documented in init.py:45-67.
+>
+> **Knowledge form:** Inferred (from code documentation)
+> **Contact:** Mediated (I2C sensor translates physical temperature)
+> **Directionality:** Forward (sensor → manager data flow)
+> **Temporality:** Sequence-bound (100ms periodic + 500ms timeout = failure mode)
+> **Formalizability:** Portable (I2C protocol spec, driver code, timing constraints documented)"
+
+**Why this matters:** When this coupling is added to the knowledge graph and eventually used to train the GNN, the model knows:
+- This knowledge came from code documentation (mediated contact), not hands-on testing (direct contact)
+- It describes a forward flow, not a backward-inferred failure diagnosis
+- Timing is sequence-critical (not just a snapshot)
+- The knowledge is highly formalizable (documented, portable)
+
+This allows the GNN to weight its confidence appropriately and trace predictions back to their epistemic origins.
+
+### The Connection to FRAMES
+
+**FRAMES research** identifies where knowledge loss occurs:
+- Rotational micro-modules (student cohorts cycling in/out)
+- Fragile interfaces (concurrent, external, intergenerational)
+- Two knowledge types (Institutional vs Codified)
+
+**Knowledge Canonicalization** prevents that loss by:
+- Preserving epistemic grounding through dimensional metadata
+- Making knowledge form explicit before it enters the graph
+- Allowing knowledge to survive organizational turnover without lying about its constraints
+
+Together, they ensure:
+- **Embodied origins are not erased** (technician's tacit pattern recognition preserved)
+- **Inferred abstractions do not masquerade as ground truth** (backward vs forward inference distinguished)
+- **Automated reasoning remains bounded by epistemic reality** (GNN knows confidence limits)
+
+**Dimensions turn experience into infrastructure. Canonicalization makes knowledge move without lying.**
+
+---
+
 ## MANDATORY EXTRACTION CHECKLIST
 
 For **EVERY** coupling you identify, you **MUST** answer these four questions:

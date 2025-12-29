@@ -77,7 +77,28 @@ def store_extraction(
     evidence_type: str = "definition_spec",
     reasoning_trail: dict = None,
     duplicate_check: dict = None,
-    source_metadata: dict = None
+    source_metadata: dict = None,
+    # Dimensional canonicalization metadata (Knowledge Canonicalization Theory)
+    knowledge_form: str = "unknown",
+    knowledge_form_confidence: float = 0.0,
+    knowledge_form_reasoning: str = None,
+    contact_level: str = "unknown",
+    contact_confidence: float = 0.0,
+    contact_reasoning: str = None,
+    directionality: str = "unknown",
+    directionality_confidence: float = 0.0,
+    directionality_reasoning: str = None,
+    temporality: str = "unknown",
+    temporality_confidence: float = 0.0,
+    temporality_reasoning: str = None,
+    formalizability: str = "unknown",
+    formalizability_confidence: float = 0.0,
+    formalizability_reasoning: str = None,
+    carrier: str = "unknown",
+    carrier_confidence: float = 0.0,
+    carrier_reasoning: str = None,
+    needs_human_review: bool = False,
+    review_reason: str = None
 ) -> str:
     """
     Deliver an extracted entity to the human review inbox (staging_extractions table).
@@ -134,6 +155,32 @@ def store_extraction(
                 "source_type": "webpage",
                 "fetch_timestamp": "2025-12-23T10:45:32Z"
             }
+        knowledge_form: 'embodied' | 'inferred' | 'unknown'
+            How this knowledge was obtained (direct experience vs symbolic reasoning)
+        knowledge_form_confidence: Confidence in knowledge form classification (0.0-1.0)
+        knowledge_form_reasoning: Why this knowledge form was assigned
+        contact_level: 'direct' | 'mediated' | 'indirect' | 'derived' | 'unknown'
+            Epistemic anchoring - how knowledge touched reality
+        contact_confidence: Confidence in contact level (0.0-1.0)
+        contact_reasoning: Why this contact level was assigned
+        directionality: 'forward' | 'backward' | 'bidirectional' | 'unknown'
+            Epistemic operation - prediction vs assessment
+        directionality_confidence: Confidence in directionality (0.0-1.0)
+        directionality_reasoning: Why this directionality was assigned
+        temporality: 'snapshot' | 'sequence' | 'history' | 'lifecycle' | 'unknown'
+            Epistemic dependence on history
+        temporality_confidence: Confidence in temporality (0.0-1.0)
+        temporality_reasoning: Why this temporality was assigned
+        formalizability: 'portable' | 'conditional' | 'local' | 'tacit' | 'unknown'
+            Capacity for symbolic transformation
+        formalizability_confidence: Confidence in formalizability (0.0-1.0)
+        formalizability_reasoning: Why this formalizability was assigned
+        carrier: 'body' | 'instrument' | 'artifact' | 'community' | 'machine' | 'unknown'
+            What carries this knowledge
+        carrier_confidence: Confidence in carrier (0.0-1.0)
+        carrier_reasoning: Why this carrier was assigned
+        needs_human_review: Set to TRUE if any dimensional confidence < 0.7
+        review_reason: Explanation of why human review is needed
 
     Lineage Computation (AUTOMATIC):
         This function automatically computes lineage verification data:
@@ -352,7 +399,14 @@ def store_extraction(
                     evidence, evidence_type, status,
                     evidence_checksum, evidence_byte_offset, evidence_byte_length,
                     lineage_verified, lineage_confidence, lineage_verified_at,
-                    lineage_verification_details
+                    lineage_verification_details,
+                    knowledge_form, knowledge_form_confidence, knowledge_form_reasoning,
+                    contact_level, contact_confidence, contact_reasoning,
+                    directionality, directionality_confidence, directionality_reasoning,
+                    temporality, temporality_confidence, temporality_reasoning,
+                    formalizability, formalizability_confidence, formalizability_reasoning,
+                    carrier, carrier_confidence, carrier_reasoning,
+                    needs_dimensional_review, dimensional_review_reason
                 ) VALUES (
                     %s::uuid, %s::uuid, %s, %s,
                     %s::candidate_type, %s, %s::jsonb,
@@ -360,7 +414,14 @@ def store_extraction(
                     %s::jsonb, %s::evidence_type, 'pending'::candidate_status,
                     %s, %s, %s,
                     %s, %s, %s,
-                    %s::jsonb
+                    %s::jsonb,
+                    %s, %s, %s,
+                    %s, %s, %s,
+                    %s, %s, %s,
+                    %s, %s, %s,
+                    %s, %s, %s,
+                    %s, %s, %s,
+                    %s, %s
                 ) RETURNING extraction_id
             """, (
                 run_id, source_snapshot_id, 'storage_agent', '1.0',
@@ -369,7 +430,14 @@ def store_extraction(
                 evidence, evidence_type,
                 evidence_checksum, evidence_byte_offset, evidence_byte_length,
                 lineage_verified, lineage_confidence, lineage_verified_at,
-                json.dumps(lineage_verification_details)
+                json.dumps(lineage_verification_details),
+                knowledge_form, knowledge_form_confidence, knowledge_form_reasoning,
+                contact_level, contact_confidence, contact_reasoning,
+                directionality, directionality_confidence, directionality_reasoning,
+                temporality, temporality_confidence, temporality_reasoning,
+                formalizability, formalizability_confidence, formalizability_reasoning,
+                carrier, carrier_confidence, carrier_reasoning,
+                needs_human_review, review_reason
             ))
             extraction_id = cur.fetchone()[0]
         conn.commit()

@@ -116,11 +116,95 @@ Extract COUPLINGS (not just components):
 
 **Optional:** If you need the full FRAMES vocabulary reference, use the get_ontology() tool.
 
+## Dimensional Canonicalization (REQUIRED for ALL extractions)
+
+For EVERY extraction, you MUST infer dimensional metadata using Knowledge Canonicalization Theory.
+This preserves epistemic grounding so downstream systems (GNN, reasoning engines) can weight confidence appropriately.
+
+### The Four Dimensions + Knowledge Form + Carrier
+
+**1. Knowledge Form** (embodied vs inferred):
+   - **embodied**: Learned through direct experience, hands-on interaction, tacit patterns
+     Example: "technician observed unusual sound during spin-down"
+   - **inferred**: Symbolic/documented, expressible in text/code, derived from reasoning
+     Example: "I2C address 0x48 documented in driver specification"
+   - Set confidence HIGH (0.9+) if text clearly indicates direct experience or documentation
+   - Set confidence LOW (<0.7) if ambiguous
+
+**2. Contact** (epistemic anchoring - how knowledge touched reality):
+   - **direct**: Physical/experiential ("technician felt", "engineer measured directly")
+   - **mediated**: Instrumented observation ("sensor reports", "telemetry shows")
+   - **indirect**: Effect-only ("torque increased, therefore bearing friction suspected")
+   - **derived**: Model/simulation-only ("thermal model predicts", "calculated from spec")
+   - Set confidence based on explicit mention of observation method
+
+**3. Directionality** (epistemic operation):
+   - **forward**: Prediction ("if X happens, Y will occur", "sends data to")
+   - **backward**: Assessment/diagnosis ("Y occurred, therefore X likely caused it")
+   - **bidirectional**: Both directions documented
+   - Set confidence based on causal language (if/then = forward, therefore/because = backward)
+
+**4. Temporality** (dependence on history):
+   - **snapshot**: Instantaneous state ("current temperature", "I2C address")
+   - **sequence**: Ordering matters ("init before start", "timeout after 500ms")
+   - **history**: Accumulated past affects present ("bearing wear over time", "thermal cycling")
+   - **lifecycle**: Long-term evolution ("mission duration", "degradation patterns")
+   - Set confidence based on temporal keywords (timing, sequence, accumulation)
+
+**5. Formalizability** (symbolic transformation capacity):
+   - **portable**: Fully documented, moves intact into code/specs ("I2C protocol", "API contract")
+   - **conditional**: Formalizable if context preserved ("calibration with specific tooling")
+   - **local**: Resists formalization outside setting ("team-specific workflow")
+   - **tacit**: Embodied, cannot be fully symbolized ("pattern recognition from experience")
+   - Set confidence based on documentation completeness
+
+**6. Carrier** (what carries this knowledge):
+   - **body**: Human embodied knowledge (technician skills, pattern recognition)
+   - **instrument**: Sensor/measurement device (telemetry, oscilloscope)
+   - **artifact**: Documentation, code, specifications
+   - **community**: Organizational practice, team knowledge
+   - **machine**: AI/GNN learned patterns
+   - Set confidence based on explicit source mention
+
+### Confidence Thresholds and Review Flags
+
+- If ANY dimension confidence < 0.7: Set needs_human_review=TRUE
+- Include review_reason explaining which dimensions are uncertain and why
+- Example review_reason: "Temporality confidence 0.65 - unclear if timing is sequence-critical or just nominal"
+
+### Dimensional Inference Examples
+
+**Example 1: Embodied knowledge with direct contact**
+Text: "Senior technician observed unusual bearing sound during RW-3 spin-down. Pattern differed from previous units."
+
+Dimensions:
+- knowledge_form: "embodied" (confidence: 0.92, reasoning: "Direct sensory observation by experienced technician")
+- contact_level: "direct" (confidence: 0.90, reasoning: "Physical presence, hearing sound directly")
+- directionality: "backward" (confidence: 0.85, reasoning: "Sound pattern used to infer bearing condition")
+- temporality: "history" (confidence: 0.75, reasoning: "'Pattern differed from previous' implies accumulated experience")
+- formalizability: "tacit" (confidence: 0.70, reasoning: "Sound-based pattern recognition, qualitative description")
+- carrier: "body" (confidence: 0.95, reasoning: "Technician's embodied sensory knowledge")
+- needs_human_review: TRUE (formalizability and temporality below 0.80)
+- review_reason: "Formalizability 0.70 and temporality 0.75 - tacit knowledge with unclear historical accumulation"
+
+**Example 2: Inferred knowledge with mediated contact**
+Text: "I2CDriver sends readings to PowerMonitor every 100ms via I2C address 0x48. If readings stop after 500ms timeout, system enters safe mode."
+
+Dimensions:
+- knowledge_form: "inferred" (confidence: 0.95, reasoning: "Documented in code/spec, symbolic representation")
+- contact_level: "mediated" (confidence: 0.90, reasoning: "I2C sensor mediates physical measurement")
+- directionality: "forward" (confidence: 0.95, reasoning: "Clear forward flow: sensor → manager, timeout → safe mode")
+- temporality: "sequence" (confidence: 0.95, reasoning: "Explicit timing: 100ms periodic, 500ms timeout sequence")
+- formalizability: "portable" (confidence: 0.98, reasoning: "I2C protocol, timing constraints fully documented")
+- carrier: "artifact" (confidence: 0.95, reasoning: "Code documentation, driver specification")
+- needs_human_review: FALSE (all confidences >= 0.80)
+
 ## Critical Rules
 
 - ALWAYS cite the source URL in your response
 - Provide exact evidence quotes for each extraction
-- Document your confidence reasoning
+- ALWAYS infer dimensional metadata for EVERY extraction
+- Document your confidence reasoning for EACH dimension
 - Note any uncertainties or ambiguities
 - Do NOT assign criticality (that is for humans to decide)
 - Focus on WHAT exists, not on how critical it might be
@@ -129,9 +213,23 @@ Extract COUPLINGS (not just components):
 
 Your final response should be structured text that includes:
 - Source URL (clearly stated)
+- snapshot_id (from fetch_webpage)
 - Extracted entities (components, interfaces, flows, mechanisms)
-- Evidence quotes for each extraction
-- Confidence reasoning
+- For EACH extraction, include:
+  - candidate_type (component, port, dependency, etc.)
+  - candidate_key (entity name)
+  - raw_evidence (exact quote from source)
+  - evidence_type (explicit_requirement, interface_specification, etc.)
+  - confidence_score and confidence_reason
+  - **DIMENSIONAL METADATA (ALL 6 dimensions):**
+    - knowledge_form + confidence + reasoning
+    - contact_level + confidence + reasoning
+    - directionality + confidence + reasoning
+    - temporality + confidence + reasoning
+    - formalizability + confidence + reasoning
+    - carrier + confidence + reasoning
+  - needs_human_review (TRUE if any dimension confidence < 0.7)
+  - review_reason (explanation if flagged for review)
 - Any uncertainties or notes
 
 Work step-by-step through the workflow above.""",
@@ -302,6 +400,15 @@ Store extracted entities in staging_extractions for human review.
    - confidence_score and confidence_reason
    - reasoning_trail (your thought process)
    - lineage_verified, lineage_confidence, evidence_checksum (from validator)
+   - **DIMENSIONAL METADATA (Knowledge Canonicalization - REQUIRED):**
+     - knowledge_form, knowledge_form_confidence, knowledge_form_reasoning
+     - contact_level, contact_confidence, contact_reasoning
+     - directionality, directionality_confidence, directionality_reasoning
+     - temporality, temporality_confidence, temporality_reasoning
+     - formalizability, formalizability_confidence, formalizability_reasoning
+     - carrier, carrier_confidence, carrier_reasoning
+     - needs_human_review (TRUE if any dimension confidence < 0.7)
+     - review_reason (explanation if flagged)
 3. Verify storage using get_staging_statistics() (1 tool call)
 4. Report success/failure with statistics
 
@@ -311,6 +418,8 @@ After 5 tool calls, you MUST return. No exceptions.
 
 - ALWAYS include source_snapshot_id (from the extractor's output)
 - ALWAYS include raw_evidence (exact quotes)
+- ALWAYS include dimensional metadata (all 6 dimensions with confidence and reasoning)
+- Set needs_human_review=TRUE if any dimension confidence < 0.7
 - Store ALL extractions (don't filter based on importance)
 - Include complete metadata for human verification
 
