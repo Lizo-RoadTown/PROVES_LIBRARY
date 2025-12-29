@@ -28,11 +28,7 @@ logger = logging.getLogger(__name__)
 # MCP Server Definition
 # ============================================
 
-mcp = FastMCP(
-    "PROVES Library",
-    description="Query the PROVES Library knowledge graph for CubeSat engineering patterns, "
-                "component relationships, and lessons learned from F' and ProvesKit."
-)
+mcp = FastMCP("PROVES Library")
 
 
 # ============================================

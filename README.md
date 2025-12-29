@@ -1,6 +1,6 @@
 # PROVES Library
 
-**Knowledge graph extraction pipeline for training Graph Neural Networks on CubeSat system dependencies.**
+**Agentic knowledge graph extraction pipeline for natural language interrogation and Graph Neural Network training data for CubeSat system dependencies.**
 
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://lizo-roadtown.github.io/PROVES_LIBRARY/)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
@@ -10,7 +10,9 @@
 
 > **📐 Knowledge Alignment Framework**
 >
-> Knowledge from hardware, software, and human organizations enters systems in different forms. When these differences are not explicitly tracked, knowledge is flattened, misunderstood, or lost. This project implements a **five-step framework** for capturing, aligning, and tracing knowledge so it can be safely used by humans and AI.
+>When you're building satellites, knowledge comes from everywhere: technicians who've worked on hardware for years, software specs, telemetry data, lessons learned from past missions. 
+
+This project tracks where knowledge came from and what it depends on, so people and AI systems know how to read it, track it , and how much to trust it. 
 >
 > **Domains stay different** — Knowledge becomes comparable — **Loss becomes traceable**
 >
@@ -55,6 +57,32 @@ A multi-agent extraction pipeline that:
 5. **Analyzes patterns** - Meta-learning loop identifies extraction quality issues (improvement_analyzer.py)
 
 **What makes this different from standard knowledge graphs**: Five-attribute edges (directionality, strength, mechanism, knownness, scope) that let the GNN learn conditional relationships, not just binary connections.
+
+### Natural Language Query Interface (MCP Server)
+
+The knowledge graph is accessible through a **Model Context Protocol (MCP) server** that provides natural language interrogation:
+
+```python
+# Query the knowledge graph using natural language
+agent = create_agent("claude-sonnet-4-5-20250929", mcp_tools)
+result = await agent.ainvoke({
+    "messages": [{"role": "user", "content": "What conflicts with the MS5611 barometer?"}]
+})
+```
+
+**Dual-layer query system**:
+
+- **Semantic layer**: Query by content type (requirements, interfaces, behavioral contracts)
+- **Structural layer**: Query by epistemic grounding (embodied vs inferred, contact level, temporality)
+
+**Multi-server architecture**:
+
+- PROVES Library MCP (knowledge graph queries)
+- Filesystem MCP (document operations)
+- GitHub MCP (repository access)
+- All tools unified in single agent workflow
+
+→ **[MCP Integration Guide](docs/MCP_INTEGRATION.md)** | **[Quick Start](examples/quick_start_mcp.py)**
 
 ### Current Phase: Graph Embedding Pipeline
 
