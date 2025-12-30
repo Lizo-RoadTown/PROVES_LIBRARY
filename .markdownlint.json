@@ -1,0 +1,14 @@
+{
+  "default": true,
+  "overrides": [
+    {
+      "files": ["docs/diagrams/*.md"],
+      "rules": {
+        "MD013": false,
+        "MD025": false,
+        "MD024": false,
+        "MD033": false
+      }
+    }
+  ]
+}

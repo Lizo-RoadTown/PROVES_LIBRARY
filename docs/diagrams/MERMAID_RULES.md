@@ -310,7 +310,10 @@ config:
   theme: base
   fontSize: 18
   themeCSS: |
-    .label { font-size: 20px !important; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#E8F5E9'
     ...configuration lines...
@@ -1097,7 +1100,7 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width 0.2s ease; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
     .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
@@ -1294,10 +1297,10 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width 0.2s ease; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1491,10 +1494,10 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width 0.2s ease; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1688,10 +1691,10 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width 0.2s ease; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'
@@ -2355,3 +2358,6 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
 
 **Version:** Based on Mermaid v10+ (GitHub rendering)
 **Last Updated:** December 28, 2024
+
+
+

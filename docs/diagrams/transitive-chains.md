@@ -40,10 +40,10 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
-    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster > rect { padding: 20px !important; }
-    .cluster-label { margin-bottom: 15px !important; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -125,9 +125,9 @@ config:
     curve: 'linear'
     htmlLabels: true
     useMaxWidth: true
-    padding: 15
-    nodeSpacing: 50
-    rankSpacing: 50
+    padding: 20
+    nodeSpacing: 60
+    rankSpacing: 60
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -339,10 +339,10 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
-    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster > rect { padding: 20px !important; }
-    .cluster-label { margin-bottom: 15px !important; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -424,9 +424,9 @@ config:
     curve: 'linear'
     htmlLabels: true
     useMaxWidth: true
-    padding: 15
-    nodeSpacing: 50
-    rankSpacing: 50
+    padding: 20
+    nodeSpacing: 60
+    rankSpacing: 60
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -591,10 +591,10 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
-    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster > rect { padding: 20px !important; }
-    .cluster-label { margin-bottom: 15px !important; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -676,9 +676,9 @@ config:
     curve: 'linear'
     htmlLabels: true
     useMaxWidth: true
-    padding: 15
-    nodeSpacing: 50
-    rankSpacing: 50
+    padding: 20
+    nodeSpacing: 60
+    rankSpacing: 60
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -819,10 +819,10 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
-    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster > rect { padding: 20px !important; }
-    .cluster-label { margin-bottom: 15px !important; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -904,9 +904,9 @@ config:
     curve: 'linear'
     htmlLabels: true
     useMaxWidth: true
-    padding: 15
-    nodeSpacing: 50
-    rankSpacing: 50
+    padding: 20
+    nodeSpacing: 60
+    rankSpacing: 60
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1087,10 +1087,10 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
-    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster > rect { padding: 20px !important; }
-    .cluster-label { margin-bottom: 15px !important; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1172,9 +1172,9 @@ config:
     curve: 'linear'
     htmlLabels: true
     useMaxWidth: true
-    padding: 15
-    nodeSpacing: 50
-    rankSpacing: 50
+    padding: 20
+    nodeSpacing: 60
+    rankSpacing: 60
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1339,10 +1339,10 @@ config:
   theme: base
   fontSize: 20
   themeCSS: |
-    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
-    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster > rect { padding: 20px !important; }
-    .cluster-label { margin-bottom: 15px !important; }
+    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
+    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
+    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
+    .cluster-label { display: block; padding-bottom: 8px; margin-bottom: 8px; font-weight: 600; white-space: nowrap; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1424,9 +1424,9 @@ config:
     curve: 'linear'
     htmlLabels: true
     useMaxWidth: true
-    padding: 15
-    nodeSpacing: 50
-    rankSpacing: 50
+    padding: 20
+    nodeSpacing: 60
+    rankSpacing: 60
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1589,6 +1589,9 @@ Test suites should:
 **Longest Chain Found:** 13 hops (Application -> Board Configuration)
 **Documentation Gap:** 14 undocumented transitive links
 **Date:** December 20, 2024
+
+
+
 
 
 
