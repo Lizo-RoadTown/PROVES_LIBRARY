@@ -252,6 +252,166 @@ Complete reference of all available Mermaid theme variables. Use these to create
 
 Mermaid supports extensive theming through `themeVariables` in the init directive. Only the `base` theme is fully customizable.
 
+## Diagram-Specific Configuration
+
+Each diagram type supports its own configuration options for spacing, sizing, and layout. These are placed at the same level as `themeVariables` in the config object.
+
+### Flowchart Configuration
+```yaml
+flowchart:
+  curve: linear              # Connection style: linear, basis, cardinal, catmullRom
+  padding: 15                # Padding around diagram
+  nodeSpacing: 50            # Horizontal space between nodes
+  rankSpacing: 50            # Vertical space between ranks/levels
+  diagramPadding: 8          # Padding around entire diagram
+  wrappingWidth: 200         # Max width before text wrapping
+```
+
+### Gantt Chart Configuration
+```yaml
+gantt:
+  fontSize: 20               # Font size for gantt text (NOT controlled by global fontSize)
+  barHeight: 24              # Height of task bars in pixels
+  barGap: 6                  # Gap between task bars
+  topPadding: 50             # Top padding in pixels
+  leftPadding: 75            # Left padding for labels
+  gridLineStartPadding: 35   # Padding before grid lines start
+  numberSectionStyles: 4     # Number of section style variations
+```
+
+### Sequence Diagram Configuration
+```yaml
+sequence:
+  diagramMarginX: 50         # Left/right margin
+  diagramMarginY: 10         # Top/bottom margin
+  actorMargin: 50            # Space between actors
+  width: 150                 # Actor box width
+  height: 65                 # Actor box height
+  boxMargin: 10              # Margin around boxes
+  boxTextMargin: 5           # Text margin inside boxes
+  noteMargin: 10             # Margin around notes
+  messageMargin: 35          # Space between messages
+  mirrorActors: false        # Show actors at bottom
+  bottomMarginAdj: 1         # Bottom margin adjustment
+  useMaxWidth: true          # Use maximum available width
+  rightAngles: false         # Use right angles for messages
+  showSequenceNumbers: false # Show sequence numbers
+```
+
+### State Diagram Configuration
+```yaml
+state:
+  dividerMargin: 10          # Margin around dividers
+  sizeUnit: 5                # Base unit for sizing
+  padding: 8                 # General padding
+  textHeight: 10             # Text height
+  titleShift: -15            # Title vertical offset
+  noteMargin: 10             # Note margin
+  forkWidth: 70              # Fork node width
+  forkHeight: 7              # Fork node height
+  miniPadding: 2             # Minimal padding
+  fontSizeFactor: 5.02       # Font size multiplier
+  fontSize: 24               # Base font size
+  labelHeight: 16            # Label height
+  edgeLengthFactor: 20       # Edge length calculation
+  compositeTitleSize: 35     # Composite state title size
+  radius: 5                  # Corner radius
+```
+
+### Class Diagram Configuration
+```yaml
+class:
+  arrowMarkerAbsolute: false # Use absolute arrow positioning
+  hideEmptyMembersBox: false # Hide boxes with no members
+```
+
+### Entity-Relationship Diagram Configuration
+```yaml
+er:
+  diagramPadding: 20         # Padding around diagram
+  layoutDirection: 'TB'      # Layout: TB (top-bottom), LR (left-right)
+  minEntityWidth: 100        # Minimum entity box width
+  minEntityHeight: 75        # Minimum entity box height
+  entityPadding: 15          # Padding inside entities
+  stroke: 'gray'             # Relationship line color
+  fill: 'honeydew'           # Entity box fill
+  fontSize: 12               # Text font size
+```
+
+### User Journey Configuration
+```yaml
+journey:
+  diagramMarginX: 50         # Left/right margin
+  diagramMarginY: 10         # Top/bottom margin
+  actorMargin: 50            # Space between actors
+  width: 150                 # Section width
+  height: 65                 # Section height
+  boxMargin: 10              # Box margin
+  boxTextMargin: 5           # Text margin in boxes
+```
+
+### Pie Chart Configuration
+```yaml
+pie:
+  textPosition: 0.75         # Label position (0-1 from center)
+```
+
+### Quadrant Chart Configuration
+```yaml
+quadrant:
+  chartWidth: 500            # Chart width in pixels
+  chartHeight: 500           # Chart height in pixels
+  titlePadding: 10           # Title padding
+  titleFontSize: 20          # Title font size
+  quadrantPadding: 5         # Padding around quadrants
+  quadrantTextTopPadding: 5  # Top padding for quadrant text
+  quadrantLabelFontSize: 16  # Quadrant label font size
+  quadrantInternalBorderStrokeWidth: 1  # Internal border width
+  quadrantExternalBorderStrokeWidth: 2  # External border width
+  pointTextPadding: 5        # Padding around point labels
+  pointLabelFontSize: 12     # Point label font size
+  pointRadius: 6             # Point circle radius
+  xAxisLabelPadding: 5       # X-axis label padding
+  xAxisLabelFontSize: 16     # X-axis label font size
+  yAxisLabelPadding: 5       # Y-axis label padding
+  yAxisLabelFontSize: 16     # Y-axis label font size
+```
+
+### Requirement Diagram Configuration
+```yaml
+requirement:
+  rect_fill: '#E8F5E9'      # Rectangle fill color
+  text_color: '#2E7D32'     # Text color
+  rect_border_size: 2       # Border width
+  rect_border_color: '#4CAF50'  # Border color
+  rect_min_width: 200       # Minimum width
+  rect_min_height: 200      # Minimum height
+  fontSize: 14              # Font size
+  rect_padding: 10          # Rectangle padding
+  line_height: 20           # Line height
+```
+
+### Git Graph Configuration
+```yaml
+gitGraph:
+  showBranches: true        # Show branch labels
+  showCommitLabel: true     # Show commit messages
+  mainBranchName: 'main'    # Name of main branch
+  rotateCommitLabel: true   # Rotate commit labels
+```
+
+### C4 Diagram Configuration
+```yaml
+c4:
+  diagramMarginX: 50        # Left/right margin
+  diagramMarginY: 10        # Top/bottom margin
+  c4ShapeMargin: 50         # Space between shapes
+  c4ShapePadding: 20        # Padding inside shapes
+  width: 216                # Shape width
+  height: 60                # Shape height
+  boxMargin: 10             # Box margin
+```
+
 ### Usage Syntax
 ```
 %%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff0000', 'lineColor':'#333'}}}%%
@@ -623,10 +783,125 @@ config:
     taskTextDarkColor: '#FFFFFF'
     gridColor: '#C8E6C9'
     todayLineColor: '#C2185B'
+    classText: '#2E7D32'
+    fillType0: '#E8F5E9'
+    fillType1: '#FCE4EC'
+    fillType2: '#FFF9C4'
+    fillType3: '#A5D6A7'
+    fillType4: '#F48FB1'
+    fillType5: '#FFF176'
+    fillType6: '#81C784'
+    fillType7: '#F8BBD0'
+    attributeBackgroundColorOdd: '#F1F8E9'
+    attributeBackgroundColorEven: '#E8F5E9'
   gantt:
     fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E8F5E9'
+    text_color: '#2E7D32'
+    rect_border_size: 2
+    rect_border_color: '#4CAF50'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10
 ---
 ```
 
@@ -710,10 +985,125 @@ config:
     taskTextDarkColor: '#FFFFFF'
     gridColor: '#B3E5FC'
     todayLineColor: '#D32F2F'
+    classText: '#01579B'
+    fillType0: '#E1F5FE'
+    fillType1: '#FFF9C4'
+    fillType2: '#FFE0B2'
+    fillType3: '#81D4FA'
+    fillType4: '#FFF176'
+    fillType5: '#FFB74D'
+    fillType6: '#4FC3F7'
+    fillType7: '#FFEB3B'
+    attributeBackgroundColorOdd: '#E3F2FD'
+    attributeBackgroundColorEven: '#E1F5FE'
   gantt:
     fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E1F5FE'
+    text_color: '#01579B'
+    rect_border_size: 2
+    rect_border_color: '#0288D1'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10
 ---
 ```
 
@@ -797,10 +1187,125 @@ config:
     taskTextDarkColor: '#FFFFFF'
     gridColor: '#FFCC80'
     todayLineColor: '#7B1FA2'
+    classText: '#5D4037'
+    fillType0: '#FFF3E0'
+    fillType1: '#F3E5F5'
+    fillType2: '#FFF8E1'
+    fillType3: '#FFB74D'
+    fillType4: '#CE93D8'
+    fillType5: '#FFD54F'
+    fillType6: '#FF8A65'
+    fillType7: '#BA68C8'
+    attributeBackgroundColorOdd: '#FFF8E1'
+    attributeBackgroundColorEven: '#FFF3E0'
   gantt:
     fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#FFF3E0'
+    text_color: '#5D4037'
+    rect_border_size: 2
+    rect_border_color: '#FF6F00'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10
 ---
 ```
 
@@ -884,10 +1389,125 @@ config:
     taskTextDarkColor: '#FFFFFF'
     gridColor: '#BBDEFB'
     todayLineColor: '#455A64'
+    classText: '#0D47A1'
+    fillType0: '#E3F2FD'
+    fillType1: '#ECEFF1'
+    fillType2: '#E1F5FE'
+    fillType3: '#90CAF9'
+    fillType4: '#B0BEC5'
+    fillType5: '#80DEEA'
+    fillType6: '#64B5F6'
+    fillType7: '#90A4AE'
+    attributeBackgroundColorOdd: '#FAFAFA'
+    attributeBackgroundColorEven: '#E3F2FD'
   gantt:
     fontSize: 20
+    barHeight: 24
+    barGap: 6
+    topPadding: 50
+    leftPadding: 75
+    gridLineStartPadding: 35
+    numberSectionStyles: 4
   flowchart:
     curve: linear
+    padding: 15
+    nodeSpacing: 50
+    rankSpacing: 50
+    diagramPadding: 8
+    wrappingWidth: 200
+  sequence:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+    noteMargin: 10
+    messageMargin: 35
+    mirrorActors: false
+    bottomMarginAdj: 1
+    useMaxWidth: true
+    rightAngles: false
+    showSequenceNumbers: false
+  state:
+    dividerMargin: 10
+    sizeUnit: 5
+    padding: 8
+    textHeight: 10
+    titleShift: -15
+    noteMargin: 10
+    forkWidth: 70
+    forkHeight: 7
+    miniPadding: 2
+    fontSizeFactor: 5.02
+    fontSize: 24
+    labelHeight: 16
+    edgeLengthFactor: 20
+    compositeTitleSize: 35
+    radius: 5
+  class:
+    arrowMarkerAbsolute: false
+    hideEmptyMembersBox: false
+  er:
+    diagramPadding: 20
+    layoutDirection: 'TB'
+    minEntityWidth: 100
+    minEntityHeight: 75
+    entityPadding: 15
+    stroke: 'gray'
+    fill: 'honeydew'
+    fontSize: 12
+  journey:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    actorMargin: 50
+    width: 150
+    height: 65
+    boxMargin: 10
+    boxTextMargin: 5
+  pie:
+    textPosition: 0.75
+  quadrant:
+    chartWidth: 500
+    chartHeight: 500
+    titlePadding: 10
+    titleFontSize: 20
+    quadrantPadding: 5
+    quadrantTextTopPadding: 5
+    quadrantLabelFontSize: 16
+    quadrantInternalBorderStrokeWidth: 1
+    quadrantExternalBorderStrokeWidth: 2
+    pointTextPadding: 5
+    pointLabelFontSize: 12
+    pointRadius: 6
+    xAxisLabelPadding: 5
+    xAxisLabelFontSize: 16
+    yAxisLabelPadding: 5
+    yAxisLabelFontSize: 16
+  requirement:
+    rect_fill: '#E3F2FD'
+    text_color: '#0D47A1'
+    rect_border_size: 2
+    rect_border_color: '#1976D2'
+    rect_min_width: 200
+    rect_min_height: 200
+    fontSize: 14
+    rect_padding: 10
+    line_height: 20
+  gitGraph:
+    showBranches: true
+    showCommitLabel: true
+    mainBranchName: 'main'
+    rotateCommitLabel: true
+  c4:
+    diagramMarginX: 50
+    diagramMarginY: 10
+    c4ShapeMargin: 50
+    c4ShapePadding: 20
+    width: 216
+    height: 60
+    boxMargin: 10
 ---
 ```
 
