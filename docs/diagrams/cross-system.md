@@ -3,6 +3,45 @@ layout: article
 title: Cross-System Dependencies
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 # Cross-System Dependencies
 
 The 4 critical dependencies between F´ and PROVES Kit that are **NOT documented** in either system.
@@ -29,6 +68,45 @@ This is the exact failure mode from the Team A/Team B scenario.
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Critical Finding: Hidden Dependencies
 
 Neither F´ documentation nor PROVES Kit documentation mentions the other system. Yet they have critical runtime dependencies that can cause mission failures if misconfigured.
@@ -54,6 +132,45 @@ Neither F´ documentation nor PROVES Kit documentation mentions the other system
 
 ```mermaid
 ---
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 config:
   flowchart:
     curve: linear
@@ -138,6 +255,45 @@ Mission continues without IMU (silent failure)
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Dependency 2: Bus Operations -> Power Control Sequence
 
 ### Temporal Ordering Requirement
@@ -202,6 +358,45 @@ No alert that power sequencing is wrong
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Dependency 3: I2C Address Configuration -> Pin Enable Logic
 
 ### Bus Sharing Conflicts
@@ -212,6 +407,45 @@ config:
   flowchart:
     curve: linear
 ---
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 flowchart TB
     subgraph "F´ Configuration"
         IM_ADDR[ImuManager Address 0x68]
@@ -281,6 +515,45 @@ Attitude determination fails
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Dependency 4: Error Handling -> Power State Recovery
 
 ### Missing Integration
@@ -291,6 +564,45 @@ config:
   flowchart:
     curve: linear
 ---
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 flowchart TB
     START[F´ I2C Read Operation]
     READ{I2C Status}
@@ -365,6 +677,45 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Organizational Analysis
 
 ### Team Interface Strength
@@ -375,6 +726,45 @@ config:
   flowchart:
     curve: linear
 ---
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 flowchart LR
     subgraph "NASA/JPL Team"
         F_TEAM[F´ Core Team]
@@ -457,6 +847,45 @@ quadrantChart
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Recommendations
 
 ### Immediate Actions
@@ -505,6 +934,45 @@ quadrantChart
 - [Next: Transitive Dependency Chains ->](transitive-chains.html)
 
 ---
+
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
 
 **Analysis Method:** Cross-document analysis, manual annotation
 **Confidence Level:** High (human-verified, evidence-based)

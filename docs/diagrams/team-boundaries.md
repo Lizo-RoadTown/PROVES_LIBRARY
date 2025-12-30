@@ -3,6 +3,45 @@ layout: article
 title: Team Boundaries
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 # Team Boundaries
 
 Organizational analysis showing WEAK interface between NASA/JPL F´ team and university PROVES Kit teams - where knowledge gets lost.
@@ -21,6 +60,45 @@ Organizational analysis showing WEAK interface between NASA/JPL F´ team and uni
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Team Boundary Map
 
 ### What You're Looking At
@@ -37,6 +115,45 @@ config:
   flowchart:
     curve: linear
 ---
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 flowchart TB
     subgraph "NASA/JPL"
         JPL_CORE[F´ Core Team ⭐ Permanent Staff]
@@ -107,6 +224,45 @@ flowchart TB
 
 ```mermaid
 ---
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 config:
   flowchart:
     curve: linear
@@ -165,6 +321,45 @@ flowchart LR
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Knowledge Flow Analysis
 
 ### What You're Looking At
@@ -181,6 +376,45 @@ config:
   flowchart:
     curve: linear
 ---
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 flowchart TB
     START[Integration Knowledge Needed]
 
@@ -291,6 +525,45 @@ pie title Knowledge Retention After Team Graduation
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## The Team A / Team B Failure Scenario
 
 ### What You're Looking At
@@ -400,6 +673,45 @@ sequenceDiagram
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Knowledge Capture Analysis
 
 ### What Gets Captured vs. Lost
@@ -410,6 +722,45 @@ config:
   flowchart:
     curve: linear
 ---
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 flowchart TB
     subgraph "Mission Lifecycle"
         DESIGN[Design Decisions]
@@ -500,6 +851,45 @@ quadrantChart
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Recommendations
 
 ### Immediate Actions
@@ -550,6 +940,45 @@ quadrantChart
 
 ```mermaid
 ---
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 config:
   flowchart:
     curve: linear
@@ -620,6 +1049,45 @@ flowchart TB
 
 ---
 
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
+
 ## Success Metrics
 
 ### How to Measure Interface Strength Improvement
@@ -634,6 +1102,45 @@ flowchart TB
 | **Interface Strength** | 2/10 | 8/10 | FRAMES scoring system |
 
 ---
+
+
+<style>
+  /* Arrow label borders */
+  .edgeLabel {
+    background-color: white !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+  }
+  
+  /* Node hover glow */
+  .node:hover rect,
+  .node:hover circle,
+  .node:hover polygon,
+  .node:hover path {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Edge/link hover glow */
+  .edgePath:hover path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
+    cursor: pointer;
+  }
+  
+  /* Label hover glow */
+  .edgeLabel:hover,
+  .nodeLabel:hover {
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
+    cursor: pointer;
+  }
+  
+  /* Subgraph hover glow */
+  .cluster:hover rect {
+    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
+  }
+</style>
 
 ## Navigation
 
