@@ -565,12 +565,13 @@ Each diagram type supports its own configuration options for spacing, sizing, an
 ### Flowchart Configuration
 ```yaml
 flowchart:
-  curve: linear              # Connection style: linear, basis, cardinal, catmullRom
+  curve: 'linear'            # Connection style: 'linear', 'basis', 'cardinal', 'catmullRom' (MUST be quoted)
   padding: 15                # Padding around diagram
   nodeSpacing: 50            # Horizontal space between nodes
   rankSpacing: 50            # Vertical space between ranks/levels
   diagramPadding: 8          # Padding around entire diagram
-  wrappingWidth: 300         # Max width before text wrapping
+  htmlLabels: true           # Enable HTML in labels
+  useMaxWidth: true          # Responsive width
 ```
 
 ### Gantt Chart Configuration
@@ -591,13 +592,13 @@ sequence:
   diagramMarginX: 50         # Left/right margin
   diagramMarginY: 10         # Top/bottom margin
   actorMargin: 50            # Space between actors
-  width: 150                 # Actor box width
-  height: 65                 # Actor box height
   boxMargin: 10              # Margin around boxes
   boxTextMargin: 5           # Text margin inside boxes
   noteMargin: 10             # Margin around notes
   messageMargin: 35          # Space between messages
   mirrorActors: false        # Show actors at bottom
+  useMaxWidth: true          # Responsive width
+  # Note: width and height are auto-calculated based on content
   bottomMarginAdj: 1         # Bottom margin adjustment
   useMaxWidth: true          # Use maximum available width
   rightAngles: false         # Use right angles for messages
@@ -1094,13 +1095,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -1142,8 +1140,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:
@@ -1296,13 +1292,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -1344,8 +1337,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:
@@ -1498,13 +1489,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -1546,8 +1534,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:
@@ -1700,13 +1686,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -1748,8 +1731,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:

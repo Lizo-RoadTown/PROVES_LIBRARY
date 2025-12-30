@@ -64,8 +64,9 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster rect { padding-top: 25px !important; }
-    .cluster-label { font-weight: 600 !important; display: block !important; padding-bottom: 8px !important; }
+    .cluster-label { font-weight: 600 !important; margin-bottom: 12px !important; }
+    .nodeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 250px !important; }
+    .edgeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 200px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -151,13 +152,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -199,8 +197,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:
@@ -340,8 +336,9 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster rect { padding-top: 25px !important; }
-    .cluster-label { font-weight: 600 !important; display: block !important; padding-bottom: 8px !important; }
+    .cluster-label { font-weight: 600 !important; margin-bottom: 12px !important; }
+    .nodeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 250px !important; }
+    .edgeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 200px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -427,13 +424,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -475,8 +469,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:
@@ -595,8 +587,9 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster rect { padding-top: 25px !important; }
-    .cluster-label { font-weight: 600 !important; display: block !important; padding-bottom: 8px !important; }
+    .cluster-label { font-weight: 600 !important; margin-bottom: 12px !important; }
+    .nodeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 250px !important; }
+    .edgeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 200px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -682,13 +675,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -730,8 +720,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:
@@ -860,8 +848,9 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster rect { padding-top: 25px !important; }
-    .cluster-label { font-weight: 600 !important; display: block !important; padding-bottom: 8px !important; }
+    .cluster-label { font-weight: 600 !important; margin-bottom: 12px !important; }
+    .nodeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 250px !important; }
+    .edgeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 200px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -947,13 +936,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -995,8 +981,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:
@@ -1130,8 +1114,9 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster rect { padding-top: 25px !important; }
-    .cluster-label { font-weight: 600 !important; display: block !important; padding-bottom: 8px !important; }
+    .cluster-label { font-weight: 600 !important; margin-bottom: 12px !important; }
+    .nodeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 250px !important; }
+    .edgeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 200px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1217,13 +1202,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -1265,8 +1247,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:
@@ -1379,8 +1359,9 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster rect { padding-top: 25px !important; }
-    .cluster-label { font-weight: 600 !important; display: block !important; padding-bottom: 8px !important; }
+    .cluster-label { font-weight: 600 !important; margin-bottom: 12px !important; }
+    .nodeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 250px !important; }
+    .edgeLabel { white-space: normal !important; word-wrap: break-word !important; max-width: 200px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1466,13 +1447,10 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-    wrappingWidth: 300
-  sequence:
+      sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
     noteMargin: 10
@@ -1514,8 +1492,6 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
-    width: 150
-    height: 65
     boxMargin: 10
     boxTextMargin: 5
   pie:
