@@ -2,6 +2,24 @@
 
 Comprehensive rules compiled from official Mermaid documentation (v10+).
 
+## 🎨 ACTIVE THEME CONFIGURATION
+
+**Current Active Theme: SPRING** (default)
+
+To change the active theme, update the "Current Active Theme" line above to one of:
+- SPRING (default) - Fresh greens, soft pinks, pale yellows
+- SUMMER - Sky blues, sunny yellows, warm corals
+- FALL - Burnt oranges, deep purples, golden yellows
+- WINTER - Ice blues, slate greys, pale cyans
+
+**To apply a theme to your diagrams:**
+1. Scroll to the "Seasonal Theme Presets" section below
+2. Copy the YAML frontmatter for your chosen theme
+3. Paste it at the top of your mermaid code block
+4. Replace any existing frontmatter (only one per diagram)
+
+See "Seasonal Theme Presets" section below for complete copy-paste configurations.
+
 ## ⚠️ VALIDATION REQUIREMENTS
 
 **MANDATORY: Run validation before committing any diagram changes or updates to this file.**
@@ -228,7 +246,9 @@ A:::className --> B
 linkStyle 0 stroke:#ff3,stroke-width:4px
 ```
 
-## Theme Variables
+## Theme Variables Reference
+
+Complete reference of all available Mermaid theme variables. Use these to create custom themes or modify the seasonal presets above.
 
 Mermaid supports extensive theming through `themeVariables` in the init directive. Only the `base` theme is fully customizable.
 
@@ -415,6 +435,233 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
 ### darkMode Flag
 - `darkMode` (boolean) - Affects color calculations (default: `false`)
 
+## 🎨 Seasonal Theme Presets
+
+**ACTIVE THEME: SPRING** (default)
+
+These are complete, ready-to-use theme configurations. Copy the frontmatter for your chosen theme and paste it at the top of any mermaid code block.
+
+### SPRING Theme (Fresh & Vibrant)
+
+**Color Palette:**
+- Primary: Fresh green (#E8F5E9, #4CAF50, #66BB6A)
+- Secondary: Soft pink (#FCE4EC, #F06292)
+- Tertiary: Pale yellow (#FFF9C4, #FDD835)
+- Text: Forest green (#2E7D32)
+- Background: Light mint (#F1F8E9)
+
+**Copy this frontmatter to use Spring theme:**
+```yaml
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E8F5E9'
+    secondaryColor: '#FCE4EC'
+    tertiaryColor: '#FFF9C4'
+    primaryTextColor: '#2E7D32'
+    secondaryTextColor: '#C2185B'
+    tertiaryTextColor: '#F57C00'
+    primaryBorderColor: '#4CAF50'
+    secondaryBorderColor: '#F06292'
+    tertiaryBorderColor: '#FDD835'
+    background: '#F1F8E9'
+    textColor: '#2E7D32'
+    lineColor: '#66BB6A'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#4CAF50'
+    mainBkg: '#E8F5E9'
+    clusterBkg: '#FFF9C4'
+    clusterBorder: '#FDD835'
+    edgeLabelBackground: '#FCE4EC'
+    actorBkg: '#E8F5E9'
+    actorBorder: '#4CAF50'
+    actorTextColor: '#2E7D32'
+    signalColor: '#66BB6A'
+    signalTextColor: '#2E7D32'
+    labelBoxBkgColor: '#FCE4EC'
+    noteBkgColor: '#FFF9C4'
+    noteTextColor: '#F57C00'
+    noteBorderColor: '#FDD835'
+  flowchart:
+    curve: linear
+---
+```
+
+### SUMMER Theme (Bright & Warm)
+
+**Color Palette:**
+- Primary: Sky blue (#E1F5FE, #0288D1, #29B6F6)
+- Secondary: Sunny yellow (#FFF9C4, #FDD835)
+- Tertiary: Warm coral (#FFE0B2, #FF9800)
+- Text: Ocean blue (#01579B)
+- Background: Pale sky (#E3F2FD)
+
+**Copy this frontmatter to use Summer theme:**
+```yaml
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E1F5FE'
+    secondaryColor: '#FFF9C4'
+    tertiaryColor: '#FFE0B2'
+    primaryTextColor: '#01579B'
+    secondaryTextColor: '#F57F17'
+    tertiaryTextColor: '#E65100'
+    primaryBorderColor: '#0288D1'
+    secondaryBorderColor: '#FDD835'
+    tertiaryBorderColor: '#FF9800'
+    background: '#E3F2FD'
+    textColor: '#01579B'
+    lineColor: '#29B6F6'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#0288D1'
+    mainBkg: '#E1F5FE'
+    clusterBkg: '#FFE0B2'
+    clusterBorder: '#FF9800'
+    edgeLabelBackground: '#FFF9C4'
+    actorBkg: '#E1F5FE'
+    actorBorder: '#0288D1'
+    actorTextColor: '#01579B'
+    signalColor: '#29B6F6'
+    signalTextColor: '#01579B'
+    labelBoxBkgColor: '#FFF9C4'
+    noteBkgColor: '#FFE0B2'
+    noteTextColor: '#E65100'
+    noteBorderColor: '#FF9800'
+  flowchart:
+    curve: linear
+---
+```
+
+### FALL Theme (Rich & Earthy)
+
+**Color Palette:**
+- Primary: Burnt orange (#FFF3E0, #FF6F00, #FF9800)
+- Secondary: Deep purple (#F3E5F5, #9C27B0)
+- Tertiary: Golden yellow (#FBC02D)
+- Text: Chocolate brown (#5D4037)
+- Background: Warm cream (#FFF8E1)
+
+**Copy this frontmatter to use Fall theme:**
+```yaml
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#FFF3E0'
+    secondaryColor: '#F3E5F5'
+    tertiaryColor: '#FFF8E1'
+    primaryTextColor: '#5D4037'
+    secondaryTextColor: '#4A148C'
+    tertiaryTextColor: '#F57F17'
+    primaryBorderColor: '#FF6F00'
+    secondaryBorderColor: '#9C27B0'
+    tertiaryBorderColor: '#FBC02D'
+    background: '#FFF8E1'
+    textColor: '#5D4037'
+    lineColor: '#FF9800'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#FF6F00'
+    mainBkg: '#FFF3E0'
+    clusterBkg: '#F3E5F5'
+    clusterBorder: '#9C27B0'
+    edgeLabelBackground: '#FFF8E1'
+    actorBkg: '#FFF3E0'
+    actorBorder: '#FF6F00'
+    actorTextColor: '#5D4037'
+    signalColor: '#FF9800'
+    signalTextColor: '#5D4037'
+    labelBoxBkgColor: '#F3E5F5'
+    noteBkgColor: '#FFF8E1'
+    noteTextColor: '#F57F17'
+    noteBorderColor: '#FBC02D'
+  flowchart:
+    curve: linear
+---
+```
+
+### WINTER Theme (Cool & Crisp)
+
+**Color Palette:**
+- Primary: Ice blue (#E3F2FD, #1976D2, #42A5F5)
+- Secondary: Slate grey (#ECEFF1, #78909C)
+- Tertiary: Pale cyan (#E1F5FE, #26C6DA)
+- Text: Deep navy (#0D47A1)
+- Background: Snow white (#FAFAFA)
+
+**Copy this frontmatter to use Winter theme:**
+```yaml
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: '#E3F2FD'
+    secondaryColor: '#ECEFF1'
+    tertiaryColor: '#E1F5FE'
+    primaryTextColor: '#0D47A1'
+    secondaryTextColor: '#37474F'
+    tertiaryTextColor: '#006064'
+    primaryBorderColor: '#1976D2'
+    secondaryBorderColor: '#78909C'
+    tertiaryBorderColor: '#26C6DA'
+    background: '#FAFAFA'
+    textColor: '#0D47A1'
+    lineColor: '#42A5F5'
+    fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+    fontSize: '16px'
+    nodeBorder: '#1976D2'
+    mainBkg: '#E3F2FD'
+    clusterBkg: '#ECEFF1'
+    clusterBorder: '#78909C'
+    edgeLabelBackground: '#E1F5FE'
+    actorBkg: '#E3F2FD'
+    actorBorder: '#1976D2'
+    actorTextColor: '#0D47A1'
+    signalColor: '#42A5F5'
+    signalTextColor: '#0D47A1'
+    labelBoxBkgColor: '#ECEFF1'
+    noteBkgColor: '#E1F5FE'
+    noteTextColor: '#006064'
+    noteBorderColor: '#26C6DA'
+  flowchart:
+    curve: linear
+---
+```
+
+### How to Apply Themes
+
+1. **Choose your theme** from the four options above (Spring, Summer, Fall, or Winter)
+2. **Copy the entire YAML frontmatter block** (from `---` to `---`)
+3. **Open your diagram file** (e.g., `docs/diagrams/overview.md`)
+4. **Paste at the top of each mermaid block:**
+   ```markdown
+   ```mermaid
+   ---
+   config:
+     theme: base
+     themeVariables:
+       primaryColor: '#E8F5E9'
+       ... (all theme variables)
+   ---
+   flowchart LR
+       A --> B
+   ```
+   ```
+5. **Replace any existing frontmatter** - only one frontmatter block per diagram
+6. **Test in Mermaid Live Editor** before committing
+
+### Theme Switching Guidelines
+
+- **Consistency**: Use the same theme across all diagrams in a document
+- **Context**: Match theme to document purpose (Spring for growth/nature topics, Winter for technical/formal docs)
+- **Accessibility**: All themes meet WCAG contrast requirements
+- **Validation**: Run validation checklist after applying any theme
+
 ### Custom CSS Styling (GitHub Pages Only)
 
 **Note:** Arrow label borders and hover effects require CSS in `docs/_sass/custom.scss` and only work on GitHub Pages (phantom-man.github.io/PROVES_LIBRARY), NOT on GitHub.com.
@@ -424,7 +671,7 @@ GitHub.com renders Mermaid server-side without custom CSS. To add borders to arr
 - View diagrams on GitHub Pages for full styling (borders, hover effects)
 - On GitHub.com, only `edgeLabelBackground` theme variable works
 
-### Complete Theme Variable Example
+## Theme Variables Reference
 ```
 %%{init: {'theme':'base', 'themeVariables': {
   'primaryColor':'#BB2528',
