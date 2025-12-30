@@ -132,7 +132,7 @@ config:
     useMaxWidth: true
     padding: 25
     nodeSpacing: 60
-    rankSpacing: 80
+    rankSpacing: 100
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -352,7 +352,7 @@ config:
     useMaxWidth: true
     padding: 25
     nodeSpacing: 60
-    rankSpacing: 80
+    rankSpacing: 100
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -585,7 +585,7 @@ config:
     useMaxWidth: true
     padding: 25
     nodeSpacing: 60
-    rankSpacing: 80
+    rankSpacing: 100
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -812,7 +812,7 @@ config:
     useMaxWidth: true
     padding: 25
     nodeSpacing: 60
-    rankSpacing: 80
+    rankSpacing: 100
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1039,7 +1039,7 @@ config:
     useMaxWidth: true
     padding: 25
     nodeSpacing: 60
-    rankSpacing: 80
+    rankSpacing: 100
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
