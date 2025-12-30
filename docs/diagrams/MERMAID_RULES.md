@@ -228,6 +228,14 @@ A:::className --> B
 linkStyle 0 stroke:#ff3,stroke-width:4px
 ```
 
+#### Custom CSS Styling (GitHub Pages Only)
+
+**Note:** Arrow label borders and hover effects are configured in `docs/_sass/custom.scss` and only work on GitHub Pages (phantom-man.github.io/PROVES_LIBRARY), NOT on GitHub.com markdown preview.
+
+GitHub.com renders Mermaid server-side without custom CSS. For best results:
+- View diagrams on GitHub Pages for full styling
+- On GitHub.com, diagrams render without borders/hover effects
+
 ## Flowchart-Specific Rules
 
 ### Node Shapes

@@ -20,7 +20,7 @@ Think of the truth graph as a molecular structure:
 ## Molecular View of the Graph
 
 ```mermaid
-%%{init: {'flowchart': {'defaultRenderer': 'elk'}, 'theme':'base', 'themeVariables': { 'fontFamily': 'Space Mono, monospace', 'lineColor': '#6b8fb3'}}}%%
+%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}, 'theme':'base', 'themeVariables': { 'fontFamily': 'Space Mono, monospace', 'lineColor': '#6b8fb3'}}}%%
 flowchart TB
     subgraph Molecule ["Truth Graph as Molecular Structure"]
         A[Power Manager]
