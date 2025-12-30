@@ -1718,8 +1718,9 @@ config:
     height: 60
     boxMargin: 10
 ---
-flowchart TB
-    subgraph "Mission Lifecycle"
+flowchart LR
+    subgraph LIFECYCLE["Mission Lifecycle"]
+        direction TB
         spacer8[ ]:::spacer
         DESIGN[Design Decisions]
         IMPL[Implementation]
@@ -1727,30 +1728,40 @@ flowchart TB
         OPS[Operations]
         RETRO[Retrospective]
         
-        DESIGN --> IMPL --> TEST --> OPS --> RETRO
+        DESIGN --> IMPL
+        IMPL --> TEST
+        TEST --> OPS
+        OPS --> RETRO
     end
 
-    subgraph "Captured 30%"
+    subgraph CAPTURED["Captured 30%"]
+        direction TB
         spacer9[ ]:::spacer
         CODE["Code Repository ✓"]
         SCHEMA["Schematics ✓"]
         FORMAL_DOC["Formal Docs ⚠"]
     end
 
-    subgraph "Partial 20%"
+    subgraph PARTIAL["Partial 20%"]
+        direction TB
         spacer10[ ]:::spacer
         ISSUES["GitHub Issues ⚠"]
         CHAT["Chat Logs ⚠"]
         EMAIL["Email Threads ⚠"]
     end
 
-    subgraph "Lost 50%"
+    subgraph LOST["Lost 50%"]
+        direction TB
         spacer11[ ]:::spacer
         TRIBAL["Tribal Knowledge ✗"]
         WORKAROUND["Workarounds ✗"]
         FAILURES["Failure Lessons ✗"]
         WHY["Design Rationale ✗"]
     end
+
+    LIFECYCLE --> CAPTURED
+    CAPTURED --> PARTIAL
+    PARTIAL --> LOST
 
     DESIGN -.-> CODE
     IMPL -.-> CODE
@@ -1773,8 +1784,8 @@ flowchart TB
     style FAILURES fill:#ffcdd2
     style WHY fill:#ffcdd2
     %% Font sizing classes for consistency
-    classDef default font-size:20px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
-    classDef diamond font-size:18px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
@@ -2237,11 +2248,19 @@ config:
 ---
 flowchart TB
     subgraph "Traditional Approach"
+        direction TB
         spacer12[ ]:::spacer
-        TRAD_TEAM[Team Knowledge] --> TRAD_GRAD[Graduation] --> TRAD_LOSS[Knowledge Lost]
+        TRAD_TEAM[Team Knowledge]
+        TRAD_GRAD[Graduation]
+        TRAD_LOSS[Knowledge Lost]
+        TRAD_SPACER2[" "]:::spacer
+        
+        TRAD_TEAM --> TRAD_GRAD
+        TRAD_GRAD --> TRAD_LOSS
     end
 
     subgraph "Knowledge Sources"
+        direction TB
         spacer13[ ]:::spacer
         SRC_CODE[Code + Comments]
         SRC_ISSUES[GitHub Issues]
@@ -2250,6 +2269,7 @@ flowchart TB
     end
 
     subgraph "PROVES Library Processing"
+        direction TB
         spacer14[ ]:::spacer
         LIB_CAPTURE[Continuous Capture]
         LIB_AGENTS[Curator Agents]
@@ -2266,6 +2286,7 @@ flowchart TB
     end
 
     subgraph "Preserved Knowledge"
+        direction TB
         spacer15[ ]:::spacer
         PRES_TECH[Technical Dependencies]
         PRES_ORG[Organizational Context]
@@ -2291,8 +2312,8 @@ flowchart TB
     style PRES_WHY fill:#e8f5e9
     style PRES_FAIL fill:#e8f5e9
     %% Font sizing classes for consistency
-    classDef default font-size:20px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
-    classDef diamond font-size:18px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef default font-size:24px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:22px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
