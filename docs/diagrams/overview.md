@@ -41,7 +41,7 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -61,7 +61,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -117,7 +117,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -246,6 +246,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Key insight:** If any layer fails, all layers above it fail too. This is why dependencies matter!
@@ -258,7 +259,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -278,7 +279,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -334,7 +335,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -441,16 +442,19 @@ config:
 ---
 flowchart TB
     subgraph BUILD ["Build System - Compiles the code"]
+        spacer34[ ]:::spacer
         FPUTIL[fprime-util Build command]
         FPP[FPP files Component definitions]
     end
 
     subgraph TOPO ["System Configuration - How components connect"]
+        spacer35[ ]:::spacer
         TOPO_FILE[topology.fpp - Defines which components exist]
         CONFIG[configureTopology function - Sets up connections at startup]
     end
 
     subgraph DEVICE ["Hardware Configuration - Device settings"]
+        spacer36[ ]:::spacer
         ADDR[I2C Address 0x68 - How to find the IMU on the bus]
         REGS[IMU Register Addresses - RESET 0x00, CONFIG 0x01, DATA 0x10]
         VALS[Register Values - What to write to configure the sensor]
@@ -469,6 +473,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Why this matters:** If the I2C address in code (0x68) doesn't match the hardware's actual address, communication fails silently.
@@ -485,7 +490,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -505,7 +510,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -561,7 +566,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -670,12 +675,14 @@ flowchart TB
     LSM[LoadSwitchManager - Main power control class - Written in Python]
 
     subgraph TOOLS ["Software Tools It Uses"]
+        spacer37[ ]:::spacer
         DIO[digitalio.DigitalInOut - Controls GPIO pins]
         LOGGER[Logger - Records events]
         STATE[switch_states dict - Tracks on/off status]
     end
 
     subgraph DEVICES ["Hardware It Powers"]
+        spacer38[ ]:::spacer
         RADIO[Radio - board.RADIO_ENABLE]
         IMU[IMU Sensor - board.IMU_ENABLE]
         MAG[Magnetometer - board.MAG_ENABLE]
@@ -697,6 +704,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Key insight:** The LoadSwitchManager is the single point of control for all subsystem power. If it fails, you can't turn anything on or off.
@@ -707,7 +715,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -727,7 +735,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -783,7 +791,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -932,7 +940,7 @@ sequenceDiagram
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -952,7 +960,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1008,7 +1016,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50

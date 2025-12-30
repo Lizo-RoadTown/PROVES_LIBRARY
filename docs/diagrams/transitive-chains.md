@@ -38,7 +38,7 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -58,7 +58,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -114,7 +114,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -221,36 +221,43 @@ config:
 ---
 flowchart TB
     subgraph "Layer 1 Application"
+        spacer39[ ]:::spacer
         APP[Application Component Requests IMU data]
     end
 
     subgraph "Layer 2 Device Manager"
+        spacer40[ ]:::spacer
         DM[ImuManager.read]
         PORT[busWriteRead_out port]
     end
 
     subgraph "Layer 3 Bus Driver"
+        spacer41[ ]:::spacer
         BD[LinuxI2cDriver.writeRead]
         DEV["/dev/i2c-1 device"]
     end
 
     subgraph "Layer 4 Hardware Bus"
+        spacer42[ ]:::spacer
         I2C[I2C Physical Bus SDA/SCL pins]
         PULLUP[Pull-up Resistors 4.7kΩ]
     end
 
     subgraph "Layer 5 Device"
+        spacer43[ ]:::spacer
         IMU[MPU6050 IMU Address 0x68]
         REG[Device Registers DATA_REG 0x10]
     end
 
     subgraph "Layer 6 Power (PROVES Kit)"
+        spacer44[ ]:::spacer
         PWR[3.3V Power Supply]
         LSM[LoadSwitchManager turn_on]
         PIN[board.IMU_ENABLE GPIO Pin]
     end
 
     subgraph "Layer 7 Board Configuration"
+        spacer45[ ]:::spacer
         BOARD[Board Definition Pin Mapping]
         LOGIC[enable_logic Active High/Low]
     end
@@ -281,6 +288,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 ### Documented vs. Undocumented Links
@@ -340,7 +348,7 @@ This sequence diagram shows what happens when your system boots up. The tricky p
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -360,7 +368,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -416,7 +424,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -592,7 +600,7 @@ sequenceDiagram
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -612,7 +620,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -668,7 +676,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -795,6 +803,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Probability Estimates:**
@@ -823,7 +832,7 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -843,7 +852,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -899,7 +908,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1008,6 +1017,7 @@ flowchart TB
     START[RateGroup.run every 100ms]
 
     subgraph "F-Prime System"
+        spacer46[ ]:::spacer
         SCHED[Svc.Sched port]
         RUN[ImuManager.run_handler]
         READ[ImuManager.read]
@@ -1017,6 +1027,7 @@ flowchart TB
     end
 
     subgraph "What SHOULD Happen (Not Implemented)"
+        spacer47[ ]:::spacer
         DETECT[Detect power failure]
         POWER_OFF[LSM.turn_off]
         DELAY1[Wait 500ms]
@@ -1026,6 +1037,7 @@ flowchart TB
     end
 
     subgraph "What ACTUALLY Happens"
+        spacer48[ ]:::spacer
         CONT[Continue without IMU data Silent degradation]
     end
 
@@ -1055,6 +1067,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 ### Transitive Error Impact
@@ -1094,7 +1107,7 @@ This diagram shows how F-Prime's build system creates your code. When you run `f
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1114,7 +1127,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1170,7 +1183,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1277,28 +1290,33 @@ config:
 ---
 flowchart LR
     subgraph "User Commands"
+        spacer49[ ]:::spacer
         USER[Developer runs fprime-util build]
     end
 
     subgraph "F Prime Build System"
+        spacer50[ ]:::spacer
         FPP[FPP Compiler]
         CMAKE[CMake]
         GCC[GCC/Clang]
     end
 
     subgraph "Source Files"
+        spacer51[ ]:::spacer
         FPP_SRC[ImuManager.fpp]
         CPP_SRC[ImuManager.cpp]
         TOPO[topology.fpp]
     end
 
     subgraph "Generated Code"
+        spacer52[ ]:::spacer
         AC_HPP[ImuManagerComponentAc.hpp]
         AC_CPP[ImuManagerComponentAc.cpp]
         TOPO_CPP[TopologyAc.cpp]
     end
 
     subgraph "Dependencies"
+        spacer53[ ]:::spacer
         DRV_I2C[Drv.I2c interface]
         SVC_SCHED[Svc.Sched port]
         FW_BUF[Fw.Buffer]
@@ -1326,6 +1344,7 @@ flowchart LR
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Transitive Build Dependencies:**
@@ -1349,7 +1368,7 @@ flowchart LR
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1369,7 +1388,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1425,7 +1444,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50

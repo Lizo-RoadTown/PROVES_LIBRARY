@@ -41,7 +41,7 @@ This sequence diagram shows the power-on process for an I2C device, with all the
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -61,7 +61,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -117,7 +117,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -277,7 +277,7 @@ sequenceDiagram
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -297,7 +297,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -353,7 +353,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -498,6 +498,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Probability:** 70% of developers will get this wrong without documentation.
@@ -522,7 +523,7 @@ This diagram shows electrical characteristics that software developers never thi
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -542,7 +543,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -598,7 +599,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -705,6 +706,7 @@ config:
 ---
 flowchart TB
     subgraph "Power Supply Characteristics"
+        spacer25[ ]:::spacer
         V_NOM[Nominal Voltage 3.3V]
         V_RIPPLE[Ripple ??? mV]
         V_DROPOUT[Dropout ??? mV]
@@ -712,12 +714,14 @@ flowchart TB
     end
 
     subgraph "I2C Bus Requirements"
+        spacer26[ ]:::spacer
         V_IH[V_IH Input High ??? V minimum]
         V_IL[V_IL Input Low ??? V maximum]
         V_MARGIN[Noise Margin ???]
     end
 
     subgraph "Load Switch Characteristics"
+        spacer27[ ]:::spacer
         R_ON[R_ON ??? mΩ]
         I_MAX[I_MAX ??? mA]
         T_SWITCH[Switch time ??? μs]
@@ -737,6 +741,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 ### What's NOT Documented
@@ -801,7 +806,7 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -821,7 +826,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -877,7 +882,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1080,7 +1085,7 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1100,7 +1105,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1156,7 +1161,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1263,6 +1268,7 @@ config:
 ---
 flowchart TB
     subgraph "I2C Bus Topology (UNDOCUMENTED)"
+        spacer28[ ]:::spacer
         BUS["I2C Bus /dev/i2c-1 SDA/SCL"]
 
         DEV1[Device 1 IMU Addr 0x68]
@@ -1272,12 +1278,14 @@ flowchart TB
     end
 
     subgraph "Power Control"
+        spacer29[ ]:::spacer
         LSM1[IMU_ENABLE]
         LSM2[MAG_ENABLE]
         LSM3[CAM_ENABLE]
     end
 
     subgraph "Questions"
+        spacer30[ ]:::spacer
         Q1[Are devices on<br/>same bus?]
         Q2[Can addresses<br/>conflict?]
         Q3[Power-on<br/>sequence?]
@@ -1306,6 +1314,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 ### What's NOT Documented
@@ -1324,7 +1333,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1344,7 +1353,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1400,7 +1409,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1578,7 +1587,7 @@ This diagram shows how F-Prime supports multiple platforms (Linux, Zephyr, bare 
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1598,7 +1607,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1654,7 +1663,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1761,18 +1770,21 @@ config:
 ---
 flowchart LR
     subgraph "F-Prime Framework"
+        spacer31[ ]:::spacer
         F_LINUX[LinuxI2cDriver<br/>Linux]
         F_ZEPHYR[ZephyrI2cDriver<br/>Zephyr RTOS]
         F_BAREMETAL[Custom Driver<br/>Bare Metal]
     end
 
     subgraph "PROVES Kit"
+        spacer32[ ]:::spacer
         P_CIRCUITPY[CircuitPython<br/>board.IMU_ENABLE]
         P_MICROPYTHON[MicroPython<br/>???]
         P_C[C/C++<br/>???]
     end
 
     subgraph "Integration Patterns"
+        spacer33[ ]:::spacer
         INT1[F-Prime Linux +<br/>PROVES CircuitPython]
         INT2[F-Prime Zephyr +<br/>PROVES C]
         INT3[F-Prime Bare Metal +<br/>???]
@@ -1794,6 +1806,7 @@ flowchart LR
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 ### What's NOT Documented
@@ -1863,7 +1876,7 @@ flowchart LR
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1883,7 +1896,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1939,7 +1952,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -2068,7 +2081,7 @@ pie title Knowledge Gaps by Category
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -2088,7 +2101,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -2144,7 +2157,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50

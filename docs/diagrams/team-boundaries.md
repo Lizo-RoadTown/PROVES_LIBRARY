@@ -39,7 +39,7 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -59,7 +59,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -115,7 +115,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -222,23 +222,27 @@ config:
 ---
 flowchart TB
     subgraph "NASA/JPL"
+        spacer1[ ]:::spacer
         JPL_CORE[F-Prime Core Team ⭐ Permanent Staff]
         JPL_DOC[Documentation Team]
         JPL_REL[Release Engineering]
     end
 
     subgraph "PROVES Maintainers"
+        spacer2[ ]:::spacer
         PROVES_LEAD[PROVES Kit Lead 👤 Faculty/Staff]
         PROVES_DEV[Core Developers 👥 3-5 people]
     end
 
     subgraph "University Teams"
+        spacer3[ ]:::spacer
         UNI_A_2020[University A 2020 Mission 👥 8 students]
         UNI_B_2022[University B 2022 Mission 👥 6 students]
         UNI_C_2024[University C 2024 Mission 👥 10 students]
     end
 
     subgraph "External Users"
+        spacer4[ ]:::spacer
         USER_1[Commercial User 1]
         USER_2[Hobbyist Users]
         USER_3[New Universities]
@@ -278,6 +282,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Legend:**
@@ -295,7 +300,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -315,7 +320,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -371,7 +376,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -478,16 +483,19 @@ config:
 ---
 flowchart LR
     subgraph "F-Prime Knowledge"
+        spacer5[ ]:::spacer
         F_PUB["Public Documentation [YES] Versioned [YES] Comprehensive"]
         F_CODE["GitHub Repository [YES] nasa/fprime [YES] Well-maintained"]
         F_COM["Community Forums [YES] Active support"]
     end
 
     subgraph "Interface"
+        spacer6[ ]:::spacer
         INT["✗ No Integration Docs ✗ No Cross-References ✗ No Joint Testing ✗ No Shared Examples"]
     end
 
     subgraph "PROVES Knowledge"
+        spacer7[ ]:::spacer
         P_PUB["Public Documentation [WARNING] Growing [WARNING] Gaps exist"]
         P_CODE["GitHub Repository [YES] proveskit/pysquared [WARNING] Active but small team"]
         P_COM["Community [WARNING] Mostly university teams"]
@@ -511,6 +519,7 @@ flowchart LR
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Interface Strength Score: 2/10 (WEAK)**
@@ -548,7 +557,7 @@ This flowchart shows the journey developers take when they need integration know
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -568,7 +577,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -624,7 +633,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -773,6 +782,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Critical Bottleneck:** PROVES Kit maintainers are the ONLY source of integration knowledge.
@@ -797,7 +807,7 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -817,7 +827,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -873,7 +883,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1017,7 +1027,7 @@ gantt
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1037,7 +1047,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1093,7 +1103,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1225,7 +1235,7 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1245,7 +1255,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1301,7 +1311,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1513,7 +1523,7 @@ sequenceDiagram
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1533,7 +1543,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1589,7 +1599,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1696,6 +1706,7 @@ config:
 ---
 flowchart TB
     subgraph "Mission Lifecycle"
+        spacer8[ ]:::spacer
         DESIGN[Design Decisions]
         IMPL[Implementation]
         TEST[Testing & Debugging]
@@ -1704,18 +1715,21 @@ flowchart TB
     end
 
     subgraph "Captured (30%)"
+        spacer9[ ]:::spacer
         CODE["Code Repository [YES] Preserved"]
         SCHEMA["Schematics [YES] Preserved"]
         FORMAL_DOC["Formal Documentation [WARNING] Often outdated"]
     end
 
     subgraph "Partially Captured (20%)"
+        spacer10[ ]:::spacer
         ISSUES["GitHub Issues [WARNING] Searchable but dispersed"]
         CHAT["Chat Logs [WARNING] Saved but not indexed"]
         EMAIL["Email Threads [WARNING] Private, not shared"]
     end
 
     subgraph "Lost (50%)"
+        spacer11[ ]:::spacer
         TRIBAL["Tribal Knowledge [NO] In people's heads"]
         WORKAROUND["Workarounds [NO] Undocumented"]
         FAILURES["Failure Lessons [NO] Not written down"]
@@ -1750,6 +1764,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Only 30% of mission knowledge is permanently captured.**
@@ -1768,7 +1783,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1788,7 +1803,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1844,7 +1859,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -2024,7 +2039,7 @@ quadrantChart
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -2044,7 +2059,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -2100,7 +2115,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -2207,6 +2222,7 @@ config:
 ---
 flowchart TB
     subgraph "Traditional Approach (Failed)"
+        spacer12[ ]:::spacer
         TRAD_TEAM[Team Knowledge]
         TRAD_GRAD[Graduation]
         TRAD_LOSS[Knowledge Lost]
@@ -2216,6 +2232,7 @@ flowchart TB
     end
 
     subgraph "PROVES Library Approach"
+        spacer13[ ]:::spacer
         LIB_CAPTURE[Continuous Capture]
         LIB_AGENTS[Curator Agents]
         LIB_GRAPH[Knowledge Graph]
@@ -2231,6 +2248,7 @@ flowchart TB
     end
 
     subgraph "Knowledge Sources"
+        spacer14[ ]:::spacer
         SRC_CODE[Code + Comments]
         SRC_ISSUES[GitHub Issues]
         SRC_CHAT[Chat/Email]
@@ -2243,6 +2261,7 @@ flowchart TB
     end
 
     subgraph "Preserved Knowledge"
+        spacer15[ ]:::spacer
         PRES_TECH[Technical Dependencies]
         PRES_ORG[Organizational Context]
         PRES_WHY[Design Rationale]
@@ -2262,6 +2281,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Key Features:**

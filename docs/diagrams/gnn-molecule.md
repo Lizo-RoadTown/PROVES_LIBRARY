@@ -23,7 +23,7 @@ Think of the truth graph as a molecular structure:
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -43,7 +43,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -99,7 +99,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -206,6 +206,7 @@ config:
 ---
 flowchart TB
     subgraph Molecule ["Truth Graph as Molecular Structure"]
+        spacer24[ ]:::spacer
         A[Power Manager]
         B[I2C Bus]
         C[IMU Sensor]
@@ -249,6 +250,7 @@ flowchart TB
     %% Font sizing classes for consistency
     classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
     classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
 ```
 
 **Legend**
