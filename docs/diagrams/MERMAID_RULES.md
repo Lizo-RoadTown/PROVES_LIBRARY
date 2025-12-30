@@ -50,7 +50,19 @@ grep -n "\"[^\"]*([^)]*)\"" docs/diagrams/*.md
 # 7. Check for colons in gantt task names after first colon (BREAKS)
 grep -n "^[[:space:]]*[^:]*:.*:.*:" docs/diagrams/*.md | grep -v "http"
 
-# 8. Validate all diagrams render (use Mermaid Live Editor)
+# 8. YAML INDENTATION ERRORS (CRITICAL - BREAKS ALL DIAGRAMS)
+# Check for misaligned config sections
+Select-String -Path docs/diagrams/*.md -Pattern '      sequence:|      state:|      journey:' -Exclude MERMAID_RULES.md
+# Should return NO matches - these must be at 2-space indent, not 6
+
+# 9. YAML STRUCTURE VALIDATION
+# Verify config sections are properly separated
+for file in docs/diagrams/*.md; do
+  awk '/^---$/,/^---$/ {print NR": "$0}' "$file" | head -200
+done
+# Check that flowchart:, sequence:, state: etc. all have 2-space indent (not 4 or 6)
+
+# 10. Validate all diagrams render (use Mermaid Live Editor)
 # Copy each diagram to https://mermaid.live/ and verify no errors
 ```
 
@@ -86,6 +98,67 @@ Based on production issues discovered:
 - **Parentheses in pie/gantt labels** → Wrap entire label in quotes
 - **State transition colons** → Keep only label separator colon
 - **Incomplete ```mermaid examples** → Convert to plain ``` blocks
+- **YAML indentation errors** → Config sections must be at 2-space indent (flowchart:, sequence:, state:, etc.)
+
+### MANDATORY PRE-COMMIT TESTING
+
+**CRITICAL: Test EVERY change before committing - scripts, manual edits, AI-generated changes, ALL modifications.**
+
+#### Testing Workflow
+
+1. **After ANY file modification:**
+   ```powershell
+   # Test single diagram in Mermaid Live Editor
+   # Copy first diagram from modified file to https://mermaid.live/
+   # Verify it renders without errors
+   ```
+
+2. **After script execution:**
+   ```powershell
+   # Run ALL validation commands from checklist above
+   # Fix any errors found
+   # Re-test until all validations pass
+   ```
+
+3. **Before git commit:**
+   ```powershell
+   # Final validation - must pass ALL checks
+   cd docs/diagrams
+   
+   # Quick validation script
+   Write-Host "Running validation..."
+   $errors = 0
+   
+   # Check YAML indentation
+   $yamlErrors = Select-String -Path *.md -Pattern '      sequence:|      state:|      journey:' -Exclude MERMAID_RULES.md
+   if ($yamlErrors) {
+       Write-Host "ERROR: YAML indentation issues found"
+       $yamlErrors
+       $errors++
+   }
+   
+   # Check HTML tags
+   $htmlErrors = Select-String -Path *.md -Pattern '<br/>|<span>|<div>' -Exclude MERMAID_RULES.md
+   if ($htmlErrors) {
+       Write-Host "ERROR: HTML tags found"
+       $htmlErrors
+       $errors++
+   }
+   
+   if ($errors -eq 0) {
+       Write-Host "✓ Validation passed"
+   } else {
+       Write-Host "✗ Validation FAILED - fix errors before committing"
+       exit 1
+   }
+   ```
+
+4. **Never assume changes work:**
+   - Scripts can have bugs
+   - Regex can match incorrectly
+   - YAML structure is fragile
+   - Always validate output before pushing
+
 
 ## 🔧 RULES FOR BATCH EDITING SCRIPTS
 
@@ -1095,7 +1168,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -1292,7 +1365,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -1489,7 +1562,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -1686,7 +1759,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50

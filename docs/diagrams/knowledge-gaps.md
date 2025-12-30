@@ -133,7 +133,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -370,7 +370,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -613,7 +613,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -890,7 +890,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -1170,7 +1170,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -1412,7 +1412,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -1667,7 +1667,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -1950,7 +1950,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
@@ -2156,7 +2156,7 @@ config:
     nodeSpacing: 50
     rankSpacing: 50
     diagramPadding: 8
-      sequence:
+  sequence:
     diagramMarginX: 50
     diagramMarginY: 10
     actorMargin: 50
