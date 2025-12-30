@@ -4,7 +4,7 @@ Comprehensive rules compiled from official Mermaid documentation (v10+).
 
 ## 🎨 ACTIVE THEME CONFIGURATION
 
-**Current Active Theme: SPRING** (default)
+**Current Active Theme: FALL** (default)
 
 To change the active theme, update the "Current Active Theme" line above to one of:
 - SPRING (default) - Fresh greens, soft pinks, pale yellows
@@ -744,58 +744,50 @@ c4:
 - `fontFamily` - Font family for diagram text (default: `"trebuchet ms", verdana, arial, sans-serif`)
 
 **Font Size Configuration:**
-- **Global `fontSize`** (config level): Controls overall diagram font size for certain diagram types (default: `16`, recommend `18`)
-  - Place at config level: `config: { fontSize: 18, themeVariables: {...} }`
-- **Theme `fontSize`** (themeVariables level): Theme-specific font styling
-  - Place in themeVariables: `themeVariables: { fontSize: '18px' }`
-- **⚠️ FLOWCHART NODE TEXT:** The above fontSize settings do NOT control flowchart node text!
-  - Flowchart node text size is controlled by CSS classes
-  - Use `themeCSS` to override node styling
-  - **themeCSS Examples:**
+- **Global `fontSize`** (config level): Controls overall diagram font size (default: `16`, recommend `18-20`)
+  - Place at config level: `config: { fontSize: 20 }`
+  - This is a NUMBER without units
+- **Theme `fontSize`** (themeVariables level): Controls font rendering in diagrams
+  - Place in themeVariables: `themeVariables: { fontSize: '20px' }`
+  - This is a STRING with px units (e.g., '16px', '20px', '24px')
+  - **THIS IS WHAT ACTUALLY CONTROLS FLOWCHART TEXT SIZE**
+- **CRITICAL: themeCSS does NOT reliably control flowchart node text**
+  - Flowchart text size is controlled ONLY by `fontSize` in themeVariables
+  - CSS selectors like `.label`, `.nodeLabel` are unreliable and browser-dependent
+  - Use themeCSS for hover effects and custom styling only, not font sizes
+  - **Example:**
     ```yaml
     config:
       theme: base
-      fontSize: 18
-      themeCSS: |
-        # Font sizes - use multiple selectors for complete coverage
-        .label, .nodeLabel, text { font-size: 18px !important; }
-        .edgeLabel { font-size: 16px !important; }
-        
-        # Edge label borders - .label-container is the actual wrapper
-        .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { 
-          stroke: #000 !important; 
-          stroke-width: 1.5px !important; 
-          fill-opacity: 1 !important; 
-        }
-        
-        # Hover effects for interactivity
-        .node:hover rect, .node:hover circle, .node:hover polygon { 
-          stroke-width: 3px !important; 
-          filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); 
-          cursor: pointer; 
-        }
-        .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-        .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { 
-          stroke-width: 2.5px !important; 
-          filter: brightness(1.1); 
-        }
+      fontSize: 20  # Number for overall scaling
       themeVariables:
-        fontSize: '18px'
+        fontSize: '24px'  # STRING with units - this controls flowchart text!
     ```
 
-**themeCSS Capabilities:**
-- Override any Mermaid CSS styling (font sizes, colors, borders)
-- Add features not in theme variables (edge label borders, shadows)
-- Add interactive hover effects (`:hover` pseudo-classes work)
-- Use any valid CSS including filters, transforms, animations
-- Always use `!important` to override Mermaid defaults
+**Edge Label Configuration:**
+- **Edge label background**: Controlled by `edgeLabelBackground` in themeVariables
+- **Edge label borders**: NOT supported in base Mermaid theme
+  - There is no themeVariable for edge label borders
+  - themeCSS border attempts are unreliable and often don't render
+  - Edge labels use background color only - accept this limitation
+  - For emphasis, use contrasting `edgeLabelBackground` colors instead
 
-**Important CSS Selectors:**
-- `.label`, `.nodeLabel`, `text` - Node text (use all three for complete coverage)
-- `.edgeLabel .label-container rect` - Edge label background box (primary target)
-- `.edgeLabel rect`, `.label-container rect` - Alternative edge label selectors
-- `.node:hover` - Node hover states
-- `.edgePath` - Connection lines between nodes
+**themeCSS Capabilities:**
+- Override CSS styling for visual effects only
+- Add interactive hover effects (`:hover` pseudo-classes work)
+- Add shadows, filters, transforms, animations
+- Always use `!important` to override Mermaid defaults
+- **WARNING: Do NOT use for font sizes** - use themeVariables.fontSize instead
+- **WARNING: Edge label borders are NOT supported** - they won't render reliably
+
+**Reliable CSS Selectors (for hover effects only):**
+- `.node:hover rect`, `.node:hover circle`, `.node:hover polygon` - Node hover states
+- `.edgePath:hover path` - Connection line hover
+- `.node rect`, `.node circle` - Node shapes for shadows/effects
+
+**Unreliable/Unsupported:**
+- `.label`, `.nodeLabel`, `text` - Font size changes via CSS are unreliable
+- `.edgeLabel rect`, `.label-container rect` - Border styling often doesn't render
 
 #### Notes and Labels
 - `noteBkgColor` - Background color for note boxes (default: `#fff5ad`)
@@ -819,21 +811,9 @@ c4:
 - `defaultLinkColor` - Default link/edge color (default: same as lineColor)
 - `titleColor` - Title text color (default: same as tertiaryTextColor)
 - `edgeLabelBackground` - Background color of edge labels (auto-calculated from secondaryColor)
-  - **Note:** No theme variable for edge label borders or hover effects. Use `themeCSS` with proper selectors:
-    ```css
-    /* Edge labels use .label-container rect as the primary wrapper */
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect { 
-      stroke: #000 !important; 
-      stroke-width: 1.5px !important; 
-      fill-opacity: 1 !important; 
-    }
-    
-    /* Hover effect for edge labels */
-    .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { 
-      stroke-width: 2.5px !important; 
-      filter: brightness(1.1); 
-    }
-    ```
+  - **IMPORTANT:** Edge labels do NOT support borders in base Mermaid theme
+  - Use contrasting background colors for emphasis instead
+  - themeCSS border attempts are unreliable and browser-dependent
 - `border2` - Alternative border color
 
 ### Sequence Diagram Variables
@@ -1005,7 +985,7 @@ Without explicit colors, sections and tasks may render with white/default backgr
 
 ## 🎨 Seasonal Theme Presets
 
-**ACTIVE THEME: SPRING** (default)
+**ACTIVE THEME: FALL** (default)
 
 These are complete, ready-to-use theme configurations. Copy the frontmatter for your chosen theme and paste it at the top of any mermaid code block.
 
@@ -1023,14 +1003,10 @@ These are complete, ready-to-use theme configurations. Copy the frontmatter for 
 ---
 config:
   theme: base
-  fontSize: 18
+  fontSize: 20
   themeCSS: |
-    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
-    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -1045,7 +1021,7 @@ config:
     textColor: '#2E7D32'
     lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '18px'
+    fontSize: '24px'
     nodeBorder: '#4CAF50'
     mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
@@ -1225,14 +1201,10 @@ config:
 ---
 config:
   theme: base
-  fontSize: 18
+  fontSize: 20
   themeCSS: |
-    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
-    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1247,7 +1219,7 @@ config:
     textColor: '#01579B'
     lineColor: '#29B6F6'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '18px'
+    fontSize: '24px'
     nodeBorder: '#0288D1'
     mainBkg: '#E1F5FE'
     clusterBkg: '#FFE0B2'
@@ -1427,14 +1399,10 @@ config:
 ---
 config:
   theme: base
-  fontSize: 18
+  fontSize: 20
   themeCSS: |
-    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
-    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1449,7 +1417,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '18px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1629,14 +1597,10 @@ config:
 ---
 config:
   theme: base
-  fontSize: 18
+  fontSize: 20
   themeCSS: |
-    .label, .nodeLabel, text, svg text, tspan { font-size: 20px !important; font-weight: 500 !important; }
-    .edgeLabel, .edgeLabel text, .edgeLabel tspan { font-size: 18px !important; font-weight: 500 !important; }
-    .edgeLabel .label-container rect, .edgeLabel rect, .label-container rect, .edgeLabel path.label-container { stroke: #000 !important; stroke-width: 2px !important; fill-opacity: 1 !important; }
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .edgeLabel:hover rect, .edgeLabel:hover .label-container rect { stroke-width: 2.5px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'
@@ -1651,7 +1615,7 @@ config:
     textColor: '#0D47A1'
     lineColor: '#42A5F5'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '18px'
+    fontSize: '24px'
     nodeBorder: '#1976D2'
     mainBkg: '#E3F2FD'
     clusterBkg: '#ECEFF1'
