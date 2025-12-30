@@ -686,10 +686,76 @@ id["`Line 1
 Line 2`"]
 ```
 
+### Subgraph Heading Overlap Fix
+
+**Problem:** Subgraph labels can overlap with the first node inside the subgraph, especially when the label is long or wraps to multiple lines.
+
+**Solution:** Add invisible "spacer" nodes at the top of each subgraph to create vertical separation:
+
+```
+flowchart TB
+    subgraph "My Subgraph Title"
+        spacer1[ ]:::spacer
+        REAL_NODE[Actual Content]
+        OTHER_NODE[More Content]
+        
+        REAL_NODE --> OTHER_NODE
+    end
+    
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
+```
+
+**Key points:**
+- Each subgraph gets a unique spacer ID (spacer1, spacer2, etc.)
+- The spacer node uses `[ ]` (space in brackets) for minimal size
+- The `:::spacer` class makes it invisible
+- The `classDef spacer` must be included at the end of the flowchart
+
+### Diamond (Decision) Node Text Clipping Fix
+
+**Problem:** Text in diamond/decision shapes `{text}` gets clipped when it's too long.
+
+**Solution:** Apply a smaller font size class to diamond nodes:
+
+```
+flowchart TB
+    START[Start Process]
+    DECISION{Is this a long question?}:::diamond
+    YES[Yes Path]
+    NO[No Path]
+    
+    START --> DECISION
+    DECISION -->|Yes| YES
+    DECISION -->|No| NO
+    
+    classDef diamond font-size:18px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+```
+
+**Key points:**
+- All diamond nodes should have `:::diamond` appended
+- The `classDef diamond` uses a smaller font (14px vs 16px default)
+- This prevents text from being clipped at diamond boundaries
+
+### Required classDef Statements for All Flowcharts
+
+**Every flowchart should include these classDef statements at the end:**
+
+```
+    %% Font sizing classes for consistency
+    classDef default font-size:20px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:18px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef spacer fill:none,stroke:none,color:transparent,width:1px,height:1px;
+```
+
+**What each class does:**
+- `default` - Sets consistent 16px font for all nodes (fixes flowchart font inconsistency)
+- `diamond` - Smaller 14px font for decision shapes (prevents text clipping)
+- `spacer` - Invisible nodes for subgraph label separation
+
 ### Gantt Chart Configuration
 ```yaml
 gantt:
-  fontSize: 20               # Font size for gantt text (NOT controlled by global fontSize)
+  fontSize: 16               # Font size for gantt text (NOT controlled by global fontSize)
   barHeight: 24              # Height of task bars in pixels
   barGap: 6                  # Gap between task bars
   topPadding: 50             # Top padding in pixels
@@ -781,7 +847,7 @@ quadrant:
   chartWidth: 500            # Chart width in pixels
   chartHeight: 500           # Chart height in pixels
   titlePadding: 10           # Title padding
-  titleFontSize: 20          # Title font size
+  titlefontSize: 16          # Title font size
   quadrantPadding: 5         # Padding around quadrants
   quadrantTextTopPadding: 5  # Top padding for quadrant text
   quadrantLabelFontSize: 16  # Quadrant label font size
@@ -858,7 +924,7 @@ c4:
 
 **Font Size Configuration:**
 - **Global `fontSize`** (config level): Controls overall diagram font size (default: `16`, recommend `18-20`)
-  - Place at config level: `config: { fontSize: 20 }`
+  - Place at config level: `config: { fontSize: 16 }`
   - This is a NUMBER without units
 - **Theme `fontSize`** (themeVariables level): Controls font rendering in diagrams
   - Place in themeVariables: `themeVariables: { fontSize: '20px' }`
@@ -872,9 +938,9 @@ c4:
     ```yaml
     config:
       theme: base
-      fontSize: 20  # Number for overall scaling
+      fontSize: 16  # Number for overall scaling
       themeVariables:
-        fontSize: '24px'  # STRING with units - this controls flowchart text!
+        fontSize: '16px'  # STRING with units - this controls flowchart text!
     ```
 
 **Edge Label Configuration:**
@@ -978,7 +1044,7 @@ c4:
 **IMPORTANT: Gantt Charts Require Explicit Colors**
 
 Gantt charts do NOT inherit flowchart `themeCSS` font sizing. You must:
-1. Set `gantt: { fontSize: 20 }` in config for font size control
+1. Set `gantt: { fontSize: 16 }` in config for font size control
 2. Define ALL section and task colors explicitly to avoid white backgrounds:
    ```yaml
    themeVariables:
@@ -1116,12 +1182,14 @@ These are complete, ready-to-use theme configurations. Copy the frontmatter for 
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
     .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -1136,7 +1204,7 @@ config:
     textColor: '#2E7D32'
     lineColor: '#66BB6A'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#4CAF50'
     mainBkg: '#E8F5E9'
     clusterBkg: '#FFF9C4'
@@ -1192,7 +1260,7 @@ config:
     attributeBackgroundColorOdd: '#F1F8E9'
     attributeBackgroundColorEven: '#E8F5E9'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1260,7 +1328,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 16
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1313,12 +1381,14 @@ config:
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
     .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1333,7 +1403,7 @@ config:
     textColor: '#01579B'
     lineColor: '#29B6F6'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#0288D1'
     mainBkg: '#E1F5FE'
     clusterBkg: '#FFE0B2'
@@ -1389,7 +1459,7 @@ config:
     attributeBackgroundColorOdd: '#E3F2FD'
     attributeBackgroundColorEven: '#E1F5FE'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1457,7 +1527,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 16
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1510,12 +1580,14 @@ config:
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
     .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1530,7 +1602,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1586,7 +1658,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1654,7 +1726,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 16
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1707,12 +1779,14 @@ config:
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 16
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
     .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
     .cluster-label { font-weight: 600; }
+    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
+    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'
@@ -1727,7 +1801,7 @@ config:
     textColor: '#0D47A1'
     lineColor: '#42A5F5'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '24px'
+    fontSize: '16px'
     nodeBorder: '#1976D2'
     mainBkg: '#E3F2FD'
     clusterBkg: '#ECEFF1'
@@ -1783,7 +1857,7 @@ config:
     attributeBackgroundColorOdd: '#FAFAFA'
     attributeBackgroundColorEven: '#E3F2FD'
   gantt:
-    fontSize: 20
+    fontSize: 16
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1851,7 +1925,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 16
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
