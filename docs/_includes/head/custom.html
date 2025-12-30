@@ -11,9 +11,10 @@
       flowchart: {
         htmlLabels: false,
         curve: 'linear',
-        padding: 35,
-        nodeSpacing: 80,
-        rankSpacing: 120,
+        padding: 40,
+        nodeSpacing: 100,
+        rankSpacing: 150,
+        subGraphTitleMargin: { top: 20, bottom: 20 },
         useMaxWidth: true
       },
       fontSize: 24
@@ -52,14 +53,20 @@
     font-weight: 600 !important;
   }
   
-  /* Ensure cluster labels have proper z-index */
+  /* Add padding/margin to cluster labels to prevent overlap */
   .mermaid .cluster-label foreignObject {
     overflow: visible !important;
+    margin-bottom: 20px !important;
   }
   
-  /* Fix subgraph container to allow label space */
+  /* Increase cluster/subgraph top padding for label space */
   .mermaid .cluster rect {
-    /* Clusters need proper top padding for labels */
+    y: -30px !important;
+  }
+  
+  /* Add spacing after cluster label */
+  .mermaid .cluster-label {
+    transform: translateY(-15px) !important;
   }
   
   /* Consistent font sizing for ALL flowchart nodes including inside subgraphs */

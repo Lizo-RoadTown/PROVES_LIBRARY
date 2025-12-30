@@ -117,15 +117,15 @@ config:
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 35
+    gridLineStartpadding: 40
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 35
-    nodeSpacing: 80
-    rankSpacing: 120
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -160,7 +160,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 35
+    diagrampadding: 40
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -212,7 +212,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 35
+    c4Shapepadding: 40
     width: 216
     height: 60
     boxMargin: 10
@@ -348,15 +348,15 @@ config:
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 35
+    gridLineStartpadding: 40
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 35
-    nodeSpacing: 80
-    rankSpacing: 120
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -391,7 +391,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 35
+    diagrampadding: 40
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -443,7 +443,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 35
+    c4Shapepadding: 40
     width: 216
     height: 60
     boxMargin: 10
@@ -589,15 +589,15 @@ config:
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 35
+    gridLineStartpadding: 40
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 35
-    nodeSpacing: 80
-    rankSpacing: 120
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -632,7 +632,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 35
+    diagrampadding: 40
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -684,7 +684,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 35
+    c4Shapepadding: 40
     width: 216
     height: 60
     boxMargin: 10
@@ -867,15 +867,15 @@ config:
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 35
+    gridLineStartpadding: 40
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 35
-    nodeSpacing: 80
-    rankSpacing: 120
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -910,7 +910,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 35
+    diagrampadding: 40
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -962,7 +962,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 35
+    c4Shapepadding: 40
     width: 216
     height: 60
     boxMargin: 10
@@ -1141,15 +1141,15 @@ config:
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 35
+    gridLineStartpadding: 40
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 35
-    nodeSpacing: 80
-    rankSpacing: 120
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1184,7 +1184,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 35
+    diagrampadding: 40
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1236,7 +1236,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 35
+    c4Shapepadding: 40
     width: 216
     height: 60
     boxMargin: 10
@@ -1384,15 +1384,15 @@ config:
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 35
+    gridLineStartpadding: 40
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 35
-    nodeSpacing: 80
-    rankSpacing: 120
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1427,7 +1427,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 35
+    diagrampadding: 40
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1479,7 +1479,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 35
+    c4Shapepadding: 40
     width: 216
     height: 60
     boxMargin: 10
@@ -1633,15 +1633,15 @@ config:
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 35
+    gridLineStartpadding: 40
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 35
-    nodeSpacing: 80
-    rankSpacing: 120
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1676,7 +1676,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 35
+    diagrampadding: 40
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1728,7 +1728,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 35
+    c4Shapepadding: 40
     width: 216
     height: 60
     boxMargin: 10
@@ -1917,15 +1917,15 @@ config:
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 35
+    gridLineStartpadding: 40
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 35
-    nodeSpacing: 80
-    rankSpacing: 120
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1960,7 +1960,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 35
+    diagrampadding: 40
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -2012,7 +2012,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 35
+    c4Shapepadding: 40
     width: 216
     height: 60
     boxMargin: 10
@@ -2117,15 +2117,15 @@ config:
     barGap: 6
     topPadding: 50
     leftPadding: 75
-    gridLineStartPadding: 35
+    gridLineStartpadding: 40
     numberSectionStyles: 4
   flowchart:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 35
-    nodeSpacing: 80
-    rankSpacing: 120
+    padding: 40
+    nodeSpacing: 100
+    rankSpacing: 150
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -2160,7 +2160,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 35
+    diagrampadding: 40
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -2212,7 +2212,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 35
+    c4Shapepadding: 40
     width: 216
     height: 60
     boxMargin: 10
