@@ -1007,7 +1007,7 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
+    .cluster-label { font-weight: 600 !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -1208,7 +1208,7 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
+    .cluster-label { font-weight: 600 !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1409,7 +1409,7 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
+    .cluster-label { font-weight: 600 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1610,7 +1610,7 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
+    .cluster-label { font-weight: 600 !important; }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'
@@ -2222,7 +2222,7 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
    - **Solution**: Add vertical offset to themeCSS:
    ```yaml
    themeCSS: |
-     .cluster-label { transform: translateY(-15px) !important; font-weight: 600 !important; }
+     .cluster-label { font-weight: 600 !important; }
    ```
    - **Why**: Mermaid renders cluster labels at the exact border position with no spacing
    - **How it works**: `translateY(-15px)` moves the label 15 pixels upward, away from the box

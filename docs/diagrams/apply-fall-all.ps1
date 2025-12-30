@@ -1,24 +1,7 @@
----
-layout: article
-title: GNN Molecular Model
----
+# Apply Fall Theme to All Diagram Files
+$ErrorActionPreference = 'Stop'
 
-
-
-# GNN Molecular Model
-
-Think of the truth graph as a molecular structure:
-- **Nodes** are atoms (components, teams, documents).
-- **Edges** are bonds (dependencies).
-- **Bond strength** shows coupling (tight vs loose).
-- **Message passing** is like an electron pull that carries influence across bonds.
-
-[Back to Home](../index.html)
-
----
-
-## Molecular View of the Graph
-
+$fallConfig = @'
 ```mermaid
 ---
 config:
@@ -27,7 +10,6 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
-    .cluster-label { font-weight: 600 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -106,9 +88,7 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: 'linear'
-    htmlLabels: true
-    useMaxWidth: true
+    curve: linear
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -208,71 +188,42 @@ config:
     height: 60
     boxMargin: 10
 ---
-flowchart TB
-    subgraph Molecule ["Truth Graph as Molecular Structure"]
-        A[Power Manager]
-        B[I2C Bus]
-        C[IMU Sensor]
-        D[Load Switch]
-        E[Topology Config]
-        F[Team A Docs]
-        G[Team B Docs]
-    end
 
-    P[Change Pulse]
+'@
 
-    A --- B
-    B --- C
-    A --- D
-    D --- C
-    E --- A
-    F --- E
-    G --- E
-    B --- G
-    P --> A
+$diagrams = @(
+    'team-boundaries.md',
+    'overview.md',
+    'gnn-molecule.md',
+    'knowledge-gaps.md',
+    'cross-system.md',
+    'transitive-chains.md'
+)
 
-    classDef atom fill:#f5f9ff,stroke:#4a7fb3,stroke-width:1px,color:#0b1b2b;
-    classDef core fill:#ffe7b3,stroke:#c9882a,stroke-width:2px,color:#3a2603;
-    classDef doc fill:#e8f7ef,stroke:#3a9d6d,stroke-width:1px,color:#0f2b1f;
-    classDef pulse fill:#ffd6d6,stroke:#c44,stroke-width:2px,color:#3a0d0d;
+$pattern = '(?s)(```mermaid\r?\n---\r?\nconfig:.*?boxMargin: 10\r?\n---\r?\n)'
 
-    class A,B,C,D atom;
-    class E core;
-    class F,G doc;
-    class P pulse;
+foreach ($file in $diagrams) {
+    Write-Host "`nProcessing: $file" -ForegroundColor Cyan
+    
+    if (!(Test-Path $file)) {
+        Write-Host "  ERROR: File not found" -ForegroundColor Red
+        continue
+    }
+    
+    $content = Get-Content $file -Raw -Encoding UTF8
+    
+    # Count matches
+    $matches = [regex]::Matches($content, $pattern)
+    Write-Host "  Found $($matches.Count) config blocks" -ForegroundColor Yellow
+    
+    # Replace all occurrences
+    $updated = $content -replace $pattern, $fallConfig
+    
+    # Save
+    Set-Content -Path $file -Value $updated -Encoding UTF8 -NoNewline
+    Write-Host "  ✓ Updated successfully" -ForegroundColor Green
+}
 
-    linkStyle 0 stroke:#4a7fb3,stroke-width:3px;
-    linkStyle 1 stroke:#4a7fb3,stroke-width:3px;
-    linkStyle 2 stroke:#4a7fb3,stroke-width:3px;
-    linkStyle 3 stroke:#4a7fb3,stroke-width:3px;
-    linkStyle 4 stroke:#9ab7d6,stroke-width:1px,stroke-dasharray:3 3;
-    linkStyle 5 stroke:#9ab7d6,stroke-width:1px,stroke-dasharray:3 3;
-    linkStyle 6 stroke:#9ab7d6,stroke-width:1px,stroke-dasharray:3 3;
-    linkStyle 7 stroke:#9ab7d6,stroke-width:1px,stroke-dasharray:3 3;
-    linkStyle 8 stroke:#c44,stroke-width:2px;
-```
-
-**Legend**
-- **Thick bonds** = tight coupling (strong pull)
-- **Dashed bonds** = loose coupling (weak pull)
-- **Change pulse** = a modification that propagates across bonds
-
----
-
-
-
-## Why this helps
-
-A GNN learns which bonds carry the strongest influence. With verified edges and consistent labels, the model learns real system behavior instead of noise.
-
----
-
-[Back to Home](../index.html)
-
-
-
-
-
-
-
-
+Write-Host "`n=== All files updated with Fall theme ===" -ForegroundColor Green
+Write-Host "Font size: 24px (via themeVariables)" -ForegroundColor Green
+Write-Host "Edge label borders: Not supported in Mermaid" -ForegroundColor Yellow
