@@ -20,6 +20,7 @@ Usage:
 """
 
 import os
+import sys
 import hmac
 import hashlib
 import json
@@ -27,6 +28,7 @@ import asyncio
 from datetime import datetime
 from typing import Dict, Any
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
@@ -34,12 +36,16 @@ from http import HTTPStatus
 from dotenv import load_dotenv
 import psycopg
 
+# Add production folder to path for imports
+project_root = Path(__file__).parent.parent.parent  # PROVES_LIBRARY/
+sys.path.insert(0, str(project_root / 'production'))
+
 # Load environment
 load_dotenv()
 
 # Import our Notion sync modules
-from src.curator.notion_sync import NotionSync
-from src.curator.suggestion_sync import SuggestionSync
+from curator.notion_sync import NotionSync
+from curator.suggestion_sync import SuggestionSync
 
 # Initialize Notion sync
 notion_sync = NotionSync()
@@ -780,6 +786,11 @@ async def health():
 
 if __name__ == "__main__":
     import uvicorn
+
+    # Configure UTF-8 output for Windows console
+    if sys.platform == 'win32':
+        sys.stdout.reconfigure(encoding='utf-8')
+        sys.stderr.reconfigure(encoding='utf-8')
 
     print("\n" + "="*80)
     print("CURATOR NOTION WEBHOOK SERVER v2.0")

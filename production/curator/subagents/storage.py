@@ -17,6 +17,7 @@ import os
 import hashlib
 import uuid
 from datetime import datetime
+from typing import Literal
 
 # Add neon-database to path for database utilities
 neon_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../neon-database/scripts'))
@@ -74,19 +75,36 @@ def store_extraction(
     properties: dict = None,
     confidence_score: float = 0.8,
     confidence_reason: str = "LLM extraction",
-    evidence_type: str = "definition_spec",
+    evidence_type: Literal[
+        'explicit_requirement',
+        'safety_constraint',
+        'performance_constraint',
+        'feature_description',
+        'interface_specification',
+        'behavioral_contract',
+        'example_usage',
+        'design_rationale',
+        'dependency_declaration',
+        'configuration_parameter',
+        'inferred'
+    ] = "explicit_requirement",
     reasoning_trail: dict = None,
     duplicate_check: dict = None,
     source_metadata: dict = None,
     # Knowledge Capture Checklist (7 questions) - stored in knowledge_epistemics sidecar
-    observer_id: str = "agent:extractor_v3",
-    observer_type: str = "ai",
-    contact_mode: str = "derived",
-    contact_strength: float = 0.30,
+    domain: str = "external",  # 'fprime', 'proveskit', 'external', etc.
+    # EPISTEMIC ATTRIBUTION: You are the RECORDER, not the OBSERVER
+    # observer_id = WHO claimed to know this (designers, authors, system, unknown)
+    # observer_type = THEIR role (human, system, instrument, unknown) - NEVER 'ai'
+    # The AI (you) is the artifact_recorder, not the attributed_observer
+    observer_id: str = "unknown",  # Default: attributed observer unknown
+    observer_type: str = "unknown",  # human | system | instrument | unknown (NOT ai)
+    contact_mode: str = "derived",  # How the ATTRIBUTED observer knew this
+    contact_strength: float = 0.20,  # How close the ATTRIBUTED observer was (default low for derived)
     signal_type: str = "text",
     pattern_storage: str = "externalized",
-    representation_media: list = None,
-    dependencies: dict = None,
+    representation_media: list = None,  # Will default to [signal_type] if None
+    dependencies: list = None,  # List of entity keys or extraction_ids (JSONB array)
     sequence_role: str = "none",
     validity_conditions: dict = None,
     assumptions: list = None,
@@ -136,8 +154,10 @@ def store_extraction(
 
         confidence_score: How confident the extractor is (0.0 to 1.0)
         confidence_reason: Why this confidence level
-        evidence_type: 'definition_spec', 'interface_contract', 'example', 'narrative',
-                       'table_diagram', 'comment', 'inferred'
+        evidence_type: 'explicit_requirement', 'safety_constraint', 'performance_constraint',
+                       'feature_description', 'interface_specification', 'behavioral_contract',
+                       'example_usage', 'design_rationale', 'dependency_declaration',
+                       'configuration_parameter', 'inferred'
         reasoning_trail: Agent's reasoning process (NEW - helps human understand logic):
             {
                 "verified_entities_consulted": ["entity_123", "entity_456"],
@@ -158,16 +178,22 @@ def store_extraction(
                 "source_type": "webpage",
                 "fetch_timestamp": "2025-12-23T10:45:32Z"
             }
-        observer_id: Who observed this (e.g., "agent:extractor_v3", "human:technician_name")
-        observer_type: 'ai' | 'human' | 'instrument' | 'process'
-        contact_mode: 'direct' | 'mediated' | 'effect_only' | 'derived'
-            Question 1: Who knew this, and how close were they?
-        contact_strength: Continuous 0.00-1.00 (1.0 = direct physical, 0.3 = from docs)
+        observer_id: WHO claimed to know this (NOT you the AI!)
+            - "designers" | "authors" | "maintainers" | "system" | "unknown"
+            - You are the RECORDER (artifact_recorder_id = ai:extractor_v3)
+            - observer_id is the ATTRIBUTED observer (who actually documented/observed this)
+        observer_type: 'human' | 'system' | 'instrument' | 'unknown' (NEVER 'ai')
+            - Question 1: Who knew this, and how close were they?
+            - If you can't tell who documented it, use 'unknown'
+        contact_mode: How the ATTRIBUTED observer knew this
+            - 'direct' | 'mediated' | 'effect_only' | 'derived'
+        contact_strength: How close the ATTRIBUTED observer was (0.00-1.00)
+            - 1.0 = direct physical contact, 0.2 = derived from docs (default)
         signal_type: 'text' | 'code' | 'spec' | 'comment' | 'log' | 'telemetry' | etc.
         pattern_storage: 'internalized' | 'externalized' | 'mixed' | 'unknown'
             Question 2: Where does the experience live? (embodied in body vs in docs)
         representation_media: List of media types (e.g., ["text"], ["code", "diagram"])
-        dependencies: JSON dict of dependencies (Question 3: What must stay connected?)
+        dependencies: List of entity keys or extraction_ids (Question 3: What must stay connected?)
         sequence_role: 'precondition' | 'step' | 'outcome' | 'postcondition' | 'none'
         validity_conditions: JSON dict (Question 4: Under what conditions was this true?)
         assumptions: List of assumptions this knowledge depends on
@@ -436,6 +462,7 @@ def store_extraction(
             cur.execute("""
                 INSERT INTO knowledge_epistemics (
                     extraction_id,
+                    domain,
                     observer_id, observer_type, contact_mode, contact_strength, signal_type,
                     pattern_storage, representation_media,
                     dependencies, sequence_role,
@@ -445,6 +472,7 @@ def store_extraction(
                     reenactment_required, practice_interval, skill_transferability
                 ) VALUES (
                     %s::uuid,
+                    %s,
                     %s, %s, %s::contact_mode, %s, %s::signal_type,
                     %s::pattern_storage, %s,
                     %s::jsonb, %s::sequence_role,
@@ -455,6 +483,7 @@ def store_extraction(
                 )
             """, (
                 extraction_id,
+                domain,
                 observer_id, observer_type, contact_mode, contact_strength, signal_type,
                 pattern_storage, representation_media,
                 json.dumps(dependencies) if dependencies else None, sequence_role,

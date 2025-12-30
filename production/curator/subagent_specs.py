@@ -124,13 +124,21 @@ This preserves epistemic grounding so downstream systems can identify loss modes
 ### The 7 Questions (Answer ALL for each extraction)
 
 **Question 1: Who knew this, and how close were they?** (Observer coupling)
-   - Was this learned by direct involvement, or secondhand?
-   - Did the knower touch the real system, or only outputs?
+   - **CRITICAL EPISTEMIC DISTINCTION:**
+     - **You (the AI) are the RECORDER, not the attributed OBSERVER**
+     - "I am not telling the system what is known; I am recording who claimed to know it and how."
+   - **Who actually documented/observed this knowledge?**
+     - Was it designers? Authors? Maintainers? The system itself? Unknown?
+     - Did THEY touch the real system, or only outputs?
    - **Fields to populate:**
-     - `observer_id`: "agent:extractor_v3" (you), "doc:fprime_team", "human:technician_name"
-     - `observer_type`: "ai", "human", "instrument", "process"
-     - `contact_mode`: "direct" (physical), "mediated" (instrumented), "effect_only" (indirect), "derived" (model-only)
-     - `contact_strength`: 0.00-1.00 (continuous: 1.0 = direct physical, 0.3 = derived from docs, 0.1 = pure model)
+     - `observer_id`: WHO claimed to know this (NOT "agent:extractor_v3"!)
+       - "designers" | "authors" | "maintainers" | "system" | "unknown"
+       - Default: "unknown" if you can't determine who documented it
+     - `observer_type`: "human" | "system" | "instrument" | "unknown" (NEVER "ai")
+     - `contact_mode`: How the ATTRIBUTED observer knew this
+       - "direct" (physical), "mediated" (instrumented), "effect_only" (indirect), "derived" (docs-only)
+     - `contact_strength`: How close the ATTRIBUTED observer was (0.00-1.00)
+       - 1.0 = direct physical, 0.2 = derived from docs (default for unknown)
      - `signal_type`: "text", "code", "spec", "comment", "example", "log", "telemetry", "diagram", "model", "table", "test"
 
 **Question 2: Where does the experience live now?** (Pattern storage location)
@@ -181,13 +189,17 @@ This preserves epistemic grounding so downstream systems can identify loss modes
      - `practice_interval`: "per-run", "weekly", "per-release", null
      - `skill_transferability`: "portable", "conditional", "local", "tacit_like", "unknown"
 
-### Default Values for Documentation Extraction (YOU as agent)
+### Default Values for Documentation Extraction
 
-Since you are extracting from documentation (not observing hardware directly):
-- `observer_id`: "agent:extractor_v3" (or your agent ID)
-- `observer_type`: "ai"
-- `contact_mode`: "derived" (you only see text, not hardware)
-- `contact_strength`: 0.25-0.40 (low - reading docs, not touching system)
+**REMEMBER: You are the RECORDER, not the attributed OBSERVER**
+
+Since you're extracting from documentation where the original observer is usually unknown:
+- `observer_id`: "unknown" (DEFAULT - you don't know who wrote/documented this)
+  - Only use specific values like "designers", "authors" if explicitly stated in text
+- `observer_type`: "unknown" (DEFAULT - or "human" if you can infer it)
+  - NEVER use "ai" - that's you, the recorder, not the attributed observer
+- `contact_mode`: "derived" (DEFAULT - the attributed observer likely learned from docs/specs)
+- `contact_strength`: 0.20 (DEFAULT - low coupling for unknown documentation)
 - `signal_type`: Usually "text", "code", "spec", "diagram"
 - `pattern_storage`: Usually "externalized" (in documentation)
 - `representation_media`: ["text"] or ["code"] or ["text", "diagram"]
@@ -197,11 +209,11 @@ Since you are extracting from documentation (not observing hardware directly):
 **Example 1: Technical procedure from documentation**
 Text: "Initialize I2CDriver before PowerMonitor. Send readings every 100ms via address 0x48. If timeout exceeds 500ms, enter safe mode."
 
-Epistemic fields:
-- `observer_id`: "agent:extractor_v3"
-- `observer_type`: "ai"
-- `contact_mode`: "derived" (extracted from docs, no hardware access)
-- `contact_strength`: 0.35
+Epistemic fields (CORRECT - attributed to original observers, not you):
+- `observer_id`: "unknown" (we don't know who wrote this documentation)
+- `observer_type`: "unknown" (likely human designers, but not stated)
+- `contact_mode`: "derived" (attributed observer likely learned from specs)
+- `contact_strength`: 0.20 (low - derived knowledge, not direct observation)
 - `signal_type`: "spec"
 - `pattern_storage`: "externalized"
 - `representation_media`: ["text", "code"]
@@ -212,15 +224,16 @@ Epistemic fields:
 - `scope`: "subsystem"
 - `staleness_risk`: 0.4 (could change with new version)
 - `refresh_trigger`: "new_rev"
-- `author_id`: "doc:fprime_team"
+- `author_id`: "unknown" (or "designers" if you can infer)
 - `intent`: "instruct"
+- `uncertainty_notes`: "Derived from spec; runtime behavior not observed"
 - `reenactment_required`: FALSE
 - `skill_transferability`: "portable"
 
 **Example 2: Observed hardware behavior (from documentation describing observation)**
 Text: "During RW-3 testing, technician noted unusual bearing sound at spin-down. Pattern differed from nominal units, suggesting early wear."
 
-Epistemic fields:
+Epistemic fields (CORRECT - technician is the attributed observer):
 - `observer_id`: "human:technician_unknown" (mentioned in text)
 - `observer_type`: "human"
 - `contact_mode`: "direct" (technician physically present)
