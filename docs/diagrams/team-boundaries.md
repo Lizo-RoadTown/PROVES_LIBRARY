@@ -2186,7 +2186,7 @@ config:
 flowchart TB
     subgraph "Traditional Approach"
         direction TB
-        spacer12[ ]:::spacer
+        spacer12[" "]:::spacer
         TRAD_TEAM[Team Knowledge]
         TRAD_GRAD[Graduation]
         TRAD_LOSS[Knowledge Lost]
@@ -2198,16 +2198,16 @@ flowchart TB
 
     subgraph "Knowledge Sources"
         direction TB
-        spacer13[ ]:::spacer
+        spacer13[" "]:::spacer
         SRC_CODE[Code + Comments]
         SRC_ISSUES[GitHub Issues]
         SRC_CHAT[Chat/Email]
         SRC_EMPIRICAL[Mission Reports]
     end
 
-    subgraph "PROVES Library Processing"
+    subgraph "PROVES Processing"
         direction TB
-        spacer14[ ]:::spacer
+        spacer14[" "]:::spacer
         LIB_CAPTURE[Continuous Capture]
         LIB_AGENTS[Curator Agents]
         LIB_GRAPH[Knowledge Graph]
@@ -2224,7 +2224,7 @@ flowchart TB
 
     subgraph "Preserved Knowledge"
         direction TB
-        spacer15[ ]:::spacer
+        spacer15[" "]:::spacer
         PRES_TECH[Technical Dependencies]
         PRES_ORG[Organizational Context]
         PRES_WHY[Design Rationale]
