@@ -284,19 +284,38 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
   - Place in themeVariables: `themeVariables: { fontSize: '18px' }`
 - **⚠️ FLOWCHART NODE TEXT:** The above fontSize settings do NOT control flowchart node text!
   - Flowchart node text size is controlled by CSS classes
-  - Use `themeCSS` to override: `themeCSS: | \n    .nodeLabel { font-size: 18px !important; }`
-  - Example:
+  - Use `themeCSS` to override node styling
+  - **themeCSS Examples:**
     ```yaml
     config:
       theme: base
       fontSize: 18
       themeCSS: |
+        # Font sizes
         .nodeLabel { font-size: 18px !important; }
         .edgeLabel { font-size: 16px !important; }
+        
+        # Edge label borders (not available in theme variables)
         .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+        
+        # Hover effects for interactivity
+        .node:hover rect, .node:hover circle, .node:hover polygon { 
+          stroke-width: 3px !important; 
+          filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); 
+          cursor: pointer; 
+        }
+        .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+        .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
       themeVariables:
         fontSize: '18px'
     ```
+
+**themeCSS Capabilities:**
+- Override any Mermaid CSS styling (font sizes, colors, borders)
+- Add features not in theme variables (edge label borders, shadows)
+- Add interactive hover effects (`:hover` pseudo-classes work)
+- Use any valid CSS including filters, transforms, animations
+- Always use `!important` to override Mermaid defaults
 
 #### Notes and Labels
 - `noteBkgColor` - Background color for note boxes (default: `#fff5ad`)
@@ -320,9 +339,13 @@ Mermaid supports extensive theming through `themeVariables` in the init directiv
 - `defaultLinkColor` - Default link/edge color (default: same as lineColor)
 - `titleColor` - Title text color (default: same as tertiaryTextColor)
 - `edgeLabelBackground` - Background color of edge labels (auto-calculated from secondaryColor)
-  - **Note:** No theme variable for edge label borders. Use `themeCSS` instead:
+  - **Note:** No theme variable for edge label borders or hover effects. Use `themeCSS` instead:
     ```css
+    /* Add borders to edge labels */
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    
+    /* Hover effect for edge labels */
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
     ```
 - `border2` - Alternative border color
 
@@ -484,6 +507,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -549,6 +575,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -614,6 +643,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -679,6 +711,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'

@@ -44,6 +44,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -165,6 +168,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -283,6 +289,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -397,6 +406,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -485,6 +497,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -561,6 +576,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -717,6 +735,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -837,6 +858,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -961,6 +985,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1100,6 +1127,7 @@ flowchart TB
 **Knowledge Retention:** Only 10% captured after graduation
 **Risk Level:** 🔴 EXTREME - Multiple weak interfaces, high turnover
 **Date:** December 20, 2024
+
 
 
 

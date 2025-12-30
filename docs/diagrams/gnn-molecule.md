@@ -28,6 +28,9 @@ config:
     .nodeLabel { font-size: 18px !important; }
     .edgeLabel { font-size: 16px !important; }
     .edgeLabel rect { stroke: black !important; stroke-width: 1px !important; }
+    .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
+    .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .edgeLabel:hover rect { stroke-width: 2px !important; filter: brightness(1.1); }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -134,6 +137,7 @@ A GNN learns which bonds carry the strongest influence. With verified edges and 
 ---
 
 [Back to Home](../index.html)
+
 
 
 
