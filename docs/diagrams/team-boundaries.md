@@ -68,6 +68,18 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---
@@ -172,6 +184,18 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---
@@ -273,6 +297,18 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---
@@ -370,6 +406,18 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---
@@ -441,13 +489,25 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---
 pie title Knowledge Retention After Team Graduation
-    "Lost (graduated)" : 70
-    "Degraded (partially remembered)" : 20
-    "Retained (documented or passed on)" : 10
+    "Lost knowledge from graduated teams" : 70
+    "Degraded or partially remembered" : 20
+    "Retained via documentation" : 10
 ```
 
 **Only 10% of tribal knowledge is captured and passed to next team.**
@@ -500,6 +560,18 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---
@@ -639,6 +711,18 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---
@@ -742,6 +826,18 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---
@@ -849,6 +945,18 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---

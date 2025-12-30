@@ -484,6 +484,18 @@ config:
     noteBkgColor: '#FFF9C4'
     noteTextColor: '#F57C00'
     noteBorderColor: '#FDD835'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
   flowchart:
     curve: linear
 ---
@@ -532,6 +544,18 @@ config:
     noteBkgColor: '#FFE0B2'
     noteTextColor: '#E65100'
     noteBorderColor: '#FF9800'
+    pie1: '#0288D1'
+    pie2: '#FDD835'
+    pie3: '#FF9800'
+    pie4: '#29B6F6'
+    pie5: '#FFEB3B'
+    pie6: '#FFB74D'
+    pie7: '#4FC3F7'
+    pie8: '#FFF176'
+    pie9: '#FF8A65'
+    pie10: '#81D4FA'
+    pie11: '#FFF9C4'
+    pie12: '#FFE0B2'
   flowchart:
     curve: linear
 ---
@@ -580,6 +604,18 @@ config:
     noteBkgColor: '#FFF8E1'
     noteTextColor: '#F57F17'
     noteBorderColor: '#FBC02D'
+    pie1: '#FF6F00'
+    pie2: '#9C27B0'
+    pie3: '#FBC02D'
+    pie4: '#FF9800'
+    pie5: '#BA68C8'
+    pie6: '#FFD54F'
+    pie7: '#FFB74D'
+    pie8: '#CE93D8'
+    pie9: '#FFF176'
+    pie10: '#FF8A65'
+    pie11: '#F3E5F5'
+    pie12: '#FFF8E1'
   flowchart:
     curve: linear
 ---
@@ -628,6 +664,18 @@ config:
     noteBkgColor: '#E1F5FE'
     noteTextColor: '#006064'
     noteBorderColor: '#26C6DA'
+    pie1: '#1976D2'
+    pie2: '#78909C'
+    pie3: '#26C6DA'
+    pie4: '#42A5F5'
+    pie5: '#90A4AE'
+    pie6: '#4DD0E1'
+    pie7: '#64B5F6'
+    pie8: '#B0BEC5'
+    pie9: '#80DEEA'
+    pie10: '#90CAF9'
+    pie11: '#ECEFF1'
+    pie12: '#E1F5FE'
   flowchart:
     curve: linear
 ---
@@ -990,6 +1038,7 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Proper syntax**: `"Label text" : value` (always with quotes)
 - [ ] **Quote labels with parentheses**: `Direct (visible) : 15` → FAILS without quotes
 - [ ] **Quote labels with special chars**: Spaces, colons, symbols all need quotes
+- [ ] **Use descriptive labels**: Avoid short labels starting with quotes that may be hidden by legend box
 
 #### 4. State Diagram Validation
 - [ ] **No colons in transition labels**: `State1 --> State2: Text: More` → FAILS

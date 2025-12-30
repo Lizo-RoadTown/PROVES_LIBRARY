@@ -72,6 +72,18 @@ config:
     doneTaskBkgColor: '#81C784'
     critBkgColor: '#F06292'
     todayLineColor: '#2E7D32'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
   flowchart:
     curve: linear
 ---
@@ -139,6 +151,18 @@ config:
     doneTaskBkgColor: '#81C784'
     critBkgColor: '#F06292'
     todayLineColor: '#2E7D32'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
   flowchart:
     curve: linear
 ---
@@ -216,6 +240,18 @@ config:
     doneTaskBkgColor: '#81C784'
     critBkgColor: '#F06292'
     todayLineColor: '#2E7D32'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
   flowchart:
     curve: linear
 ---
@@ -288,6 +324,18 @@ config:
     doneTaskBkgColor: '#81C784'
     critBkgColor: '#F06292'
     todayLineColor: '#2E7D32'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
   flowchart:
     curve: linear
 ---
@@ -366,13 +414,25 @@ config:
     doneTaskBkgColor: '#81C784'
     critBkgColor: '#F06292'
     todayLineColor: '#2E7D32'
+    pie1: '#4CAF50'
+    pie2: '#F06292'
+    pie3: '#FDD835'
+    pie4: '#66BB6A'
+    pie5: '#E91E63'
+    pie6: '#FFEB3B'
+    pie7: '#81C784'
+    pie8: '#F48FB1'
+    pie9: '#FFF176'
+    pie10: '#A5D6A7'
+    pie11: '#FCE4EC'
+    pie12: '#FFF9C4'
   flowchart:
     curve: linear
 ---
 pie title Dependency Criticality Distribution
-    "HIGH" : 28
-    "MEDIUM" : 11
-    "LOW" : 3
+    "HIGH criticality" : 28
+    "MEDIUM criticality" : 11
+    "LOW criticality" : 3
 ```
 
 ### By Relationship Type
