@@ -1461,7 +1461,7 @@ sequenceDiagram
 ### FRAMES Interface Strength Model
 
 | Interface | Strength | Evidence | Knowledge Flow | Risk |
-|-----------|----------|----------|----------------|------|
+| --------- | -------- | -------- | -------------- | ---- |
 | **F-Prime Core ↔ F-Prime Docs** | 🟢 STRONG | Versioned, maintained, comprehensive | High | Low |
 | **F-Prime Docs ↔ F-Prime Users** | 🟢 STRONG | Public, searchable, with examples | High | Low |
 | **F-Prime ↔ PROVES** | 🔴 **WEAK** | No cross-references, no integration guide | **Very Low** | **EXTREME** |
@@ -2265,7 +2265,7 @@ flowchart TB
 ### How to Measure Interface Strength Improvement
 
 | Metric | Current | Target | Method |
-|--------|---------|--------|--------|
+| ------ | ------- | ------ | ------ |
 | **Documentation Coverage** | 68% | 95% | % dependencies documented |
 | **Cross-Team References** | 0 | 50+ | # doc links between F-Prime ↔ PROVES |
 | **Knowledge Retention** | 10% | 80% | % knowledge captured before graduation |
