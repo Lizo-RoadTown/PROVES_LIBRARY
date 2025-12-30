@@ -2187,13 +2187,11 @@ flowchart TB
     subgraph "Traditional Approach"
         direction TB
         spacer12[ ]:::spacer
-        spacer12a[ ]:::spacer
         TRAD_TEAM[Team Knowledge]
         TRAD_GRAD[Graduation]
         TRAD_LOSS[Knowledge Lost]
         TRAD_SPACER2[" "]:::spacer
         
-        spacer12 ~~~ spacer12a
         TRAD_TEAM --> TRAD_GRAD
         TRAD_GRAD --> TRAD_LOSS
     end
@@ -2201,19 +2199,15 @@ flowchart TB
     subgraph "Knowledge Sources"
         direction TB
         spacer13[ ]:::spacer
-        spacer13a[ ]:::spacer
         SRC_CODE[Code + Comments]
         SRC_ISSUES[GitHub Issues]
         SRC_CHAT[Chat/Email]
         SRC_EMPIRICAL[Mission Reports]
-        
-        spacer13 ~~~ spacer13a
     end
 
-    subgraph "PROVES Processing"
+    subgraph "PROVES Library Processing"
         direction TB
         spacer14[ ]:::spacer
-        spacer14a[ ]:::spacer
         LIB_CAPTURE[Continuous Capture]
         LIB_AGENTS[Curator Agents]
         LIB_GRAPH[Knowledge Graph]
@@ -2221,7 +2215,6 @@ flowchart TB
         LIB_QUERY[Query System]
         LIB_ALERT[Risk Alerts]
         
-        spacer14 ~~~ spacer14a
         LIB_CAPTURE --> LIB_AGENTS
         LIB_AGENTS --> LIB_GRAPH
         LIB_GRAPH --> LIB_FRAMES
@@ -2232,13 +2225,10 @@ flowchart TB
     subgraph "Preserved Knowledge"
         direction TB
         spacer15[ ]:::spacer
-        spacer15a[ ]:::spacer
         PRES_TECH[Technical Dependencies]
         PRES_ORG[Organizational Context]
         PRES_WHY[Design Rationale]
         PRES_FAIL[Failure Lessons]
-        
-        spacer15 ~~~ spacer15a
     end
 
     SRC_CODE --> LIB_CAPTURE
