@@ -128,9 +128,9 @@ config:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 25
-    nodeSpacing: 60
-    rankSpacing: 100
+    padding: 35
+    nodeSpacing: 80
+    rankSpacing: 120
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -165,7 +165,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagrampadding: 35
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -217,7 +217,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4Shapepadding: 35
     width: 216
     height: 60
     boxMargin: 10
@@ -391,9 +391,9 @@ config:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 25
-    nodeSpacing: 60
-    rankSpacing: 100
+    padding: 35
+    nodeSpacing: 80
+    rankSpacing: 120
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -428,7 +428,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagrampadding: 35
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -480,7 +480,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4Shapepadding: 35
     width: 216
     height: 60
     boxMargin: 10
@@ -650,9 +650,9 @@ config:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 25
-    nodeSpacing: 60
-    rankSpacing: 100
+    padding: 35
+    nodeSpacing: 80
+    rankSpacing: 120
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -687,7 +687,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagrampadding: 35
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -739,7 +739,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4Shapepadding: 35
     width: 216
     height: 60
     boxMargin: 10
@@ -902,9 +902,9 @@ config:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 25
-    nodeSpacing: 60
-    rankSpacing: 100
+    padding: 35
+    nodeSpacing: 80
+    rankSpacing: 120
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -939,7 +939,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagrampadding: 35
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -991,7 +991,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4Shapepadding: 35
     width: 216
     height: 60
     boxMargin: 10
@@ -1124,9 +1124,9 @@ config:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 25
-    nodeSpacing: 60
-    rankSpacing: 100
+    padding: 35
+    nodeSpacing: 80
+    rankSpacing: 120
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1161,7 +1161,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagrampadding: 35
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1213,7 +1213,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4Shapepadding: 35
     width: 216
     height: 60
     boxMargin: 10
@@ -1334,9 +1334,9 @@ config:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 25
-    nodeSpacing: 60
-    rankSpacing: 100
+    padding: 35
+    nodeSpacing: 80
+    rankSpacing: 120
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1371,7 +1371,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagrampadding: 35
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1423,7 +1423,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4Shapepadding: 35
     width: 216
     height: 60
     boxMargin: 10
@@ -1624,9 +1624,9 @@ config:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 25
-    nodeSpacing: 60
-    rankSpacing: 100
+    padding: 35
+    nodeSpacing: 80
+    rankSpacing: 120
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1661,7 +1661,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagrampadding: 35
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1713,7 +1713,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4Shapepadding: 35
     width: 216
     height: 60
     boxMargin: 10
@@ -1886,9 +1886,9 @@ config:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 25
-    nodeSpacing: 60
-    rankSpacing: 100
+    padding: 35
+    nodeSpacing: 80
+    rankSpacing: 120
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -1923,7 +1923,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagrampadding: 35
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -1975,7 +1975,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4Shapepadding: 35
     width: 216
     height: 60
     boxMargin: 10
@@ -2144,9 +2144,9 @@ config:
     curve: 'linear'
     htmlLabels: false
     useMaxWidth: true
-    padding: 25
-    nodeSpacing: 60
-    rankSpacing: 100
+    padding: 35
+    nodeSpacing: 80
+    rankSpacing: 120
     diagramPadding: 8
   sequence:
     diagramMarginX: 50
@@ -2181,7 +2181,7 @@ config:
     arrowMarkerAbsolute: false
     hideEmptyMembersBox: false
   er:
-    diagrampadding: 25
+    diagrampadding: 35
     layoutDirection: 'TB'
     minEntityWidth: 100
     minEntityHeight: 75
@@ -2233,7 +2233,7 @@ config:
     diagramMarginX: 50
     diagramMarginY: 10
     c4ShapeMargin: 50
-    c4Shapepadding: 25
+    c4Shapepadding: 35
     width: 216
     height: 60
     boxMargin: 10
