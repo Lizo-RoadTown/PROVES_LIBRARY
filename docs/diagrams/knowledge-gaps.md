@@ -41,7 +41,7 @@ This sequence diagram shows the power-on process for an I2C device, with all the
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -56,7 +56,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -112,7 +112,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -180,7 +180,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -272,7 +272,7 @@ sequenceDiagram
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -287,7 +287,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -343,7 +343,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -411,7 +411,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -513,7 +513,7 @@ This diagram shows electrical characteristics that software developers never thi
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -528,7 +528,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -584,7 +584,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -652,7 +652,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -791,7 +791,7 @@ This state diagram shows a decision tree for error recovery that SHOULD exist bu
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -806,7 +806,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -862,7 +862,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -930,7 +930,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1065,7 +1065,7 @@ This diagram shows an I2C bus topology where multiple devices share the same com
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1080,7 +1080,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1136,7 +1136,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1204,7 +1204,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1308,7 +1308,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1323,7 +1323,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1379,7 +1379,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1447,7 +1447,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1557,7 +1557,7 @@ This diagram shows how F-Prime supports multiple platforms (Linux, Zephyr, bare 
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1572,7 +1572,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1628,7 +1628,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1696,7 +1696,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1841,7 +1841,7 @@ flowchart LR
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1856,7 +1856,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1912,7 +1912,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1980,7 +1980,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -2041,7 +2041,7 @@ pie title Knowledge Gaps by Category
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -2056,7 +2056,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -2112,7 +2112,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -2180,7 +2180,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16

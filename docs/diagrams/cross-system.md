@@ -60,7 +60,7 @@ Neither F-Prime documentation nor PROVES Kit documentation mentions the other sy
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -82,7 +82,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -138,7 +138,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -206,7 +206,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -340,7 +340,7 @@ Mission continues without IMU (silent failure)
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -362,7 +362,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -418,7 +418,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -486,7 +486,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -592,7 +592,7 @@ No alert that power sequencing is wrong
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -614,7 +614,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -670,7 +670,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -738,7 +738,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -861,7 +861,7 @@ Attitude determination fails
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -883,7 +883,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -939,7 +939,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1007,7 +1007,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1132,7 +1132,7 @@ def imu_read_with_recovery(imu_manager, load_switch_manager):
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1154,7 +1154,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1210,7 +1210,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1278,7 +1278,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1384,7 +1384,7 @@ flowchart LR
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeCSS: |
     .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
     .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
@@ -1406,7 +1406,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1462,7 +1462,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1530,7 +1530,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16

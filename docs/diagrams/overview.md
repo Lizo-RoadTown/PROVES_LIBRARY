@@ -41,7 +41,7 @@ Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVE
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -56,7 +56,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -112,7 +112,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -180,7 +180,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -254,7 +254,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -269,7 +269,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -325,7 +325,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -393,7 +393,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -480,7 +480,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -495,7 +495,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -551,7 +551,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -619,7 +619,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -700,7 +700,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -715,7 +715,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -771,7 +771,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -839,7 +839,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -920,7 +920,7 @@ sequenceDiagram
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -935,7 +935,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -991,7 +991,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1059,7 +1059,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16

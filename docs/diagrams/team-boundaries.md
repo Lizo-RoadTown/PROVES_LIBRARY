@@ -39,7 +39,7 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -54,7 +54,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -110,7 +110,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -178,7 +178,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -295,7 +295,7 @@ flowchart TB
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -310,7 +310,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -366,7 +366,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -434,7 +434,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -547,7 +547,7 @@ This flowchart shows the journey developers take when they need integration know
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -562,7 +562,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -618,7 +618,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -686,7 +686,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -792,7 +792,7 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -807,7 +807,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -863,7 +863,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -931,7 +931,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1007,7 +1007,7 @@ gantt
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1022,7 +1022,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1078,7 +1078,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1146,7 +1146,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1210,7 +1210,7 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1225,7 +1225,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1281,7 +1281,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1349,7 +1349,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1493,7 +1493,7 @@ sequenceDiagram
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1508,7 +1508,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1564,7 +1564,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1632,7 +1632,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1756,7 +1756,7 @@ flowchart LR
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1771,7 +1771,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1827,7 +1827,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1895,7 +1895,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -2007,7 +2007,7 @@ quadrantChart
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -2022,7 +2022,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -2078,7 +2078,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -2146,7 +2146,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16

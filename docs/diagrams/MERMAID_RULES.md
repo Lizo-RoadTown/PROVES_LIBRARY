@@ -927,7 +927,7 @@ c4:
   - Place at config level: `config: { fontSize: 16 }`
   - This is a NUMBER without units
 - **Theme `fontSize`** (themeVariables level): Controls font rendering in diagrams
-  - Place in themeVariables: `themeVariables: { fontSize: '20px' }`
+  - Place in themeVariables: `themeVariables: { fontSize: '24px' }`
   - This is a STRING with px units (e.g., '16px', '20px', '24px')
   - **THIS IS WHAT ACTUALLY CONTROLS FLOWCHART TEXT SIZE**
 - **CRITICAL: themeCSS does NOT reliably control flowchart node text**

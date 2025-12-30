@@ -38,7 +38,7 @@ This diagram shows a complete 13-hop dependency chain from your high-level appli
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -53,7 +53,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -109,7 +109,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -177,7 +177,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -343,7 +343,7 @@ This sequence diagram shows what happens when your system boots up. The tricky p
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -358,7 +358,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -414,7 +414,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -482,7 +482,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -590,7 +590,7 @@ sequenceDiagram
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -605,7 +605,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -661,7 +661,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -729,7 +729,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -817,7 +817,7 @@ This flowchart shows what happens when an I2C read fails. The solid lines show w
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -832,7 +832,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -888,7 +888,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -956,7 +956,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1087,7 +1087,7 @@ This diagram shows how F-Prime's build system creates your code. When you run `f
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1102,7 +1102,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1158,7 +1158,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1226,7 +1226,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
@@ -1343,7 +1343,7 @@ flowchart LR
 ---
 config:
   theme: base
-  fontSize: 20
+  fontSize: 24
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1358,7 +1358,7 @@ config:
     textColor: '#5D4037'
     lineColor: '#FF9800'
     fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
-    fontSize: '20px'
+    fontSize: '24px'
     nodeBorder: '#FF6F00'
     mainBkg: '#FFF3E0'
     clusterBkg: '#F3E5F5'
@@ -1414,7 +1414,7 @@ config:
     attributeBackgroundColorOdd: '#FFF8E1'
     attributeBackgroundColorEven: '#FFF3E0'
   gantt:
-    fontSize: 20
+    fontSize: 24
     barHeight: 24
     barGap: 6
     topPadding: 50
@@ -1482,7 +1482,7 @@ config:
     chartWidth: 500
     chartHeight: 500
     titlePadding: 10
-    titleFontSize: 20
+    titlefontSize: 24
     quadrantPadding: 5
     quadrantTextTopPadding: 5
     quadrantLabelFontSize: 16
