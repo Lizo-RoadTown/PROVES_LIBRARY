@@ -278,6 +278,9 @@ flowchart TB
 
     linkStyle 8 stroke:#f44336,stroke-width:4px
     linkStyle 9 stroke:#ff9800,stroke-width:3px
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 ### Documented vs. Undocumented Links
@@ -773,8 +776,8 @@ config:
 flowchart TB
     START[main calls configureTopology]
 
-    CASE1{Does code call LSM.turn_on?}
-    CASE2{Sufficient delay before bus.open?}
+    CASE1{Does code call LSM.turn_on?}:::diamond
+    CASE2{Sufficient delay before bus.open?}:::diamond
 
     FAIL1["✗ Power never enabled, I2C device doesn't exist, open returns I2C_OPEN_ERR"]
     FAIL2["✗ Voltage not stable, I2C init races with power-on, Intermittent failures"]
@@ -789,6 +792,9 @@ flowchart TB
     style FAIL1 fill:#ffcdd2
     style FAIL2 fill:#ffe0b2
     style SUCCESS fill:#c8e6c9
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Probability Estimates:**
@@ -1005,7 +1011,7 @@ flowchart TB
         SCHED[Svc.Sched port]
         RUN[ImuManager.run_handler]
         READ[ImuManager.read]
-        STATUS{Check Status}
+        STATUS{Check Status}:::diamond
         TLM[tlmWrite_ImuData]
         ERR[log_WARNING_HI_ImuReadError]
     end
@@ -1046,6 +1052,9 @@ flowchart TB
     style RETRY fill:#e1f5ff,stroke-dasharray: 5 5
 
     linkStyle 7,8,9,10,11,12 stroke:#f44336,stroke-width:2px,stroke-dasharray: 5 5
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 ### Transitive Error Impact
@@ -1314,6 +1323,9 @@ flowchart LR
     style CMAKE fill:#fff4e1
     style AC_HPP fill:#c8e6c9
     style AC_CPP fill:#c8e6c9
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Transitive Build Dependencies:**

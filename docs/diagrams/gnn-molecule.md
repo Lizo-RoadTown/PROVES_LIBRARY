@@ -246,6 +246,9 @@ flowchart TB
     linkStyle 6 stroke:#9ab7d6,stroke-width:1px,stroke-dasharray:3 3;
     linkStyle 7 stroke:#9ab7d6,stroke-width:1px,stroke-dasharray:3 3;
     linkStyle 8 stroke:#c44,stroke-width:2px;
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Legend**

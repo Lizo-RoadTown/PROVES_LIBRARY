@@ -243,6 +243,9 @@ flowchart TB
     style BD fill:#f0e1ff
     style I2C_BUS fill:#ffe0b2
     style HW fill:#ffebee
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Key insight:** If any layer fails, all layers above it fail too. This is why dependencies matter!
@@ -463,6 +466,9 @@ flowchart TB
     style BUILD fill:#e8f5e9
     style TOPO fill:#fff3e0
     style DEVICE fill:#fce4ec
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Why this matters:** If the I2C address in code (0x68) doesn't match the hardware's actual address, communication fails silently.
@@ -688,6 +694,9 @@ flowchart TB
     style LSM fill:#e1f5ff
     style TOOLS fill:#fff9c4
     style DEVICES fill:#ffebee
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Key insight:** The LoadSwitchManager is the single point of control for all subsystem power. If it fails, you can't turn anything on or off.

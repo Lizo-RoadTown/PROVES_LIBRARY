@@ -276,6 +276,9 @@ flowchart LR
 
     linkStyle 3 stroke:#f44336,stroke-width:4px,stroke-dasharray: 5 5
     linkStyle 7 stroke:#ff9800,stroke-width:2px,stroke-dasharray: 5 5
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Legend:**
@@ -797,6 +800,9 @@ flowchart TB
     linkStyle 0 stroke:#f44336,stroke-width:3px,stroke-dasharray: 5 5
     linkStyle 2 stroke:#ff9800,stroke-width:2px,stroke-dasharray: 5 5
     linkStyle 3 stroke:#ff9800,stroke-width:2px,stroke-dasharray: 5 5
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 ### Evidence Chain
@@ -1024,7 +1030,7 @@ config:
 ---
 flowchart TB
     START[F-Prime I2C Read Operation]
-    READ{I2C Status}
+    READ{I2C Status}:::diamond
     ERROR[I2cStatus I2C_READ_ERR]
     LOG[log_WARNING_HI_ImuReadError]
     CONTINUE[Continue without IMU data]
@@ -1052,6 +1058,9 @@ flowchart TB
     style CONTINUE fill:#fff9c4
 
     linkStyle 5,6,7,8,9 stroke:#f44336,stroke-width:3px,stroke-dasharray: 5 5
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 ### Evidence Chain
@@ -1317,6 +1326,9 @@ flowchart LR
 
     linkStyle 4 stroke:#f44336,stroke-width:4px,stroke-dasharray: 5 5
     linkStyle 5 stroke:#ff9800,stroke-width:3px,stroke-dasharray: 5 5
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Interface Strength:**

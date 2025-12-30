@@ -275,6 +275,9 @@ flowchart TB
     linkStyle 6 stroke:#f44336,stroke-width:3px,stroke-dasharray: 5 5
     linkStyle 7 stroke:#ff9800,stroke-width:3px,stroke-dasharray: 5 5
     linkStyle 8 stroke:#ff9800,stroke-width:3px,stroke-dasharray: 5 5
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Legend:**
@@ -505,6 +508,9 @@ flowchart LR
     style P_PUB fill:#fff9c4
     style P_CODE fill:#fff9c4
     style P_COM fill:#fff9c4
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Interface Strength Score: 2/10 (WEAK)**
@@ -726,11 +732,11 @@ config:
 flowchart TB
     START[Integration Knowledge Needed]
 
-    DOC_F{Check F-Prime Docs}
-    DOC_P{Check PROVES Docs}
+    DOC_F{Check F-Prime Docs}:::diamond
+    DOC_P{Check PROVES Docs}:::diamond
 
     TRIBAL[Ask Experienced Engineer]
-    WHO{Who to Ask?}
+    WHO{Who to Ask?}:::diamond
 
     JPL_ENG["JPL Engineer [NO] Doesn't know PROVES"]
     PROVES_ENG["PROVES Maintainer [WARNING] Knows integration"]
@@ -764,6 +770,9 @@ flowchart TB
     style JPL_ENG fill:#ffcdd2
     style UNI_ENG fill:#ffe0b2
     style LOST fill:#b71c1c,color:#fff
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Critical Bottleneck:** PROVES Kit maintainers are the ONLY source of integration knowledge.
@@ -1738,6 +1747,9 @@ flowchart TB
     style WORKAROUND fill:#ffcdd2
     style FAILURES fill:#ffcdd2
     style WHY fill:#ffcdd2
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Only 30% of mission knowledge is permanently captured.**
@@ -2247,6 +2259,9 @@ flowchart TB
     style LIB_CAPTURE fill:#e1f5ff
     style PRES_TECH fill:#e8f5e9
     style PRES_ORG fill:#f3e5f5
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Key Features:**

@@ -461,9 +461,9 @@ config:
 flowchart TB
     START[New developer integrates IMU]
 
-    CASE1{Does developer add delay?}
-    CASE2{What delay value?}
-    CASE3{Test coverage?}
+    CASE1{Does developer add delay?}:::diamond
+    CASE2{What delay value?}:::diamond
+    CASE3{Test coverage?}:::diamond
 
     TOO_SHORT[Delay too short 50ms]
     WORKS_BENCH["✓ Works on bench<br/>warm start"]
@@ -495,6 +495,9 @@ flowchart TB
     style FAILS_FLIGHT fill:#ffcdd2
     style FAILS_RTOS fill:#ffcdd2
     style SUCCESS fill:#c8e6c9
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 **Probability:** 70% of developers will get this wrong without documentation.
@@ -731,6 +734,9 @@ flowchart TB
     style V_IH fill:#fff9c4
     style V_MARGIN fill:#fff9c4
     style R_ON fill:#e1f5ff
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 ### What's NOT Documented
@@ -1297,6 +1303,9 @@ flowchart TB
     style Q2 fill:#fff9c4
     style Q3 fill:#fff9c4
     style Q4 fill:#fff9c4
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 ### What's NOT Documented
@@ -1782,6 +1791,9 @@ flowchart LR
     style INT1 fill:#ffebee
     style INT2 fill:#ffebee
     style INT3 fill:#ffebee
+    %% Font sizing classes for consistency
+    classDef default font-size:16px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+    classDef diamond font-size:14px,font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 ```
 
 ### What's NOT Documented
