@@ -57,7 +57,6 @@ config:
   flowchart:
     curve: linear
 ---
-%%{init: {'flowchart': {'defaultRenderer': 'elk', 'curve': 'linear'}, 'theme':'base', 'themeVariables': { 'fontFamily': 'Space Mono, monospace', 'lineColor': '#6b8fb3'}}}%%
 flowchart TB
     subgraph Molecule ["Truth Graph as Molecular Structure"]
         A[Power Manager]
