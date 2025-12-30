@@ -64,6 +64,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -142,7 +144,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -336,6 +340,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -414,7 +420,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -587,6 +595,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -665,7 +675,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -848,6 +860,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -926,7 +940,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -1114,6 +1130,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1192,7 +1210,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -1359,6 +1379,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1437,7 +1459,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50

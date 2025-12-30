@@ -1007,6 +1007,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#E8F5E9'
     secondaryColor: '#FCE4EC'
@@ -1085,7 +1087,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -1205,6 +1209,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#E1F5FE'
     secondaryColor: '#FFF9C4'
@@ -1283,7 +1289,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -1403,6 +1411,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
@@ -1481,7 +1491,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -1601,6 +1613,8 @@ config:
   themeCSS: |
     .node:hover rect, .node:hover circle, .node:hover polygon { stroke-width: 3px !important; filter: drop-shadow(0 0 8px rgba(0,0,0,0.3)); cursor: pointer; }
     .edgePath:hover path { stroke-width: 3px !important; opacity: 1; }
+    .cluster-label { z-index: 10 !important; pointer-events: none; }
+    .cluster rect { z-index: -1 !important; }
   themeVariables:
     primaryColor: '#E3F2FD'
     secondaryColor: '#ECEFF1'
@@ -1679,7 +1693,9 @@ config:
     gridLineStartPadding: 35
     numberSectionStyles: 4
   flowchart:
-    curve: linear
+    curve: 'linear'
+    htmlLabels: true
+    useMaxWidth: true
     padding: 15
     nodeSpacing: 50
     rankSpacing: 50
@@ -2055,7 +2071,7 @@ config:
   layout: elk
 flowchart:
   htmlLabels: false
-  curve: linear
+  curve: 'linear'
 ---
 flowchart LR
     A --> B
@@ -2077,7 +2093,7 @@ flowchart LR
 ---
 config:
   flowchart:
-    curve: linear
+    curve: 'linear'
 ---
 flowchart LR
     A --> B --> C
@@ -2198,41 +2214,59 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
 
 ### Common Issues Found During Validation
 
-1. **Parentheses without quotes** (pie charts, node labels)
+1. **Flowchart curve parameter must be quoted string**
+   - ❌ `curve: linear`
+   - ✅ `curve: 'linear'`
+   - **Why**: Mermaid expects curve value as string literal, not bareword
+   - **Impact**: Without quotes, Mermaid ignores the setting and uses default curved lines
+   - **Required additions**: Also add `htmlLabels: true` and `useMaxWidth: true` for proper rendering
+
+2. **Subgraph labels overlap with nodes (z-index issue)**
+   - **Problem**: Subgraph titles render behind nodes, making them unreadable
+   - **Solution**: Add to themeCSS:
+   ```yaml
+   themeCSS: |
+     .cluster-label { z-index: 10 !important; pointer-events: none; }
+     .cluster rect { z-index: -1 !important; }
+   ```
+   - **Why**: Mermaid's default rendering puts cluster backgrounds and labels at same z-level as nodes
+   - **Impact**: Critical for diagrams with subgraphs (team boundaries, system architecture)
+
+3. **Parentheses without quotes** (pie charts, node labels)
    - ❌ `Direct (visible) : 15`
    - ✅ `"Direct (visible)" : 15`
 
-2. **Square brackets without quotes** (node labels)
+4. **Square brackets without quotes** (node labels)
    - ❌ `NODE[Status [YES] Complete]`
    - ✅ `NODE["Status [YES] Complete"]`
 
-3. **Forward slashes without quotes**
+5. **Forward slashes without quotes**
    - ❌ `DEV[/dev/i2c-1]`
    - ✅ `DEV["/dev/i2c-1"]`
 
-4. **Colons in subgraph labels**
+6. **Colons in subgraph labels**
    - ❌ `subgraph "Layer 1: Application"`
    - ✅ `subgraph "Layer 1 Application"`
 
-5. **Colons in sequence notes**
+7. **Colons in sequence notes**
    - ❌ `Note over A: Step 1: Initialize`
    - ✅ `Note over A: Step 1 Initialize`
 
-6. **Colons in state transition labels**
+8. **Colons in state transition labels**
    - ❌ `State1 --> State2: Currently: No recovery`
    - ✅ `State1 --> State2: Currently No recovery`
    - ⚠️ Same rule as sequence notes
 
-7. **Double colons**
+9. **Double colons**
    - ❌ `I2cStatus::OK`
    - ✅ `I2C_OK`
 
-8. **Gantt task names with colons**
+10. **Gantt task names with colons**
    - ❌ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
    - ✅ `Gap Team leaves :milestone, crit, 2021-05, 0d`
    - ⚠️ Colon in task description before delimiter confuses parser
 
-9. **Quadrant chart labels without quotes**
+11. **Quadrant chart labels without quotes**
    - ❌ `F´ Core Docs: [0.1, 0.9]`
    - ✅ `"F´ Core Docs": [0.1, 0.9]`
    - ⚠️ Always quote data point labels, especially with colons or special chars
