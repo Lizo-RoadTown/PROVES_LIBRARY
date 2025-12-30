@@ -50,15 +50,4 @@
   }
 }
 
-// Mermaid diagram styling - Let Mermaid config control styling
-.mermaid {
-  // Only ensure diagrams are centered and have proper spacing
-  display: block;
-  text-align: center;
-  margin: 2rem auto;
-  
-  // Don't override Mermaid's theme colors or hover effects
-  // All styling is controlled by the Mermaid config in the markdown files
-}
-
 /* end custom scss snippet */
