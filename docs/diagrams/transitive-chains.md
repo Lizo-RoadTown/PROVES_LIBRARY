@@ -4,43 +4,6 @@ title: Transitive Dependency Chains
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 # Transitive Dependency Chains
 
@@ -60,43 +23,6 @@ Multi-hop dependency paths showing how high-level application requests cascade t
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Chain 1: Application -> I2C Communication -> Power
 
@@ -218,44 +144,6 @@ flowchart TB
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
-
 ## Chain 2: Configuration -> Topology -> Bus -> Power
 
 ### What You're Looking At
@@ -337,44 +225,6 @@ sequenceDiagram
 ```mermaid
 ---
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
-
 config:
   flowchart:
     curve: linear
@@ -411,44 +261,6 @@ flowchart TB
 
 ---
 
-
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Chain 3: Error Propagation Path
 
@@ -538,44 +350,6 @@ flowchart TB
 
 ---
 
-
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Chain 4: Build System Dependencies
 
@@ -691,44 +465,6 @@ Maximum observed distance: **7 layers** (Power -> Application)
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
-
 ## Recommendations
 
 ### 1. Dependency Mapping Tools
@@ -765,44 +501,6 @@ Test suites should:
 
 ---
 
-
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 **Analysis Method:** Manual chain tracing, layer-by-layer analysis
 **Longest Chain Found:** 13 hops (Application -> Board Configuration)
