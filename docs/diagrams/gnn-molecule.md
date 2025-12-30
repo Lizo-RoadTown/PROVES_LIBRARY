@@ -24,14 +24,7 @@ Think of the truth graph as a molecular structure:
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'

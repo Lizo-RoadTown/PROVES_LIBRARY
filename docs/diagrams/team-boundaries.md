@@ -40,14 +40,7 @@ This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box 
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -303,14 +296,7 @@ flowchart TB
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -562,14 +548,7 @@ This flowchart shows the journey developers take when they need integration know
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -814,14 +793,7 @@ This Gantt chart shows three university team lifecycles over 5 years. Notice the
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1036,14 +1008,7 @@ gantt
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1246,14 +1211,7 @@ This sequence diagram tells the story of an actual failure caused by team bounda
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1536,14 +1494,7 @@ sequenceDiagram
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -1806,14 +1757,7 @@ flowchart LR
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
@@ -2064,14 +2008,7 @@ quadrantChart
 config:
   theme: base
   fontSize: 20
-  themeCSS: |
-    .node rect, .cluster rect, .edgePath path { transition: filter 0.2s ease, stroke-width: 0.2s ease; }
-    .node:hover rect, .cluster:hover rect, .edgePath:hover path { filter: drop-shadow(0 0 8px rgba(0,0,0,0.35)); stroke-width: 3px; }
-    .edgeLabel rect { rx: 6px; ry: 6px; stroke-width: 1px; }
-    .cluster-label { font-weight: 600; }
-    .node .label, .nodeLabel, .node foreignObject div, .edgeLabel { font-size: 20px !important; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important; }
-    .node.decision .label, .node polygon + .label { font-size: 18px !important; }
-  themeVariables:
+    themeVariables:
     primaryColor: '#FFF3E0'
     secondaryColor: '#F3E5F5'
     tertiaryColor: '#FFF8E1'
