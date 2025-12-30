@@ -7,7 +7,7 @@ title: Team Boundaries
 
 # Team Boundaries
 
-Organizational analysis showing WEAK interface between NASA/JPL F´ team and university PROVES Kit teams - where knowledge gets lost.
+Organizational analysis showing WEAK interface between NASA/JPL F-Prime team and university PROVES Kit teams - where knowledge gets lost.
 
 [← Back to Home](../index.html)
 
@@ -29,7 +29,7 @@ Organizational analysis showing WEAK interface between NASA/JPL F´ team and uni
 
 ### What You're Looking At
 
-This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box is a team or group of people. Solid lines show strong, documented relationships (like F´ Core maintaining their docs). Dashed lines show weak, at-risk relationships (like university teams graduating and losing knowledge). The colors highlight different risk levels—red for teams that already left, orange for teams in transition, green for active teams.
+This diagram maps the ORGANIZATIONAL structure, not the technical one. Each box is a team or group of people. Solid lines show strong, documented relationships (like F-Prime Core maintaining their docs). Dashed lines show weak, at-risk relationships (like university teams graduating and losing knowledge). The colors highlight different risk levels—red for teams that already left, orange for teams in transition, green for active teams.
 
 **Think of it like:** A family tree showing who talks to whom. Strong relationships (solid lines) are like parents teaching kids—regular, documented, reliable. Weak relationships (dashed lines) are like distant cousins you only see at weddings—sporadic, informal, knowledge doesn't flow well.
 
@@ -226,7 +226,7 @@ config:
 ---
 flowchart TB
     subgraph "NASA/JPL"
-        JPL_CORE[F´ Core Team ⭐ Permanent Staff]
+        JPL_CORE[F-Prime Core Team ⭐ Permanent Staff]
         JPL_DOC[Documentation Team]
         JPL_REL[Release Engineering]
     end
@@ -290,7 +290,7 @@ flowchart TB
 
 ## Interface Strength Analysis
 
-### F´ Team ↔ PROVES Kit Team
+### F-Prime Team ↔ PROVES Kit Team
 
 ```mermaid
 ---
@@ -482,7 +482,7 @@ config:
     boxMargin: 10
 ---
 flowchart LR
-    subgraph "F´ Knowledge"
+    subgraph "F-Prime Knowledge"
         F_PUB["Public Documentation [YES] Versioned [YES] Comprehensive"]
         F_CODE["GitHub Repository [YES] nasa/fprime [YES] Well-maintained"]
         F_COM["Community Forums [YES] Active support"]
@@ -518,20 +518,20 @@ flowchart LR
 **Interface Strength Score: 2/10 (WEAK)**
 
 **Evidence:**
-- [NO] F´ documentation doesn't mention PROVES Kit
-- [NO] PROVES Kit documentation doesn't mention F´
+- [NO] F-Prime documentation doesn't mention PROVES Kit
+- [NO] PROVES Kit documentation doesn't mention F-Prime
 - [NO] No shared integration guide
 - [NO] No joint GitHub issues/discussions
 - [NO] No cross-team code reviews
 - [NO] No coordinated releases
 
 **Knowledge at Risk:**
-- Integration patterns (how F´ + PROVES work together)
+- Integration patterns (how F-Prime + PROVES work together)
 - Power management requirements (this analysis!)
 - Error recovery strategies
 - Platform-specific configurations
 
-> **Key Insight:** F´ and PROVES Kit are both well-documented systems individually, but the interface between them has a strength score of 2/10. This is like having two excellent textbooks but no syllabus telling you how to use them together.
+> **Key Insight:** F-Prime and PROVES Kit are both well-documented systems individually, but the interface between them has a strength score of 2/10. This is like having two excellent textbooks but no syllabus telling you how to use them together.
 
 ---
 
@@ -540,7 +540,7 @@ flowchart LR
 
 ### What You're Looking At
 
-This flowchart shows the journey developers take when they need integration knowledge. Start at the top: check F´ docs (not found), check PROVES docs (not found), ask tribal experts. The problem is that the tribal knowledge path leads to either (1) PROVES maintainers who know but are overloaded, (2) JPL engineers who don't know PROVES, or (3) students who are also learning. Eventually, everyone ends up at "Discover Through Failure" -> knowledge gets captured in email/chat -> then LOST at graduation.
+This flowchart shows the journey developers take when they need integration knowledge. Start at the top: check F-Prime docs (not found), check PROVES docs (not found), ask tribal experts. The problem is that the tribal knowledge path leads to either (1) PROVES maintainers who know but are overloaded, (2) JPL engineers who don't know PROVES, or (3) students who are also learning. Eventually, everyone ends up at "Discover Through Failure" -> knowledge gets captured in email/chat -> then LOST at graduation.
 
 **Think of it like:** Trying to find a recipe your grandmother used to make. Check the cookbook (not there), check online (not there), ask family members (some remember pieces), eventually you try to recreate it yourself and write it down... on a sticky note that falls behind the fridge.
 
@@ -738,7 +738,7 @@ config:
 flowchart TB
     START[Integration Knowledge Needed]
 
-    DOC_F{Check F´ Docs}
+    DOC_F{Check F-Prime Docs}
     DOC_P{Check PROVES Docs}
 
     TRIBAL[Ask Experienced Engineer]
@@ -1486,9 +1486,9 @@ sequenceDiagram
 
 | Interface | Strength | Evidence | Knowledge Flow | Risk |
 |-----------|----------|----------|----------------|------|
-| **F´ Core ↔ F´ Docs** | 🟢 STRONG | Versioned, maintained, comprehensive | High | Low |
-| **F´ Docs ↔ F´ Users** | 🟢 STRONG | Public, searchable, with examples | High | Low |
-| **F´ ↔ PROVES** | 🔴 **WEAK** | No cross-references, no integration guide | **Very Low** | **EXTREME** |
+| **F-Prime Core ↔ F-Prime Docs** | 🟢 STRONG | Versioned, maintained, comprehensive | High | Low |
+| **F-Prime Docs ↔ F-Prime Users** | 🟢 STRONG | Public, searchable, with examples | High | Low |
+| **F-Prime ↔ PROVES** | 🔴 **WEAK** | No cross-references, no integration guide | **Very Low** | **EXTREME** |
 | **PROVES Lead ↔ PROVES Docs** | 🟡 MEDIUM | Active but growing, some gaps | Medium | Medium |
 | **PROVES ↔ University Teams** | 🔴 **WEAK** | Ad-hoc, tribal knowledge | **Low** | **HIGH** |
 | **Uni Team A ↔ Uni Team B** | 🔴 **WEAK** | Student turnover, minimal handoff | **Very Low** | **EXTREME** |
@@ -1977,8 +1977,8 @@ quadrantChart
     quadrant-2 Monitor
     quadrant-3 Low Risk
     quadrant-4 Moderate Risk
-    "F´ Core Docs": [0.1, 0.9]
-    "F´ to PROVES": [0.3, 0.2]
+    "F-Prime Core Docs": [0.1, 0.9]
+    "F-Prime to PROVES": [0.3, 0.2]
     "PROVES to Uni Teams": [0.8, 0.2]
     "Uni Team to Team": [0.9, 0.1]
     "External Users": [0.5, 0.15]
@@ -1987,7 +1987,7 @@ quadrantChart
 **Critical Risk Zone (Quadrant 1):**
 - **University Team -> Team:** EXTREME knowledge loss risk
 - **PROVES -> University Teams:** HIGH knowledge loss risk
-- **F´ -> PROVES:** EXTREME integration knowledge loss risk
+- **F-Prime -> PROVES:** EXTREME integration knowledge loss risk
 
 ---
 
@@ -1996,7 +1996,7 @@ quadrantChart
 
 ### Immediate Actions
 
-1. **Strengthen F´ ↔ PROVES Interface**
+1. **Strengthen F-Prime ↔ PROVES Interface**
    - Create joint integration guide
    - Cross-reference documentation
    - Establish regular sync meetings
@@ -2031,7 +2031,7 @@ quadrantChart
 3. **Community Building**
    - Cross-university collaboration
    - Shared mission reviews
-   - F´ + PROVES user group
+   - F-Prime + PROVES user group
    - Annual knowledge sharing conference
 
 ---
@@ -2303,7 +2303,7 @@ flowchart TB
 | Metric | Current | Target | Method |
 |--------|---------|--------|--------|
 | **Documentation Coverage** | 68% | 95% | % dependencies documented |
-| **Cross-Team References** | 0 | 50+ | # doc links between F´ ↔ PROVES |
+| **Cross-Team References** | 0 | 50+ | # doc links between F-Prime ↔ PROVES |
 | **Knowledge Retention** | 10% | 80% | % knowledge captured before graduation |
 | **Integration Failures** | 70% | <10% | % new teams that encounter power issue |
 | **Time to Answer** | Days | Minutes | Time to find integration knowledge |
@@ -2320,7 +2320,7 @@ flowchart TB
 ---
 
 **Analysis Method:** FRAMES organizational modeling, team interface analysis
-**Interface Strength:** F´ ↔ PROVES scored 2/10 (WEAK)
+**Interface Strength:** F-Prime ↔ PROVES scored 2/10 (WEAK)
 **Knowledge Retention:** Only 10% captured after graduation
 **Risk Level:** 🔴 EXTREME - Multiple weak interfaces, high turnover
 **Date:** December 20, 2024

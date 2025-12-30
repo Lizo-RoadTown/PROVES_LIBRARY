@@ -6,7 +6,7 @@ title: Dependency Overview
 
 # Dependency Overview
 
-Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Kit Power Management documentation.
+Complete inventory of all 45+ dependencies found in F-Prime I2C Driver and PROVES Kit Power Management documentation.
 
 [← Back to Home](../index.html)
 
@@ -17,7 +17,7 @@ Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Ki
 **Dependency** - When one component needs another component to work
 - Example: "The IMU sensor depends on power" means if power fails, IMU fails too
 
-**F´ (F Prime)** - NASA's flight software framework used on many spacecraft
+**F-Prime (F Prime)** - NASA's flight software framework used on many spacecraft
 
 **I2C** - Communication protocol that lets microcontrollers talk to sensors (like USB but for embedded systems)
 
@@ -31,7 +31,7 @@ Complete inventory of all 45+ dependencies found in F´ I2C Driver and PROVES Ki
 
 ---
 
-## F´ I2C Driver Dependencies
+## F-Prime I2C Driver Dependencies
 
 ### Software Architecture
 
@@ -923,7 +923,7 @@ sequenceDiagram
 
 ### By Category
 
-| Category | F´ Count | PROVES Kit Count | Total |
+| Category | F-Prime Count | PROVES Kit Count | Total |
 |----------|----------|------------------|-------|
 | **Software Dependencies** | 9 | 6 | 15 |
 | **Hardware Dependencies** | 4 | 5 | 9 |
@@ -1146,7 +1146,7 @@ pie title Dependency Criticality Distribution
 
 Every dependency tracked with precise source locations:
 
-### F´ Documentation Coverage
+### F-Prime Documentation Coverage
 - **File:** `nasa/fprime/docs/how-to/develop-device-driver.md`
 - **Lines Analyzed:** 411
 - **Dependencies Found:** 25

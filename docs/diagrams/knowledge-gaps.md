@@ -21,7 +21,7 @@ What's NOT documented: power-on timing, voltage stability, error recovery, bus s
 3. **Can cause mission failures** if unknown
 4. **Are at risk of loss** during team turnover
 
-This analysis found **5 major knowledge gaps** in the F´ + PROVES Kit integration.
+This analysis found **5 major knowledge gaps** in the F-Prime + PROVES Kit integration.
 
 ---
 
@@ -258,7 +258,7 @@ sequenceDiagram
 
 ### What's NOT Documented
 
-| Parameter | F´ Docs | PROVES Docs | Typical Value | Impact if Unknown |
+| Parameter | F-Prime Docs | PROVES Docs | Typical Value | Impact if Unknown |
 |-----------|---------|-------------|---------------|-------------------|
 | **t_rise** - Voltage rise time | [NO] | [NO] | 1-10ms | Race condition |
 | **t_por** - Power-on reset duration | [NO] | [NO] | 10-100ms | Device not initialized |
@@ -747,7 +747,7 @@ flowchart TB
 
 ### What's NOT Documented
 
-| Parameter | Required For | F´ Docs | PROVES Docs | Impact |
+| Parameter | Required For | F-Prime Docs | PROVES Docs | Impact |
 |-----------|--------------|---------|-------------|--------|
 | **V_ripple** | Clean I2C signals | [NO] | [NO] | Bit errors |
 | **V_dropout** | Load regulation | [NO] | [NO] | Brownout |
@@ -996,7 +996,7 @@ stateDiagram-v2
     [*] --> Normal: System boot
 
     Normal --> I2C_Error: I2C read fails
-    I2C_Error --> Log_Warning: F´ logs event
+    I2C_Error --> Log_Warning: F-Prime logs event
 
     state "KNOWLEDGE GAP" as GAP {
         Log_Warning --> Should_Power_Cycle: Decision point
@@ -1026,7 +1026,7 @@ stateDiagram-v2
 
 ### What's NOT Documented
 
-| Decision Point | Question | F´ Docs | PROVES Docs | Current Reality |
+| Decision Point | Question | F-Prime Docs | PROVES Docs | Current Reality |
 |----------------|----------|---------|-------------|-----------------|
 | **Error Detection** | Which errors are recoverable? | Logs error | N/A | Unknown |
 | **Recovery Strategy** | Should power cycle on I2C error? | [NO] | [NO] | No recovery |
@@ -1321,7 +1321,7 @@ flowchart TB
 
 ### What's NOT Documented
 
-| Aspect | Information Needed | F´ Docs | PROVES Docs | Impact if Unknown |
+| Aspect | Information Needed | F-Prime Docs | PROVES Docs | Impact if Unknown |
 |--------|-------------------|---------|-------------|-------------------|
 | **Bus Topology** | Which devices on which bus? | [NO] | [NO] | Wrong bus configured |
 | **Address Map** | All I2C addresses | Partial (0x68) | [NO] | Address conflicts |
@@ -1583,9 +1583,9 @@ sequenceDiagram
 
 ### What You're Looking At
 
-This diagram shows how F´ supports multiple platforms (Linux, Zephyr, bare metal) and PROVES Kit supports multiple languages (CircuitPython, C), but there's no documentation on how to combine them. Each box is a valid configuration, but the arrows with "how to combine?" show that the integration patterns are undocumented.
+This diagram shows how F-Prime supports multiple platforms (Linux, Zephyr, bare metal) and PROVES Kit supports multiple languages (CircuitPython, C), but there's no documentation on how to combine them. Each box is a valid configuration, but the arrows with "how to combine?" show that the integration patterns are undocumented.
 
-**Think of it like:** You have IKEA furniture (F´) and tools from Home Depot (PROVES Kit). Both are good products with instructions, but there's no guide for "how to use Home Depot tools to assemble IKEA furniture." Every team figures it out themselves, often differently.
+**Think of it like:** You have IKEA furniture (F-Prime) and tools from Home Depot (PROVES Kit). Both are good products with instructions, but there's no guide for "how to use Home Depot tools to assemble IKEA furniture." Every team figures it out themselves, often differently.
 
 ### The Missing Cross-Platform Guide
 
@@ -1779,7 +1779,7 @@ config:
     boxMargin: 10
 ---
 flowchart LR
-    subgraph "F´ Framework"
+    subgraph "F-Prime Framework"
         F_LINUX[LinuxI2cDriver<br/>Linux]
         F_ZEPHYR[ZephyrI2cDriver<br/>Zephyr RTOS]
         F_BAREMETAL[Custom Driver<br/>Bare Metal]
@@ -1792,9 +1792,9 @@ flowchart LR
     end
 
     subgraph "Integration Patterns"
-        INT1[F´ Linux +<br/>PROVES CircuitPython]
-        INT2[F´ Zephyr +<br/>PROVES C]
-        INT3[F´ Bare Metal +<br/>???]
+        INT1[F-Prime Linux +<br/>PROVES CircuitPython]
+        INT2[F-Prime Zephyr +<br/>PROVES C]
+        INT3[F-Prime Bare Metal +<br/>???]
     end
 
     F_LINUX -.->|how to combine?| P_CIRCUITPY
@@ -1814,7 +1814,7 @@ flowchart LR
 
 ### What's NOT Documented
 
-| Integration | F´ Platform | PROVES Platform | Documented? | Challenge |
+| Integration | F-Prime Platform | PROVES Platform | Documented? | Challenge |
 |-------------|-------------|-----------------|-------------|-----------|
 | **Desktop Sim** | Linux + Python | CircuitPython sim | [NO] | How to mock hardware? |
 | **Flight Target** | Zephyr RTOS + C++ | C + registers | [NO] | How to share GPIO? |
@@ -1824,10 +1824,10 @@ flowchart LR
 
 **No documentation exists for:**
 
-1. **How F´ C++ calls PROVES CircuitPython:**
+1. **How F-Prime C++ calls PROVES CircuitPython:**
    ```cpp
    // [NO] NOT DOCUMENTED
-   // In F´ configureTopology():
+   // In F-Prime configureTopology():
    void configureTopology() {
        // How to call Python LoadSwitchManager from C++?
        // - Embed Python interpreter?
@@ -1840,8 +1840,8 @@ flowchart LR
 2. **How to share GPIO control:**
    ```
    [NO] NOT DOCUMENTED
-   - Does F´ control GPIO directly?
-   - Does PROVES control GPIO and F´ requests power?
+   - Does F-Prime control GPIO directly?
+   - Does PROVES control GPIO and F-Prime requests power?
    - Is there a hardware abstraction layer?
    - Who owns the GPIO driver?
    ```
@@ -1849,7 +1849,7 @@ flowchart LR
 3. **Build system integration:**
    ```cmake
    # [NO] NOT DOCUMENTED
-   # How to build F´ + PROVES together?
+   # How to build F-Prime + PROVES together?
    # - Separate processes?
    # - Linked libraries?
    # - Microservice architecture?
@@ -1865,7 +1865,7 @@ flowchart LR
 
 **Risk:** No standard integration pattern, constant rework.
 
-> **Why This Matters:** Every mission team is reinventing the wheel. One team builds F´+PROVES as separate processes communicating over sockets. Another compiles PROVES to C and links it with F´. A third uses Python embedding. Without a documented pattern, teams waste months on integration instead of working on their actual mission.
+> **Why This Matters:** Every mission team is reinventing the wheel. One team builds F-Prime+PROVES as separate processes communicating over sockets. Another compiles PROVES to C and links it with F-Prime. A third uses Python embedding. Without a documented pattern, teams waste months on integration instead of working on their actual mission.
 
 ---
 

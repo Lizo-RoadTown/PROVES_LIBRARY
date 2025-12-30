@@ -7,7 +7,7 @@ title: Cross-System Dependencies
 
 # Cross-System Dependencies
 
-The 4 critical dependencies between F´ and PROVES Kit that are **NOT documented** in either system.
+The 4 critical dependencies between F-Prime and PROVES Kit that are **NOT documented** in either system.
 
 This is the exact failure mode from the Team A/Team B scenario.
 
@@ -19,7 +19,7 @@ This is the exact failure mode from the Team A/Team B scenario.
 
 **Cross-System Dependency** - When two separate systems (managed by different teams) depend on each other but neither documents the connection
 
-**F´ (F Prime)** - NASA's flight software framework (Team A)
+**F-Prime (F Prime)** - NASA's flight software framework (Team A)
 
 **PROVES Kit** - University power management system (Team B)
 
@@ -35,9 +35,9 @@ This is the exact failure mode from the Team A/Team B scenario.
 
 ## Critical Finding: Hidden Dependencies
 
-Neither F´ documentation nor PROVES Kit documentation mentions the other system. Yet they have critical runtime dependencies that can cause mission failures if misconfigured.
+Neither F-Prime documentation nor PROVES Kit documentation mentions the other system. Yet they have critical runtime dependencies that can cause mission failures if misconfigured.
 
-**Translation for Students:** Imagine two groups working on the same car - one builds the engine (F´/Team A), one controls the fuel pump (PROVES/Team B). The engine obviously needs fuel, but if neither group's manual mentions the other, Team B might change the fuel pump timing and break the engine without realizing it.
+**Translation for Students:** Imagine two groups working on the same car - one builds the engine (F-Prime/Team A), one controls the fuel pump (PROVES/Team B). The engine obviously needs fuel, but if neither group's manual mentions the other, Team B might change the fuel pump timing and break the engine without realizing it.
 
 ### Team A / Team B Knowledge Gap
 
@@ -45,7 +45,7 @@ Neither F´ documentation nor PROVES Kit documentation mentions the other system
 - **Team B (PROVES Kit):** Changed power management configuration
 - **Team B Testing:** Tested locally, everything worked
 - **Launch -2 weeks:** Catastrophic failure when integrated
-- **Team A (F´):** Knew the answer from "several generations before"
+- **Team A (F-Prime):** Knew the answer from "several generations before"
 - **Problem:** Knowledge didn't flow across team boundaries
 
 **Our Analysis Found This Exact Pattern:**
@@ -246,7 +246,7 @@ config:
     boxMargin: 10
 ---
 flowchart LR
-    subgraph "F´ System (NASA/JPL)"
+    subgraph "F-Prime System (NASA/JPL)"
         IM[ImuManager I2C Device Manager]
         I2C[I2C Bus Driver LinuxI2cDriver]
         STATUS[I2cStatus Error Codes]
@@ -291,9 +291,9 @@ flowchart LR
 
 | System | Line | Evidence |
 |--------|------|----------|
-| F´ | 28 | "ImuManager uses the bus driver layer to implement data read/writes for MPU6050 sensor" |
-| F´ | 126 | `Drv::I2cStatus status = this->busWriteRead_out(...)` - I2C operations can fail |
-| F´ | 188-194 | Errors logged but NOT automatically recovered |
+| F-Prime | 28 | "ImuManager uses the bus driver layer to implement data read/writes for MPU6050 sensor" |
+| F-Prime | 126 | `Drv::I2cStatus status = this->busWriteRead_out(...)` - I2C operations can fail |
+| F-Prime | 188-194 | Errors logged but NOT automatically recovered |
 | PROVES | 28 | `"imu": DigitalInOut(board.IMU_ENABLE)` - IMU powered by load switch |
 | PROVES | 34 | LoadSwitchManager initialization |
 | PROVES | 108 | Enable logic configuration (active high/low) |
@@ -314,11 +314,11 @@ Team B changes enable_logic from True to False
   ↓
 LoadSwitchManager inverts pin logic
   ↓
-IMU loses power during F´ initialization
+IMU loses power during F-Prime initialization
   ↓
 I2C bus driver fails to open("/dev/i2c-1")
   ↓
-F´ logs error but doesn't know to check power
+F-Prime logs error but doesn't know to check power
   ↓
 Mission continues without IMU (silent failure)
 ```
@@ -552,8 +552,8 @@ sequenceDiagram
 | System | Line | Evidence |
 |--------|------|----------|
 | PROVES | 34 | `load_switch_manager = LoadSwitchManager(...)` - initialization required |
-| F´ | 248 | `busDriver.open("/dev/i2c-1")` - happens in configureTopology() |
-| F´ | 245-254 | configureTopology() example shown |
+| F-Prime | 248 | `busDriver.open("/dev/i2c-1")` - happens in configureTopology() |
+| F-Prime | 245-254 | configureTopology() example shown |
 
 ### The Gap
 
@@ -572,7 +572,7 @@ I2C device doesn't exist yet (no power)
   ↓
 open() fails with I2C_OPEN_ERR
   ↓
-F´ logs error, continues without IMU
+F-Prime logs error, continues without IMU
   ↓
 No alert that power sequencing is wrong
 ```
@@ -775,7 +775,7 @@ config:
     boxMargin: 10
 ---
 flowchart TB
-    subgraph "F´ Configuration"
+    subgraph "F-Prime Configuration"
         IM_ADDR[ImuManager Address 0x68]
         BUS["I2C Bus /dev/i2c-1 Shared Resource"]
     end
@@ -815,7 +815,7 @@ flowchart TB
 
 | System | Line | Evidence |
 |--------|------|----------|
-| F´ | 253 | `imuManager.configure(0x68)` - Fixed I2C address |
+| F-Prime | 253 | `imuManager.configure(0x68)` - Fixed I2C address |
 | PROVES | 27-30 | Multiple devices: radio, imu, magnetometer, camera |
 
 ### The Gap
@@ -1039,7 +1039,7 @@ config:
     boxMargin: 10
 ---
 flowchart TB
-    START[F´ I2C Read Operation]
+    START[F-Prime I2C Read Operation]
     READ{I2C Status}
     ERROR[I2cStatus I2C_READ_ERR]
     LOG[log_WARNING_HI_ImuReadError]
@@ -1074,8 +1074,8 @@ flowchart TB
 
 | System | Line | Evidence |
 |--------|------|----------|
-| F´ | 188-194 | `if (status == Drv::I2cStatus::I2C_OK) { ... } else { log_WARNING_HI_ImuReadError(status); }` |
-| F´ | No line | NO recovery strategy implemented |
+| F-Prime | 188-194 | `if (status == Drv::I2cStatus::I2C_OK) { ... } else { log_WARNING_HI_ImuReadError(status); }` |
+| F-Prime | No line | NO recovery strategy implemented |
 | PROVES | 119-125 | Load switch operations return boolean success |
 | PROVES | 131-142 | Methods: turn_on(), turn_off(), get_switch_state() |
 
@@ -1085,7 +1085,7 @@ flowchart TB
 - Should I2C errors trigger power cycling?
 - What's the recovery sequence?
 - How many retries before giving up?
-- Does F´ have mechanism to request power cycle?
+- Does F-Prime have mechanism to request power cycle?
 
 **Risk Level:** 🟡 **MEDIUM**
 
@@ -1309,7 +1309,7 @@ config:
 ---
 flowchart LR
     subgraph "NASA/JPL Team"
-        F_TEAM[F´ Core Team]
+        F_TEAM[F-Prime Core Team]
         F_DOC[Official Docs]
         F_VER[Versioned Releases]
     end
@@ -1340,7 +1340,7 @@ flowchart LR
 ```
 
 **Interface Strength:**
-- F´ ↔ PROVES Kit: **WEAK** (no documentation cross-references)
+- F-Prime ↔ PROVES Kit: **WEAK** (no documentation cross-references)
 - University A ↔ University B: **WEAK** (student turnover, knowledge loss)
 
 **Knowledge at Risk:**
@@ -1349,7 +1349,7 @@ flowchart LR
 - Vulnerable to team turnover
 - No mechanism for cross-team knowledge transfer
 
-> **Key Insight:** The weakest link in the system isn't technical—it's organizational. Two excellent documentation systems (F´ and PROVES Kit) fail when they don't talk to each other.
+> **Key Insight:** The weakest link in the system isn't technical—it's organizational. Two excellent documentation systems (F-Prime and PROVES Kit) fail when they don't talk to each other.
 
 ---
 
@@ -1584,13 +1584,13 @@ quadrantChart
 ### Immediate Actions
 
 1. **Document the Integration**
-   - Create "F´ + PROVES Kit Integration Guide"
+   - Create "F-Prime + PROVES Kit Integration Guide"
    - Specify power-on timing requirements
    - Define configureTopology() ordering
 
 2. **Add Cross-References**
-   - F´ docs should mention PROVES Kit power requirements
-   - PROVES docs should mention F´ I2C dependencies
+   - F-Prime docs should mention PROVES Kit power requirements
+   - PROVES docs should mention F-Prime I2C dependencies
 
 3. **Implement Health Checks**
    - Verify power state before I2C operations
@@ -1614,7 +1614,7 @@ quadrantChart
    - Failure analysis documentation
 
 3. **Interface Strengthening**
-   - Regular F´ + PROVES Kit integration meetings
+   - Regular F-Prime + PROVES Kit integration meetings
    - Shared documentation repository
    - Cross-team code reviews
 

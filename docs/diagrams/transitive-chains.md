@@ -288,14 +288,14 @@ flowchart TB
 
 | Hop | From | To | Documented? | Source |
 |-----|------|----|-----------| -------|
-| 1 | Application | Device Manager | [YES] Yes | F´ docs line 30 |
-| 2 | Device Manager | busWriteRead port | [YES] Yes | F´ docs line 76 |
-| 3 | Port | Bus Driver | [YES] Yes | F´ docs line 236 |
-| 4 | Bus Driver | /dev/i2c-1 | [YES] Yes | F´ docs line 248 |
-| 5 | Device | I2C Bus | [YES] Yes | F´ docs line 41 |
+| 1 | Application | Device Manager | [YES] Yes | F-Prime docs line 30 |
+| 2 | Device Manager | busWriteRead port | [YES] Yes | F-Prime docs line 76 |
+| 3 | Port | Bus Driver | [YES] Yes | F-Prime docs line 236 |
+| 4 | Bus Driver | /dev/i2c-1 | [YES] Yes | F-Prime docs line 248 |
+| 5 | Device | I2C Bus | [YES] Yes | F-Prime docs line 41 |
 | 6 | I2C | Pull-up Resistors | [WARNING] Implicit | Not in docs (standard I2C) |
-| 7 | I2C | IMU Device | [YES] Yes | F´ docs line 28 |
-| 8 | IMU | Registers | [YES] Yes | F´ docs line 97 |
+| 7 | I2C | IMU Device | [YES] Yes | F-Prime docs line 28 |
+| 8 | IMU | Registers | [YES] Yes | F-Prime docs line 97 |
 | 9 | IMU | **Power Supply** | [NO] **NO** | **GAP: Not documented** |
 | 10 | Power | **LoadSwitchManager** | [NO] **NO** | **GAP: Not documented** |
 | 11 | LSM | GPIO Pin | [YES] Yes | PROVES docs line 28 |
@@ -320,7 +320,7 @@ flowchart TB
 
 **Time to detect:** Unknown - Could be immediate or delayed hours/days
 
-**Root cause visibility:** Low - F´ error message doesn't mention power
+**Root cause visibility:** Low - F-Prime error message doesn't mention power
 
 > **Why This Matters:** Without understanding transitive dependencies, you might spend hours debugging "I2C communication failure" when the real problem is a power configuration 6 layers away. This is why the Team A/Team B failure happened—Team B optimized what looked like an arbitrary delay without understanding the full dependency chain.
 
@@ -331,7 +331,7 @@ flowchart TB
 
 ### What You're Looking At
 
-This sequence diagram shows what happens when your system boots up. The tricky part is that steps 2-5 (highlighted in red and yellow) are completely undocumented. Most developers only see the green F´ documentation telling them to call `busDriver.open()`, but they don't know they need to power on the device first and wait for it to stabilize.
+This sequence diagram shows what happens when your system boots up. The tricky part is that steps 2-5 (highlighted in red and yellow) are completely undocumented. Most developers only see the green F-Prime documentation telling them to call `busDriver.open()`, but they don't know they need to power on the device first and wait for it to stabilize.
 
 **Think of it like:** Starting a car. You need to (1) unlock the door, (2) sit down, (3) put the key in, (4) turn it, and (5) wait for the engine to warm up before driving. If the manual only says "turn the key," you might try to drive immediately and damage the cold engine.
 
@@ -576,16 +576,16 @@ sequenceDiagram
 
 | Step | Action | Documented? | Risk if Missing |
 |------|--------|-------------|-----------------|
-| 1 | Call configureTopology() | [YES] F´ docs | Low |
+| 1 | Call configureTopology() | [YES] F-Prime docs | Low |
 | 2 | Call LoadSwitchManager.turn_on("imu") | [NO] **NO** | **HIGH** - Skipped entirely |
 | 3 | Set GPIO pin HIGH | [YES] PROVES docs | Low |
 | 4 | Return success | [YES] PROVES docs | Low |
 | 5 | **Wait for power stabilization** | [NO] **NO** | **CRITICAL** - No delay spec |
-| 6 | Call busDriver.open() | [YES] F´ docs | Low |
-| 7 | Initialize /dev/i2c-1 | [YES] F´ docs | Low |
-| 8 | Call imuManager.configure() | [YES] F´ docs | Low |
-| 9 | Set I2C address 0x68 | [YES] F´ docs | Low |
-| 10-12 | Device initialization | [YES] F´ docs | Low |
+| 6 | Call busDriver.open() | [YES] F-Prime docs | Low |
+| 7 | Initialize /dev/i2c-1 | [YES] F-Prime docs | Low |
+| 8 | Call imuManager.configure() | [YES] F-Prime docs | Low |
+| 9 | Set I2C address 0x68 | [YES] F-Prime docs | Low |
+| 10-12 | Device initialization | [YES] F-Prime docs | Low |
 
 **Critical Gaps:**
 - **Step 2:** No documentation linking configureTopology() to LoadSwitchManager
@@ -819,9 +819,9 @@ flowchart TB
 
 ### What You're Looking At
 
-This flowchart shows what happens when an I2C read fails. The solid lines show what F´ actually does (logs a warning and gives up). The dashed red lines show what SHOULD happen but isn't implemented—power cycle recovery. This missing recovery logic means every I2C error becomes permanent.
+This flowchart shows what happens when an I2C read fails. The solid lines show what F-Prime actually does (logs a warning and gives up). The dashed red lines show what SHOULD happen but isn't implemented—power cycle recovery. This missing recovery logic means every I2C error becomes permanent.
 
-**Think of it like:** When your Wi-Fi stops working, your computer could either (1) show an error and give up, or (2) automatically try turning the Wi-Fi off and on again. Option 2 fixes 80% of problems automatically. F´ currently does option 1.
+**Think of it like:** When your Wi-Fi stops working, your computer could either (1) show an error and give up, or (2) automatically try turning the Wi-Fi off and on again. Option 2 fixes 80% of problems automatically. F-Prime currently does option 1.
 
 ### When I2C Read Fails
 
@@ -1017,7 +1017,7 @@ config:
 flowchart TB
     START[RateGroup.run every 100ms]
 
-    subgraph "F´ System"
+    subgraph "F-Prime System"
         SCHED[Svc.Sched port]
         RUN[ImuManager.run_handler]
         READ[ImuManager.read]
@@ -1091,7 +1091,7 @@ flowchart TB
 
 ### What You're Looking At
 
-This diagram shows how F´'s build system creates your code. When you run `fprime-util build`, it goes through multiple compilation stages (FPP -> C++ -> compiled binary). Each stage has its own dependencies. The diagram shows how changing something fundamental (like the target platform) ripples through all the layers.
+This diagram shows how F-Prime's build system creates your code. When you run `fprime-util build`, it goes through multiple compilation stages (FPP -> C++ -> compiled binary). Each stage has its own dependencies. The diagram shows how changing something fundamental (like the target platform) ripples through all the layers.
 
 **Think of it like:** Making a cake from scratch. You need (1) a recipe (FPP files), (2) ingredients (source code), (3) mixing bowls (CMake), and (4) an oven (compiler). If you switch from a gas oven to electric (change platform), you might need different timing and temperatures at every step.
 
@@ -1345,7 +1345,7 @@ flowchart LR
 
 **Impact:** Changing platform (Linux -> Zephyr) cascades through 5 layers to affect ImuManager compilation.
 
-> **Key Insight:** Build dependencies are usually well-documented (F´'s build system is solid), but they illustrate the same transitive principle: change something at the bottom, affect everything at the top. This is the ONE chain where documentation is good—notice the difference?
+> **Key Insight:** Build dependencies are usually well-documented (F-Prime's build system is solid), but they illustrate the same transitive principle: change something at the bottom, affect everything at the top. This is the ONE chain where documentation is good—notice the difference?
 
 ---
 

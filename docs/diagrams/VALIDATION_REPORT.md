@@ -47,7 +47,7 @@ All diagrams conform to Mermaid v10+ syntax rules compiled from official documen
 
 ### overview.md (5 diagrams) ✅
 
-**Diagram 1: F´ I2C Driver Dependencies**
+**Diagram 1: F-Prime I2C Driver Dependencies**
 - Type: flowchart TB
 - Nodes: 5
 - Status: ✅ All syntax valid
