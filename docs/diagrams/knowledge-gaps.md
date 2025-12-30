@@ -4,43 +4,6 @@ title: Knowledge Gaps
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 # Knowledge Gaps
 
@@ -63,43 +26,6 @@ This analysis found **5 major knowledge gaps** in the F´ + PROVES Kit integrati
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Gap 1: Power-On Timing Requirements
 
@@ -165,45 +91,6 @@ sequenceDiagram
 
 ```mermaid
 ---
-
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
-
 config:
   flowchart:
     curve: linear
@@ -254,43 +141,6 @@ flowchart TB
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Gap 2: Voltage Stability Requirements
 
@@ -388,43 +238,6 @@ Mission loss
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Gap 3: Error Recovery Strategies
 
@@ -520,43 +333,6 @@ IF I2cStatus == I2C_READ_ERR:
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Gap 4: Bus Sharing and Conflicts
 
@@ -689,43 +465,6 @@ sequenceDiagram
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Gap 5: Platform-Specific Integration
 
@@ -835,43 +574,6 @@ flowchart LR
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Summary: Knowledge Gap Impact
 
@@ -931,43 +633,6 @@ gantt
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 ## Recommendations
 
@@ -1022,43 +687,6 @@ gantt
 ---
 
 
-<style>
-  /* Arrow label borders */
-  .edgeLabel {
-    background-color: white !important;
-    border: 2px solid black !important;
-    border-radius: 4px !important;
-    padding: 4px 8px !important;
-  }
-  
-  /* Node hover glow */
-  .node:hover rect,
-  .node:hover circle,
-  .node:hover polygon,
-  .node:hover path {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Edge/link hover glow */
-  .edgePath:hover path {
-    stroke-width: 3px !important;
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.6));
-    cursor: pointer;
-  }
-  
-  /* Label hover glow */
-  .edgeLabel:hover,
-  .nodeLabel:hover {
-    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.8));
-    cursor: pointer;
-  }
-  
-  /* Subgraph hover glow */
-  .cluster:hover rect {
-    filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.5));
-  }
-</style>
 
 **Analysis Method:** Negative space analysis, gap identification
 **Gaps Found:** 5 major categories, 17 specific missing items
