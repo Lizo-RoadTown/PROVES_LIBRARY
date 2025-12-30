@@ -2,7 +2,7 @@
 
 ## => Site Settings
 ##############################
-text_skin: dark # "default", "dark", "forest", "ocean", "chocolate", "orange"
+text_skin: orange # "default", "dark", "forest", "ocean", "chocolate", "orange" - matches Fall Mermaid theme
 highlight_theme: tomorrow-night # "default", "tomorrow", "tomorrow-night", "tomorrow-night-eighties"
 url: https://phantom-man.github.io
 baseurl: /PROVES_LIBRARY
