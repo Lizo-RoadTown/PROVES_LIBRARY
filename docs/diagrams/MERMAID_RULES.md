@@ -6,13 +6,16 @@ Comprehensive rules compiled from official Mermaid documentation (v10+).
 
 **Current Active Theme: FALL** (default)
 
-To change the active theme, update the "Current Active Theme" line above to one of:
+To change the active theme, update the "Current Active Theme" line above to
+one of:
+
 - SPRING (default) - Fresh greens, soft pinks, pale yellows
 - SUMMER - Sky blues, sunny yellows, warm corals
 - FALL - Burnt oranges, deep purples, golden yellows
 - WINTER - Ice blues, slate greys, pale cyans
 
 **To apply a theme to your diagrams:**
+
 1. Scroll to the "Seasonal Theme Presets" section below
 2. Copy the YAML frontmatter for your chosen theme
 3. Paste it at the top of your mermaid code block
@@ -22,7 +25,8 @@ See "Seasonal Theme Presets" section below for complete copy-paste configuration
 
 ## ⚠️ VALIDATION REQUIREMENTS
 
-**MANDATORY: Run validation before committing any diagram changes or updates to this file.**
+**MANDATORY: Run validation before committing any diagram changes or
+updates to this file.**
 
 ### Validation Checklist
 
@@ -33,7 +37,8 @@ Before committing changes, run ALL validation commands below:
 grep -n "<br/>\|<span>\|<div>" docs/diagrams/*.md
 
 # 2. Check for double colons in text (ALWAYS BREAKS)
-grep -n "::" docs/diagrams/*.md | grep -v "http://" | grep -v "https://" | grep -v "stateDiagram-v2"
+grep -n "::" docs/diagrams/*.md | grep -v "http://" | `
+  grep -v "https://" | grep -v "stateDiagram-v2"
 
 # 3. Check for colons in subgraph labels (BREAKS)
 grep -n "subgraph.*:.*\"" docs/diagrams/*.md
@@ -52,7 +57,9 @@ grep -n "^[[:space:]]*[^:]*:.*:.*:" docs/diagrams/*.md | grep -v "http"
 
 # 8. YAML INDENTATION ERRORS (CRITICAL - BREAKS ALL DIAGRAMS)
 # Check for misaligned config sections
-Select-String -Path docs/diagrams/*.md -Pattern '      sequence:|      state:|      journey:' -Exclude MERMAID_RULES.md
+Select-String -Path docs/diagrams/*.md `
+  -Pattern '      sequence:|      state:|      journey:' `
+  -Exclude MERMAID_RULES.md
 # Should return NO matches - these must be at 2-space indent, not 6
 
 # 9. YAML STRUCTURE VALIDATION
@@ -60,7 +67,8 @@ Select-String -Path docs/diagrams/*.md -Pattern '      sequence:|      state:|  
 for file in docs/diagrams/*.md; do
   awk '/^---$/,/^---$/ {print NR": "$0}' "$file" | head -200
 done
-# Check that flowchart:, sequence:, state: etc. all have 2-space indent (not 4 or 6)
+# Check that flowchart:, sequence:, state: etc. all have 2-space
+# indent (not 4 or 6)
 
 # 10. Validate all diagrams render (use Mermaid Live Editor)
 # Copy each diagram to https://mermaid.live/ and verify no errors
@@ -97,7 +105,7 @@ Based on production issues discovered:
 - **Square brackets inside node labels** → Wrap entire label in quotes
 - **Parentheses in pie/gantt labels** → Wrap entire label in quotes
 - **State transition colons** → Keep only label separator colon
-- **Incomplete ```mermaid examples** → Convert to plain ``` blocks
+- **Incomplete ```mermaid examples** → Convert to plain``` blocks
 - **YAML indentation errors** → Config sections must be at 2-space indent (flowchart:, sequence:, state:, etc.)
 
 ### MANDATORY PRE-COMMIT TESTING
@@ -107,6 +115,7 @@ Based on production issues discovered:
 #### Testing Workflow
 
 1. **After ANY file modification:**
+
    ```powershell
    # Test single diagram in Mermaid Live Editor
    # Copy first diagram from modified file to https://mermaid.live/
@@ -114,6 +123,7 @@ Based on production issues discovered:
    ```
 
 2. **After script execution:**
+
    ```powershell
    # Run ALL validation commands from checklist above
    # Fix any errors found
@@ -121,6 +131,7 @@ Based on production issues discovered:
    ```
 
 3. **Before git commit:**
+
    ```powershell
    # Final validation - must pass ALL checks
    cd docs/diagrams
@@ -154,6 +165,7 @@ Based on production issues discovered:
    ```
 
 4. **AFTER PUSHING - Verify rendered output:**
+
    ```powershell
    # MANDATORY: View the actual rendered page on GitHub Pages
    # Wait 2-3 minutes for GitHub Pages to rebuild
@@ -177,7 +189,6 @@ Based on production issues discovered:
    - **YOU MUST SEE THE SAME ERRORS USERS SEE** - check the live site after every push
    - If you can't see rendering errors, you can't fix them proactively
 
-
 ## 🔧 RULES FOR BATCH EDITING SCRIPTS
 
 **CRITICAL: Follow these rules when writing PowerShell/Bash scripts to modify mermaid diagram files.**
@@ -189,6 +200,7 @@ Based on production issues discovered:
 #### ✅ SAFE Replacement Patterns
 
 1. **Match Complete Sections with Boundaries**
+
    ```powershell
    # CORRECT: Match config block with proper boundaries
    $content -replace '(?ms)^config:.*?^---\s*\n', $replacement
@@ -204,6 +216,7 @@ Based on production issues discovered:
    ```
 
 2. **Preserve Structural Separators**
+
    ```powershell
    # CORRECT: Include separators in replacement string
    $replacement = "  c4:`n    boxMargin: 10`n---`n"
@@ -213,6 +226,7 @@ Based on production issues discovered:
    ```
 
 3. **Test Replacement on Single File First**
+
    ```powershell
    # CORRECT: Test before batch processing
    $testFile = 'team-boundaries.md'
@@ -228,6 +242,7 @@ Based on production issues discovered:
 #### ❌ DANGEROUS Patterns - NEVER USE
 
 1. **Greedy Matches Without Boundaries**
+
    ```powershell
    # WRONG: Will match too much or break structure
    $content -replace 'config:.*---', $replacement
@@ -240,6 +255,7 @@ Based on production issues discovered:
    ```
 
 2. **Single-Line Mode Without Anchors**
+
    ```powershell
    # WRONG: Can match across diagrams
    $content -replace 'config:.*', $replacement
@@ -249,6 +265,7 @@ Based on production issues discovered:
    ```
 
 3. **Replacing Separators Alone**
+
    ```powershell
    # WRONG: Can break other markdown elements
    $content -replace '---', '___'
@@ -369,6 +386,7 @@ if ($LASTEXITCODE -eq 0) {
 ### Common Script Pitfalls
 
 1. **PowerShell String Escaping**
+
    ```powershell
    # WRONG: Double quotes inside double quotes
    $str = "fontFamily: "Segoe UI""  # Breaks
@@ -379,6 +397,7 @@ if ($LASTEXITCODE -eq 0) {
    ```
 
 2. **Newline Handling Across Platforms**
+
    ```powershell
    # WRONG: Using \n (Bash style) in PowerShell
    $str = "line1\nline2"  # Literal \n characters
@@ -394,6 +413,7 @@ if ($LASTEXITCODE -eq 0) {
    ```
 
 3. **Regex Greediness**
+
    ```powershell
    # WRONG: Greedy .* matches too much
    $content -replace 'config:.*---', $replacement  # Matches multiple blocks
@@ -403,6 +423,7 @@ if ($LASTEXITCODE -eq 0) {
    ```
 
 4. **File Encoding Issues**
+
    ```powershell
    # WRONG: Default encoding may corrupt UTF-8 files
    Set-Content $file $content
@@ -415,6 +436,7 @@ if ($LASTEXITCODE -eq 0) {
    ```
 
 5. **Missing Backup Before Modification**
+
    ```powershell
    # CORRECT: Always backup before batch edits
    foreach ($file in $files) {
@@ -490,6 +512,7 @@ echo "✓ Diagram validation passed"
 ## Critical Syntax Rules
 
 ### 1. NO HTML Tags
+
 - ❌ **NEVER use `<br/>`, `<span>`, `<div>`, or any HTML tags** in flowchart nodes
 - ✅ Use simple text or markdown formatting with backticks
 - Exception: `<br/>` is ONLY allowed in sequence diagrams for line breaks
@@ -497,6 +520,7 @@ echo "✓ Diagram validation passed"
 ### 2. Special Characters - CRITICAL
 
 #### Colons (`:`) - Multiple Breaking Contexts
+
 - ❌ **Colons in subgraph labels break parsing**: `subgraph "Layer 1: App"` → FAILS
 - ✅ **Remove colons from subgraph labels**: `subgraph "Layer 1 App"` → WORKS
 - ❌ **Double colons in text ALWAYS break**: `Status::OK` → FAILS
@@ -507,6 +531,7 @@ echo "✓ Diagram validation passed"
 - ✅ **Colons OK in link text**: `A -->|Status: OK| B` → WORKS
 
 #### Square Brackets (`[]`) - Breaking in Node Labels
+
 - ❌ **Brackets inside node text break parsing**: `NODE[Status [YES] OK]` → FAILS
 - ✅ **Quote labels with nested brackets**: `NODE["Status [YES] OK"]` → WORKS
 - ❌ **Multiple bracket markers unquoted**: `NODE[Doc [WARNING] Incomplete]` → FAILS
@@ -514,6 +539,7 @@ echo "✓ Diagram validation passed"
 - ✅ **Outer brackets define node - inner brackets need quotes**
 
 #### Forward Slashes (`/`) - Breaking in Node Labels
+
 - ❌ **File paths without quotes break parsing**: `DEV[/dev/i2c-1]` → FAILS
 - ✅ **Quote all paths with slashes**: `DEV["/dev/i2c-1"]` → WORKS
 - ❌ **URLs without quotes can break**: `NODE[http://example.com]` → FAILS
@@ -522,6 +548,7 @@ echo "✓ Diagram validation passed"
 - ⚠️ **Slashes in plain text or tables are OK** (not in diagram code)
 
 #### Quotes - When Required
+
 - ✅ **Quote text with forward slashes**: `id["/path/to/file"]`
 - ✅ **Quote text with parentheses**: `id["Text with (parens)"]`
 - ✅ **Quote text with square brackets**: `id["Status [YES] Complete"]`
@@ -530,15 +557,18 @@ echo "✓ Diagram validation passed"
 - ✅ For markdown: Use backticks: `` id["`**Bold** text`"] ``
 
 #### Reserved Words
+
 - ❌ Word "end" must be capitalized or quoted: `End`, `[end]`, `{end}`
 - ❌ Starting with "o" or "x" creates special edges: `A---oB` = circle edge
 
 ### 3. Subgraph Syntax
+
 ```
 subgraph id [Label Text]
     nodes...
 end
 ```
+
 - ✅ Must have space between id and bracket
 - ❌ **NO colons in labels**: `subgraph "Layer 1: App"` → BREAKS - use `subgraph "Layer 1 App"`
 - ✅ Labels can be quoted for special chars: `subgraph "System/Network"`
@@ -547,6 +577,7 @@ end
 ### 4. Node Labels
 
 #### Simple text
+
 ```
 id[This is text]
 id(Round edges)
@@ -554,12 +585,14 @@ id{Diamond shape}
 ```
 
 #### Unicode/Special characters
+
 ```
 id["Unicode: ❤ works"]
 id["Escaped: #9829;"]
 ```
 
 #### Markdown formatting (requires config)
+
 ```mermaid
 ---
 config:
@@ -573,8 +606,10 @@ flowchart LR
 ### 5. Line Breaks
 
 #### Flowcharts
+
 - ❌ NO `<br/>` tags
 - ✅ Markdown formatting with newlines:
+
 ```
 id["`Line 1
 Line 2
@@ -582,11 +617,15 @@ Line 3`"]
 ```
 
 #### Sequence Diagrams
+
 - ✅ `<br/>` is allowed:
+
 ```
 Alice->John: Hello<br/>World
 ```
+
 - ✅ In participant aliases:
+
 ```
 participant A as Alice<br/>Johnson
 ```
@@ -594,6 +633,7 @@ participant A as Alice<br/>Johnson
 ### 6. Links/Edges
 
 #### Arrow types
+
 ```
 -->  solid with arrow
 ---  solid no arrow
@@ -607,6 +647,7 @@ participant A as Alice<br/>Johnson
 ```
 
 #### Link text
+
 ```
 A -->|Text on link| B
 A -- Text --- B
@@ -614,12 +655,14 @@ A ---|Text| B
 ```
 
 #### Edge IDs (v11.3.0+)
+
 ```
 A e1@--> B
 e1@{ animate: true }
 ```
 
 ### 7. Comments
+
 ```
 %% This is a comment
 %% Must start line with %%
@@ -630,11 +673,13 @@ flowchart LR
 ### 8. Styling
 
 #### Node styling
+
 ```
 style id1 fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 #### Classes
+
 ```
 classDef className fill:#f9f
 class nodeId className
@@ -642,6 +687,7 @@ A:::className --> B
 ```
 
 #### Link styling
+
 ```
 linkStyle 0 stroke:#ff3,stroke-width:4px
 ```
@@ -672,6 +718,7 @@ flowchart:
 ```
 
 **Why `htmlLabels: false` is required:**
+
 - **Subgraph labels overlapping content:** When `htmlLabels: true`, subgraph labels render in HTML foreignObject elements with fixed widths. Multi-line labels wrap behind nodes below them.
 - **Text clipping in diamond shapes:** HTML text in decision nodes gets clipped at the diamond boundaries.
 - **Inconsistent rendering:** GitHub preview and Jekyll HTML render differently because they use different Mermaid configurations.
@@ -681,6 +728,7 @@ flowchart:
   - Don't have fixed-width clipping issues
 
 **Note:** With `htmlLabels: false`, you CANNOT use HTML tags like `<br/>` for line breaks. Use markdown backtick syntax instead:
+
 ```
 id["`Line 1
 Line 2`"]
@@ -706,6 +754,7 @@ flowchart TB
 ```
 
 **Key points:**
+
 - Each subgraph gets a unique spacer ID (spacer1, spacer2, etc.)
 - The spacer node uses `[ ]` (space in brackets) for minimal size
 - The `:::spacer` class makes it invisible
@@ -732,6 +781,7 @@ flowchart TB
 ```
 
 **Key points:**
+
 - All diamond nodes should have `:::diamond` appended
 - The `classDef diamond` uses a smaller font (14px vs 16px default)
 - This prevents text from being clipped at diamond boundaries
@@ -748,11 +798,13 @@ flowchart TB
 ```
 
 **What each class does:**
+
 - `default` - Sets consistent 16px font for all nodes (fixes flowchart font inconsistency)
 - `diamond` - Smaller 14px font for decision shapes (prevents text clipping)
 - `spacer` - Invisible nodes for subgraph label separation
 
 ### Gantt Chart Configuration
+
 ```yaml
 gantt:
   fontSize: 16               # Font size for gantt text (NOT controlled by global fontSize)
@@ -765,6 +817,7 @@ gantt:
 ```
 
 ### Sequence Diagram Configuration
+
 ```yaml
 sequence:
   diagramMarginX: 50         # Left/right margin
@@ -784,6 +837,7 @@ sequence:
 ```
 
 ### State Diagram Configuration
+
 ```yaml
 state:
   dividerMargin: 10          # Margin around dividers
@@ -804,6 +858,7 @@ state:
 ```
 
 ### Class Diagram Configuration
+
 ```yaml
 class:
   arrowMarkerAbsolute: false # Use absolute arrow positioning
@@ -811,6 +866,7 @@ class:
 ```
 
 ### Entity-Relationship Diagram Configuration
+
 ```yaml
 er:
   diagramPadding: 20         # Padding around diagram
@@ -824,6 +880,7 @@ er:
 ```
 
 ### User Journey Configuration
+
 ```yaml
 journey:
   diagramMarginX: 50         # Left/right margin
@@ -836,12 +893,14 @@ journey:
 ```
 
 ### Pie Chart Configuration
+
 ```yaml
 pie:
   textPosition: 0.75         # Label position (0-1 from center)
 ```
 
 ### Quadrant Chart Configuration
+
 ```yaml
 quadrant:
   chartWidth: 500            # Chart width in pixels
@@ -863,6 +922,7 @@ quadrant:
 ```
 
 ### Requirement Diagram Configuration
+
 ```yaml
 requirement:
   rect_fill: '#E8F5E9'      # Rectangle fill color
@@ -877,6 +937,7 @@ requirement:
 ```
 
 ### Git Graph Configuration
+
 ```yaml
 gitGraph:
   showBranches: true        # Show branch labels
@@ -886,6 +947,7 @@ gitGraph:
 ```
 
 ### C4 Diagram Configuration
+
 ```yaml
 c4:
   diagramMarginX: 50        # Left/right margin
@@ -898,6 +960,7 @@ c4:
 ```
 
 ### Usage Syntax
+
 ```
 %%{init: {'theme':'base', 'themeVariables': {'primaryColor':'#ff0000', 'lineColor':'#333'}}}%%
 ```
@@ -905,6 +968,7 @@ c4:
 ### Base Theme Variables
 
 #### Core Colors
+
 - `background` - Diagram background color (default: `#f4f4f4`)
 - `primaryColor` - Primary color for nodes and elements (default: `#fff4dd`)
 - `secondaryColor` - Secondary color, auto-calculated from primary
@@ -917,12 +981,14 @@ c4:
 - `tertiaryBorderColor` - Border color for tertiary elements (auto-calculated)
 
 #### Text and Lines
+
 - `textColor` - General text color (default: same as primaryTextColor)
 - `lineColor` - Line and connection color (auto-calculated from background)
 - `arrowheadColor` - Color of arrow heads (auto-calculated from background)
 - `fontFamily` - Font family for diagram text (default: `"trebuchet ms", verdana, arial, sans-serif`)
 
 **Font Size Configuration:**
+
 - **Global `fontSize`** (config level): Controls overall diagram font size (default: `16`, recommend `18-20`)
   - Place at config level: `config: { fontSize: 16 }`
   - This is a NUMBER without units
@@ -935,6 +1001,7 @@ c4:
   - CSS selectors like `.label`, `.nodeLabel` are unreliable and browser-dependent
   - Use themeCSS for hover effects and custom styling only, not font sizes
   - **Example:**
+
     ```yaml
     config:
       theme: base
@@ -944,6 +1011,7 @@ c4:
     ```
 
 **Edge Label Configuration:**
+
 - **Edge label background**: Controlled by `edgeLabelBackground` in themeVariables
 - **Edge label borders**: NOT supported in base Mermaid theme
   - There is no themeVariable for edge label borders
@@ -952,6 +1020,7 @@ c4:
   - For emphasis, use contrasting `edgeLabelBackground` colors instead
 
 **themeCSS Capabilities:**
+
 - Override CSS styling for visual effects only
 - Add interactive hover effects (`:hover` pseudo-classes work)
 - Add shadows, filters, transforms, animations
@@ -960,15 +1029,18 @@ c4:
 - **WARNING: Edge label borders are NOT supported** - they won't render reliably
 
 **Reliable CSS Selectors (for hover effects only):**
+
 - `.node:hover rect`, `.node:hover circle`, `.node:hover polygon` - Node hover states
 - `.edgePath:hover path` - Connection line hover
 - `.node rect`, `.node circle` - Node shapes for shadows/effects
 
 **Unreliable/Unsupported:**
+
 - `.label`, `.nodeLabel`, `text` - Font size changes via CSS are unreliable
 - `.edgeLabel rect`, `.label-container rect` - Border styling often doesn't render
 
 #### Notes and Labels
+
 - `noteBkgColor` - Background color for note boxes (default: `#fff5ad`)
 - `noteTextColor` - Text color in notes (default: `#333`)
 - `noteBorderColor` - Border color for notes (auto-calculated)
@@ -977,10 +1049,12 @@ c4:
 - `labelTextColor` - Text color in labels
 
 #### Error Styling
+
 - `errorBkgColor` - Background for syntax error messages
 - `errorTextColor` - Text color for error messages
 
 ### Flowchart Variables
+
 - `nodeBkg` - Node background color (default: same as mainBkg)
 - `mainBkg` - Main background for nodes (default: same as primaryColor)
 - `nodeBorder` - Node border color (default: same as primaryBorderColor)
@@ -996,6 +1070,7 @@ c4:
 - `border2` - Alternative border color
 
 ### Sequence Diagram Variables
+
 - `actorBkg` - Actor box background (default: same as mainBkg)
 - `actorBorder` - Actor box border (default: same as primaryBorderColor)
 - `actorTextColor` - Text in actor boxes (default: same as primaryTextColor)
@@ -1010,6 +1085,7 @@ c4:
 - `sequenceNumberColor` - Color of sequence numbers (auto-calculated)
 
 ### State Diagram Variables
+
 - `stateBkg` - State box background (default: same as mainBkg)
 - `compositeBackground` - Background for composite states (default: background or tertiaryColor)
 - `altBackground` - Alternative background for deep composite states (default: same as tertiaryColor)
@@ -1020,6 +1096,7 @@ c4:
 - `specialStateColor` - Color for special states (default: same as lineColor)
 
 ### Gantt Diagram Variables
+
 - `sectionBkgColor` - Section background color (default: same as tertiaryColor)
 - `altSectionBkgColor` - Alternate section background (default: `white`)
 - `sectionBkgColor2` - Second section background (default: same as primaryColor)
@@ -1044,8 +1121,10 @@ c4:
 **IMPORTANT: Gantt Charts Require Explicit Colors**
 
 Gantt charts do NOT inherit flowchart `themeCSS` font sizing. You must:
+
 1. Set `gantt: { fontSize: 16 }` in config for font size control
 2. Define ALL section and task colors explicitly to avoid white backgrounds:
+
    ```yaml
    themeVariables:
      # Section backgrounds (horizontal rows) - MUST set all 3
@@ -1076,9 +1155,11 @@ Gantt charts do NOT inherit flowchart `themeCSS` font sizing. You must:
 Without explicit colors, sections and tasks may render with white/default backgrounds, making them invisible or indistinguishable.
 
 ### Class Diagram Variables
+
 - `classText` - Text color in class boxes (default: same as textColor)
 
 ### Pie Chart Variables
+
 - `pie1` through `pie12` - Fill colors for pie sections (defaults: various calculated colors)
 - `pieTitleTextSize` - Title text size (default: `25px`)
 - `pieTitleTextColor` - Title text color
@@ -1093,6 +1174,7 @@ Without explicit colors, sections and tasks may render with white/default backgr
 - `pieOpacity` - Section opacity (default: `0.7`)
 
 ### Quadrant Chart Variables
+
 - `quadrant1Fill` through `quadrant4Fill` - Fill colors for quadrants
 - `quadrant1TextFill` through `quadrant4TextFill` - Text colors in quadrants
 - `quadrantPointFill` - Point fill color
@@ -1104,7 +1186,9 @@ Without explicit colors, sections and tasks may render with white/default backgr
 - `quadrantTitleFill` - Quadrant title text color
 
 ### XY Chart Variables
+
 `xyChart` is an object containing:
+
 - `backgroundColor` - Chart background
 - `titleColor` - Chart title color
 - `xAxisTitleColor` - X-axis title color
@@ -1118,6 +1202,7 @@ Without explicit colors, sections and tasks may render with white/default backgr
 - `plotColorPalette` - Comma-separated color list for data series
 
 ### Requirement Diagram Variables
+
 - `requirementBackground` - Requirement box background (default: same as primaryColor)
 - `requirementBorderColor` - Requirement box border (default: same as primaryBorderColor)
 - `requirementBorderSize` - Border width (default: `1`)
@@ -1127,6 +1212,7 @@ Without explicit colors, sections and tasks may render with white/default backgr
 - `relationLabelColor` - Relation label text color (default: same as actorTextColor)
 
 ### Git Graph Variables
+
 - `git0` through `git7` - Branch colors (calculated from primary/secondary/tertiary)
 - `gitInv0` through `gitInv7` - Inverted branch colors
 - `gitBranchLabel0` through `gitBranchLabel7` - Branch label text colors
@@ -1139,6 +1225,7 @@ Without explicit colors, sections and tasks may render with white/default backgr
 - `tagLabelFontSize` - Tag label font size
 
 ### Color Scale Variables (for general use)
+
 - `cScale0` through `cScale11` - Base color scale (12 colors)
 - `cScaleInv0` through `cScaleInv11` - Inverted color scale
 - `cScalePeer0` through `cScalePeer11` - Peer colors for borders
@@ -1146,20 +1233,24 @@ Without explicit colors, sections and tasks may render with white/default backgr
 - `scaleLabelColor` - Default scale label color (default: same as labelTextColor)
 
 ### Surface Colors (for layered elements)
+
 - `surface0` through `surface4` - Surface background colors (5 levels)
 - `surfacePeer0` through `surfacePeer4` - Peer/border colors for surfaces
 
 ### User Journey / Timeline Variables
+
 - `fillType0` through `fillType7` - Section fill colors
 - `actorColours` - Array of actor colors
 - `sectionFills` - Array of section fill colors
 - `sectionColours` - Array of section text colors
 
 ### Entity-Relationship Diagram Variables
+
 - `attributeBackgroundColorOdd` - Background for odd attribute rows
 - `attributeBackgroundColorEven` - Background for even attribute rows
 
 ### darkMode Flag
+
 - `darkMode` (boolean) - Affects color calculations (default: `false`)
 
 ## 🎨 Seasonal Theme Presets
@@ -1171,6 +1262,7 @@ These are complete, ready-to-use theme configurations. Copy the frontmatter for 
 ### SPRING Theme (Fresh & Vibrant)
 
 **Color Palette:**
+
 - Primary: Fresh green (#E8F5E9, #4CAF50, #66BB6A)
 - Secondary: Soft pink (#FCE4EC, #F06292)
 - Tertiary: Pale yellow (#FFF9C4, #FDD835)
@@ -1178,6 +1270,7 @@ These are complete, ready-to-use theme configurations. Copy the frontmatter for 
 - Background: Light mint (#F1F8E9)
 
 **Copy this frontmatter to use Spring theme:**
+
 ```yaml
 ---
 config:
@@ -1370,6 +1463,7 @@ config:
 ### SUMMER Theme (Bright & Warm)
 
 **Color Palette:**
+
 - Primary: Sky blue (#E1F5FE, #0288D1, #29B6F6)
 - Secondary: Sunny yellow (#FFF9C4, #FDD835)
 - Tertiary: Warm coral (#FFE0B2, #FF9800)
@@ -1377,6 +1471,7 @@ config:
 - Background: Pale sky (#E3F2FD)
 
 **Copy this frontmatter to use Summer theme:**
+
 ```yaml
 ---
 config:
@@ -1569,6 +1664,7 @@ config:
 ### FALL Theme (Rich & Earthy)
 
 **Color Palette:**
+
 - Primary: Burnt orange (#FFF3E0, #FF6F00, #FF9800)
 - Secondary: Deep purple (#F3E5F5, #9C27B0)
 - Tertiary: Golden yellow (#FBC02D)
@@ -1576,6 +1672,7 @@ config:
 - Background: Warm cream (#FFF8E1)
 
 **Copy this frontmatter to use Fall theme:**
+
 ```yaml
 ---
 config:
@@ -1768,6 +1865,7 @@ config:
 ### WINTER Theme (Cool & Crisp)
 
 **Color Palette:**
+
 - Primary: Ice blue (#E3F2FD, #1976D2, #42A5F5)
 - Secondary: Slate grey (#ECEFF1, #78909C)
 - Tertiary: Pale cyan (#E1F5FE, #26C6DA)
@@ -1775,6 +1873,7 @@ config:
 - Background: Snow white (#FAFAFA)
 
 **Copy this frontmatter to use Winter theme:**
+
 ```yaml
 ---
 config:
@@ -1970,6 +2069,7 @@ config:
 2. **Copy the entire YAML frontmatter block** (from `---` to `---`)
 3. **Open your diagram file** (e.g., `docs/diagrams/overview.md`)
 4. **Paste at the top of each mermaid block:**
+
    ```markdown
    ```mermaid
    ---
@@ -1982,7 +2082,7 @@ config:
    flowchart LR
        A --> B
    ```
-   ```
+
 5. **Replace any existing frontmatter** - only one frontmatter block per diagram
 6. **Test in Mermaid Live Editor** before committing
 
@@ -1998,11 +2098,13 @@ config:
 **Note:** Arrow label borders and hover effects require CSS in `docs/_sass/custom.scss` and only work on GitHub Pages (phantom-man.github.io/PROVES_LIBRARY), NOT on GitHub.com.
 
 GitHub.com renders Mermaid server-side without custom CSS. To add borders to arrow labels:
+
 - Use custom CSS on GitHub Pages deployment
 - View diagrams on GitHub Pages for full styling (borders, hover effects)
 - On GitHub.com, only `edgeLabelBackground` theme variable works
 
 ## Theme Variables Reference
+
 ```
 %%{init: {'theme':'base', 'themeVariables': {
   'primaryColor':'#BB2528',
@@ -2022,6 +2124,7 @@ flowchart TD
 ## Flowchart-Specific Rules
 
 ### Node Shapes
+
 ```
 id[Rectangle]
 id(Round edges)
@@ -2040,6 +2143,7 @@ id(((Double circle)))
 ```
 
 ### Direction
+
 ```
 flowchart TB   %% Top to Bottom
 flowchart TD   %% Top-Down (same as TB)
@@ -2049,6 +2153,7 @@ flowchart RL   %% Right to Left
 ```
 
 ### Subgraph Direction
+
 ```mermaid
 flowchart LR
     subgraph id
@@ -2060,6 +2165,7 @@ flowchart LR
 ## Sequence Diagram-Specific Rules
 
 ### Participants
+
 ```
 participant A as Alice
 actor B as Bob
@@ -2068,6 +2174,7 @@ participant D@{ "type" : "database" }
 ```
 
 ### Messages
+
 ```
 ->   solid no arrow
 -->  dotted no arrow
@@ -2081,6 +2188,7 @@ participant D@{ "type" : "database" }
 ```
 
 ### Activations
+
 ```
 activate Alice
 deactivate Alice
@@ -2090,17 +2198,20 @@ Bob-->>-Alice: Reply
 ```
 
 ### Notes
+
 ```
 Note right of Alice: Text
 Note left of Alice: Text
 Note over Alice,Bob: Text
 ```
+
 - ⚠️ **CRITICAL**: Text after first colon cannot contain more colons
-- ❌ **BREAKS**: `Note over A: Step 1: Initialize device` 
+- ❌ **BREAKS**: `Note over A: Step 1: Initialize device`
 - ✅ **WORKS**: `Note over A: Step 1 Initialize device`
 - ✅ **Single colon separating label is OK**: `Note over A: Any text here`
 
 ### Loops/Alt/Par
+
 ```
 loop Every minute
     A->>B: Check
@@ -2122,18 +2233,21 @@ end
 ## State Diagram-Specific Rules
 
 ### Transitions
+
 ```mermaid
 stateDiagram-v2
     [*] --> State1
     State1 --> State2: Transition label
     State2 --> [*]
 ```
+
 - ⚠️ **CRITICAL**: Transition labels after colon cannot contain more colons
 - ❌ **BREAKS**: `State1 --> State2: Currently: No recovery`
 - ✅ **WORKS**: `State1 --> State2: Currently No recovery`
 - ✅ **Single colon for label is OK**: `State1 --> State2: Any text`
 
 ### Composite States
+
 ```mermaid
 stateDiagram-v2
     state "Complex State" as CS {
@@ -2145,12 +2259,15 @@ stateDiagram-v2
 ## Common Errors and Fixes
 
 ### Error: "Unable to render rich display"
-**Causes:** 
+
+**Causes:**
+
 - HTML tags like `<br/>` in flowcharts
 - Colons in subgraph labels or node text
 - Unquoted special characters
 
 **Fix:**
+
 ```
 %% BAD
 flowchart LR
@@ -2169,12 +2286,15 @@ flowchart LR
 ```
 
 ### Error: "Unexpected character at offset X"
+
 **Causes:**
+
 - Colons in subgraph labels: `subgraph "Layer 1: App"`
 - Colons after colon in sequence notes: `Note over A: Step 1: Details`
 - Unquoted forward slashes: `/dev/i2c-1`
 
 **Fix:**
+
 ```
 %% BAD
 subgraph "API: v2"
@@ -2190,11 +2310,14 @@ Note over A: Step 1 Initialize
 ```
 
 ### Error: "Lexical error on line X. Unrecognized text"
+
 **Causes:**
+
 - Forward slashes without quotes: `node[/path/to/file]`
 - File paths or URLs without quotes: `/dev/i2c-1`
 
 **Fix:**
+
 ```
 %% BAD
 flowchart LR
@@ -2213,9 +2336,11 @@ end
 ```
 
 ### Error: Nodes not rendering
+
 **Cause:** Reserved word "end" or starting with "o"/"x"
 
 **Fix:**
+
 ```
 %% BAD
 A --> end
@@ -2229,6 +2354,7 @@ dev --> Ops
 ## Configuration
 
 ### Frontmatter
+
 ```mermaid
 ---
 title: My Diagram
@@ -2245,6 +2371,7 @@ flowchart LR
 ```
 
 ### Directives
+
 ```mermaid
 %%{init: {'theme':'forest', 'flowchart': {'curve': 'linear'}}}%%
 flowchart LR
@@ -2256,6 +2383,7 @@ flowchart LR
 **To force straight lines instead of curved:**
 
 #### Method 1: Frontmatter (affects entire diagram)
+
 ```mermaid
 ---
 config:
@@ -2267,6 +2395,7 @@ flowchart LR
 ```
 
 #### Method 2: Directive (inline)
+
 ```
 %%{init: {'flowchart': {'curve': 'linear'}}}%%
 flowchart LR
@@ -2274,6 +2403,7 @@ flowchart LR
 ```
 
 **Curve options:**
+
 - `linear` - Straight lines (no curves)
 - `basis` - Smooth curves (default)
 - `step` - Step-like connections
@@ -2302,6 +2432,7 @@ flowchart LR
 Run these checks BEFORE committing any Mermaid diagrams:
 
 #### 1. Flowchart Validation
+
 - [ ] **No HTML tags**: Search for `<br/>`, `<span>`, `<div>` in flowchart nodes
 - [ ] **No unquoted paths**: Search for `/dev/`, `/sys/`, file paths without quotes
 - [ ] **No unquoted brackets**: Search for `[YES]`, `[NO]`, `[WARNING]` inside node labels
@@ -2312,11 +2443,13 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Word "end" capitalized or quoted**
 
 #### 2. Sequence Diagram Validation  
+
 - [ ] **No colons in note text**: `Note over A: Step 1: Details` → FAILS (use `Step 1 Details`)
 - [ ] **`<br/>` allowed**: Line breaks are OK in sequence diagrams
 - [ ] **No double colons in messages**
 
 #### 3. Pie Chart Validation
+
 - [ ] **ALWAYS quote all labels**: Even simple labels like `HIGH` need quotes
 - [ ] **Proper syntax**: `"Label text" : value` (always with quotes)
 - [ ] **Quote labels with parentheses**: `Direct (visible) : 15` → FAILS without quotes
@@ -2324,11 +2457,13 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Use descriptive labels**: Avoid short labels starting with quotes that may be hidden by legend box
 
 #### 4. State Diagram Validation
+
 - [ ] **No colons in transition labels**: `State1 --> State2: Text: More` → FAILS
 - [ ] **Single colon for label OK**: `State1 --> State2: Text` → WORKS
 - [ ] **Same rule as sequence notes**: Text after colon cannot have more colons
 
 #### 5. Gantt Chart Validation
+
 - [ ] **No colons in task descriptions**: `Gap: Team leaves` → FAILS (use `Gap Team leaves`)
 - [ ] **Colon delimiter required**: `Task name :milestone, crit, 2024-01, 0d` (colon after name is syntax)
 - [ ] **Avoid colons before delimiter colon**: Having `Task: Name :milestone` confuses parser
@@ -2336,12 +2471,14 @@ Run these checks BEFORE committing any Mermaid diagrams:
 - [ ] **Section names**: Plain text, no quotes needed
 
 #### 5. Quadrant Chart Validation
+
 - [ ] **Quote all data point labels**: Especially those with colons or special characters
 - [ ] **Syntax**: `"Label text": [x, y]` with quotes
 - [ ] **Special characters**: Unicode like `F´` needs quotes if label has colons
 
 #### 6. Universal Checks (All Diagram Types)
-- [ ] **Test in Mermaid Live Editor**: https://mermaid.live/
+
+- [ ] **Test in Mermaid Live Editor**: <https://mermaid.live/>
 - [ ] **Check rendering on GitHub**: After push, verify actual rendering
 - [ ] **All quotes properly closed**: Balance `"` marks
 - [ ] **Comments start with `%%`**: Inline comments not supported
@@ -2391,10 +2528,12 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
 2. **Subgraph labels too close to content boxes**
    - **Problem**: Subgraph titles appear directly on top of the subgraph border, overlapping with content
    - **Solution**: Add vertical offset to themeCSS:
+
    ```yaml
    themeCSS: |
      .cluster-label { font-weight: 600 !important; }
    ```
+
    - **Why**: Mermaid renders cluster labels at the exact border position with no spacing
    - **How it works**: `translateY(-15px)` moves the label 15 pixels upward, away from the box
    - **Impact**: Critical for diagrams with subgraphs (team boundaries, system architecture)
@@ -2430,14 +2569,16 @@ grep -A 10 'quadrantChart' docs/diagrams/*.md | grep -E '^\s+[^"]+:\s*\['
    - ✅ `I2C_OK`
 
 10. **Gantt task names with colons**
-   - ❌ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
-   - ✅ `Gap Team leaves :milestone, crit, 2021-05, 0d`
-   - ⚠️ Colon in task description before delimiter confuses parser
 
-11. **Quadrant chart labels without quotes**
-   - ❌ `F´ Core Docs: [0.1, 0.9]`
-   - ✅ `"F´ Core Docs": [0.1, 0.9]`
-   - ⚠️ Always quote data point labels, especially with colons or special chars
+- ❌ `Gap: Team leaves :milestone, crit, 2021-05, 0d`
+- ✅ `Gap Team leaves :milestone, crit, 2021-05, 0d`
+- ⚠️ Colon in task description before delimiter confuses parser
+
+1. **Quadrant chart labels without quotes**
+
+- ❌ `F´ Core Docs: [0.1, 0.9]`
+- ✅ `"F´ Core Docs": [0.1, 0.9]`
+- ⚠️ Always quote data point labels, especially with colons or special chars
 
 ---
 
@@ -2506,6 +2647,7 @@ config:
 ```
 
 **Critical Settings Explained:**
+
 - `htmlLabels: false` - **MANDATORY** - Prevents HTML rendering issues
 - `padding: 40` - Ensures content doesn't touch subgraph borders
 - `nodeSpacing: 100` - Horizontal space between nodes
@@ -2529,6 +2671,7 @@ flowchart TB
 ```
 
 **Rules for Spacer Nodes:**
+
 1. Place immediately after the subgraph opening line
 2. Use unique IDs: `spacer1`, `spacer2`, etc.
 3. Content must be a single space: `[" "]`
@@ -2539,7 +2682,8 @@ flowchart TB
 
 **Problem**: Diamond shapes have limited space for text.
 
-**Solution**: 
+**Solution**:
+
 1. Keep diamond labels SHORT (max 3-4 words)
 2. Use smaller font: `:::diamond` class
 3. Move details to connected nodes or edge labels
@@ -2997,6 +3141,3 @@ def validate_mermaid(diagram_code):
 
 **Version:** Based on Mermaid v10+ (GitHub rendering)
 **Last Updated:** December 28, 2024
-
-
-
