@@ -43,7 +43,7 @@ This library provides structured knowledge extraction and preservation for techn
 
 ---
 
-> **dY"S System Self-Analysis: Meta-Learning in Action**
+> **System Self-Analysis: Meta-Learning in Action**
 >
 > The agentic system analyzes its own extraction quality and graph structure. Two views are tracked: production extraction status and agent trial-run learning logs.
 >

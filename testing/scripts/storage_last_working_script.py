@@ -17,18 +17,13 @@ import os
 import hashlib
 import uuid
 from datetime import datetime
-from typing import Literal
-
-# Add production/core to path for database utilities
-core_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../core'))
-sys.path.insert(0, core_path)
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../../../scripts'))
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
-
-from graph_manager import GraphManager
+from scripts.core.graph_manager import GraphManager
 
 
 def get_db_connection():
@@ -76,51 +71,10 @@ def store_extraction(
     properties: dict = None,
     confidence_score: float = 0.8,
     confidence_reason: str = "LLM extraction",
-    evidence_type: Literal[
-        'explicit_requirement',
-        'safety_constraint',
-        'performance_constraint',
-        'feature_description',
-        'interface_specification',
-        'behavioral_contract',
-        'example_usage',
-        'design_rationale',
-        'dependency_declaration',
-        'configuration_parameter',
-        'inferred'
-    ] = "explicit_requirement",
+    evidence_type: str = "definition_spec",
     reasoning_trail: dict = None,
     duplicate_check: dict = None,
-    source_metadata: dict = None,
-    # Knowledge Capture Checklist (7 questions) - stored in knowledge_epistemics sidecar
-    domain: str = "external",  # 'fprime', 'proveskit', 'external', etc.
-    # EPISTEMIC ATTRIBUTION: You are the RECORDER, not the OBSERVER
-    # observer_id = WHO claimed to know this (designers, authors, system, unknown)
-    # observer_type = THEIR role (human, system, instrument, unknown) - NEVER 'ai'
-    # The AI (you) is the artifact_recorder, not the attributed_observer
-    observer_id: str = "unknown",  # Default: attributed observer unknown
-    observer_type: str = "unknown",  # human | system | instrument | unknown (NOT ai)
-    contact_mode: str = "derived",  # How the ATTRIBUTED observer knew this
-    contact_strength: float = 0.20,  # How close the ATTRIBUTED observer was (default low for derived)
-    signal_type: str = "text",
-    pattern_storage: str = "externalized",
-    representation_media: list = None,  # Will default to [signal_type] if None
-    dependencies: list = None,  # List of entity keys or extraction_ids (JSONB array)
-    sequence_role: str = "none",
-    validity_conditions: dict = None,
-    assumptions: list = None,
-    scope: str = None,
-    observed_at: str = None,
-    valid_from: str = None,
-    valid_to: str = None,
-    refresh_trigger: str = None,
-    staleness_risk: float = 0.20,
-    author_id: str = None,
-    intent: str = "unknown",
-    uncertainty_notes: str = None,
-    reenactment_required: bool = False,
-    practice_interval: str = None,
-    skill_transferability: str = "portable"
+    source_metadata: dict = None
 ) -> str:
     """
     Deliver an extracted entity to the human review inbox (staging_extractions table).
@@ -155,10 +109,8 @@ def store_extraction(
 
         confidence_score: How confident the extractor is (0.0 to 1.0)
         confidence_reason: Why this confidence level
-        evidence_type: 'explicit_requirement', 'safety_constraint', 'performance_constraint',
-                       'feature_description', 'interface_specification', 'behavioral_contract',
-                       'example_usage', 'design_rationale', 'dependency_declaration',
-                       'configuration_parameter', 'inferred'
+        evidence_type: 'definition_spec', 'interface_contract', 'example', 'narrative',
+                       'table_diagram', 'comment', 'inferred'
         reasoning_trail: Agent's reasoning process (NEW - helps human understand logic):
             {
                 "verified_entities_consulted": ["entity_123", "entity_456"],
@@ -179,37 +131,6 @@ def store_extraction(
                 "source_type": "webpage",
                 "fetch_timestamp": "2025-12-23T10:45:32Z"
             }
-        observer_id: WHO claimed to know this (NOT you the AI!)
-            - "designers" | "authors" | "maintainers" | "system" | "unknown"
-            - You are the RECORDER (artifact_recorder_id = ai:extractor_v3)
-            - observer_id is the ATTRIBUTED observer (who actually documented/observed this)
-        observer_type: 'human' | 'system' | 'instrument' | 'unknown' (NEVER 'ai')
-            - Question 1: Who knew this, and how close were they?
-            - If you can't tell who documented it, use 'unknown'
-        contact_mode: How the ATTRIBUTED observer knew this
-            - 'direct' | 'mediated' | 'effect_only' | 'derived'
-        contact_strength: How close the ATTRIBUTED observer was (0.00-1.00)
-            - 1.0 = direct physical contact, 0.2 = derived from docs (default)
-        signal_type: 'text' | 'code' | 'spec' | 'comment' | 'log' | 'telemetry' | etc.
-        pattern_storage: 'internalized' | 'externalized' | 'mixed' | 'unknown'
-            Question 2: Where does the experience live? (embodied in body vs in docs)
-        representation_media: List of media types (e.g., ["text"], ["code", "diagram"])
-        dependencies: List of entity keys or extraction_ids (Question 3: What must stay connected?)
-        sequence_role: 'precondition' | 'step' | 'outcome' | 'postcondition' | 'none'
-        validity_conditions: JSON dict (Question 4: Under what conditions was this true?)
-        assumptions: List of assumptions this knowledge depends on
-        scope: 'local' | 'subsystem' | 'system' | 'general'
-        observed_at: When this was observed (ISO timestamp)
-        valid_from: When this becomes valid
-        valid_to: When this stops being valid (Question 5: When does this expire?)
-        refresh_trigger: What triggers need to refresh ("new_rev", "recalibration", etc.)
-        staleness_risk: 0.00-1.00 risk of knowledge becoming stale
-        author_id: Who wrote/taught this (Question 6: Who wrote this, and why?)
-        intent: 'explain' | 'instruct' | 'justify' | 'explore' | 'comply' | 'persuade' | etc.
-        uncertainty_notes: Explicit uncertainties or provisional nature
-        reenactment_required: Question 7: Does this only work if someone keeps doing it?
-        practice_interval: How often practice is needed ("per-run", "weekly", etc.)
-        skill_transferability: 'portable' | 'conditional' | 'local' | 'tacit_like'
 
     Lineage Computation (AUTOMATIC):
         This function automatically computes lineage verification data:
@@ -420,7 +341,6 @@ def store_extraction(
 
             evidence = json.dumps(evidence_data)
 
-            # Insert into staging_extractions (core extraction data)
             cur.execute("""
                 INSERT INTO staging_extractions (
                     pipeline_run_id, snapshot_id, agent_id, agent_version,
@@ -449,50 +369,6 @@ def store_extraction(
                 json.dumps(lineage_verification_details)
             ))
             extraction_id = cur.fetchone()[0]
-
-            # Insert into knowledge_epistemics sidecar (epistemic metadata)
-            # Prepare representation_media as array
-            if representation_media is None:
-                representation_media = ['text']
-
-            # Convert timestamps to proper format if provided as strings
-            observed_at_ts = observed_at if observed_at else None
-            valid_from_ts = valid_from if valid_from else None
-            valid_to_ts = valid_to if valid_to else None
-
-            cur.execute("""
-                INSERT INTO knowledge_epistemics (
-                    extraction_id,
-                    domain,
-                    observer_id, observer_type, contact_mode, contact_strength, signal_type,
-                    pattern_storage, representation_media,
-                    dependencies, sequence_role,
-                    validity_conditions, assumptions, scope,
-                    observed_at, valid_from, valid_to, refresh_trigger, staleness_risk,
-                    author_id, intent, uncertainty_notes,
-                    reenactment_required, practice_interval, skill_transferability
-                ) VALUES (
-                    %s::uuid,
-                    %s,
-                    %s, %s, %s::contact_mode, %s, %s::signal_type,
-                    %s::pattern_storage, %s,
-                    %s::jsonb, %s::sequence_role,
-                    %s::jsonb, %s, %s,
-                    %s::timestamptz, %s::timestamptz, %s::timestamptz, %s, %s,
-                    %s, %s::author_intent, %s,
-                    %s, %s, %s::transferability
-                )
-            """, (
-                extraction_id,
-                domain,
-                observer_id, observer_type, contact_mode, contact_strength, signal_type,
-                pattern_storage, representation_media,
-                json.dumps(dependencies) if dependencies else None, sequence_role,
-                json.dumps(validity_conditions) if validity_conditions else None, assumptions, scope,
-                observed_at_ts, valid_from_ts, valid_to_ts, refresh_trigger, staleness_risk,
-                author_id, intent, uncertainty_notes,
-                reenactment_required, practice_interval, skill_transferability
-            ))
         conn.commit()
         conn.close()
 
@@ -929,24 +805,36 @@ def get_graph_statistics() -> str:
 
 
 @traceable(name="storage_subagent")
-def create_storage_agent(checkpointer=None):
+def create_storage_agent():
     """
-    Create the storage sub-agent with epistemic field mapping training.
+    Create the storage sub-agent
 
-    Args:
-        checkpointer: Optional LangGraph checkpointer (e.g., PostgresSaver) for state persistence
+    This agent specializes in:
+    - store_extraction() -> staging_extractions (new primary workflow)
+    - promote_to_core() -> core_entities (after validation)
+    - store_equivalence() -> core_equivalences (cross-ecosystem links)
+    - get_staging_statistics() -> domain table stats
+
+    Legacy tools (backward compatible):
+    - store_finding() -> findings table
+    - legacy_store_equivalence() -> equivalences table
+    - record_crawled_source() -> crawled_sources
+
+    Uses Claude Haiku 3.5 for cost optimization (storage is simple database operations)
     """
-    from langchain.agents import create_agent
-    from ..subagent_specs import get_storage_spec
-
-    spec = get_storage_spec()
-
-    # Create agent with system prompt and optional checkpointer
-    agent = create_agent(
-        model=ChatAnthropic(model=spec["model"], temperature=0.1),
-        system_prompt=spec["system_prompt"],
-        tools=spec["tools"],
-        checkpointer=checkpointer,
+    model = ChatAnthropic(
+        model="claude-3-5-haiku-20241022",
+        temperature=0.1,
     )
 
+    tools = [
+        # Extraction workflow - ONLY store, don't promote (human review required)
+        store_extraction,        # Stage extractions for human review
+        get_staging_statistics,  # Query database stats
+        # REMOVED: promote_to_core - only called by separate script after human approval
+        # REMOVED: store_equivalence - only used after entities are in core
+        # Legacy tools REMOVED - they cause schema confusion
+    ]
+
+    agent = create_react_agent(model, tools)
     return agent

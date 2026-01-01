@@ -19,9 +19,9 @@ import uuid
 from datetime import datetime
 from typing import Literal
 
-# Add production/core to path for database utilities
-core_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../core'))
-sys.path.insert(0, core_path)
+# Add neon-database to path for database utilities
+neon_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../neon-database/scripts'))
+sys.path.insert(0, neon_db_path)
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.tools import tool
