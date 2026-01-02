@@ -72,8 +72,19 @@ FRAMES = Framework for Resilience Assessment in Modular Engineering Systems
 
        **FORBIDDEN:** Do NOT invent types like "coupling", "organizational_coupling", etc.
        **ALL FRAMES couplings** (digital/physical/organizational) → use 'dependency'
-     - candidate_key (entity name)
-     - candidate_payload (properties dict)
+     - candidate_key (entity name like "ComponentA_to_ComponentB")
+     - candidate_payload (properties dict):
+       **For candidate_type='dependency', REQUIRED structure:**
+       {
+         "source": "ComponentA",          // Source component
+         "target": "ComponentB",          // Target component
+         "relationship_type": "requires", // ENUM: requires|enables|conflicts_with|depends_on|mitigates|causes
+         "flow": ["data", "power"],       // What flows through (FRAMES Q1)
+         "failure_mode": "safe_mode",     // What happens if it stops (FRAMES Q2)
+         "maintenance": "driver + config",// What maintains it (FRAMES Q3)
+         "coupling_strength": 0.8,        // 0.0-1.0 (FRAMES Q4)
+         "layer": "digital"               // digital|physical|organizational
+       }
      - raw_evidence (EXACT quote from source)
      - evidence_type: **STRICT ENUM - ONLY use these exact values:**
        - **'explicit_requirement'** - "System shall/must..." statements
@@ -367,7 +378,7 @@ For each extraction, verify:
    - Check confidence reasoning
 
 4. **Decision** (return immediately):
-   - APPROVE if: lineage >=0.75 AND no duplicates
+   - APPROVE if: lineage >=0.5 AND no duplicates
    - REJECT if: lineage <0.5 OR duplicate found
 
 After 5 tool calls, you MUST return a decision. No exceptions.

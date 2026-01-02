@@ -1,5 +1,9 @@
 """
-Extractor Sub-Agent
+Extractor Sub-Agent (BACKUP VERSION for Testing Refactors)
+
+This is a COPY of production/curator/subagents/extractor.py
+Used for testing refactors in isolation from production.
+
 Specialized agent for mapping system architecture using FRAMES methodology.
 
 FRAMES = Framework for Resilience Assessment in Modular Engineering Systems
@@ -65,10 +69,10 @@ def get_db_connection():
     """Get a database connection from environment."""
     import psycopg
     from dotenv import load_dotenv
-    
+
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
     load_dotenv(os.path.join(project_root, '.env'))
-    
+
     db_url = os.environ.get('NEON_DATABASE_URL')
     if not db_url:
         raise ValueError("NEON_DATABASE_URL not set")
@@ -98,130 +102,12 @@ def get_or_create_pipeline_run(conn, run_name: str = "curator_extraction") -> st
         return str(cur.fetchone()[0])
 
 
-@tool
-def create_lineage_data(snapshot_id: str, evidence_text: str) -> str:
-    """
-    Create lineage verification data for an evidence quote.
-
-    CRITICAL: Uses explicit UTF-8 encoding for checksums and byte offsets.
-    This ensures consistent, reproducible lineage verification.
-
-    Args:
-        snapshot_id: UUID of the snapshot from raw_snapshots
-        evidence_text: The exact evidence quote to verify
-
-    Returns:
-        JSON string with lineage data:
-        {
-            "evidence_checksum": "sha256:abc123...",
-            "evidence_byte_offset": 1234,
-            "evidence_byte_length": 56,
-            "lineage_verified": true,
-            "lineage_confidence": 0.95,
-            "checks_passed": 5,
-            "checks_failed": 1
-        }
-    """
-    import json
-
-    try:
-        conn = get_db_connection()
-
-        # Query snapshot payload
-        with conn.cursor() as cur:
-            cur.execute("""
-                SELECT payload, content_hash
-                FROM raw_snapshots
-                WHERE id = %s::uuid
-            """, (snapshot_id,))
-            row = cur.fetchone()
-
-            if not row:
-                return json.dumps({
-                    "error": f"Snapshot {snapshot_id} not found",
-                    "lineage_verified": False,
-                    "lineage_confidence": 0.0
-                })
-
-            payload_jsonb, snapshot_checksum = row
-
-        conn.close()
-
-        # Extract content from JSONB payload
-        if isinstance(payload_jsonb, dict):
-            payload_content = payload_jsonb.get('content', '')
-        else:
-            payload_content = str(payload_jsonb)
-
-        # CRITICAL: Use explicit UTF-8 encoding for all byte operations
-        payload_bytes = payload_content.encode('utf-8')
-        evidence_bytes = evidence_text.encode('utf-8')
-
-        # Calculate checksum with explicit UTF-8
-        evidence_checksum = hashlib.sha256(evidence_bytes).hexdigest()
-
-        # Find byte offset in payload
-        evidence_offset = payload_bytes.find(evidence_bytes)
-        evidence_length = len(evidence_bytes)
-
-        # Lineage verification checks
-        checks_passed = []
-        checks_failed = []
-
-        # Check 1: Evidence text not empty
-        if evidence_text.strip():
-            checks_passed.append("evidence_not_empty")
-        else:
-            checks_failed.append("evidence_empty")
-
-        # Check 2: Evidence found in snapshot
-        if evidence_offset != -1:
-            checks_passed.append("evidence_found_in_snapshot")
-        else:
-            checks_failed.append("evidence_not_found_in_snapshot")
-
-        # Check 3: Checksum calculated successfully
-        if evidence_checksum:
-            checks_passed.append("checksum_calculated")
-        else:
-            checks_failed.append("checksum_failed")
-
-        # Check 4: Snapshot has checksum
-        if snapshot_checksum:
-            checks_passed.append("snapshot_has_checksum")
-        else:
-            checks_failed.append("snapshot_missing_checksum")
-
-        # Check 5: Evidence length reasonable (not empty, not too large)
-        if 10 <= evidence_length <= 10000:
-            checks_passed.append("evidence_length_reasonable")
-        else:
-            checks_failed.append("evidence_length_unreasonable")
-
-        # Calculate lineage confidence
-        total_checks = len(checks_passed) + len(checks_failed)
-        lineage_confidence = len(checks_passed) / total_checks if total_checks > 0 else 0.0
-
-        # Lineage verified if evidence found and confidence >= 0.75
-        lineage_verified = (evidence_offset != -1) and (lineage_confidence >= 0.75)
-
-        return json.dumps({
-            "evidence_checksum": f"sha256:{evidence_checksum}",
-            "evidence_byte_offset": evidence_offset,
-            "evidence_byte_length": evidence_length,
-            "lineage_verified": lineage_verified,
-            "lineage_confidence": round(lineage_confidence, 2),
-            "checks_passed": checks_passed,
-            "checks_failed": checks_failed,
-            "encoding": "utf-8"
-        }, indent=2)
-
-    except Exception as e:
-        return json.dumps({
-            "error": str(e),
-            "lineage_verified": False,
-            "lineage_confidence": 0.0
-        })
+# create_lineage_data() REMOVED - lineage is computed deterministically by storage.py
+# This ensures single-source-of-truth for lineage computation with:
+# - Exact UTF-8 byte matching
+# - Normalization fallback
+# - Confidence tiers
+# - Persisted verification metadata
 
 
 def store_raw_snapshot(source_url: str, source_type: str, ecosystem: str, content: str, content_hash: str) -> str:
@@ -229,25 +115,25 @@ def store_raw_snapshot(source_url: str, source_type: str, ecosystem: str, conten
     import json
     try:
         conn = get_db_connection()
-        
+
         with conn.cursor() as cur:
             # Check if we already have this exact content
             cur.execute("""
-                SELECT id FROM raw_snapshots 
+                SELECT id FROM raw_snapshots
                 WHERE content_hash = %s AND status = 'captured'::snapshot_status
             """, (content_hash,))
             existing = cur.fetchone()
-            
+
             if existing:
                 conn.close()
                 return str(existing[0])  # Return existing snapshot ID
-            
+
             # Get or create pipeline run
             run_id = get_or_create_pipeline_run(conn)
-            
+
             # Store content as JSONB payload
             payload = json.dumps({"content": content, "format": "text"})
-            
+
             # Insert new snapshot
             cur.execute("""
                 INSERT INTO raw_snapshots (
@@ -276,7 +162,7 @@ def store_raw_snapshot(source_url: str, source_type: str, ecosystem: str, conten
 @tool
 def read_document(doc_path: str) -> str:
     """Read and return the contents of a local documentation file.
-    
+
     Content is stored in raw_snapshots for auditability.
     """
     try:
@@ -285,7 +171,7 @@ def read_document(doc_path: str) -> str:
 
         lines = content.split('\n')
         chars = len(content)
-        
+
         # Store in raw_snapshots
         content_hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
         snapshot_id = store_raw_snapshot(
@@ -300,7 +186,7 @@ def read_document(doc_path: str) -> str:
         max_chars = 50000
         if chars > max_chars:
             content = content[:max_chars] + f"\n\n... (truncated, showing first {max_chars} of {chars} characters)"
-        
+
         return f"Document: {doc_path}\nSnapshot ID: {snapshot_id}\nSize: {chars} characters, {len(lines)} lines\n\nFull Content:\n{content}"
     except Exception as e:
         return f"Error reading document: {str(e)}"
@@ -310,12 +196,12 @@ def read_document(doc_path: str) -> str:
 def fetch_webpage(url: str) -> str:
     """
     Fetch content from a documentation webpage.
-    
+
     Use this to read F' or ProvesKit documentation:
     - https://nasa.github.io/fprime/...
     - https://docs.proveskit.space/...
     - https://fprime.jpl.nasa.gov/...
-    
+
     Content is stored in raw_snapshots for auditability.
     Returns the page content with the source URL for citation.
     """
@@ -323,14 +209,14 @@ def fetch_webpage(url: str) -> str:
         headers = {
             "User-Agent": "PROVES-Library-Curator/1.0 (knowledge extraction for CubeSat safety)"
         }
-        
+
         with httpx.Client(timeout=30.0, follow_redirects=True) as client:
             response = client.get(url, headers=headers)
             response.raise_for_status()
-            
+
         content = response.text
         chars = len(content)
-        
+
         # Detect ecosystem from URL
         ecosystem = "unknown"
         if "fprime" in url.lower() or "nasa.github.io" in url.lower():
@@ -339,7 +225,7 @@ def fetch_webpage(url: str) -> str:
             ecosystem = "proveskit"
         elif "pysquared" in url.lower():
             ecosystem = "pysquared"
-        
+
         # Store raw HTML in raw_snapshots
         content_hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
         snapshot_id = store_raw_snapshot(
@@ -349,63 +235,63 @@ def fetch_webpage(url: str) -> str:
             content=content,
             content_hash=content_hash
         )
-        
+
         # Strip HTML tags for cleaner extraction (basic approach)
         text_content = re.sub(r'<script[^>]*>.*?</script>', '', content, flags=re.DOTALL)
         text_content = re.sub(r'<style[^>]*>.*?</style>', '', text_content, flags=re.DOTALL)
         text_content = re.sub(r'<[^>]+>', ' ', text_content)
         text_content = re.sub(r'\s+', ' ', text_content).strip()
-        
+
         max_chars = 50000
         if len(text_content) > max_chars:
             text_content = text_content[:max_chars] + f"\n\n... (truncated, showing first {max_chars} of {len(text_content)} characters)"
-        
+
         return f"Source URL: {url}\nSnapshot ID: {snapshot_id}\nSize: {chars} characters\n\nContent:\n{text_content}"
     except Exception as e:
         return f"Error fetching {url}: {str(e)}"
 
 
-@tool  
+@tool
 def fetch_github_file(owner: str, repo: str, path: str, branch: str = "main") -> str:
     """
     Fetch a file directly from a GitHub repository without cloning.
-    
+
     Content is stored in raw_snapshots for auditability.
-    
+
     Examples:
     - fetch_github_file("nasa", "fprime", "Svc/CmdDispatcher/CmdDispatcher.fpp")
     - fetch_github_file("proveskit", "flight-software", "Components/I2CManager/I2CManager.fpp")
-    
+
     Args:
         owner: GitHub organization or user (e.g., "nasa", "proveskit")
         repo: Repository name (e.g., "fprime", "flight-software")
         path: Path to file within repo (e.g., "Svc/CmdDispatcher/CmdDispatcher.fpp")
         branch: Branch name (default: "main", use "devel" for fprime)
-    
+
     Returns the file content with full GitHub URL for citation.
     """
     try:
         # Use raw.githubusercontent.com for direct file access
         raw_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}"
         github_url = f"https://github.com/{owner}/{repo}/blob/{branch}/{path}"
-        
+
         headers = {
             "User-Agent": "PROVES-Library-Curator/1.0"
         }
-        
+
         # Add GitHub token if available for higher rate limits
         github_token = os.environ.get("GITHUB_TOKEN")
         if github_token:
             headers["Authorization"] = f"token {github_token}"
-        
+
         with httpx.Client(timeout=30.0, follow_redirects=True) as client:
             response = client.get(raw_url, headers=headers)
             response.raise_for_status()
-            
+
         content = response.text
         chars = len(content)
         lines = content.count('\n') + 1
-        
+
         # Detect ecosystem from repo
         ecosystem = "unknown"
         if owner.lower() == "nasa" and repo.lower() == "fprime":
@@ -414,7 +300,7 @@ def fetch_github_file(owner: str, repo: str, path: str, branch: str = "main") ->
             ecosystem = "proveskit"
         elif "pysquared" in repo.lower():
             ecosystem = "pysquared"
-        
+
         # Store in raw_snapshots
         content_hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
         snapshot_id = store_raw_snapshot(
@@ -424,11 +310,11 @@ def fetch_github_file(owner: str, repo: str, path: str, branch: str = "main") ->
             content=content,
             content_hash=content_hash
         )
-        
+
         max_chars = 50000
         if chars > max_chars:
             content = content[:max_chars] + f"\n\n... (truncated, showing first {max_chars} of {chars} characters)"
-        
+
         return f"Source: {github_url}\nSnapshot ID: {snapshot_id}\nRepository: {owner}/{repo}\nPath: {path}\nBranch: {branch}\nSize: {chars} characters, {lines} lines\n\nContent:\n{content}"
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 404:
@@ -442,48 +328,48 @@ def fetch_github_file(owner: str, repo: str, path: str, branch: str = "main") ->
 def list_github_directory(owner: str, repo: str, path: str = "", branch: str = "main") -> str:
     """
     List files and directories in a GitHub repository path.
-    
+
     Use this to explore repository structure before fetching specific files.
-    
+
     Examples:
     - list_github_directory("nasa", "fprime", "Svc") - List all service components
     - list_github_directory("nasa", "fprime", "Drv") - List all driver components
     - list_github_directory("proveskit", "flight-software", "Components")
-    
+
     Args:
         owner: GitHub organization or user
         repo: Repository name
         path: Directory path (empty for root)
         branch: Branch name
-    
+
     Returns list of files and directories with their types.
     """
     try:
         api_url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}"
         if branch != "main":
             api_url += f"?ref={branch}"
-        
+
         headers = {
             "User-Agent": "PROVES-Library-Curator/1.0",
             "Accept": "application/vnd.github.v3+json"
         }
-        
+
         github_token = os.environ.get("GITHUB_TOKEN")
         if github_token:
             headers["Authorization"] = f"token {github_token}"
-        
+
         with httpx.Client(timeout=30.0) as client:
             response = client.get(api_url, headers=headers)
             response.raise_for_status()
-            
+
         items = response.json()
-        
+
         if not isinstance(items, list):
             return f"Path is a file, not a directory: {path}"
-        
+
         dirs = []
         files = []
-        
+
         for item in items:
             name = item.get("name", "")
             item_type = item.get("type", "")
@@ -492,17 +378,17 @@ def list_github_directory(owner: str, repo: str, path: str = "", branch: str = "
             else:
                 size = item.get("size", 0)
                 files.append(f"📄 {name} ({size} bytes)")
-        
+
         result = f"Directory: {owner}/{repo}/{path}\nBranch: {branch}\n\n"
-        
+
         if dirs:
             result += "Directories:\n" + "\n".join(sorted(dirs)) + "\n\n"
         if files:
             result += "Files:\n" + "\n".join(sorted(files))
-        
+
         if not dirs and not files:
             result += "(empty directory)"
-            
+
         return result
     except httpx.HTTPStatusError as e:
         if e.response.status_code == 404:
