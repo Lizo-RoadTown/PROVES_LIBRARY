@@ -519,8 +519,8 @@ async def handle_notion_page_updated(payload: Dict[str, Any]) -> JSONResponse:
         suggestion_id_prop = props.get('Suggestion ID', {})
 
         if extraction_id_prop.get('rich_text'):
-            # Handle extraction page
-            return await handle_extraction_page_updated(page_id, props)
+            # Handle extraction page - pass webhook payload for audit trail
+            return await handle_extraction_page_updated(page_id, props, webhook_payload=payload)
         elif suggestion_id_prop.get('rich_text'):
             # Handle suggestion page
             return await handle_suggestion_page_updated(page_id, props)
@@ -535,8 +535,16 @@ async def handle_notion_page_updated(payload: Dict[str, Any]) -> JSONResponse:
         )
 
 
-async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any]) -> JSONResponse:
-    """Handle extraction page updates from Notion"""
+async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any], webhook_payload: Dict[str, Any] = None) -> JSONResponse:
+    """
+    Handle extraction page updates from Notion with full audit trail.
+
+    Records all human decisions in validation_decisions table with:
+    - Idempotency checking (prevents duplicate processing)
+    - Actor tracking (who made the decision)
+    - Reason tracking (review notes)
+    - Action type mapping
+    """
     try:
         # Extract extraction ID
         extraction_id_prop = props.get('Extraction ID', {})
@@ -545,8 +553,43 @@ async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any]) ->
 
         extraction_id = extraction_id_prop['rich_text'][0]['plain_text']
 
-        # Track review decision for database update
-        db_review_decision = None
+        # Get webhook source ID for idempotency
+        webhook_source = None
+        if webhook_payload:
+            webhook_source = webhook_payload.get('id')  # Notion webhook event ID
+
+        # Check idempotency: has this webhook already been processed?
+        if webhook_source:
+            conn = psycopg.connect(DATABASE_URL)
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT webhook_already_processed(%s)
+                """, (webhook_source,))
+                already_processed = cur.fetchone()[0]
+            conn.close()
+
+            if already_processed:
+                print(f"⚠️  Webhook {webhook_source} already processed - skipping (idempotent)")
+                return JSONResponse(content={
+                    "status": "already_processed",
+                    "webhook_id": webhook_source
+                })
+
+        # Extract actor (who made the change)
+        # Notion includes last_edited_by in page metadata
+        actor_id = "unknown"
+        if webhook_payload:
+            actor_id = webhook_payload.get('user', {}).get('id', 'unknown')
+
+        # Extract review notes as reason
+        review_notes_prop = props.get('Review Notes', {})
+        reason = None
+        if review_notes_prop.get('rich_text') and len(review_notes_prop['rich_text']) > 0:
+            reason = review_notes_prop['rich_text'][0]['plain_text']
+
+        # Determine action type and database status
+        action_type = None
+        db_status = None
 
         # Check for Accept/Reject changes (takes priority)
         review_decision_prop = props.get('Accept/Reject', {})
@@ -554,48 +597,54 @@ async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any]) ->
             review_decision = review_decision_prop['select']['name']
 
             if review_decision == 'Approved':
+                action_type = 'accept'
                 db_status = 'accepted'
-                db_review_decision = 'approve'
-                print(f"✓ Accept/Reject: Approved → setting status to 'accepted'")
+                print(f"✓ Accept/Reject: Approved → accept action")
 
-                # Auto-update Notion Status field to match
-                notion_sync.client.pages.update(
-                    page_id=page_id,
-                    properties={"Status": {"select": {"name": "Approved"}}}
-                )
+                # Auto-update Notion Status field to match (wrapped in try/except)
+                try:
+                    notion_sync.client.pages.update(
+                        page_id=page_id,
+                        properties={"Status": {"select": {"name": "Approved"}}}
+                    )
+                except Exception as notion_error:
+                    print(f"⚠️  Could not auto-update Notion Status field: {notion_error}")
+                    # Continue anyway - database update is more important
             elif review_decision == 'Rejected':
+                action_type = 'reject'
                 db_status = 'rejected'
-                db_review_decision = 'reject'
-                print(f"✓ Accept/Reject: Rejected → setting status to 'rejected'")
+                print(f"✓ Accept/Reject: Rejected → reject action")
 
-                # Auto-update Notion Status field to match
-                notion_sync.client.pages.update(
-                    page_id=page_id,
-                    properties={"Status": {"select": {"name": "Rejected"}}}
-                )
+                # Auto-update Notion Status field to match (wrapped in try/except)
+                try:
+                    notion_sync.client.pages.update(
+                        page_id=page_id,
+                        properties={"Status": {"select": {"name": "Rejected"}}}
+                    )
+                except Exception as notion_error:
+                    print(f"⚠️  Could not auto-update Notion Status field: {notion_error}")
+                    # Continue anyway - database update is more important
             elif review_decision == 'Modified':
+                action_type = 'edit'
                 db_status = 'flagged'
-                db_review_decision = 'modified'
-                print(f"✓ Accept/Reject: Modified → setting status to 'flagged' for review")
+                print(f"✓ Accept/Reject: Modified → edit action (flagged for re-review)")
 
-                # Auto-update Notion Status field to match
-                notion_sync.client.pages.update(
-                    page_id=page_id,
-                    properties={"Status": {"select": {"name": "Needs Review"}}}
-                )
+                # Auto-update Notion Status field to match (wrapped in try/except)
+                try:
+                    notion_sync.client.pages.update(
+                        page_id=page_id,
+                        properties={"Status": {"select": {"name": "Needs Review"}}}
+                    )
+                except Exception as notion_error:
+                    print(f"⚠️  Could not auto-update Notion Status field: {notion_error}")
+                    # Continue anyway - database update is more important
             else:
                 # Fall back to Status field
                 status_prop = props.get('Status', {})
                 if not status_prop.get('select'):
                     return JSONResponse(content={"status": "no_status"})
                 notion_status = status_prop['select']['name']
-                status_map = {
-                    'Pending': 'pending',
-                    'Approved': 'accepted',
-                    'Rejected': 'rejected',
-                    'Needs Review': 'flagged'
-                }
-                db_status = status_map.get(notion_status, 'pending')
+                action_type, db_status = map_status_to_action(notion_status)
         else:
             # No Review Decision, use Status field
             status_prop = props.get('Status', {})
@@ -603,26 +652,49 @@ async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any]) ->
                 return JSONResponse(content={"status": "no_status"})
 
             notion_status = status_prop['select']['name']
+            action_type, db_status = map_status_to_action(notion_status)
 
-            # Map to database status
-            status_map = {
-                'Pending': 'pending',
-                'Approved': 'accepted',
-                'Rejected': 'rejected',
-                'Needs Review': 'flagged'
-            }
+        # Record the human decision in validation_decisions (audit trail)
+        conn = psycopg.connect(DATABASE_URL)
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT record_human_decision(
+                    %s::uuid,     -- extraction_id
+                    %s,           -- action_type
+                    %s,           -- actor_id
+                    %s,           -- reason
+                    NULL,         -- before_payload (TODO: implement for edits)
+                    NULL,         -- after_payload (TODO: implement for edits)
+                    %s            -- webhook_source
+                )
+            """, (extraction_id, action_type, actor_id, reason, webhook_source))
+            decision_id = cur.fetchone()[0]
 
-            db_status = status_map.get(notion_status, 'pending')
+            # Update staging_extractions status
+            cur.execute("""
+                UPDATE staging_extractions
+                SET status = %s::candidate_status,
+                    updated_at = NOW(),
+                    reviewed_at = NOW(),
+                    review_decision = %s
+                WHERE extraction_id = %s::uuid
+                RETURNING extraction_id
+            """, (db_status, action_type, extraction_id))
 
-        # Update database with review tracking
-        success = notion_sync.update_database_status(extraction_id, db_status, db_review_decision)
+            result = cur.fetchone()
+            conn.commit()
+        conn.close()
 
-        if success:
+        if result:
             print(f"✓ Extraction {extraction_id} status updated to {db_status}")
+            print(f"✓ Decision {decision_id} recorded by {actor_id}")
             return JSONResponse(content={
                 "status": "success",
                 "extraction_id": extraction_id,
-                "new_status": db_status
+                "new_status": db_status,
+                "action_type": action_type,
+                "decision_id": str(decision_id),
+                "actor_id": actor_id
             })
         else:
             return JSONResponse(
@@ -632,10 +704,24 @@ async def handle_extraction_page_updated(page_id: str, props: Dict[str, Any]) ->
 
     except Exception as e:
         print(f"❌ Error handling extraction update: {e}")
+        import traceback
+        traceback.print_exc()
         return JSONResponse(
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
             content={"error": str(e)}
         )
+
+
+def map_status_to_action(notion_status: str) -> tuple[str, str]:
+    """Map Notion status to (action_type, db_status) tuple"""
+    status_map = {
+        'Pending': ('flag_for_review', 'pending'),
+        'Approved': ('accept', 'accepted'),
+        'Rejected': ('reject', 'rejected'),
+        'Needs Review': ('flag_for_review', 'flagged'),
+        'Needs Context': ('request_more_evidence', 'needs_context')
+    }
+    return status_map.get(notion_status, ('flag_for_review', 'pending'))
 
 
 async def handle_suggestion_page_updated(page_id: str, props: Dict[str, Any]) -> JSONResponse:
@@ -661,31 +747,43 @@ async def handle_suggestion_page_updated(page_id: str, props: Dict[str, Any]) ->
                 db_review_decision = 'approve'
                 print(f"✓ Accept/Reject: Approved → setting status to 'approved'")
 
-                # Auto-update Notion Status field to match
-                suggestion_sync.client.pages.update(
-                    page_id=page_id,
-                    properties={"Status": {"select": {"name": "Approved"}}}
-                )
+                # Auto-update Notion Status field to match (wrapped in try/except)
+                try:
+                    suggestion_sync.client.pages.update(
+                        page_id=page_id,
+                        properties={"Status": {"select": {"name": "Approved"}}}
+                    )
+                except Exception as notion_error:
+                    print(f"⚠️  Could not auto-update Notion Status field: {notion_error}")
+                    # Continue anyway - database update is more important
             elif review_decision == 'Rejected':
                 db_status = 'rejected'
                 db_review_decision = 'reject'
                 print(f"✓ Accept/Reject: Rejected → setting status to 'rejected'")
 
-                # Auto-update Notion Status field to match
-                suggestion_sync.client.pages.update(
-                    page_id=page_id,
-                    properties={"Status": {"select": {"name": "Rejected"}}}
-                )
+                # Auto-update Notion Status field to match (wrapped in try/except)
+                try:
+                    suggestion_sync.client.pages.update(
+                        page_id=page_id,
+                        properties={"Status": {"select": {"name": "Rejected"}}}
+                    )
+                except Exception as notion_error:
+                    print(f"⚠️  Could not auto-update Notion Status field: {notion_error}")
+                    # Continue anyway - database update is more important
             elif review_decision == 'Modified':
                 db_status = 'needs_review'
                 db_review_decision = 'modified'
                 print(f"✓ Accept/Reject: Modified → setting status to 'needs_review'")
 
-                # Auto-update Notion Status field to match
-                suggestion_sync.client.pages.update(
-                    page_id=page_id,
-                    properties={"Status": {"select": {"name": "Needs Review"}}}
-                )
+                # Auto-update Notion Status field to match (wrapped in try/except)
+                try:
+                    suggestion_sync.client.pages.update(
+                        page_id=page_id,
+                        properties={"Status": {"select": {"name": "Needs Review"}}}
+                    )
+                except Exception as notion_error:
+                    print(f"⚠️  Could not auto-update Notion Status field: {notion_error}")
+                    # Continue anyway - database update is more important
             else:
                 # Fall back to Status field
                 status_prop = props.get('Status', {})

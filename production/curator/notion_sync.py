@@ -137,7 +137,61 @@ class NotionSync:
                     ]
                 }},
                 "Lineage Verified": {"checkbox": {}},
-                "Lineage Confidence": {"number": {"format": "percent"}}
+                "Lineage Confidence": {"number": {"format": "percent"}},
+                # Epistemic Metadata (7-Question Knowledge Capture Checklist)
+                "Observer": {"rich_text": {}},  # Q1: Who knew this
+                "Contact Mode": {"select": {
+                    "options": [
+                        {"name": "direct", "color": "green"},
+                        {"name": "mediated", "color": "blue"},
+                        {"name": "effect_only", "color": "yellow"},
+                        {"name": "derived", "color": "gray"}
+                    ]
+                }},
+                "Contact Strength": {"number": {"format": "number"}},  # Q1: How close
+                "Signal Type": {"select": {
+                    "options": [
+                        {"name": "text", "color": "default"},
+                        {"name": "code", "color": "blue"},
+                        {"name": "spec", "color": "green"},
+                        {"name": "diagram", "color": "purple"},
+                        {"name": "model", "color": "orange"}
+                    ]
+                }},
+                "Pattern Storage": {"select": {  # Q2: Where experience lives
+                    "options": [
+                        {"name": "internalized", "color": "red"},
+                        {"name": "externalized", "color": "green"},
+                        {"name": "mixed", "color": "yellow"}
+                    ]
+                }},
+                "Scope": {"select": {  # Q4: Context
+                    "options": [
+                        {"name": "local", "color": "gray"},
+                        {"name": "subsystem", "color": "blue"},
+                        {"name": "system", "color": "green"},
+                        {"name": "general", "color": "purple"}
+                    ]
+                }},
+                "Staleness Risk": {"number": {"format": "percent"}},  # Q5: Temporal validity
+                "Intent": {"select": {  # Q6: Authorship intent
+                    "options": [
+                        {"name": "explain", "color": "blue"},
+                        {"name": "instruct", "color": "green"},
+                        {"name": "justify", "color": "purple"},
+                        {"name": "explore", "color": "yellow"},
+                        {"name": "comply", "color": "red"}
+                    ]
+                }},
+                "Reenactment Required": {"checkbox": {}},  # Q7: Practice needed
+                "Skill Transferability": {"select": {  # Q7: Can it transfer
+                    "options": [
+                        {"name": "portable", "color": "green"},
+                        {"name": "conditional", "color": "yellow"},
+                        {"name": "local", "color": "orange"},
+                        {"name": "tacit_like", "color": "red"}
+                    ]
+                }}
             }
         )
         return database["id"]
@@ -231,6 +285,46 @@ class NotionSync:
         if extraction_data.get('lineage_confidence') is not None:
             properties["Lineage Confidence"] = {"number": float(extraction_data['lineage_confidence'])}
 
+        # Add epistemic metadata from candidate_payload or top-level fields
+        # These come from the 7-Question Knowledge Capture Checklist
+
+        # Q1: Observer coupling
+        if payload.get('observer_id'):
+            observer_text = f"{payload.get('observer_id', 'unknown')} ({payload.get('observer_type', 'unknown')})"
+            properties["Observer"] = {"rich_text": [{"text": {"content": observer_text[:2000]}}]}
+
+        if payload.get('contact_mode'):
+            properties["Contact Mode"] = {"select": {"name": payload['contact_mode']}}
+
+        if payload.get('contact_strength') is not None:
+            properties["Contact Strength"] = {"number": float(payload['contact_strength'])}
+
+        if payload.get('signal_type'):
+            properties["Signal Type"] = {"select": {"name": payload['signal_type']}}
+
+        # Q2: Pattern storage
+        if payload.get('pattern_storage'):
+            properties["Pattern Storage"] = {"select": {"name": payload['pattern_storage']}}
+
+        # Q4: Context
+        if payload.get('scope'):
+            properties["Scope"] = {"select": {"name": payload['scope']}}
+
+        # Q5: Temporal validity
+        if payload.get('staleness_risk') is not None:
+            properties["Staleness Risk"] = {"number": float(payload['staleness_risk'])}
+
+        # Q6: Authorship intent
+        if payload.get('intent'):
+            properties["Intent"] = {"select": {"name": payload['intent']}}
+
+        # Q7: Reenactment dependency
+        if payload.get('reenactment_required') is not None:
+            properties["Reenactment Required"] = {"checkbox": bool(payload['reenactment_required'])}
+
+        if payload.get('skill_transferability'):
+            properties["Skill Transferability"] = {"select": {"name": payload['skill_transferability']}}
+
         # Build formatted page content blocks
         children = self._build_extraction_content_blocks(
             extraction_data, payload, evidence_quote, source_url
@@ -286,16 +380,51 @@ class NotionSync:
             "heading_2": {"rich_text": [{"text": {"content": "🎯 WHAT WAS EXTRACTED"}}]}
         })
 
-        # Format payload as readable bullet points or JSON
-        payload_text = json.dumps(payload, indent=2)
-        blocks.append({
-            "object": "block",
-            "type": "code",
-            "code": {
-                "rich_text": [{"text": {"content": payload_text[:2000]}}],
-                "language": "json"
-            }
-        })
+        # Format payload as readable bullet points based on extraction type
+        if extraction_data['candidate_type'] == 'dependency':
+            # Format dependency with FRAMES metadata
+            dep_lines = []
+            if 'source' in payload:
+                dep_lines.append(f"• Source: {payload['source']}")
+            if 'target' in payload:
+                dep_lines.append(f"• Target: {payload['target']}")
+            if 'relationship_type' in payload:
+                dep_lines.append(f"• Relationship: {payload['relationship_type']}")
+            if 'layer' in payload:
+                dep_lines.append(f"• Layer: {payload['layer']}")
+            if 'flow' in payload:
+                flow_str = ', '.join(payload['flow']) if isinstance(payload['flow'], list) else payload['flow']
+                dep_lines.append(f"• Flow: {flow_str}")
+            if 'failure_mode' in payload:
+                dep_lines.append(f"• Failure Mode: {payload['failure_mode']}")
+            if 'maintenance' in payload:
+                dep_lines.append(f"• Maintenance: {payload['maintenance']}")
+            if 'coupling_strength' in payload:
+                dep_lines.append(f"• Coupling Strength: {payload['coupling_strength']}")
+
+            formatted_text = '\n'.join(dep_lines)
+            blocks.append({
+                "object": "block",
+                "type": "paragraph",
+                "paragraph": {"rich_text": [{"text": {"content": formatted_text[:2000]}}]}
+            })
+        else:
+            # For other types (components, etc.), show key fields as bullets
+            lines = []
+            for key, value in payload.items():
+                if key not in ['observer_id', 'observer_type']:  # Skip observer fields (shown separately)
+                    if isinstance(value, (list, dict)):
+                        value_str = json.dumps(value)
+                    else:
+                        value_str = str(value)
+                    lines.append(f"• {key}: {value_str}")
+
+            formatted_text = '\n'.join(lines)
+            blocks.append({
+                "object": "block",
+                "type": "paragraph",
+                "paragraph": {"rich_text": [{"text": {"content": formatted_text[:2000]}}]}
+            })
 
         # 📊 CONFIDENCE ASSESSMENT
         blocks.append({
@@ -364,6 +493,250 @@ class NotionSync:
             "type": "bulleted_list_item",
             "bulleted_list_item": {"rich_text": [{"text": {"content": f"Snapshot ID: {snapshot_id}"}}]}
         })
+
+        # 🧠 EPISTEMIC METADATA (7-Question Knowledge Capture Checklist)
+        blocks.append({
+            "object": "block",
+            "type": "heading_2",
+            "heading_2": {"rich_text": [{"text": {"content": "🧠 KNOWLEDGE CAPTURE CHECKLIST"}}]}
+        })
+
+        # Q1: Who knew this, and how close were they? (Observer coupling)
+        blocks.append({
+            "object": "block",
+            "type": "heading_3",
+            "heading_3": {"rich_text": [{"text": {"content": "Q1: Who knew this, and how close were they?"}}]}
+        })
+        observer_id = payload.get('observer_id', 'unknown')
+        observer_type = payload.get('observer_type', 'unknown')
+        contact_mode = payload.get('contact_mode', 'derived')
+        contact_strength = payload.get('contact_strength', 0.20)
+        signal_type = payload.get('signal_type', 'text')
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Observer: {observer_id} ({observer_type})"}}]}
+        })
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Contact Mode: {contact_mode}"}}]}
+        })
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Contact Strength: {contact_strength:.2f}"}}]}
+        })
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Signal Type: {signal_type}"}}]}
+        })
+
+        # Q2: Where does the experience live now? (Pattern storage)
+        blocks.append({
+            "object": "block",
+            "type": "heading_3",
+            "heading_3": {"rich_text": [{"text": {"content": "Q2: Where does the experience live?"}}]}
+        })
+        pattern_storage = payload.get('pattern_storage', 'externalized')
+        representation_media = payload.get('representation_media', ['text'])
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Pattern Storage: {pattern_storage}"}}]}
+        })
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Media: {', '.join(representation_media) if isinstance(representation_media, list) else representation_media}"}}]}
+        })
+
+        # Q3: What has to stay connected? (Relational integrity)
+        blocks.append({
+            "object": "block",
+            "type": "heading_3",
+            "heading_3": {"rich_text": [{"text": {"content": "Q3: What has to stay connected?"}}]}
+        })
+        dependencies = payload.get('dependencies', [])
+        sequence_role = payload.get('sequence_role', 'none')
+        relational_notes = payload.get('relational_notes', '')
+        if dependencies:
+            deps_text = ', '.join(dependencies) if isinstance(dependencies, list) else str(dependencies)
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Dependencies: {deps_text[:500]}"}}]}
+            })
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Sequence Role: {sequence_role}"}}]}
+        })
+        if relational_notes:
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Notes: {relational_notes[:500]}"}}]}
+            })
+
+        # Q4: Under what conditions was this true? (Context preservation)
+        blocks.append({
+            "object": "block",
+            "type": "heading_3",
+            "heading_3": {"rich_text": [{"text": {"content": "Q4: Under what conditions was this true?"}}]}
+        })
+        validity_conditions = payload.get('validity_conditions', {})
+        assumptions = payload.get('assumptions', [])
+        scope = payload.get('scope', 'subsystem')
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Scope: {scope}"}}]}
+        })
+        if validity_conditions:
+            import json
+            conditions_text = json.dumps(validity_conditions, indent=2)
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Validity Conditions: {conditions_text[:500]}"}}]}
+            })
+        if assumptions:
+            assumptions_text = ', '.join(assumptions) if isinstance(assumptions, list) else str(assumptions)
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Assumptions: {assumptions_text[:500]}"}}]}
+            })
+
+        # Q5: When does this stop being reliable? (Temporal validity)
+        blocks.append({
+            "object": "block",
+            "type": "heading_3",
+            "heading_3": {"rich_text": [{"text": {"content": "Q5: When does this stop being reliable?"}}]}
+        })
+        observed_at = payload.get('observed_at', 'Unknown')
+        valid_from = payload.get('valid_from', '')
+        valid_to = payload.get('valid_to', '')
+        refresh_trigger = payload.get('refresh_trigger', '')
+        staleness_risk = payload.get('staleness_risk', 0.20)
+        if observed_at != 'Unknown':
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Observed At: {observed_at}"}}]}
+            })
+        if valid_from or valid_to:
+            validity_range = f"{valid_from} to {valid_to}" if valid_from and valid_to else (valid_from or valid_to)
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Valid: {validity_range}"}}]}
+            })
+        if refresh_trigger:
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Refresh Trigger: {refresh_trigger}"}}]}
+            })
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Staleness Risk: {staleness_risk:.2f}"}}]}
+        })
+
+        # Q6: Who wrote or taught this, and why? (Authorship & intent)
+        blocks.append({
+            "object": "block",
+            "type": "heading_3",
+            "heading_3": {"rich_text": [{"text": {"content": "Q6: Who wrote this, and why?"}}]}
+        })
+        author_id = payload.get('author_id', 'unknown')
+        intent = payload.get('intent', 'instruct')
+        uncertainty_notes = payload.get('uncertainty_notes', '')
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Author: {author_id}"}}]}
+        })
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Intent: {intent}"}}]}
+        })
+        if uncertainty_notes:
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Uncertainty: {uncertainty_notes[:500]}"}}]}
+            })
+
+        # Q7: Does this only work if someone keeps doing it? (Reenactment dependency)
+        blocks.append({
+            "object": "block",
+            "type": "heading_3",
+            "heading_3": {"rich_text": [{"text": {"content": "Q7: Does this require practice?"}}]}
+        })
+        reenactment_required = payload.get('reenactment_required', False)
+        practice_interval = payload.get('practice_interval', '')
+        skill_transferability = payload.get('skill_transferability', 'portable')
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Reenactment Required: {'Yes' if reenactment_required else 'No'}"}}]}
+        })
+        if practice_interval:
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Practice Interval: {practice_interval}"}}]}
+            })
+        blocks.append({
+            "object": "block",
+            "type": "bulleted_list_item",
+            "bulleted_list_item": {"rich_text": [{"text": {"content": f"Skill Transferability: {skill_transferability}"}}]}
+        })
+
+        # FRAMES Metadata (if dependency)
+        if extraction_data['candidate_type'] == 'dependency':
+            blocks.append({
+                "object": "block",
+                "type": "heading_2",
+                "heading_2": {"rich_text": [{"text": {"content": "🔗 FRAMES COUPLING ANALYSIS"}}]}
+            })
+            flow = payload.get('flow', [])
+            failure_mode = payload.get('failure_mode', 'Unknown')
+            maintenance = payload.get('maintenance', 'Unknown')
+            coupling_strength = payload.get('coupling_strength', 0.0)
+            layer = payload.get('layer', 'unknown')
+
+            flow_text = ', '.join(flow) if isinstance(flow, list) else str(flow)
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Q1 - What flows: {flow_text}"}}]}
+            })
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Q2 - Failure mode: {failure_mode[:500]}"}}]}
+            })
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Q3 - Maintenance: {maintenance[:500]}"}}]}
+            })
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Q4 - Coupling strength: {coupling_strength:.2f}"}}]}
+            })
+            blocks.append({
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"text": {"content": f"Layer: {layer}"}}]}
+            })
 
         return blocks
 
