@@ -339,7 +339,8 @@ def main():
     print(f"Testing with {args.limit} URL(s)")
     print(f"\n{'='*80}")
 
-    # Ensure Notion webhook server is running for automatic sync
+    # Start local webhook server for database polling (pushes new extractions to Notion)
+    # Vercel webhook handles Notion → Database (status updates from Notion)
     ensure_webhook_server_running()
     print()
 

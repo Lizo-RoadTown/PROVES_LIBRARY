@@ -305,7 +305,8 @@ def main():
     print("CURATOR AGENT - BATCH PROCESSING FROM QUEUE")
     print(f"{'='*80}")
 
-    # Ensure Notion webhook server is running for automatic sync
+    # Start local webhook server for database polling (pushes new extractions to Notion)
+    # Vercel webhook handles Notion → Database (status updates from Notion)
     ensure_webhook_server_running()
     print()
 
