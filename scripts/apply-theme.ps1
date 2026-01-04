@@ -141,17 +141,17 @@ $selectedTheme = $themes[$Theme]
 Write-Host "Applying $Theme theme to all diagrams..." -ForegroundColor Cyan
 
 # Get all diagram files except MERMAID_RULES.md and VALIDATION_REPORT.md
-$diagramFiles = Get-ChildItem -Path "docs/diagrams/*.md" | Where-Object { 
-    $_.Name -ne "MERMAID_RULES.md" -and $_.Name -ne "VALIDATION_REPORT.md" 
+$diagramFiles = Get-ChildItem -Path "docs/diagrams/*.md" | Where-Object {
+    $_.Name -ne "MERMAID_RULES.md" -and $_.Name -ne "VALIDATION_REPORT.md"
 }
 
 $updatedCount = 0
 
 foreach ($file in $diagramFiles) {
     Write-Host "Processing $($file.Name)..." -ForegroundColor Gray
-    
-    $content = Get-Content $file.FullName -Raw
-    
+
+    $content = Get-Content $file.FullName -Raw -Encoding UTF8
+
     # Build the theme configuration block
     $themeConfig = @"
 ---
@@ -194,14 +194,14 @@ config:
 "@
 
     # Replace existing frontmatter configs in mermaid blocks
-    # Pattern matches: ```mermaid followed by optional --- config block --- 
+    # Pattern matches: ```mermaid followed by optional --- config block ---
     $pattern = '```mermaid\r?\n(?:---\r?\n(?:(?!```)[\s\S])*?---\r?\n)?'
     $replacement = "``````mermaid`r`n$themeConfig`r`n"
-    
+
     $newContent = $content -replace $pattern, $replacement
-    
+
     if ($content -ne $newContent) {
-        Set-Content -Path $file.FullName -Value $newContent -NoNewline
+        Set-Content -Path $file.FullName -Value $newContent -NoNewline -Encoding UTF8
         $updatedCount++
         Write-Host "  ✓ Updated" -ForegroundColor Green
     } else {

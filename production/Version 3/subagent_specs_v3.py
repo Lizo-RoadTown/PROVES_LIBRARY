@@ -177,7 +177,6 @@ This preserves epistemic grounding so downstream systems can identify loss modes
    - **Fields to populate:**
      - `dependencies`: JSON array of entity keys that must remain connected (e.g., ["component:I2C_Driver", "component:PowerMonitor"])
      - `sequence_role`: "precondition", "step", "outcome", "postcondition", "none"
-     - `relational_notes`: Freeform description of dependencies
 
 **Question 4: Under what conditions was this true?** (Context preservation)
    - What assumptions were in place?
