@@ -1,0 +1,454 @@
+{
+  "timestamp": "2026-01-03T20:31:27.074617",
+  "total_processed": 56,
+  "results": [
+    {
+      "extraction_id": "ccf9a2d0-e3c3-439b-a943-c8d2d4858f62",
+      "candidate_key": "Satellite Beacon Data",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] Satellite Beacon Data -> core_entities (ID: fe1837dd-a572-4712-8784-f91cf380d48a)",
+      "created_at": "2025-12-24T05:54:14.642008"
+    },
+    {
+      "extraction_id": "a1221a49-ade1-4029-9eaf-1cc1f701e4f5",
+      "candidate_key": "PROVES Prime Development Documentation",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] PROVES Prime Development Documentation -> core_entities (ID: 8e6778fb-575d-4432-8b68-6a8c88390bc0)",
+      "created_at": "2025-12-24T05:54:18.993453"
+    },
+    {
+      "extraction_id": "3947111a-6da8-4a10-a39f-4a0a4684e911",
+      "candidate_key": "UART Protocol Specification",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] UART Protocol Specification -> core_entities (ID: 8c3eab74-7acf-4062-aa00-310f2871d581)",
+      "created_at": "2025-12-24T05:54:23.615727"
+    },
+    {
+      "extraction_id": "ead07d13-85a6-4846-bfb6-305c56065f82",
+      "candidate_key": "Fw.Cmd",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Fw.Cmd -> core_entities (ID: e8c98551-9aa4-4501-9bf5-f3eb809e33e3)",
+      "created_at": "2025-12-27T02:36:17.580992"
+    },
+    {
+      "extraction_id": "2c8cb7aa-e0fb-46f1-be87-1b4dddf11716",
+      "candidate_key": "Fw.CmdResponse",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Fw.CmdResponse -> core_entities (ID: 05110ad8-9115-4460-acc1-425fe060ae4a)",
+      "created_at": "2025-12-27T02:36:35.030269"
+    },
+    {
+      "extraction_id": "e5e890fb-5eca-44d8-97ee-4fcf62d45520",
+      "candidate_key": "Fw.CmdReg",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Fw.CmdReg -> core_entities (ID: 9c083e32-a186-4d90-84a1-23e85ac4e4c1)",
+      "created_at": "2025-12-27T02:36:39.762613"
+    },
+    {
+      "extraction_id": "2b19812d-fa76-49b0-b6a9-55ab3c64e1cc",
+      "candidate_key": "Fw.Com",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Fw.Com -> core_entities (ID: ba13e48e-b65d-41e0-a8f5-f4a78eb56e61)",
+      "created_at": "2025-12-27T02:36:44.732666"
+    },
+    {
+      "extraction_id": "0a3a7cd7-c9f2-407c-ac80-49bc55852d06",
+      "candidate_key": "fprime-util",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] fprime-util -> core_entities (ID: 23076af8-81ad-49e3-b82d-c575c2121c41)",
+      "created_at": "2025-12-27T02:36:55.963497"
+    },
+    {
+      "extraction_id": "cc708aef-897a-4113-b784-35d8290a6e69",
+      "candidate_key": "CommandFailureModes",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] CommandFailureModes -> core_entities (ID: 7b4bfb8e-3f20-4ed3-ada3-63ec1d53c7f9)",
+      "created_at": "2025-12-27T02:37:13.739400"
+    },
+    {
+      "extraction_id": "b584ec6e-62da-43a6-af1c-9077d55ce831",
+      "candidate_key": "FPP Topology Component Model Interface",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] FPP Topology Component Model Interface -> core_entities (ID: d6376d9b-f1f6-4d53-a5de-42611250ba95)",
+      "created_at": "2025-12-27T08:23:58.918091"
+    },
+    {
+      "extraction_id": "3128cbe9-4e37-48a3-a5a2-38151bb445d9",
+      "candidate_key": "Topology Deployment Separation",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Topology Deployment Separation -> core_entities (ID: b9f13710-fdf0-49b6-b645-e91ca1dc7068)",
+      "created_at": "2025-12-27T08:24:04.918565"
+    },
+    {
+      "extraction_id": "50ac0167-bec0-4f92-b6eb-d58b51305e40",
+      "candidate_key": "Component \u2192 BufferManager (Memory Allocation Request)",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Component \u2192 BufferManager (Memory Allocation Request) -> core_entities (ID: 230cd4ad-3373-4cd4-8acd-7daf6975f070)",
+      "created_at": "2025-12-27T09:51:06.570578"
+    },
+    {
+      "extraction_id": "a100750e-b801-4280-9326-23b44d02ac5c",
+      "candidate_key": "Component \u2192 BufferManager (Memory Deallocation)",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Component \u2192 BufferManager (Memory Deallocation) -> core_entities (ID: 57697003-0e55-461b-b298-dbba8c2974d1)",
+      "created_at": "2025-12-27T09:51:18.654448"
+    },
+    {
+      "extraction_id": "7eedbb38-00de-4027-90d2-7365892e2d71",
+      "candidate_key": "Svc.StaticMemory \u2192 Client (Synchronous Memory Contract)",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Svc.StaticMemory \u2192 Client (Synchronous Memory Contract) -> core_entities (ID: 821c6216-3d89-47ec-9909-5907705f8e50)",
+      "created_at": "2025-12-27T09:51:33.051774"
+    },
+    {
+      "extraction_id": "4092373e-5b47-4447-97f1-d29b54532e24",
+      "candidate_key": "Svc.BufferManager \u2192 Memory Allocator (Heap Allocation)",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Svc.BufferManager \u2192 Memory Allocator (Heap Allocation) -> core_entities (ID: 8e1457d3-af7b-43c6-bfc6-62d1e12c9dde)",
+      "created_at": "2025-12-27T09:51:47.825853"
+    },
+    {
+      "extraction_id": "42916154-cfb8-4929-8a11-4fc809d8bc13",
+      "candidate_key": "Component Chain \u2192 Fw::Buffer (Asynchronous Buffer Passing)",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Component Chain \u2192 Fw::Buffer (Asynchronous Buffer Passing) -> core_entities (ID: 8b80c107-fc69-4a72-bdb6-b8037f296499)",
+      "created_at": "2025-12-27T09:52:02.535755"
+    },
+    {
+      "extraction_id": "4117cb43-9266-497d-8231-ffe737e373b7",
+      "candidate_key": "Topology \u2192 BufferManager Configuration (Build-time Setup)",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Topology \u2192 BufferManager Configuration (Build-time Setup) -> core_entities (ID: c3109a35-f1c6-4db3-aa3d-1b6e61ea6707)",
+      "created_at": "2025-12-27T09:52:28.321448"
+    },
+    {
+      "extraction_id": "6608e0cd-42b6-4a5c-8d52-3922611c1285",
+      "candidate_key": "Fw::Buffer \u2192 Serialization Interface (Data Access Pattern)",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Fw::Buffer \u2192 Serialization Interface (Data Access Pattern) -> core_entities (ID: 6ca550dd-a642-479d-9e83-0035d9cee5f7)",
+      "created_at": "2025-12-27T09:52:43.857735"
+    },
+    {
+      "extraction_id": "45d905ae-6cd6-4b3d-abb4-cf40f2209f67",
+      "candidate_key": "jpl_coding_standards_to_fprime_dev",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] jpl_coding_standards_to_fprime_dev -> core_entities (ID: a46d63d8-28cb-4767-bac1-95f52fd528d1)",
+      "created_at": "2025-12-27T10:44:25.179465"
+    },
+    {
+      "extraction_id": "53882e06-89a9-498d-bf68-cdd7e0a7b136",
+      "candidate_key": "clangformat_to_cpp_submissions",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] clangformat_to_cpp_submissions -> core_entities (ID: 27c10b3d-d3d0-41d0-8d4c-17b426b27855)",
+      "created_at": "2025-12-27T10:44:40.107505"
+    },
+    {
+      "extraction_id": "f9c02c31-44d3-4585-8f73-b4610da6f652",
+      "candidate_key": "FPP_Model_to_JSON_Dictionary",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] FPP_Model_to_JSON_Dictionary -> core_entities (ID: ca41a235-caf3-4bfb-82cb-cdc7e14f31a6)",
+      "created_at": "2025-12-27T10:49:06.938136"
+    },
+    {
+      "extraction_id": "9547ddad-9012-4981-acf1-496b88daac5e",
+      "candidate_key": "Primitive_Integer_Type_Interface",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] Primitive_Integer_Type_Interface -> core_entities (ID: 82741f13-640c-402b-b010-e42224ff2e12)",
+      "created_at": "2025-12-27T10:49:42.226239"
+    },
+    {
+      "extraction_id": "393ccb47-4003-4344-a69d-d44570b67d1f",
+      "candidate_key": "GDS_Dashboard_requires_XML_config",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] GDS_Dashboard_requires_XML_config -> core_entities (ID: 21b49373-adb4-45d7-8672-8ffd7f660f47)",
+      "created_at": "2025-12-27T21:40:06.303377"
+    },
+    {
+      "extraction_id": "8f61afd7-f080-4183-aaea-ba73b9502bc2",
+      "candidate_key": "command_input_sends_to_embedded_system",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] command_input_sends_to_embedded_system -> core_entities (ID: 0ee8f9ce-d727-4fd8-a76e-d721932210fe)",
+      "created_at": "2025-12-27T21:40:23.702489"
+    },
+    {
+      "extraction_id": "91abcf05-79be-47b0-9727-23dc26aa129f",
+      "candidate_key": "table_components_support_field_filtering",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] table_components_support_field_filtering -> core_entities (ID: 614b0c92-be39-4b98-832a-9620cc8bfe2b)",
+      "created_at": "2025-12-27T21:40:41.373129"
+    },
+    {
+      "extraction_id": "dcffa768-756e-45d4-9c45-80184734b6f7",
+      "candidate_key": "BatteryBoard_3V3_Regulation",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] BatteryBoard_3V3_Regulation -> core_entities (ID: d69b0e87-4c20-4df4-a842-b7d09badbff9)",
+      "created_at": "2025-12-27T22:33:31.420263"
+    },
+    {
+      "extraction_id": "4490eeb5-a290-432a-99ed-61d6cd61318a",
+      "candidate_key": "SolarBoards_to_BatteryBoard_Power",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] SolarBoards_to_BatteryBoard_Power -> core_entities (ID: f8e2fe0f-bec1-41c6-8746-23c56f0c277a)",
+      "created_at": "2025-12-27T22:33:44.379319"
+    },
+    {
+      "extraction_id": "55f507fd-bb54-4843-9d7e-3a5ccd2b9dda",
+      "candidate_key": "fprime_primitive_types_to_components",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] fprime_primitive_types_to_components -> core_entities (ID: 3f73cb03-4671-450c-bb70-063b60fe5511)",
+      "created_at": "2025-12-27T22:37:05.054776"
+    },
+    {
+      "extraction_id": "30e367f4-ccf4-4d08-bb8d-021bfd55b305",
+      "candidate_key": "architecture_types_to_platform",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] architecture_types_to_platform -> core_entities (ID: 58912ae4-1715-49c1-b15d-5071a32336b9)",
+      "created_at": "2025-12-27T22:37:14.623183"
+    },
+    {
+      "extraction_id": "68660116-5509-4a0c-8e9e-0e6df98ecbce",
+      "candidate_key": "polytype_to_primitives",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] polytype_to_primitives -> core_entities (ID: d064175e-35cb-4a52-ad86-25ec11064580)",
+      "created_at": "2025-12-27T22:37:26.274587"
+    },
+    {
+      "extraction_id": "2b56fae1-d68b-49a0-baf8-800b1fcbbda0",
+      "candidate_key": "fprime_serializable",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] fprime_serializable -> core_entities (ID: 2a3416cf-0d37-4766-a14a-59cbb4aef00f)",
+      "created_at": "2025-12-27T22:37:36.426767"
+    },
+    {
+      "extraction_id": "5ac5af01-8f02-4144-8828-701fd826d3f1",
+      "candidate_key": "BatteryBoard_to_SolarPanels_PowerInput",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] BatteryBoard_to_SolarPanels_PowerInput -> core_entities (ID: 0dac27b1-17ce-45be-be39-116625e62f72)",
+      "created_at": "2025-12-28T18:19:41.125403"
+    },
+    {
+      "extraction_id": "39fd9e2b-2be2-4ed5-a1ee-c3d4b55f8483",
+      "candidate_key": "BurnWire_MOSFET_PowerDissipation_Issue",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] BurnWire_MOSFET_PowerDissipation_Issue -> core_entities (ID: 787253d4-e424-4c95-acd0-b2b5caf9440f)",
+      "created_at": "2025-12-28T18:19:54.858136"
+    },
+    {
+      "extraction_id": "89377ff5-57c2-4807-990a-8420b303895e",
+      "candidate_key": "dependency:solar_cells_to_power_pads",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:solar_cells_to_power_pads -> core_entities (ID: 5da57ffd-070c-4b3e-bb3c-72cfe1a9238f)",
+      "created_at": "2025-12-30T18:12:44.450893"
+    },
+    {
+      "extraction_id": "e9b94528-9700-47dc-be5e-cf7784c78fa8",
+      "candidate_key": "dependency:sensor_test_before_cells",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:sensor_test_before_cells -> core_entities (ID: 836aea27-1fe3-4d32-8846-aeb0bc5131e8)",
+      "created_at": "2025-12-30T18:12:59.325819"
+    },
+    {
+      "extraction_id": "62336dd3-aee7-4ace-b77a-c8721e2c0602",
+      "candidate_key": "dependency:5pin_headers_power_distribution",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:5pin_headers_power_distribution -> core_entities (ID: 27bdf3e5-4a20-46f9-a127-79c0da7f1298)",
+      "created_at": "2025-12-30T18:13:15.535003"
+    },
+    {
+      "extraction_id": "0eebbe79-84a6-4459-8e86-90ec69bd37f7",
+      "candidate_key": "dependency:motor_driver_resistor_magnetorquer",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:motor_driver_resistor_magnetorquer -> core_entities (ID: 4142b259-f61f-4960-90a1-c27bb9951f67)",
+      "created_at": "2025-12-30T18:13:45.927376"
+    },
+    {
+      "extraction_id": "a74a65db-6f57-4af3-b9bd-fec8c28b3851",
+      "candidate_key": "dependency:cell_gap_antenna_wire",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:cell_gap_antenna_wire -> core_entities (ID: 8be3a95f-d45e-4d46-8092-bfdaeb2fc5ae)",
+      "created_at": "2025-12-30T18:14:01.140082"
+    },
+    {
+      "extraction_id": "b2e85e7f-02fb-4566-a608-83b19b3166c2",
+      "candidate_key": "dependency:solar_cells_to_pcb_polarity",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:solar_cells_to_pcb_polarity -> core_entities (ID: 3377d35e-0b3b-4ad1-a925-598bba3f83de)",
+      "created_at": "2025-12-31T00:37:55.781639"
+    },
+    {
+      "extraction_id": "72f0d969-1c6b-499d-a21a-0f12672cb1ca",
+      "candidate_key": "dependency:sensor_test_before_cell_install",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:sensor_test_before_cell_install -> core_entities (ID: 7efafaa6-774d-4d56-b979-34275eaf8db6)",
+      "created_at": "2025-12-31T00:38:11.227317"
+    },
+    {
+      "extraction_id": "4b7db92f-3377-4260-8970-60c375a9d4f4",
+      "candidate_key": "dependency:z_magnetorquer_to_detumble",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:z_magnetorquer_to_detumble -> core_entities (ID: 0d02b163-85f5-47dc-8e19-af165c34754f)",
+      "created_at": "2025-12-31T00:38:44.336218"
+    },
+    {
+      "extraction_id": "94c5fcbb-7792-4251-abb3-387c89ff5e76",
+      "candidate_key": "dependency:V1_FCB_thermal_shutdown",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:V1_FCB_thermal_shutdown -> core_entities (ID: ae438f11-8cfe-4c03-9ae6-4eafa9562e4c)",
+      "created_at": "2026-01-01T05:45:55.224175"
+    },
+    {
+      "extraction_id": "a20b646f-511e-4d69-a108-b3411ea3f07d",
+      "candidate_key": "dependency:V2_radio_power_bug",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:V2_radio_power_bug -> core_entities (ID: 059e960e-60e1-4dca-b9ab-51933d366319)",
+      "created_at": "2026-01-01T05:46:10.036154"
+    },
+    {
+      "extraction_id": "a1f0a930-1e05-4261-966a-d0d4337ebc47",
+      "candidate_key": "dependency:JPL_FPrime_PROVES",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:JPL_FPrime_PROVES -> core_entities (ID: cb7ebe2b-3e41-45f4-aa43-2bfe5fde568c)",
+      "created_at": "2026-01-01T05:46:24.110193"
+    },
+    {
+      "extraction_id": "de2de630-bf67-4d2a-bdae-73ace8248bc4",
+      "candidate_key": "dependency:V3_load_switching",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] dependency:V3_load_switching -> core_entities (ID: d3d2d1dc-154a-4379-ae00-e5f9c3496ceb)",
+      "created_at": "2026-01-01T05:47:14.629787"
+    },
+    {
+      "extraction_id": "ed927b35-4f7f-4262-861a-e27b856e91c4",
+      "candidate_key": "FlightComputer_to_USB_Power",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] FlightComputer_to_USB_Power -> core_entities (ID: afab2758-e543-4379-a51e-cbb61f15beb5)",
+      "created_at": "2026-01-01T22:46:59.538436"
+    },
+    {
+      "extraction_id": "016910e1-cd51-4e8f-a268-3151c54cb1c6",
+      "candidate_key": "FlightComputer_to_PYSQUARED_Firmware",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] FlightComputer_to_PYSQUARED_Firmware -> core_entities (ID: ff00384c-b1f1-400d-b50f-f4466ceaf39e)",
+      "created_at": "2026-01-01T22:47:15.134593"
+    },
+    {
+      "extraction_id": "c4fd5104-b7f6-45f1-a0ec-99c4a7aaf122",
+      "candidate_key": "USB_Connector_to_FlightComputer_Power",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] USB_Connector_to_FlightComputer_Power -> core_entities (ID: d7783a4d-b84e-4149-ba27-efb63ccca47b)",
+      "created_at": "2026-01-01T22:47:28.808383"
+    },
+    {
+      "extraction_id": "8ede7f79-42aa-4396-b3fb-aa85b9db8084",
+      "candidate_key": "SolarBoards_to_FlightController",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] SolarBoards_to_FlightController -> core_entities (ID: 52e1c1c4-cdbd-416c-89e7-d719937cde4e)",
+      "created_at": "2026-01-02T02:56:35.408651"
+    },
+    {
+      "extraction_id": "e6e1f6bc-6bbe-479d-8832-ed700e095099",
+      "candidate_key": "FlightController_to_FaceBoards_Control",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] FlightController_to_FaceBoards_Control -> core_entities (ID: 0810b636-dd01-422b-910f-c26039d9c23a)",
+      "created_at": "2026-01-02T02:56:48.808036"
+    },
+    {
+      "extraction_id": "f24221ea-8e62-426e-adbb-5adb742a48cf",
+      "candidate_key": "FaceBoards_to_FlightController_SensorData",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] FaceBoards_to_FlightController_SensorData -> core_entities (ID: 45fc5bed-80df-46c7-a3de-345d117a9094)",
+      "created_at": "2026-01-02T02:57:01.815491"
+    },
+    {
+      "extraction_id": "b2c36a89-07a2-4879-83bc-6f354c9f125e",
+      "candidate_key": "SensorTesting_to_SolarCellInstallation",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] SensorTesting_to_SolarCellInstallation -> core_entities (ID: 2e01dd66-95ae-4fea-9d6b-75a3b16afd61)",
+      "created_at": "2026-01-02T02:57:15.384914"
+    },
+    {
+      "extraction_id": "eeee7c28-9097-4662-9ba7-cc2473c43345",
+      "candidate_key": "Structure_to_LBrackets",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] Structure_to_LBrackets -> core_entities (ID: f33ef7de-c85f-4724-9472-9595920749e0)",
+      "created_at": "2026-01-02T13:33:04.440412"
+    },
+    {
+      "extraction_id": "3838743d-ec95-482f-9ae9-7e03e127f7b9",
+      "candidate_key": "ButtonHead_vs_PanHead_Constraint",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] ButtonHead_vs_PanHead_Constraint -> core_entities (ID: db2ce6eb-d997-4ad5-a051-3664aed6be68)",
+      "created_at": "2026-01-02T13:33:21.275037"
+    },
+    {
+      "extraction_id": "ba152050-a0ee-4e2f-a6c8-136e6be7e084",
+      "candidate_key": "Antenna_to_BurnWire",
+      "ecosystem": "proveskit",
+      "action": "created",
+      "message": "[CREATED] Antenna_to_BurnWire -> core_entities (ID: 41b9dcc2-65fd-479b-8b74-165ccf3d9fdc)",
+      "created_at": "2026-01-02T13:33:38.110909"
+    },
+    {
+      "extraction_id": "731a8ba7-ce4b-445e-af5b-5027cdd0ddc5",
+      "candidate_key": "dependency:MathRequester_to_MathComputer",
+      "ecosystem": "fprime",
+      "action": "created",
+      "message": "[CREATED] dependency:MathRequester_to_MathComputer -> core_entities (ID: 9c88ecb0-1efc-4e95-b920-b578c0742fec)",
+      "created_at": "2026-01-03T18:35:35.459241"
+    }
+  ]
+}

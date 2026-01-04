@@ -530,49 +530,140 @@ def promote_to_core(
     merge_with_entity_id: str = None
 ) -> str:
     """
-    Promote a validated extraction to core_entities.
-    
-    Call this after validator approves the extraction.
-    
+    Promote a validated extraction to core_entities with hard identity matching.
+
+    STAGE 1 HARD MATCHING (Identity-Grade Signals Only):
+    - Exact duplicate: same canonical_key + ecosystem + entity_type → MERGE
+    - Approved alias: match in entity_alias table → MERGE
+    - Explicit merge target: human-provided merge_with_entity_id → MERGE
+    - Otherwise: CREATE new entity
+
+    This function is idempotent - safe to call multiple times.
+
     Args:
         extraction_id: ID from staging_extractions
         canonical_name: Optional unified name (if different from extracted name)
         merge_with_entity_id: If this is a duplicate, merge with existing entity
+
+    Returns:
+        Status message indicating what action was taken
     """
     try:
         import json
         conn = get_db_connection()
-        
+
         # Get or create pipeline run
         run_id = get_or_create_pipeline_run(conn, "curator_promotion")
-        
+
         with conn.cursor() as cur:
-            # Get the staging extraction
+            # STEP 1: Idempotency Check - already promoted?
+            cur.execute("""
+                SELECT promoted_at, promoted_to_entity_id, promotion_action
+                FROM staging_extractions
+                WHERE extraction_id = %s::uuid
+            """, (extraction_id,))
+            promotion_status = cur.fetchone()
+
+            if promotion_status and promotion_status[0]:  # promoted_at is not NULL
+                promoted_at, entity_id, action = promotion_status
+                return f"[SKIPPED] Already promoted on {promoted_at} (action: {action}, entity_id: {entity_id})"
+
+            # STEP 2: Get the staging extraction
             cur.execute("""
                 SELECT candidate_type::text, candidate_key, candidate_payload, ecosystem::text,
                        confidence_score, snapshot_id
                 FROM staging_extractions WHERE extraction_id = %s::uuid
             """, (extraction_id,))
             row = cur.fetchone()
-            
+
             if not row:
                 return f"Extraction {extraction_id} not found"
-            
+
             candidate_type, candidate_key, payload, ecosystem, confidence, snapshot_id = row
             final_name = canonical_name or candidate_key
-            
-            if merge_with_entity_id:
-                # Update existing entity's attributes
+
+            # STEP 3: Hard Identity Matching (if not explicitly provided)
+            action = None
+            enrichment_type = None
+
+            if not merge_with_entity_id:
+                # Check 1: Exact duplicate (same key + ecosystem + type)
                 cur.execute("""
-                    UPDATE core_entities 
+                    SELECT id, name, created_at
+                    FROM core_entities
+                    WHERE canonical_key = %s
+                    AND ecosystem::text = %s
+                    AND entity_type::text = %s
+                    LIMIT 1
+                """, (candidate_key, ecosystem, candidate_type))
+
+                exact_match = cur.fetchone()
+                if exact_match:
+                    merge_with_entity_id = str(exact_match[0])
+                    action = 'merged'
+                    enrichment_type = 'duplicate_merge'
+
+                # Check 2: Approved alias match (only if no exact match)
+                if not merge_with_entity_id:
+                    cur.execute("""
+                        SELECT canonical_entity_id, canonical_key, alias_type
+                        FROM entity_alias
+                        WHERE alias_text = %s
+                        AND ecosystem::text = %s
+                        AND resolution_status = 'resolved'
+                        LIMIT 1
+                    """, (candidate_key, ecosystem))
+
+                    alias_match = cur.fetchone()
+                    if alias_match:
+                        merge_with_entity_id = str(alias_match[0])
+                        action = 'merged'
+                        enrichment_type = 'alias'
+            else:
+                # Explicit merge target provided
+                action = 'merged'
+                enrichment_type = 'duplicate_merge'
+
+            # STEP 4: Execute promotion (merge or create)
+            if merge_with_entity_id:
+                # MERGE: Update existing entity's attributes
+                cur.execute("""
+                    UPDATE core_entities
                     SET attributes = attributes || %s::jsonb,
                         updated_at = NOW()
                     WHERE id = %s::uuid
                     RETURNING id
                 """, (json.dumps(payload) if payload else '{}', merge_with_entity_id))
                 entity_id = merge_with_entity_id
+
+                # Record enrichment
+                cur.execute("""
+                    INSERT INTO knowledge_enrichment (
+                        primary_entity_id,
+                        enrichment_type,
+                        source_extraction_id,
+                        merged_attributes,
+                        enriched_by,
+                        enrichment_notes
+                    ) VALUES (
+                        %s::uuid,
+                        %s,
+                        %s::uuid,
+                        %s::jsonb,
+                        'promotion_worker',
+                        %s
+                    )
+                """, (
+                    merge_with_entity_id,
+                    enrichment_type,
+                    extraction_id,
+                    json.dumps(payload) if payload else '{}',
+                    f'Hard match during promotion: {enrichment_type}'
+                ))
+
             else:
-                # Create new core entity
+                # CREATE: New core entity
+                action = 'created'
                 cur.execute("""
                     INSERT INTO core_entities (
                         entity_type, canonical_key, name, display_name,
@@ -588,21 +679,38 @@ def promote_to_core(
                     ecosystem, json.dumps(payload) if payload else '{}',
                     snapshot_id, run_id
                 ))
-                entity_id = cur.fetchone()[0]
-            
-            # Mark staging extraction as accepted
+                entity_id = str(cur.fetchone()[0])
+
+            # STEP 5: Mark promotion complete in staging_extractions
             cur.execute("""
-                UPDATE staging_extractions 
-                SET status = 'accepted'::candidate_status
+                UPDATE staging_extractions
+                SET promoted_at = NOW(),
+                    promoted_to_entity_id = %s::uuid,
+                    promotion_action = %s
                 WHERE extraction_id = %s::uuid
-            """, (extraction_id,))
-            
+            """, (entity_id, action, extraction_id))
+
         conn.commit()
         conn.close()
-        
-        return f"[PROMOTED] {final_name} -> core_entities (ID: {entity_id})"
-        
+
+        return f"[{action.upper()}] {final_name} -> core_entities (ID: {entity_id})"
+
     except Exception as e:
+        # Record error in staging_extractions
+        try:
+            conn = get_db_connection()
+            with conn.cursor() as cur:
+                cur.execute("""
+                    UPDATE staging_extractions
+                    SET promotion_action = 'error',
+                        promotion_error = %s
+                    WHERE extraction_id = %s::uuid
+                """, (str(e), extraction_id))
+            conn.commit()
+            conn.close()
+        except:
+            pass  # Don't fail on error recording
+
         return f"Error promoting extraction: {str(e)}"
 
 
