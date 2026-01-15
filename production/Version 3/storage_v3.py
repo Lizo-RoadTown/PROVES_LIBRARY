@@ -33,20 +33,11 @@ from langsmith import traceable
 
 from graph_manager import GraphManager
 
+# Import centralized database pool (Phase 1 refactor)
+from database import get_connection, get_db_connection
 
-def get_db_connection():
-    """Get a database connection from environment."""
-    import psycopg
-    from dotenv import load_dotenv
-    
-    # Load from project root
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
-    load_dotenv(os.path.join(project_root, '.env'))
-    
-    db_url = os.environ.get('NEON_DATABASE_URL')
-    if not db_url:
-        raise ValueError("NEON_DATABASE_URL not set")
-    return psycopg.connect(db_url)
+# Import schema validation (Phase 1 refactor)
+from schema_validator import validate_extraction, ValidationResult
 
 
 def get_or_create_pipeline_run(conn, run_name: str = "curator_extraction") -> str:
@@ -235,6 +226,25 @@ def store_extraction(
     """
     try:
         import json
+
+        # ========================================================================
+        # SCHEMA VALIDATION (Phase 1 refactor - catch invalid data early)
+        # ========================================================================
+        validation_result = validate_extraction({
+            "candidate_type": candidate_type,
+            "candidate_key": candidate_key,
+            "raw_evidence": raw_evidence,
+            "ecosystem": ecosystem,
+            "confidence_score": confidence_score,
+            "lineage_verified": lineage_verified,
+            "lineage_confidence": lineage_confidence,
+            "epistemic_defaults": epistemic_defaults,
+            "epistemic_overrides": epistemic_overrides,
+        })
+        if not validation_result.is_valid:
+            return f"VALIDATION_ERROR: {'; '.join(validation_result.errors)}"
+
+        # Use centralized connection pool (Phase 1 refactor)
         conn = get_db_connection()
 
         # ========================================================================

@@ -265,7 +265,7 @@ Then store ALL extractions in staging_extractions. Work autonomously - no approv
         thread_id = f"test-backup-{uuid.uuid4().hex[:8]}"
         config = {
             "configurable": {"thread_id": thread_id},
-            "recursion_limit": 20  # Limit API calls to prevent expensive loops
+            "recursion_limit": 100  # Increased to allow storage agent to store many extractions (was 20)
         }
 
         print("[TEST] Invoking BACKUP orchestration pipeline...")

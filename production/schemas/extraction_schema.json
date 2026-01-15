@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://proves.space/schemas/extraction/v1.0.0",
+  "title": "PROVES Extraction Schema",
+  "description": "Schema for validating extraction data before storage",
+  "version": "1.0.0",
+
+  "definitions": {
+    "candidateType": {
+      "type": "string",
+      "enum": ["component", "port", "command", "telemetry", "event", "parameter", "data_type", "dependency", "connection", "inheritance"],
+      "description": "Type of architectural element extracted (from database enum)"
+    },
+
+    "ecosystemType": {
+      "type": "string",
+      "enum": ["fprime", "proveskit", "pysquared", "cubesat_general", "external"],
+      "description": "Source ecosystem of the extraction (from database enum)"
+    },
+
+    "observerType": {
+      "type": "string",
+      "enum": ["human", "sensor", "algorithm", "llm"],
+      "description": "Type of observer that captured the knowledge"
+    },
+
+    "contactMode": {
+      "type": "string",
+      "enum": ["direct", "inferred", "cited", "simulated"],
+      "description": "How the observer contacted the knowledge"
+    },
+
+    "patternStorage": {
+      "type": "string",
+      "enum": ["url", "file", "memory", "db"],
+      "description": "Where the pattern evidence is stored"
+    },
+
+    "sequenceRole": {
+      "type": "string",
+      "enum": ["predecessor", "successor", "parallel"],
+      "description": "Role in a sequence of dependencies"
+    },
+
+    "confidenceScore": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Confidence score for the extraction (0.0-1.0)"
+    },
+
+    "epistemicFields": {
+      "type": "object",
+      "properties": {
+        "observer_id": { "type": "string" },
+        "observer_type": { "$ref": "#/definitions/observerType" },
+        "contact_mode": { "$ref": "#/definitions/contactMode" },
+        "contact_strength": { "$ref": "#/definitions/confidenceScore" },
+        "signal_type": { "type": "string" },
+        "pattern_storage": { "$ref": "#/definitions/patternStorage" },
+        "representation_media": { "type": "string" },
+        "dependencies": { "type": "string" },
+        "sequence_role": { "$ref": "#/definitions/sequenceRole" },
+        "validity_conditions": { "type": "string" },
+        "assumptions": { "type": "string" },
+        "scope": { "type": "string" },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "valid_from": { "type": "string", "format": "date-time" },
+        "valid_to": { "type": "string", "format": "date-time" },
+        "refresh_trigger": { "type": "string" },
+        "staleness_risk": { "type": "string" },
+        "author_id": { "type": "string" },
+        "intent": { "type": "string" },
+        "uncertainty_notes": { "type": "string" },
+        "reenactment_required": { "type": "boolean" },
+        "practice_interval": { "type": "string" },
+        "skill_transferability": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "description": "Epistemic metadata fields (7-question knowledge capture)"
+    }
+  },
+
+  "type": "object",
+  "required": ["candidate_type", "candidate_key", "raw_evidence"],
+  "properties": {
+    "candidate_type": {
+      "$ref": "#/definitions/candidateType"
+    },
+    "candidate_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "description": "Unique identifier for this candidate"
+    },
+    "raw_evidence": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact quote from source document"
+    },
+    "source_snapshot_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID of raw_snapshot containing source"
+    },
+    "ecosystem": {
+      "$ref": "#/definitions/ecosystemType"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the entity"
+    },
+    "confidence_score": {
+      "$ref": "#/definitions/confidenceScore"
+    },
+    "confidence_reason": {
+      "type": "string",
+      "description": "Explanation for confidence score"
+    },
+    "lineage_verified": {
+      "type": "boolean",
+      "description": "Whether evidence was found in snapshot"
+    },
+    "lineage_confidence": {
+      "$ref": "#/definitions/confidenceScore"
+    },
+    "epistemic_defaults": {
+      "$ref": "#/definitions/epistemicFields"
+    },
+    "epistemic_overrides": {
+      "$ref": "#/definitions/epistemicFields"
+    }
+  },
+  "additionalProperties": true
+}

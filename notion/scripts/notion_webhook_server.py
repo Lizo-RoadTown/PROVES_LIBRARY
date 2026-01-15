@@ -36,16 +36,16 @@ from http import HTTPStatus
 from dotenv import load_dotenv
 import psycopg
 
-# Add production folder to path for imports
+# Add PROVES_NOTION scripts folder to path for imports
 project_root = Path(__file__).parent.parent.parent  # PROVES_LIBRARY/
-sys.path.insert(0, str(project_root / 'production'))
+sys.path.insert(0, str(project_root / 'PROVES_NOTION' / 'scripts'))
 
 # Load environment
 load_dotenv()
 
-# Import our Notion sync modules
-from curator.notion_sync import NotionSync
-from curator.suggestion_sync import SuggestionSync
+# Import our Notion sync modules from PROVES_NOTION repo
+from notion_sync import NotionSync
+from suggestion_sync import SuggestionSync
 
 # Initialize Notion sync
 notion_sync = NotionSync()

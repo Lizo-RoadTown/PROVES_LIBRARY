@@ -3,20 +3,17 @@ URL Fetcher Sub-Agent
 Fetches URLs from the urls_to_process database table.
 """
 import os
-import psycopg
-from dotenv import load_dotenv
+import sys
+from pathlib import Path
 from langchain_core.tools import tool
 
+# Add Version 3 to path for database module
+project_root = Path(__file__).parent.parent.parent.parent
+version3_path = project_root / 'production' / 'Version 3'
+sys.path.insert(0, str(version3_path))
 
-def get_db_connection():
-    """Get database connection from environment."""
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
-    load_dotenv(os.path.join(project_root, '.env'))
-
-    db_url = os.environ.get('NEON_DATABASE_URL')
-    if not db_url:
-        raise ValueError("NEON_DATABASE_URL not set")
-    return psycopg.connect(db_url)
+# Import centralized database pool
+from database import get_connection
 
 
 @tool
@@ -27,35 +24,33 @@ def fetch_next_url() -> str:
     Returns the next URL to process, or a message if no URLs are available.
     """
     try:
-        conn = get_db_connection()
+        # Use centralized connection pool
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                # Get the next pending URL
+                cur.execute("""
+                    SELECT url, quality_score, quality_reason, preview_summary
+                    FROM urls_to_process
+                    WHERE status = 'pending'
+                    ORDER BY quality_score DESC, discovered_at ASC
+                    LIMIT 1
+                """)
 
-        with conn.cursor() as cur:
-            # Get the next pending URL
-            cur.execute("""
-                SELECT url, quality_score, quality_reason, preview_summary
-                FROM urls_to_process
-                WHERE status = 'pending'
-                ORDER BY quality_score DESC, discovered_at ASC
-                LIMIT 1
-            """)
+                row = cur.fetchone()
 
-            row = cur.fetchone()
+                if not row:
+                    return "No pending URLs available. All URLs have been processed."
 
-            if not row:
-                conn.close()
-                return "No pending URLs available. All URLs have been processed."
+                url, quality_score, quality_reason, preview_summary = row
 
-            url, quality_score, quality_reason, preview_summary = row
+                # Mark as processing
+                cur.execute("""
+                    UPDATE urls_to_process
+                    SET status = 'processing', processed_at = NOW()
+                    WHERE url = %s
+                """, (url,))
 
-            # Mark as processing
-            cur.execute("""
-                UPDATE urls_to_process
-                SET status = 'processing', processed_at = NOW()
-                WHERE url = %s
-            """, (url,))
-
-        conn.commit()
-        conn.close()
+            conn.commit()
 
         # Format preview if available
         preview = ""
@@ -86,17 +81,16 @@ def mark_url_complete(url: str, status: str = "completed") -> str:
         Confirmation message
     """
     try:
-        conn = get_db_connection()
+        # Use centralized connection pool
+        with get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    UPDATE urls_to_process
+                    SET status = %s, processed_at = NOW()
+                    WHERE url = %s
+                """, (status, url))
 
-        with conn.cursor() as cur:
-            cur.execute("""
-                UPDATE urls_to_process
-                SET status = %s, processed_at = NOW()
-                WHERE url = %s
-            """, (status, url))
-
-        conn.commit()
-        conn.close()
+            conn.commit()
 
         return f"URL marked as {status}: {url}"
 

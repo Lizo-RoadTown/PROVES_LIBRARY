@@ -1,0 +1,42 @@
+# Extraction Agent Configuration
+# This agent handles documentation extraction for the PROVES Library
+
+name: extraction_agent
+description: "Extracts structured knowledge from technical documentation"
+
+model:
+  provider: anthropic
+  model_name: claude-sonnet-4.5
+  temperature: 0.0
+
+tools:
+  - name: retrieve_docs
+    description: "Retrieve documentation from URLs"
+  - name: query_database
+    description: "Query existing knowledge base"
+  - name: extract_entities
+    description: "Extract entities and relationships from text"
+
+workflow:
+  type: agentic_rag
+  steps:
+    - generate_query_or_respond
+    - retrieve
+    - grade_documents
+    - rewrite_question
+    - generate_answer
+
+state:
+  schema: MessagesState
+  initial:
+    messages: []
+
+# Extraction-specific settings
+extraction:
+  chunk_size: 1000
+  chunk_overlap: 200
+  max_retries: 3
+
+grading:
+  relevance_threshold: 0.7
+  use_structured_output: true

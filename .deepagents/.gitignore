@@ -1,0 +1,23 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Generated files
+*.log
+*.tmp
+
+# Agent outputs
+outputs/
+checkpoints/
+traces/
+
+# Local configuration overrides
+local_*.yaml
+*.local.yaml

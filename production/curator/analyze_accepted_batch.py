@@ -23,19 +23,17 @@ project_root = Path(__file__).parent.parent.parent
 core_path = project_root / 'production' / 'core'
 sys.path.insert(0, str(core_path))
 
+# Add Version 3 to path for database module
+version3_path = project_root / 'production' / 'Version 3'
+sys.path.insert(0, str(version3_path))
+
 from dotenv import load_dotenv
-import psycopg
+
+# Import centralized database pool
+from database import get_connection
 
 # Load environment
 load_dotenv(project_root / '.env')
-
-
-def get_db_connection():
-    """Get database connection"""
-    db_url = os.environ.get('NEON_DATABASE_URL')
-    if not db_url:
-        raise ValueError("NEON_DATABASE_URL not set")
-    return psycopg.connect(db_url)
 
 
 def get_accepted_extractions(conn):
@@ -310,9 +308,8 @@ def main():
     print("\n[ANALYSIS] Analyzing accepted extractions batch...")
     print("This may take a moment for large batches...\n")
 
-    conn = get_db_connection()
-
-    try:
+    # Use centralized connection pool
+    with get_connection() as conn:
         # Get all accepted extractions
         extractions = get_accepted_extractions(conn)
         print(f"Found {len(extractions)} accepted extractions awaiting promotion\n")
@@ -334,9 +331,7 @@ def main():
 
         # Generate report
         generate_report(analyses)
-
-    finally:
-        conn.close()
+    # Connection automatically closed by context manager
 
 
 if __name__ == '__main__':

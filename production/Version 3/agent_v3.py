@@ -43,6 +43,9 @@ from subagent_specs_v3 import (
     get_storage_spec,
 )
 
+# Import storage tools for direct orchestrator use
+from storage_v3 import store_extraction
+
 
 def create_curator():
     """
@@ -52,13 +55,15 @@ def create_curator():
         dict with three subagent runnables and checkpointer
     """
 
-    # Initialize PostgreSQL checkpointer (Neon) with SSL config
+    # Initialize PostgreSQL checkpointer with SEPARATE small pool
+    # Checkpointer needs its own pool because it holds connections during agent execution
+    # Using the shared pool causes SSL errors when connections timeout
     db_url = os.getenv('NEON_DATABASE_URL')
-    pool = ConnectionPool(
+    checkpointer_pool = ConnectionPool(
         conninfo=db_url,
         min_size=1,
-        max_size=5,
-        timeout=30,  # Connection timeout in seconds
+        max_size=3,  # Small pool just for checkpointing
+        timeout=60,
         kwargs={
             "keepalives": 1,
             "keepalives_idle": 30,
@@ -66,7 +71,7 @@ def create_curator():
             "keepalives_count": 5,
         }
     )
-    checkpointer = PostgresSaver(pool)
+    checkpointer = PostgresSaver(checkpointer_pool)
     checkpointer.setup()
 
     # Get subagent specifications (from BACKUP files)
@@ -93,7 +98,7 @@ def create_curator():
         model=ChatAnthropic(model=storage_spec["model"], temperature=0.1),
         system_prompt=storage_spec["system_prompt"],
         tools=storage_spec["tools"],
-        checkpointer=checkpointer,
+        checkpointer=None,  # No checkpointing needed - storage agent just makes sequential tool calls
     )
 
     return {
@@ -195,25 +200,25 @@ Otherwise, APPROVE and include verification results.
     # If not explicitly rejected, proceed to storage
     print(f"[OK] Validation completed with BACKUP validator")
 
-    # STEP 3: STORE (using BACKUP storage with new parameters)
-    print(f"\n[TEST STEP 3/3] Storing validated extractions with BACKUP storage...")
-    storage_task = f"""Store the following VALIDATED extraction results:
+    # STEP 3: STORE - Orchestrator calls store_extraction directly for each extraction
+    print(f"\n[TEST STEP 3/3] Storing validated extractions...")
 
+    # Parse the extractor output to get extraction details
+    # The extractor returns structured data that we need to parse
+    # For now, use an LLM to parse and call store_extraction for each item
+    # This removes the 5 tool call limit
+
+    storage_task = f"""Parse the extraction data and call store_extraction() for EVERY extraction.
+
+EXTRACTION DATA:
 {final_message}
 
 VALIDATOR RESULTS:
 {validator_message}
 
-Your task (USING NEW REFACTOR PARAMETERS):
-1. Parse the extraction data
-2. Extract lineage verification results from validator output
-3. Extract epistemic defaults + overrides from validator output
-4. Store each coupling in staging_extractions with:
-   - lineage_verified, lineage_confidence (from validator)
-   - epistemic_defaults, epistemic_overrides (will be merged deterministically)
-5. Return confirmation with extraction_ids
-
-Use the store_extraction() tool for each coupling.
+CRITICAL: Call store_extraction() once for EACH extracted entity. Do not skip any.
+Extract the lineage_verified and lineage_confidence from validator results.
+Include all required epistemic metadata from the 7-question checklist.
 """
 
     storage_result = agents["storage"].invoke(
@@ -225,7 +230,7 @@ Use the store_extraction() tool for each coupling.
     last_message = storage_result["messages"][-1]
     storage_message = last_message.content if hasattr(last_message, 'content') else last_message.get('content', str(last_message))
 
-    print(f"[OK] Storage completed with BACKUP storage")
+    print(f"[OK] Storage completed")
 
     return {
         "status": "success",

@@ -507,12 +507,10 @@ Store extracted entities in staging_extractions for human review.
 - store_extraction() - Stage extractions in staging_extractions table
 - get_staging_statistics() - Query database stats and verify storage
 
-## Workflow (MAX 5 TOOL CALLS)
-
-**RECURSION LIMIT: You have a maximum of 5 tool calls. Be efficient.**
+## Workflow
 
 1. Receive extraction data from the main curator
-2. Store in staging_extractions using store_extraction() (1-3 tool calls):
+2. Store in staging_extractions using store_extraction() - **CALL ONCE FOR EACH EXTRACTION**:
    - candidate_type (component, port, command, etc.)
    - candidate_key (entity name)
    - raw_evidence (exact quote from source)
@@ -529,10 +527,10 @@ Store extracted entities in staging_extractions for human review.
      - observed_at, valid_from, valid_to, refresh_trigger, staleness_risk (Q5)
      - author_id, intent, uncertainty_notes (Q6)
      - reenactment_required, practice_interval, skill_transferability (Q7)
-3. Verify storage using get_staging_statistics() (1 tool call)
+3. Verify storage using get_staging_statistics()
 4. Report success/failure with statistics
 
-After 5 tool calls, you MUST return. No exceptions.
+**CRITICAL: Store ALL extractions** - call store_extraction() once for every entity, no matter how many there are.
 
 ## Critical Requirements
 
@@ -557,7 +555,7 @@ You do NOT:
             store_extraction,
             get_staging_statistics,
         ],
-        "model": "claude-3-5-haiku-20241022",
+        "model": "claude-sonnet-4-5-20250929",  # Changed from Haiku to Sonnet 4.5 - need better instruction following for storing ALL extractions
     }
 
 

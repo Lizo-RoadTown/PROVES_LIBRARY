@@ -1,0 +1,24 @@
+# PROVES Library Dependencies
+
+# Database
+psycopg[binary]==3.2.4
+psycopg-pool==3.2.4
+psycopg2-binary==2.9.10
+
+# LangChain & LangGraph
+langchain==0.3.18
+langchain-anthropic==0.3.5
+langchain-core==0.3.28
+langgraph==0.2.62
+langgraph-checkpoint-postgres==2.0.15
+
+# HTTP & API
+httpx==0.28.1
+
+# Notion Integration
+notion-client==2.7.0
+fastapi==0.128.0
+uvicorn==0.40.0
+
+# Utilities
+python-dotenv==1.0.1

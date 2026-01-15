@@ -33,6 +33,13 @@ from langchain_core.tools import tool
 from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
 
+# Import centralized database pool (Phase 1 refactor)
+from pathlib import Path
+version3_folder = Path(__file__).parent
+import sys
+sys.path.insert(0, str(version3_folder))
+from database import get_connection, get_db_connection
+
 
 @tool
 def get_ontology() -> str:
@@ -65,18 +72,7 @@ def get_ontology() -> str:
 Do NOT assign criticality - humans do that after verification."""
 
 
-def get_db_connection():
-    """Get a database connection from environment."""
-    import psycopg
-    from dotenv import load_dotenv
-
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
-    load_dotenv(os.path.join(project_root, '.env'))
-
-    db_url = os.environ.get('NEON_DATABASE_URL')
-    if not db_url:
-        raise ValueError("NEON_DATABASE_URL not set")
-    return psycopg.connect(db_url)
+# get_db_connection removed - now imported from database.py (Phase 1 refactor)
 
 
 def get_or_create_pipeline_run(conn, run_name: str = "curator_extraction") -> str:

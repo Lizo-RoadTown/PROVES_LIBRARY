@@ -31,21 +31,13 @@ version3_path = project_root / 'production' / 'Version 3'
 sys.path.insert(0, str(version3_path))
 
 from dotenv import load_dotenv
-import psycopg
 
-# Import promote_to_core - it's a @tool, so we need to call .invoke()
+# Import centralized database pool and promote function
+from database import get_connection
 from storage_v3 import promote_to_core as promote_tool
 
 # Load environment
 load_dotenv(project_root / '.env')
-
-
-def get_db_connection():
-    """Get database connection"""
-    db_url = os.environ.get('NEON_DATABASE_URL')
-    if not db_url:
-        raise ValueError("NEON_DATABASE_URL not set")
-    return psycopg.connect(db_url)
 
 
 def get_unpromoted_accepted(conn):
@@ -189,9 +181,8 @@ def main():
     print("=" * 80)
     print()
 
-    conn = get_db_connection()
-
-    try:
+    # Use centralized connection pool
+    with get_connection() as conn:
         # Get unpromoted extractions
         unpromoted = get_unpromoted_accepted(conn)
         print(f"Found {len(unpromoted)} accepted extractions awaiting promotion")
@@ -241,9 +232,7 @@ def main():
 
         # Save detailed log
         save_results_log(results)
-
-    finally:
-        conn.close()
+    # Connection automatically closed by context manager
 
 
 if __name__ == '__main__':

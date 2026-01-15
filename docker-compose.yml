@@ -1,26 +1,44 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: ankane/pgvector:latest
-    container_name: proves_postgres
-    environment:
-      POSTGRES_USER: proves_user
-      POSTGRES_PASSWORD: proves_password
-      POSTGRES_DB: proves
+  # Notion webhook server (bidirectional sync)
+  webhook:
+    build:
+      context: .
+      target: webhook
+    container_name: proves-webhook
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      # Optional: mount init scripts
-      # - ./neon-database/migrations:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U proves_user -d proves"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
-volumes:
-  postgres_data:
-    driver: local
+  # Extraction pipeline (on-demand or scheduled)
+  extractor:
+    build:
+      context: .
+      target: base
+    container_name: proves-extractor
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      webhook:
+        condition: service_healthy
+    # Run manually: docker-compose run extractor
+    command: python production/Version\ 3/process_extractions_v3.py --limit 1
+    profiles:
+      - manual
+
+networks:
+  default:
+    name: proves-network

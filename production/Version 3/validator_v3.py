@@ -24,19 +24,8 @@ from langgraph.prebuilt import create_react_agent
 from langsmith import traceable
 from graph_manager import GraphManager
 
-
-def get_db_connection():
-    """Get a database connection from environment."""
-    import psycopg
-    from dotenv import load_dotenv
-    
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
-    load_dotenv(os.path.join(project_root, '.env'))
-    
-    db_url = os.environ.get('NEON_DATABASE_URL')
-    if not db_url:
-        raise ValueError("NEON_DATABASE_URL not set")
-    return psycopg.connect(db_url)
+# Import centralized database pool (Phase 1 refactor)
+from database import get_connection, get_db_connection
 
 
 @tool
