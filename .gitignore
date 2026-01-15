@@ -81,3 +81,6 @@ nul
 # External reference repos and archives
 .deepagents-repo/
 .archive/
+tmpclaude-*
+PROVES_NOTION/
+deepagents-repo/
