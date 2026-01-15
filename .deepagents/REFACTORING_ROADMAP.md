@@ -540,12 +540,41 @@ The promotion layer was already built before this roadmap was created:
 
 ---
 
-### Phase 3: Standardization & Export (Next)
+### Phase 3: Standardization & Export (In Progress)
 
 **Goal:** Export verified `core_entities` to industry-standard MBSE formats.
 
 > **Key Insight:** Standards compliance happens AFTER human verification, not at extraction time.
 > The extraction layer intentionally stays loose to capture gray areas.
+
+#### Week 1-2: Domain Models Foundation ✅ COMPLETE (2026-01-15)
+
+**Status:** 85 passing tests, zero pipeline changes
+
+| Task | Status | Files Created |
+|------|--------|---------------|
+| 3.0a Stable identifiers (URI/URN) | ✅ Done | `production/core/identifiers.py` (41 tests) |
+| 3.0b FRAMES dimensions model | ✅ Done | `production/core/domain/frames_dimensions.py` (16 tests) |
+| 3.0c Provenance reference model | ✅ Done | `production/core/domain/provenance_ref.py` |
+| 3.0d CoreEntity domain model | ✅ Done | `production/core/domain/core_entity.py` (16 tests) |
+| 3.0e KnowledgeNode projection | ✅ Done | `production/core/domain/knowledge_node.py` (12 tests) |
+| 3.0f Repository interfaces | ✅ Done | `production/core/repositories/*.py` |
+| 3.0g PostgreSQL implementations | ✅ Done | `production/core/repositories/postgres_*.py` |
+| 3.0h CoreEntity repository tests | ✅ Done | `test_postgres_core_entity_repository.py` (291 lines) |
+| 3.0i RawSnapshot repository tests | ⏳ **IN PROGRESS** | `test_postgres_raw_snapshot_repository.py` (MISSING) |
+
+**Deliverables:**
+- URI/URN format: `http://proves.space/{ecosystem}/{type}/{key}`
+- 7-question FRAMES model embedded in domain
+- Verification-level semantics (VERIFIED vs CANDIDATE)
+- Read-only repositories (no write-path changes)
+
+**Documentation:**
+- `.deepagents/DOMAIN_MODELS_COMPLETE.md` - Full summary
+- `.deepagents/SESSION_SUMMARY_2026-01-15_DOMAIN_MODELS.md` - Conversation transcript
+- `.deepagents/SAFE_REFACTORING_PLAN.md` - Safe refactoring approach
+
+#### Week 3+: Export Serializers ⏳ NEXT
 
 | Task | Risk | Benefit | Status |
 |------|------|---------|--------|
