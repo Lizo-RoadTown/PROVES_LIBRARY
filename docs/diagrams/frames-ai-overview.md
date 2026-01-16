@@ -194,3 +194,9 @@ flowchart LR
 ```
 
 **Agents extract. Engineers verify. Knowledge stays.**
+
+---
+
+## More Diagrams
+
+- [Agent Self-Improvement](agent-self-improvement.html) — How agents learn and earn autonomy through trust calibration

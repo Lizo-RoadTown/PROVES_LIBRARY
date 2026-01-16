@@ -110,10 +110,15 @@ See [docs/SUPABASE_LOCAL_SETUP_WINDOWS.md](docs/SUPABASE_LOCAL_SETUP_WINDOWS.md)
 - Standards alignment (XTCE, SysML, PyTorch Geometric vocabulary mapping)
 - MCP server for natural language queries
 - Multi-university team support with authentication
+- Agent self-improvement proposals integration
 
 **Planned:**
 - Graph neural network for cascade failure prediction
 - MBSE export to industry standards
+
+**Recently Added:**
+- Agent Oversight dashboard for trust calibration
+- Human-in-the-loop approval workflow for agent proposals
 
 ---
 
@@ -159,6 +164,67 @@ Each extraction includes:
 - Epistemic metadata (how the knowledge was derived)
 
 The validator verifies that extracted evidence actually exists in the source snapshot before accepting it. This prevents hallucinated evidence from entering the system.
+
+---
+
+## Agentic Self-Improvement
+
+The system includes a **trust calibration framework** that allows AI agents to propose improvements to their own behavior—with human oversight.
+
+### How It Works
+
+```mermaid
+flowchart TD
+    AGENT[Agent detects pattern] --> PROPOSE[Propose change]
+    PROPOSE --> REVIEW{Human review}
+    REVIEW -->|Approve| IMPLEMENT[Implement change]
+    REVIEW -->|Reject| FEEDBACK[Trust decreases]
+    IMPLEMENT --> MEASURE[Measure impact]
+    MEASURE -->|Success| TRUST_UP[Trust increases]
+    MEASURE -->|Failure| TRUST_DOWN[Trust decreases]
+    TRUST_UP --> AUTO{Trust > threshold?}
+    AUTO -->|Yes| AUTO_APPROVE[Future proposals auto-approve]
+    AUTO -->|No| REVIEW
+
+    style AGENT fill:#ffe0b2
+    style REVIEW fill:#ffb74d
+    style TRUST_UP fill:#a5d6a7
+    style AUTO_APPROVE fill:#81c784
+```
+
+### Capability Types
+
+Agents can propose changes to:
+
+| Capability | Description | Example |
+|------------|-------------|---------|
+| `prompt_update` | Improve extraction/validation prompts | "Add check for F´ port naming conventions" |
+| `threshold_change` | Adjust confidence thresholds | "Lower threshold for well-documented components" |
+| `method_improvement` | Change extraction methodology | "Extract interfaces before components" |
+| `validation_rule` | Add new validation checks | "Verify telemetry channel IDs are unique" |
+| `ontology_expansion` | Define new entity types | "Add 'Health Check' as a component category" |
+
+### Trust Calibration
+
+Each agent starts with **0% trust** for each capability. As proposals are reviewed:
+
+- **Approved** → Trust increases (+5%)
+- **Rejected** → Trust decreases (-10%)
+- **Implementation succeeds** → Trust increases (+8%)
+- **Implementation fails** → Trust decreases (-15%)
+
+When trust exceeds the threshold (default 90%), that capability **auto-approves** without human review. Humans can override this per-capability.
+
+### Why This Matters
+
+Traditional ML systems require retraining to improve. This system:
+
+1. **Learns continuously** from human feedback during normal operation
+2. **Earns autonomy** for specific capabilities where it proves competent
+3. **Stays supervised** for high-risk or new capabilities
+4. **Maintains audit trail** of all changes and their outcomes
+
+The goal: agents that get better at their jobs over time, with humans gradually stepping back from routine approvals while staying in control of critical decisions.
 
 ---
 

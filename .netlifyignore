@@ -1,2 +1,0 @@
-# Ignore root requirements.txt - use function-specific requirements only
-requirements.txt
