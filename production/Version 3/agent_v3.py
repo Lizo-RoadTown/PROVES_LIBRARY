@@ -46,6 +46,9 @@ from subagent_specs_v3 import (
 # Import storage tools for direct orchestrator use
 from storage_v3 import store_extraction
 
+# Import validator tools for direct orchestrator use (duplicate checking)
+from validator_v3 import check_for_duplicates
+
 
 def create_curator():
     """
@@ -158,6 +161,63 @@ Return format:
         }
 
     print(f"[OK] Extraction completed")
+    print(f"\n   DEBUG - Extractor output preview (first 2000 chars):\n{'='*60}")
+    print(final_message[:2000] if len(final_message) > 2000 else final_message)
+    print(f"{'='*60}\n")
+
+    # STEP 1.5: DUPLICATE CHECK - Orchestrator calls check_for_duplicates for EACH entity
+    # This is done in Python loop to ensure ALL entities are checked (not limited by tool calls)
+    print(f"\n[TEST STEP 1.5/3] Checking for duplicates (orchestrator loop)...")
+
+    # Parse candidate_key values from extractor output
+    # The extractor uses markdown format like: **candidate_key:** RadioModule_to_FlightControllerBoard
+    import re
+
+    # Pattern: match "candidate_key" preceded by any chars (including **), then : and the value
+    # Value can contain letters, numbers, underscores, colons, hyphens, dots
+    key_pattern = r'candidate_key[*]*:\s*`?([A-Za-z0-9_:\-\.]+)`?'
+    candidate_keys = re.findall(key_pattern, final_message, re.IGNORECASE)
+
+    # Pattern for candidate_type
+    type_pattern = r'candidate_type[*]*:\s*`?([a-z_]+)`?'
+    candidate_types = re.findall(type_pattern, final_message, re.IGNORECASE)
+
+    # Debug: print what we found
+    print(f"   DEBUG: Found keys: {candidate_keys[:5]}..." if len(candidate_keys) > 5 else f"   DEBUG: Found keys: {candidate_keys}")
+    print(f"   DEBUG: Found types: {candidate_types[:5]}..." if len(candidate_types) > 5 else f"   DEBUG: Found types: {candidate_types}")
+
+    if candidate_keys:
+        print(f"   Found {len(candidate_keys)} candidate(s) to check for duplicates")
+        duplicates_found = []
+
+        for i, key in enumerate(candidate_keys):
+            # Get corresponding type if available, default to 'dependency'
+            entity_type = candidate_types[i] if i < len(candidate_types) else 'dependency'
+
+            # Call check_for_duplicates directly (not via LLM)
+            dup_result = check_for_duplicates.invoke({"entity_name": key, "entity_type": entity_type})
+
+            # Check if exact match found (in core_entities OR staging_extractions)
+            if "[WARNING] EXACT MATCHES" in dup_result:
+                duplicates_found.append(f"{key} ({entity_type})")
+                if "staging_extractions" in dup_result:
+                    print(f"   [DUPLICATE] {key} already pending in staging!")
+                else:
+                    print(f"   [DUPLICATE] {key} already exists in core_entities!")
+            else:
+                print(f"   [OK] {key} - no duplicates")
+
+        if duplicates_found:
+            return {
+                "status": "rejected",
+                "stage": "duplicate_check",
+                "reason": f"Duplicates found: {', '.join(duplicates_found)}. Stopping to prevent re-extraction loop.",
+                "extractor_output": final_message
+            }
+
+        print(f"   [OK] All {len(candidate_keys)} candidates passed duplicate check")
+    else:
+        print(f"   [WARN] Could not parse candidate keys from extractor output")
 
     # STEP 2: VALIDATE (using BACKUP validator with new tools)
     print(f"\n[TEST STEP 2/3] Validating extractions with BACKUP validator...")
@@ -167,18 +227,21 @@ Return format:
 
 Your task (USING NEW REFACTOR TOOLS):
 1. Use validate_epistemic_structure() to check epistemic defaults + overrides
-2. Use verify_evidence_lineage() to check lineage for each extraction
-3. Check for duplicates in core_entities and staging_extractions
-4. Return APPROVED or REJECTED with reasoning
+2. Use verify_evidence_lineage() to check lineage for EACH extraction
+   - You MUST call verify_evidence_lineage() once per extraction
+   - Pass snapshot_id and the raw_evidence text
 
-CRITICAL - NEW TOOLS:
+NOTE: Duplicate checking is ALREADY DONE by the orchestrator. Do NOT call check_for_duplicates().
+
+Return APPROVED or REJECTED with reasoning.
+
+CRITICAL - TOOLS TO USE:
 - validate_epistemic_structure(epistemic_defaults, epistemic_overrides)
-- verify_evidence_lineage(snapshot_id, evidence_text)
+- verify_evidence_lineage(snapshot_id, evidence_text) - CALL ONCE PER EXTRACTION
 
-If ANY duplicates found, REJECT immediately.
 If epistemic structure invalid, REJECT.
-If lineage_confidence < 0.5, REJECT.
-Otherwise, APPROVE and include verification results.
+If ANY lineage_confidence < 0.5 or lineage_verified=FALSE, REJECT.
+Otherwise, APPROVE and include verification results for all extractions.
 """
 
     validator_result = agents["validator"].invoke(

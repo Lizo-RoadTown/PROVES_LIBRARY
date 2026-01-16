@@ -146,63 +146,90 @@ def record_validation_decision(
 @tool
 def check_for_duplicates(entity_name: str, entity_type: str) -> str:
     """
-    Check if an entity already exists in core_entities.
-    
+    Check if an entity already exists in core_entities OR staging_extractions.
+
     Use this before approving to detect duplicates that should be merged.
+    Checks both promoted entities and pending extractions to prevent re-extraction loops.
     """
     try:
         conn = get_db_connection()
         with conn.cursor() as cur:
-            # Exact match on canonical_key
+            # Check core_entities - exact match on canonical_key
             cur.execute("""
                 SELECT id, canonical_key, name, entity_type::text, ecosystem::text
-                FROM core_entities 
+                FROM core_entities
                 WHERE LOWER(canonical_key) = LOWER(%s) AND is_current = TRUE
             """, (entity_name,))
-            exact = cur.fetchall()
-            
-            # Similar names (trigram similarity if pg_trgm is installed)
+            exact_core = cur.fetchall()
+
+            # Check staging_extractions - pending extractions with same candidate_key
+            cur.execute("""
+                SELECT extraction_id, candidate_key, candidate_type, status::text, created_at
+                FROM staging_extractions
+                WHERE LOWER(candidate_key) = LOWER(%s) AND status = 'pending'
+            """, (entity_name,))
+            exact_staging = cur.fetchall()
+
+            # Similar names in core_entities (trigram similarity if pg_trgm is installed)
             try:
                 cur.execute("""
                     SELECT id, canonical_key, name, entity_type::text, ecosystem::text,
                            similarity(canonical_key, %s) as sim
-                    FROM core_entities 
+                    FROM core_entities
                     WHERE similarity(canonical_key, %s) > 0.3 AND is_current = TRUE
                     ORDER BY sim DESC
                     LIMIT 5
                 """, (entity_name, entity_name))
                 similar = cur.fetchall()
-            except Exception:
-                # pg_trgm not installed - fall back to LIKE
+            except Exception as e:
+                # pg_trgm not installed or query failed - MUST rollback before retry
+                conn.rollback()
+                # Fall back to LIKE query
                 cur.execute("""
                     SELECT id, canonical_key, name, entity_type::text, ecosystem::text
-                    FROM core_entities 
+                    FROM core_entities
                     WHERE LOWER(canonical_key) LIKE LOWER(%s) AND is_current = TRUE
                     LIMIT 5
                 """, (f'%{entity_name}%',))
                 similar = [(r[0], r[1], r[2], r[3], r[4], 0.5) for r in cur.fetchall()]
-            
+
+        conn.commit()  # Commit successful transaction
         conn.close()
-        
+
         result = f"Duplicate check for '{entity_name}' ({entity_type}):\n\n"
-        
-        if exact:
-            result += "[WARNING] EXACT MATCHES:\n"
-            for eid, key, name, etype, eco in exact:
+
+        # Report core_entities matches
+        if exact_core:
+            result += "[WARNING] EXACT MATCHES in core_entities:\n"
+            for eid, key, name, etype, eco in exact_core:
                 result += f"  - {name} (key: {key}, {etype}, {eco}) ID: {eid}\n"
         else:
-            result += "[OK] No exact matches\n"
-        
+            result += "[OK] No exact matches in core_entities\n"
+
+        # Report staging_extractions matches (pending duplicates)
+        if exact_staging:
+            result += "\n[WARNING] EXACT MATCHES in staging_extractions (pending):\n"
+            for ext_id, key, ctype, status, created in exact_staging:
+                result += f"  - {key} ({ctype}, {status}) created: {created} ID: {ext_id}\n"
+        else:
+            result += "[OK] No pending extractions with same key\n"
+
         if similar:
-            result += "\n📊 Similar entities:\n"
+            result += "\n📊 Similar entities in core_entities:\n"
             for row in similar:
                 eid, key, name, etype, eco = row[:5]
                 sim = row[5] if len(row) > 5 else 0.5
                 result += f"  - {name} (key: {key}, {etype}, {eco}) similarity: {sim:.2f}\n"
-        
+
         return result
-        
+
     except Exception as e:
+        # Ensure connection is cleaned up on error
+        try:
+            conn.rollback()
+            conn.close()
+        except:
+            pass
         return f"Error checking duplicates: {str(e)}"
 
 
@@ -737,26 +764,50 @@ def verify_evidence_lineage(snapshot_id: str, evidence_text: str) -> str:
         else:
             checks_failed.append("evidence_empty")
 
-        # Check 2: Evidence found in snapshot (exact match)
+        # Check 2: Evidence found in snapshot (exact or normalized match)
+        def normalize_text(text: str) -> str:
+            """Aggressive normalization: collapse whitespace, lowercase, remove punctuation variations."""
+            text = text.replace('\r\n', '\n').replace('\r', '\n')
+            text = re.sub(r'\s+', ' ', text)  # Collapse all whitespace to single space
+            text = text.strip()
+            return text
+
+        def normalize_aggressive(text: str) -> str:
+            """Even more aggressive: lowercase, remove extra chars."""
+            text = normalize_text(text)
+            text = text.lower()
+            # Replace common variants (curly quotes, etc.)
+            text = text.replace('"', '"').replace('"', '"')
+            text = text.replace(''', "'").replace(''', "'")
+            text = text.replace('–', '-').replace('—', '-')
+            return text
+
+        # Try exact match first
         exact_match_offset = payload_bytes.find(evidence_bytes)
         if exact_match_offset != -1:
             checks_passed.append("evidence_found_exact")
         else:
-            # Try normalized match (formatting-only normalization)
-            def normalize_text(text: str) -> str:
-                """STRICT formatting-only normalization."""
-                text = text.replace('\r\n', '\n').replace('\r', '\n')
-                text = re.sub(r'\s+', ' ', text)
-                text = text.strip()
-                return text
-
-            payload_normalized = normalize_text(payload_stripped)  # Use stripped content
+            # Try normalized match
+            payload_normalized = normalize_text(payload_stripped)
             evidence_normalized = normalize_text(evidence_text)
 
             if evidence_normalized in payload_normalized:
                 checks_passed.append("evidence_found_normalized")
             else:
-                checks_failed.append("evidence_not_found_in_snapshot")
+                # Try aggressive normalization (lowercase, quote variants)
+                payload_aggressive = normalize_aggressive(payload_stripped)
+                evidence_aggressive = normalize_aggressive(evidence_text)
+
+                if evidence_aggressive in payload_aggressive:
+                    checks_passed.append("evidence_found_fuzzy")
+                else:
+                    # Last resort: check if a significant substring matches (80% of words)
+                    evidence_words = set(evidence_aggressive.split())
+                    payload_words = set(payload_aggressive.split())
+                    if evidence_words and len(evidence_words & payload_words) / len(evidence_words) >= 0.8:
+                        checks_passed.append("evidence_found_partial")
+                    else:
+                        checks_failed.append("evidence_not_found_in_snapshot")
 
         # Check 3: Evidence length reasonable
         evidence_length = len(evidence_bytes)
@@ -771,12 +822,25 @@ def verify_evidence_lineage(snapshot_id: str, evidence_text: str) -> str:
         else:
             checks_failed.append("evidence_too_repetitive")
 
-        # Calculate confidence
-        total_checks = len(checks_passed) + len(checks_failed)
-        lineage_confidence = len(checks_passed) / total_checks if total_checks > 0 else 0.0
+        # Calculate confidence - evidence_found is the CRITICAL check
+        # If evidence not found, confidence is capped at 0.25 (below threshold)
+        evidence_found = any(check in checks_passed for check in [
+            "evidence_found_exact",
+            "evidence_found_normalized",
+            "evidence_found_fuzzy",
+            "evidence_found_partial"
+        ])
 
-        # Verified if evidence found (exact or normalized) and confidence >= 0.5
-        evidence_found = "evidence_found_exact" in checks_passed or "evidence_found_normalized" in checks_passed
+        if evidence_found:
+            # Evidence found - calculate normally
+            total_checks = len(checks_passed) + len(checks_failed)
+            lineage_confidence = len(checks_passed) / total_checks if total_checks > 0 else 0.0
+        else:
+            # Evidence NOT found - this is a critical failure, cap confidence
+            # Other checks passing doesn't matter if evidence isn't in snapshot
+            lineage_confidence = 0.25  # Below 0.5 threshold = automatic rejection
+
+        # Verified if evidence found AND confidence >= 0.5
         lineage_verified = evidence_found and (lineage_confidence >= 0.5)
 
         return json.dumps({

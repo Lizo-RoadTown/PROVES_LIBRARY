@@ -399,11 +399,14 @@ For each extraction, use verify_evidence_lineage(snapshot_id, evidence_text):
 - Pass lineage_verified, lineage_confidence, checks_passed/failed to storage
 - REJECT if lineage_confidence < 0.5 or lineage_verified = FALSE
 
-### 2. Duplicate Detection (PREVENTS LOOPS)
-- Use check_for_duplicates() to search core_entities
-- Use search_similar_dependencies() for similar entities
-- If duplicate found: REJECT with clear reason
-- This STOPS re-extraction of same data
+### 2. Epistemic Structure Validation (MANDATORY)
+For each extraction, use validate_epistemic_structure():
+- [REQ] Call validate_epistemic_structure(epistemic_defaults, epistemic_overrides)
+- [REQ] Validate 7-question checklist compliance
+- [REQ] Verify knowledge_form, knowledge_type, permanence, etc.
+
+NOTE: Duplicate detection is handled by the orchestrator BEFORE you run.
+You do NOT need to call check_for_duplicates().
 
 ### 3. Evidence Quality
 - Evidence must have raw_text (not empty)
@@ -415,30 +418,33 @@ For each extraction, use verify_evidence_lineage(snapshot_id, evidence_text):
 - Check relationship types are valid
 - Verify no self-references
 
-## Workflow (MAX 5 TOOL CALLS)
+## Workflow (MAX 20 TOOL CALLS)
 
-**RECURSION LIMIT: You have a maximum of 5 tool calls. Be efficient.**
+**RECURSION LIMIT: You have a maximum of 20 tool calls for validating multiple extractions.**
 
-1. **Lineage Verification** (1 tool call):
+NOTE: Duplicate checking is handled by the orchestrator BEFORE you run. Focus on lineage and quality.
+
+For EACH extraction in the input:
+
+1. **Lineage Verification** (1 tool call per extraction):
    - Call verify_evidence_lineage(snapshot_id, evidence_text)
    - Returns JSON with lineage_verified, lineage_confidence, checks_passed, checks_failed
    - REJECT immediately if lineage_confidence < 0.5 or lineage_verified = FALSE
 
-2. **Duplicate Check** (1 tool call - CRITICAL):
-   - Use check_for_duplicates() to search core_entities
-   - This prevents re-extraction loops
-   - REJECT if duplicate found
+2. **Epistemic Validation** (1 tool call per extraction):
+   - Call validate_epistemic_structure() with epistemic_defaults and epistemic_overrides
+   - Verify 7-question checklist compliance
 
 3. **Quality Check** (in-memory, no tool calls):
    - Verify evidence quality
    - Check confidence reasoning
 
-4. **Decision** (return immediately):
-   - APPROVE if: lineage_verified=TRUE AND lineage_confidence>=0.5 AND no duplicates
-   - REJECT if: lineage_confidence <0.5 OR lineage_verified=FALSE OR duplicate found
+4. **Decision** (after verifying ALL extractions):
+   - APPROVE if: ALL extractions have lineage_verified=TRUE AND lineage_confidence>=0.5
+   - REJECT if: ANY extraction has lineage_confidence <0.5 OR lineage_verified=FALSE
    - Pass lineage verification results to storage for metadata computation
 
-After 5 tool calls, you MUST return a decision. No exceptions.
+After 20 tool calls, you MUST return a decision. No exceptions.
 
 ## Output Format
 
@@ -462,17 +468,20 @@ Decision: APPROVE - lineage verified, no duplicates found
 ## Critical Rules
 
 - If lineage_confidence < 0.5: REJECT
-- If duplicate found: REJECT (THIS STOPS LOOPS)
 - If evidence_text empty: REJECT
-- Always calculate SHA256 checksum
 - Always document all checks
+- Call verify_evidence_lineage() for EACH extraction
+- Call validate_epistemic_structure() for EACH extraction
+
+NOTE: Duplicate detection is handled by orchestrator BEFORE you run.
 
 You do NOT:
+- Check for duplicates (orchestrator handles this)
 - Assign criticality
 - Make subjective quality judgments
 - Filter based on importance
 
-Your validation STOPS THE LOOP by catching duplicates.""",
+Your job is lineage verification and epistemic validation.""",
         "tools": [
             get_pending_extractions,
             # record_validation_decision removed - not needed in orchestration flow
