@@ -305,34 +305,27 @@ class AgentState(TypedDict):
 ### Example: Cascade Analysis Workflow
 
 ```mermaid
-stateDiagram-v2
-    [*] --> Router
+flowchart TB
+    START(( )) --> Router
 
-    Router --> CascadeAnalyzer: "Why brownouts?"
-    CascadeAnalyzer --> GraphQuery: Find power paths
-    GraphQuery --> EvidenceTracer: Extract evidence
-    EvidenceTracer --> VectorSearch: Get mitigation docs
-    VectorSearch --> Synthesizer: Combine results
-    Synthesizer --> [*]: Return answer
+    Router -->|"Why brownouts?"| CascadeAnalyzer
+    CascadeAnalyzer -->|Find power paths| GraphQuery
+    GraphQuery -->|Extract evidence| EvidenceTracer
+    EvidenceTracer -->|Get mitigation docs| VectorSearch
+    VectorSearch -->|Combine results| Synthesizer
+    Synthesizer -->|Return answer| END(( ))
 
-    note right of CascadeAnalyzer
-        Query graph for:
-        RadioTX -> Power cascade paths
-    end note
+    NOTE_CA[/"Query graph for:<br/>RadioTX -> Power cascade paths"/]
+    CascadeAnalyzer -.- NOTE_CA
+    style NOTE_CA fill:#fff9c4,stroke:#fbc02d
 
-    note right of EvidenceTracer
-        Trace evidence for:
-        - Unknown edges
-        - Assumed relationships
-    end note
+    NOTE_ET[/"Trace evidence for:<br/>- Unknown edges<br/>- Assumed relationships"/]
+    EvidenceTracer -.- NOTE_ET
+    style NOTE_ET fill:#fff9c4,stroke:#fbc02d
 
-    note right of Synthesizer
-        Generate answer with:
-        - Cascade diagram
-        - Root cause analysis
-        - Recommended fixes
-        - Confidence score
-    end note
+    NOTE_SYN[/"Generate answer with:<br/>- Cascade diagram<br/>- Root cause analysis<br/>- Recommended fixes<br/>- Confidence score"/]
+    Synthesizer -.- NOTE_SYN
+    style NOTE_SYN fill:#fff9c4,stroke:#fbc02d
 ```
 
 ---
