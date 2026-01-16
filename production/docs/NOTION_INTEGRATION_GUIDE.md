@@ -391,7 +391,7 @@ For production (not ngrok):
 **Check:**
 1. Is server running? `curl http://localhost:8000/`
 2. Are triggers installed? `SELECT * FROM pg_trigger WHERE tgname LIKE '%notion%';`
-3. Database connection? Check `NEON_DATABASE_URL` in `.env`
+3. Database connection? Check `DATABASE_URL` in `.env`
 
 ### Notion sync failing
 

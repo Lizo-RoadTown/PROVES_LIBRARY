@@ -37,7 +37,7 @@ load_dotenv(project_root / '.env')
 # Import our sync module
 from curator.suggestion_sync import SuggestionSync
 
-DATABASE_URL = os.getenv('NEON_DATABASE_URL')
+DATABASE_URL = os.getenv('DATABASE_URL')
 
 class ImprovementAnalyzer:
     """Analyzes extraction patterns and generates improvement suggestions"""

@@ -23,11 +23,11 @@ class DatabaseConnector:
         Initialize database connector
 
         Args:
-            db_url: Database URL (defaults to NEON_DATABASE_URL from .env)
+            db_url: Database URL (defaults to DATABASE_URL or PROVES_DATABASE_URL from .env)
         """
-        self.db_url = db_url or os.getenv('NEON_DATABASE_URL')
+        self.db_url = db_url or os.getenv('DATABASE_URL') or os.getenv('PROVES_DATABASE_URL')
         if not self.db_url:
-            raise ValueError("Database URL not provided and NEON_DATABASE_URL not set")
+            raise ValueError("Database URL not provided. Set DATABASE_URL or PROVES_DATABASE_URL in .env")
 
         # Connection pool (min 1, max 10 connections)
         self.pool = SimpleConnectionPool(1, 10, self.db_url)

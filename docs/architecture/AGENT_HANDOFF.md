@@ -291,7 +291,7 @@ Processing fprime_i2c_driver_full.md...
 
 ```bash
 # Neon Database
-NEON_DATABASE_URL=postgresql://user:password@ep-xxx.neon.tech/proves_library
+DATABASE_URL=postgresql://user:password@ep-xxx.neon.tech/proves_library
 
 # LangSmith (for tracing)
 LANGSMITH_TRACING=true
@@ -350,10 +350,10 @@ Application -> DeviceManager -> BusDriver -> HardwareI2C -> PowerSupply
 ### Can't Connect to Database
 ```bash
 # Test connection string
-python -c "import os; from dotenv import load_dotenv; load_dotenv(); print(os.getenv('NEON_DATABASE_URL'))"
+python -c "import os; from dotenv import load_dotenv; load_dotenv(); print(os.getenv('DATABASE_URL'))"
 
 # Should output: postgresql://...
-# If empty, check .env file exists and has NEON_DATABASE_URL
+# If empty, check .env file exists and has DATABASE_URL
 ```
 
 ### LangSmith Not Tracing

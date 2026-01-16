@@ -241,9 +241,9 @@ pip install httpx python-dotenv
 **Symptom:** `connection to server failed`
 
 **Fix:**
-1. Check `.env` has `NEON_DATABASE_URL`
+1. Check `.env` has `DATABASE_URL`
 2. Verify network connectivity to Neon
-3. Test with: `psql $NEON_DATABASE_URL`
+3. Test with: `psql $DATABASE_URL`
 
 ### Issue 4: Virtual Environment Errors
 **Symptom:** `.venv` has error files

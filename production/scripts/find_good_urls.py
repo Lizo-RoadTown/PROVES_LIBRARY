@@ -49,9 +49,9 @@ class SmartWebFetchAgent:
 
     def __init__(self):
         """Initialize with database connection."""
-        self.db_url = os.environ.get('NEON_DATABASE_URL')
+        self.db_url = os.environ.get('DATABASE_URL')
         if not self.db_url:
-            raise ValueError("NEON_DATABASE_URL not set in environment")
+            raise ValueError("DATABASE_URL not set in environment")
 
     def get_processed_urls(self) -> Set[str]:
         """Get URLs that have already been added to queue or processed."""

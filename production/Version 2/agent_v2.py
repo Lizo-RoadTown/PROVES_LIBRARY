@@ -35,7 +35,7 @@ def create_curator():
     """
 
     # Initialize PostgreSQL checkpointer (Neon) with SSL config
-    db_url = os.getenv('NEON_DATABASE_URL')
+    db_url = os.getenv('DATABASE_URL')
     pool = ConnectionPool(
         conninfo=db_url,
         min_size=1,

@@ -38,7 +38,7 @@ _pool_lock = Lock()
 def _get_db_url() -> str:
     """Get database URL from environment, loading .env if needed."""
     # Check if already loaded
-    db_url = os.environ.get('NEON_DATABASE_URL')
+    db_url = os.environ.get('DATABASE_URL')
     if db_url:
         return db_url
 
@@ -47,10 +47,10 @@ def _get_db_url() -> str:
     project_root = version3_folder.parent.parent
     load_dotenv(project_root / '.env')
 
-    db_url = os.environ.get('NEON_DATABASE_URL')
+    db_url = os.environ.get('DATABASE_URL')
     if not db_url:
         raise ValueError(
-            "NEON_DATABASE_URL not set. "
+            "DATABASE_URL not set. "
             "Check your .env file or environment variables."
         )
     return db_url

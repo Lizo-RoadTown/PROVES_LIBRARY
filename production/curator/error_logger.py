@@ -19,7 +19,7 @@ class ErrorLogger:
     """Helper class for logging errors to database tables"""
 
     def __init__(self):
-        self.db_url = os.getenv('NEON_DATABASE_URL')
+        self.db_url = os.getenv('DATABASE_URL')
 
     def log_to_extraction(
         self,

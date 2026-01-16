@@ -116,7 +116,7 @@ def safe_print(text):
 
 def get_pending_urls(limit: int = None):
     """Get pending URLs from queue with their context."""
-    db_url = os.environ.get('NEON_DATABASE_URL')
+    db_url = os.environ.get('DATABASE_URL')
     conn = psycopg.connect(db_url)
 
     with conn.cursor() as cur:
@@ -150,7 +150,7 @@ def get_pending_urls(limit: int = None):
 
 def update_url_status(url: str, status: str, error_msg: str = None):
     """Update URL status in database."""
-    db_url = os.environ.get('NEON_DATABASE_URL')
+    db_url = os.environ.get('DATABASE_URL')
     conn = psycopg.connect(db_url)
 
     with conn.cursor() as cur:

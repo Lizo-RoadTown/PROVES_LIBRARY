@@ -61,7 +61,7 @@ def create_curator():
     # Initialize PostgreSQL checkpointer with SEPARATE small pool
     # Checkpointer needs its own pool because it holds connections during agent execution
     # Using the shared pool causes SSL errors when connections timeout
-    db_url = os.getenv('NEON_DATABASE_URL')
+    db_url = os.getenv('DATABASE_URL')
     checkpointer_pool = ConnectionPool(
         conninfo=db_url,
         min_size=1,

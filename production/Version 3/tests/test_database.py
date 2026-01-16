@@ -22,7 +22,7 @@ load_dotenv(project_root / '.env')
 
 
 @pytest.mark.skipif(
-    not os.getenv('NEON_DATABASE_URL'),
+    not os.getenv('DATABASE_URL'),
     reason="Database connection required"
 )
 class TestDatabasePool:

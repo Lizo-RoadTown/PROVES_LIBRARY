@@ -192,7 +192,7 @@ export PYTHONPATH=$PYTHONPATH:.
 **Database connection issues?**
 ```bash
 # Check .env file
-cat .env | grep NEON_DATABASE_URL
+cat .env | grep DATABASE_URL
 ```
 
 **Torch/PyTorch errors?**

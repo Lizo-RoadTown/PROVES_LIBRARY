@@ -63,7 +63,7 @@ Analyzes extraction patterns and generates improvement suggestions.
 ## Environment Setup
 
 All scripts use environment variables from `.env` in the project root:
-- `NEON_DATABASE_URL` - Database connection
+- `DATABASE_URL` - Database connection
 - `ANTHROPIC_API_KEY` - Claude API for curator agent
 - `LANGCHAIN_API_KEY` - LangSmith tracing
 - `NOTION_API_KEY` - Notion integration

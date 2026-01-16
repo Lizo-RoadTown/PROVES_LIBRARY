@@ -26,9 +26,9 @@ def db_connection():
     """Database connection fixture - session scoped for efficiency."""
     import psycopg
 
-    db_url = os.environ.get('NEON_DATABASE_URL')
+    db_url = os.environ.get('DATABASE_URL')
     if not db_url:
-        pytest.skip("NEON_DATABASE_URL not set")
+        pytest.skip("DATABASE_URL not set")
 
     conn = psycopg.connect(db_url)
     yield conn

@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Python 3.14
-- NEON_DATABASE_URL environment variable set
+- DATABASE_URL environment variable set
 - Database schema with lineage fields (see migrations/001_add_lineage_and_relationships.sql)
 
 ## Running Production Pipeline

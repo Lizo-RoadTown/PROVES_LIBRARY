@@ -35,7 +35,7 @@ python process_extractions_v3.py --limit 1
 
 **If it fails:**
 - Check error message for import issues
-- Verify `.env` has `NEON_DATABASE_URL`
+- Verify `.env` has `DATABASE_URL`
 - Check Python dependencies are installed
 
 ---
@@ -126,10 +126,10 @@ from database import get_connection
 **Fix:**
 ```bash
 # Check .env file exists
-cat .env | grep NEON_DATABASE_URL
+cat .env | grep DATABASE_URL
 
 # Or set manually
-export NEON_DATABASE_URL="your_connection_string"
+export DATABASE_URL="your_connection_string"
 ```
 
 ### Issue: "psycopg" module not found

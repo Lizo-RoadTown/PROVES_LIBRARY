@@ -69,9 +69,9 @@ def get_db_connection():
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
     load_dotenv(os.path.join(project_root, '.env'))
     
-    db_url = os.environ.get('NEON_DATABASE_URL')
+    db_url = os.environ.get('DATABASE_URL')
     if not db_url:
-        raise ValueError("NEON_DATABASE_URL not set")
+        raise ValueError("DATABASE_URL not set")
     return psycopg.connect(db_url)
 
 
@@ -560,7 +560,7 @@ def observe_staging_feedback(days_back: int = 7, limit: int = 50) -> str:
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
         load_dotenv(os.path.join(project_root, '.env'))
 
-        db_url = os.environ.get('NEON_DATABASE_URL')
+        db_url = os.environ.get('DATABASE_URL')
         conn = psycopg.connect(db_url)
 
         query = """
@@ -712,7 +712,7 @@ def query_verified_entities(
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
         load_dotenv(os.path.join(project_root, '.env'))
 
-        db_url = os.environ.get('NEON_DATABASE_URL')
+        db_url = os.environ.get('DATABASE_URL')
         conn = psycopg.connect(db_url)
 
         query = """
@@ -790,7 +790,7 @@ def query_staging_history(
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
         load_dotenv(os.path.join(project_root, '.env'))
 
-        db_url = os.environ.get('NEON_DATABASE_URL')
+        db_url = os.environ.get('DATABASE_URL')
         conn = psycopg.connect(db_url)
 
         query = """

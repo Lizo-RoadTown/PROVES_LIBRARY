@@ -33,7 +33,7 @@ def fetch_sample_entities(limit=5):
         List of CoreEntity instances
     """
     load_dotenv()
-    db_url = os.getenv('NEON_DATABASE_URL')
+    db_url = os.getenv('DATABASE_URL')
 
     entities = []
 
@@ -97,7 +97,7 @@ def fetch_snapshot(snapshot_id):
         RawSnapshot instance or None
     """
     load_dotenv()
-    db_url = os.getenv('NEON_DATABASE_URL')
+    db_url = os.getenv('DATABASE_URL')
 
     with psycopg.connect(db_url) as conn:
         with conn.cursor() as cur:
@@ -288,7 +288,7 @@ def main():
     except Exception as e:
         print(f"\nError: {e}")
         print("\nMake sure:")
-        print("  1. .env file exists with NEON_DATABASE_URL")
+        print("  1. .env file exists with DATABASE_URL")
         print("  2. You have network access to Neon database")
         print("  3. core_entities table has data")
 

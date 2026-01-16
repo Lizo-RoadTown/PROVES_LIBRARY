@@ -6,7 +6,7 @@ Automates environment setup:
 1. Checks Python version
 2. Installs dependencies
 3. Configures environment variables
-4. Sets up database (Neon or Docker)
+4. Sets up database (Supabase or Docker)
 5. Runs migrations
 6. Verifies installation
 """
@@ -106,20 +106,21 @@ class SetupManager:
 
         # Ask about database choice
         print("\nDatabase setup:")
-        print("  1. Neon (cloud, recommended for quick start)")
+        print("  1. Supabase (cloud, recommended)")
         print("  2. Local PostgreSQL (Docker, for development)")
         db_choice = input("Choose option (1 or 2): ").strip()
 
         if db_choice == '1':
-            print("\nNeon setup:")
-            print("1. Sign up at https://neon.tech (free tier available)")
+            print("\nSupabase setup:")
+            print("1. Sign up at https://supabase.com (free tier available)")
             print("2. Create a new project")
-            print("3. Copy the connection string")
-            neon_url = input("Enter your NEON_DATABASE_URL: ").strip()
-            if neon_url:
+            print("3. Go to Settings > Database > Connection string")
+            print("4. Copy the 'Direct connection' URL (port 5432)")
+            db_url = input("Enter your DATABASE_URL: ").strip()
+            if db_url:
                 env_content = env_content.replace(
-                    'postgresql://user:password@ep-xxx.us-east-2.aws.neon.tech/proves',
-                    neon_url
+                    'postgresql://user:password@host:5432/postgres',
+                    db_url
                 )
             else:
                 print("[WARNING] Using placeholder database URL")
@@ -127,7 +128,7 @@ class SetupManager:
             print("\n[INFO] Using local PostgreSQL via Docker")
             print("[INFO] Connection string: postgresql://proves_user:proves_password@localhost:5432/proves")
             env_content = env_content.replace(
-                'postgresql://user:password@ep-xxx.us-east-2.aws.neon.tech/proves',
+                'postgresql://user:password@host:5432/postgres',
                 'postgresql://proves_user:proves_password@localhost:5432/proves'
             )
         else:
@@ -142,14 +143,7 @@ class SetupManager:
             if langsmith_key:
                 env_content = env_content.replace('lsv2_sk_your_langsmith_api_key_here', langsmith_key)
 
-        # Optional: Notion
-        print("\nOPTIONAL: Notion integration (for verification workflow)")
-        setup_notion = input("Configure Notion? (y/N): ").strip().lower()
-        if setup_notion == 'y':
-            print("See: production/docs/NOTION_INTEGRATION_GUIDE.md for setup instructions")
-            notion_key = input("Enter your NOTION_API_KEY: ").strip()
-            if notion_key:
-                env_content += f"\n# Notion Integration\nNOTION_API_KEY={notion_key}\n"
+        # Note: Notion integration has been deprecated in favor of the Curation Dashboard
 
         # Write .env file
         self.env_file.write_text(env_content)
@@ -168,7 +162,7 @@ class SetupManager:
                     key, value = line.split('=', 1)
                     env_vars[key.strip()] = value.strip()
 
-        db_url = env_vars.get('NEON_DATABASE_URL', '')
+        db_url = env_vars.get('DATABASE_URL', '') or env_vars.get('PROVES_DATABASE_URL', '')
 
         if 'localhost' in db_url or '127.0.0.1' in db_url:
             # Local Docker setup
@@ -202,35 +196,29 @@ class SetupManager:
             else:
                 return False
         else:
-            # Neon/cloud setup - just verify URL is set
+            # Supabase/cloud setup - just verify URL is set
             if 'your_' in db_url or not db_url:
                 print("[WARNING] Database URL not configured properly")
-                print("Please update NEON_DATABASE_URL in .env file")
+                print("Please update DATABASE_URL in .env file")
                 return False
             else:
-                print("[OK] Using cloud database (Neon)")
+                print("[OK] Using cloud database (Supabase)")
                 return True
 
     def run_migrations(self) -> bool:
         """Run database migrations"""
         self.print_step(5, "Running database migrations")
 
-        migration_script = self.project_root / 'neon-database' / 'scripts' / 'run_migration.py'
-
-        if not migration_script.exists():
-            print(f"[ERROR] Migration script not found at {migration_script}")
-            return False
-
-        return self.run_command(
-            [sys.executable, str(migration_script)],
-            "Database migrations"
-        )
+        print("[INFO] Migrations should be applied via Supabase CLI or Dashboard")
+        print("       See: supabase/migrations/ folder for migration files")
+        print("       Run: supabase db push (if using Supabase CLI)")
+        return True
 
     def verify_setup(self) -> bool:
         """Verify installation by testing database connection"""
         self.print_step(6, "Verifying installation")
 
-        db_connector = self.project_root / 'neon-database' / 'scripts' / 'db_connector.py'
+        db_connector = self.project_root / 'production' / 'core' / 'db_connector.py'
 
         if not db_connector.exists():
             print("[ERROR] db_connector.py not found")

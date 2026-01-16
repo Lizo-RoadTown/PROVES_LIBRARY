@@ -208,7 +208,7 @@ class TestLineageVerification:
         assert verify_evidence_lineage is not None
 
     @pytest.mark.skipif(
-        not os.getenv('NEON_DATABASE_URL'),
+        not os.getenv('DATABASE_URL'),
         reason="Database connection required"
     )
     def test_lineage_verification_returns_expected_fields(self):
@@ -452,7 +452,7 @@ class TestOrchestration:
 # ============================================================================
 
 @pytest.mark.skipif(
-    not os.getenv('NEON_DATABASE_URL'),
+    not os.getenv('DATABASE_URL'),
     reason="Database connection required"
 )
 class TestDatabaseConnection:
@@ -464,9 +464,9 @@ class TestDatabaseConnection:
         from dotenv import load_dotenv
 
         load_dotenv(project_root / '.env')
-        db_url = os.environ.get('NEON_DATABASE_URL')
+        db_url = os.environ.get('DATABASE_URL')
 
-        assert db_url is not None, "NEON_DATABASE_URL not set"
+        assert db_url is not None, "DATABASE_URL not set"
 
         # Test connection
         conn = psycopg.connect(db_url)
@@ -481,7 +481,7 @@ class TestDatabaseConnection:
         """Test that required tables exist in database."""
         import psycopg
 
-        db_url = os.environ.get('NEON_DATABASE_URL')
+        db_url = os.environ.get('DATABASE_URL')
         conn = psycopg.connect(db_url)
 
         required_tables = [
