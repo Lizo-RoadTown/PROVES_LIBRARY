@@ -84,3 +84,26 @@ nul
 tmpclaude-*
 PROVES_NOTION/
 deepagents-repo/
+
+# Database dumps and exports (large files)
+*.dump
+*.sql.gz
+neon_exports/
+proves_neon_backup.sql
+neon_full.dump
+
+# Executables and pip binaries (accidentally installed)
+scripts/*.exe
+scripts/jsondiff
+scripts/jsonpatch
+scripts/jsonpointer
+scripts/normalizer.exe
+scripts/dotenv.exe
+scripts/distro.exe
+scripts/httpx.exe
+
+# Curation dashboard (separate repo)
+curation_dashboard/
+
+# Root package.json (not a node project)
+/package.json

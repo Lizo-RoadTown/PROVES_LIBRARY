@@ -4,159 +4,114 @@ title: PROVES Library
 key: page-home
 ---
 
-# PROVES Library: Agentic Knowledge for CubeSat Mission Safety
+# PROVES Library
 
-**Automated dependency capture + knowledge graph + human review** to prevent
-cross-team failures when critical knowledge disappears.
+**The central knowledge library for PROVES Kit CubeSat development.**
 
 ---
 
-## dY>y At a Glance
+## What It Is
+
+PROVES Library is the knowledge base for [PROVES Kit](https://docs.proveskit.space/)—the open-source CubeSat development framework built on NASA JPL's [F´ (F Prime)](https://nasa.github.io/fprime/).
+
+Components, dependencies, interfaces, and design decisions—all in one place.
+
+---
+
+## FRAMES AI by Bronco Space Lab
+
+FRAMES AI is the agentic intelligence system that powers this library.
 
 <div class="card-grid card-grid-3">
   <div class="card">
-    <h3>Capture</h3>
-    <p>Extract dependencies with citations from docs, code, and issues.</p>
+    <h3>Agentic Extraction</h3>
+    <p>AI agents crawl documentation and extract knowledge automatically.</p>
+    <span class="badge">✅ Production</span>
   </div>
   <div class="card">
-    <h3>Validate</h3>
-    <p>Normalize into ERV relationships and check duplicates.</p>
+    <h3>Curation Dashboard</h3>
+    <p>Web UI for teams to review, claim, and approve extractions.</p>
+    <span class="badge">✅ Production</span>
   </div>
   <div class="card">
-    <h3>Review</h3>
-    <p>Gate mission-critical items for human approval.</p>
+    <h3>MCP Server</h3>
+    <p>Query the library in natural language.</p>
+    <span class="badge">⚠️ Testing</span>
   </div>
   <div class="card">
-    <h3>Store</h3>
-    <p>Write entries to a structured knowledge graph.</p>
+    <h3>Graph Neural Network</h3>
+    <p>Predict cascade failures and detect hidden dependencies.</p>
+    <span class="badge">🚧 In Progress</span>
   </div>
   <div class="card">
-    <h3>Visualize</h3>
-    <p>Render diagrams and trace transitive chains.</p>
+    <h3>MBSE Export</h3>
+    <p>Export to SysML, XTCE, PyTorch Geometric.</p>
+    <span class="badge">🚧 In Progress</span>
   </div>
   <div class="card">
-    <h3>Learn</h3>
-    <p>Use feedback to improve prompts and patterns.</p>
+    <h3>Multi-Team Support</h3>
+    <p>Row-level security for university collaboration.</p>
+    <span class="badge">✅ Production</span>
   </div>
 </div>
 
 ---
 
-## dY?-‹,? Agentic AI Structure
+## How It Works
 
 ```mermaid
-flowchart TB
-  subgraph Sources
-    A1[F Prime docs]
-    A2[PROVES Kit docs]
-    A3[Issues and PRs]
-  end
+flowchart LR
+    DOCS[Docs] --> AGENTS[FRAMES AI Agents]
+    AGENTS --> REVIEW[Human Review]
+    REVIEW --> LIB[PROVES Library]
+    LIB --> QUERY[Queries]
 
-  subgraph Ingestion
-    B1[Doc sync]
-    B2[Normalization]
-  end
-
-  subgraph Agents
-    C1[Curator agent]
-    C2[Extractor]
-    C3[Validator]
-    C4[Storage]
-    C5[Human review]
-  end
-
-  subgraph Knowledge Base
-    D1[Library entries]
-    D2[Knowledge graph]
-    D3[ERV relationships]
-  end
-
-  subgraph Outputs
-    E1[GitHub Pages diagrams]
-    E2[Queries and analysis]
-    E3[Risk scanner]
-  end
-
-  A1 --> B1
-  A2 --> B1
-  A3 --> B1
-  B1 --> B2
-  B2 --> C1
-  C1 --> C2
-  C2 --> C3
-  C3 -->|low/medium| C4
-  C3 -->|high/conflict| C5
-  C5 -->|approve| C4
-  C5 -->|reject| C1
-  C4 --> D1
-  C4 --> D2
-  D2 --> D3
-  D1 --> E1
-  D2 --> E2
-  D2 --> E3
+    style DOCS fill:#bbdefb
+    style AGENTS fill:#ffe0b2
+    style REVIEW fill:#ffb74d
+    style LIB fill:#a5d6a7
+    style QUERY fill:#f8bbd9
 ```
 
----
+1. **Agents extract** components and dependencies from PROVES Kit and F´ docs
+2. **Engineers verify** in the curation dashboard
+3. **Knowledge enters** the PROVES Library
+4. **Teams query** via MCP or export to engineering tools
 
-## dY` Lifecycle: Curation Run
-
-```mermaid
-sequenceDiagram
-  participant Doc as Documentation
-  participant Curator
-  participant Extractor
-  participant Validator
-  participant Review as Human Review
-  participant Storage
-  participant Graph as Knowledge Graph
-
-  Doc->>Curator: Ingest source
-  Curator->>Extractor: Capture ALL dependencies with citations
-  Extractor-->>Curator: Raw data with context
-  Curator->>Validator: Flag anomalies check patterns
-  Validator-->>Curator: Staged with flags and notes
-  Curator->>Staging: Store ALL to staging tables
-  Staging-->>Review: Human verifies EVERY piece
-  Review-->>Graph: Only verified data enters truth
-  Graph->>Graph: Align sources establish truth
-  Graph-->>Storage: Ack
-  Storage-->>Curator: Stored summary
-```
+[View Full Architecture Diagram](diagrams/frames-ai-overview.html)
 
 ---
 
-## dY"S Trial Results (What We Found)
+## Current Stats
 
-- **45+ dependencies** with citations across FA' + PROVES Kit docs
-- **4 cross-system dependencies** not documented in either system
-- **2 transitive dependency chains** traced end-to-end
-- **5 knowledge gaps** that explain mission failures
-
----
-
-## dY"S Interactive Diagrams
-
-- [Dependency Overview](diagrams/overview.html)
-- [Cross-System Dependencies](diagrams/cross-system.html)
-- [Transitive Dependency Chains](diagrams/transitive-chains.html)
-- [Knowledge Gaps](diagrams/knowledge-gaps.html)
-- [Team Boundaries](diagrams/team-boundaries.html)
+| Metric | Value |
+|--------|-------|
+| Extractions | 74 |
+| Components | 29 |
+| Dependencies | 30 |
+| Pipeline Reliability | 100% |
+| Domain Model Tests | 111 passing |
 
 ---
 
-## dY"- What This Enables
+## Get Started
 
-- Detect risky changes before they cascade across subsystems.
-- Preserve the "why" behind technical decisions.
-- Enable cross-team learning without tribal knowledge loss.
+- [**Setup Guide**](../SETUP_GUIDE.html) - Install and configure
+- [**Curation Dashboard**](../curation_dashboard/) - Review extractions
+- [**MCP Integration**](../mcp-server/docs/MCP_INTEGRATION.html) - Query interface
 
 ---
 
 ## Documentation
 
-- [**Getting Started Guide**](getting-started/) - New user walkthrough
-- [**Quick Reference**](getting-started/QUICK_REFERENCE.html) - Command cheat sheet
-- [Trial Mapping Design Document](../testing_data/diagrams/TRIAL_MAPPING_DESIGN.html)
-- [Comprehensive Dependency Map](../testing_data/diagrams/COMPREHENSIVE_DEPENDENCY_MAP.html)
-- [Original F´ Documentation](../testing_data/diagrams/fprime_i2c_driver_full.html)
-- [Original PROVES Kit Documentation](../testing_data/diagrams/proves_power_full.html)
+- [Architecture](architecture/AGENTIC_ARCHITECTURE.html) - How FRAMES AI is built
+- [Knowledge Framework](../canon/KNOWLEDGE_FRAMEWORK.html) - The theory behind FRAMES
+- [Knowledge Graph Schema](architecture/KNOWLEDGE_GRAPH_SCHEMA.html) - Data model
+
+---
+
+## Related Projects
+
+- [PROVES Kit](https://docs.proveskit.space/) - Open-source CubeSat framework
+- [F´ (F Prime)](https://nasa.github.io/fprime/) - NASA JPL flight software
+- [Proves_AI](https://github.com/Lizo-RoadTown/Proves_AI) - Graph neural network training
