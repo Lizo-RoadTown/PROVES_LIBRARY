@@ -7,7 +7,7 @@ An agentic system for teams that move fast. Captures knowledge, creates SOPs, an
 [![Database: Supabase](https://img.shields.io/badge/database-Supabase-3ECF8E.svg)](https://supabase.com)
 [![Dashboard](https://img.shields.io/badge/dashboard-live-blue.svg)](https://proves-curation-dashboard.vercel.app/)
 
-Built for engineering teams who can't afford to lose institutional knowledge—space labs, flight software groups, and research teams where one person leaving shouldn't mean starting over.
+Built for engineering teams, space labs, flight software groups, and research teams, where teams work rapid and lean.
 
 ---
 
@@ -31,8 +31,6 @@ Teams interact with captured knowledge through natural language.
 - **Scan your own code** — Point it at your repo to assess risk or check for known failure patterns
 - **Source of truth** — Verified knowledge becomes the authoritative reference for processes and procedures
 - **Always available** — Organizational knowledge accessible to anyone on the team, anytime
-
-No more digging through Slack threads or asking who knows what.
 
 ### SOPs and Workflows
 
