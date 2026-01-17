@@ -1,6 +1,6 @@
 # PROVES Library
 
-A knowledge preservation system for CubeSat development teams.
+An agentic AI system for rapid development and deployment of software in space labs.
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -8,25 +8,43 @@ A knowledge preservation system for CubeSat development teams.
 
 ---
 
-## The Problem
+## What It Does
 
-University satellite programs have an 88% failure rate. A major contributor: **knowledge loss during team transitions**. When students graduate, critical understanding of why design decisions were made—what was tried, what failed, what the constraints were—disappears.
+PROVES Library is the knowledge backbone for [PROVES Kit](https://docs.proveskit.space/), an open-source CubeSat framework built on NASA JPL's [F´ (F Prime)](https://nasa.github.io/fprime/) flight software.
 
-The next team starts from scratch, makes the same mistakes, and the cycle repeats.
+**AI agents automatically extract and organize engineering knowledge:**
 
-## What This Does
+1. **Crawl documentation** — PROVES Kit, F´, team repositories
+2. **Extract entities** — components, interfaces, dependencies, design decisions
+3. **Verify lineage** — ensure evidence exists in source documents
+4. **Human review** — engineers approve extractions in the curation dashboard
+5. **Query the library** — "What fails if the I2C bus fails?" or "Show all power dependencies"
 
-PROVES Library is the knowledge base for [PROVES Kit](https://docs.proveskit.space/), an open-source CubeSat framework built on NASA JPL's [F´ (F Prime)](https://nasa.github.io/fprime/) flight software.
+The agents handle the tedious extraction work. Engineers make the judgment calls.
 
-It works like this:
+---
 
-1. **AI agents crawl documentation** from PROVES Kit, F´, and team repositories
-2. **Extract components, dependencies, and design decisions** automatically
-3. **Engineers review and verify** in a curation dashboard
-4. **Verified knowledge enters the library** and becomes queryable
-5. **Teams can ask questions** like "What fails if the I2C bus fails?" or "What are all the power dependencies?"
+## The Curation Dashboard
 
-Only human-verified knowledge enters the library. The agents do the tedious extraction work; engineers make the judgment calls.
+The [Curation Dashboard](https://proves-curation-dashboard.vercel.app/) is where engineers review and approve AI-extracted knowledge.
+
+**How it reduces work:**
+
+- **Batch review** — Review dozens of extractions at once instead of manually documenting each one
+- **Evidence included** — Every extraction shows the source quote and URL, so you verify instead of research
+- **Accept/Reject workflow** — One click to approve good extractions, reject bad ones with a reason
+- **Claim system** — Lock extractions while you work on them, prevent duplicate effort
+- **Team visibility** — See what teammates are reviewing, track progress across the team
+
+**Dashboard sections:**
+
+| Section | What It Does |
+|---------|--------------|
+| **Review Work** | Queue of pending extractions needing human approval |
+| **Library** | Verified knowledge that passed review |
+| **Activity** | Audit trail of all decisions and who made them |
+| **Agent Oversight** | Trust calibration for agent self-improvement proposals |
+| **Peer Reflection** | Read-only quality metrics (confidence calibration, drift alerts) |
 
 ---
 
@@ -52,22 +70,13 @@ flowchart LR
     style QUERY fill:#f8bbd9
 ```
 
-The system has four main components:
-
-| Component | What It Does | Status |
-|-----------|--------------|--------|
+| Component | Description | Status |
+|-----------|-------------|--------|
 | **Extraction Pipeline** | LangGraph agents crawl docs, extract entities and relationships | Production |
-| **Curation Dashboard** | Web UI where teams review and approve extractions | Production |
-| **Knowledge Graph** | PostgreSQL + pgvector storing verified entities and relationships | Production |
+| **Curation Dashboard** | Web UI for reviewing and approving extractions | [Live](https://proves-curation-dashboard.vercel.app/) |
+| **Knowledge Graph** | PostgreSQL + pgvector for verified entities and relationships | Production |
+| **Peer Reflection** | Agents monitor each other's performance and calibration drift | Production |
 | **MCP Server** | Natural language queries via Model Context Protocol | Testing |
-
-### Database: Supabase
-
-The knowledge graph runs on [Supabase](https://supabase.com) (PostgreSQL):
-- Row-level security for multi-team isolation
-- pgvector for semantic search
-- Real-time subscriptions for live dashboard updates
-- Automatic backups
 
 ---
 
@@ -93,63 +102,11 @@ python production/Version\ 3/process_extractions_v3.py --limit 5
 python production/scripts/check_pending_extractions.py
 ```
 
-See [docs/SUPABASE_LOCAL_SETUP_WINDOWS.md](docs/SUPABASE_LOCAL_SETUP_WINDOWS.md) for detailed database setup.
-
----
-
-## Current State
-
-**What's Working:**
-- Extraction pipeline processing PROVES Kit and F´ documentation
-- 74 extractions completed, 29 components, 30 dependencies mapped
-- Curation dashboard for reviewing extractions
-- Domain models with standard identifiers (URIs/URNs)
-- 111 tests passing
-
-**In Progress:**
-- Standards alignment (XTCE, SysML, PyTorch Geometric vocabulary mapping)
-- MCP server for natural language queries
-- Multi-university team support with authentication
-- Agent self-improvement proposals integration
-
-**Planned:**
-- Graph neural network for cascade failure prediction
-- MBSE export to industry standards
-
-**Recently Added:**
-- Agent Oversight dashboard for trust calibration
-- Human-in-the-loop approval workflow for agent proposals
-
----
-
-## Project Structure
-
-```
-PROVES_LIBRARY/
-├── production/
-│   ├── Version 3/           # Current extraction pipeline
-│   │   ├── agent_v3.py      # LangGraph orchestrator
-│   │   ├── extractor_v3.py  # Entity extraction agent
-│   │   ├── validator_v3.py  # Lineage verification
-│   │   └── storage_v3.py    # Database storage
-│   ├── core/
-│   │   ├── domain/          # Domain models (CoreEntity, RawSnapshot)
-│   │   ├── repositories/    # Database access layer
-│   │   └── identifiers.py   # URI/URN generation
-│   └── scripts/             # CLI tools
-├── curation_dashboard/      # React/Vite review interface
-├── mcp-server/              # MCP query interface
-├── supabase/
-│   └── migrations/          # Database schema
-├── docs/                    # Architecture documentation
-└── .deepagents/             # Development roadmaps
-```
-
 ---
 
 ## How Extraction Works
 
-The extraction pipeline uses Claude (via LangGraph) to:
+The pipeline uses Claude (via LangGraph) to:
 
 1. **Fetch documentation** and store snapshots with provenance
 2. **Extract entities** (components, interfaces, parameters, dependencies)
@@ -163,15 +120,11 @@ Each extraction includes:
 - Confidence score with reasoning
 - Epistemic metadata (how the knowledge was derived)
 
-The validator verifies that extracted evidence actually exists in the source snapshot before accepting it. This prevents hallucinated evidence from entering the system.
-
 ---
 
 ## Agentic Self-Improvement
 
-The system includes a **trust calibration framework** that allows AI agents to propose improvements to their own behavior—with human oversight.
-
-### How It Works
+Agents can propose improvements to their own behavior—with human oversight.
 
 ```mermaid
 flowchart TD
@@ -182,49 +135,32 @@ flowchart TD
     IMPLEMENT --> MEASURE[Measure impact]
     MEASURE -->|Success| TRUST_UP[Trust increases]
     MEASURE -->|Failure| TRUST_DOWN[Trust decreases]
-    TRUST_UP --> AUTO{Trust > threshold?}
-    AUTO -->|Yes| AUTO_APPROVE[Future proposals auto-approve]
-    AUTO -->|No| REVIEW
 
     style AGENT fill:#ffe0b2
     style REVIEW fill:#ffb74d
     style TRUST_UP fill:#a5d6a7
-    style AUTO_APPROVE fill:#81c784
 ```
 
-### Capability Types
+Agents can propose:
+- **Prompt updates** — Improve extraction/validation prompts
+- **Threshold changes** — Adjust confidence thresholds
+- **Validation rules** — Add new verification checks
+- **Ontology expansion** — Define new entity types
 
-Agents can propose changes to:
+Each agent starts with 0% trust. As proposals are approved and succeed, trust increases. High-trust capabilities can auto-approve without human review.
 
-| Capability | Description | Example |
-|------------|-------------|---------|
-| `prompt_update` | Improve extraction/validation prompts | "Add check for F´ port naming conventions" |
-| `threshold_change` | Adjust confidence thresholds | "Lower threshold for well-documented components" |
-| `method_improvement` | Change extraction methodology | "Extract interfaces before components" |
-| `validation_rule` | Add new validation checks | "Verify telemetry channel IDs are unique" |
-| `ontology_expansion` | Define new entity types | "Add 'Health Check' as a component category" |
+---
 
-### Trust Calibration
+## Peer Reflection
 
-Each agent starts with **0% trust** for each capability. As proposals are reviewed:
+A separate analyzer agent monitors extraction quality without modifying data:
 
-- **Approved** → Trust increases (+5%)
-- **Rejected** → Trust decreases (-10%)
-- **Implementation succeeds** → Trust increases (+8%)
-- **Implementation fails** → Trust decreases (-15%)
+- **Confidence calibration** — Are agents over-confident or under-confident?
+- **Drift detection** — Alert when acceptance rates diverge from claimed confidence
+- **Entity type performance** — Which extraction types need improvement?
+- **Lineage failures** — Track evidence verification issues
 
-When trust exceeds the threshold (default 90%), that capability **auto-approves** without human review. Humans can override this per-capability.
-
-### Why This Matters
-
-Traditional ML systems require retraining to improve. This system:
-
-1. **Learns continuously** from human feedback during normal operation
-2. **Earns autonomy** for specific capabilities where it proves competent
-3. **Stays supervised** for high-risk or new capabilities
-4. **Maintains audit trail** of all changes and their outcomes
-
-The goal: agents that get better at their jobs over time, with humans gradually stepping back from routine approvals while staying in control of critical decisions.
+The peer reflection dashboard is read-only by design—it observes but never writes.
 
 ---
 
@@ -241,15 +177,36 @@ The goal: agents that get better at their jobs over time, with humans gradually 
 
 ---
 
+## Project Structure
+
+```
+PROVES_LIBRARY/
+├── production/
+│   ├── Version 3/           # Current extraction pipeline
+│   │   ├── agent_v3.py      # LangGraph orchestrator
+│   │   ├── extractor_v3.py  # Entity extraction agent
+│   │   ├── validator_v3.py  # Lineage verification
+│   │   └── storage_v3.py    # Database storage
+│   ├── core/
+│   │   ├── domain/          # Domain models
+│   │   └── repositories/    # Database access layer
+│   └── scripts/             # CLI tools
+├── curation_dashboard/      # React/Vite review interface
+├── mcp-server/              # MCP query interface
+├── supabase/
+│   └── migrations/          # Database schema
+└── docs/                    # Documentation
+```
+
+---
+
 ## Documentation
 
 | Document | Description |
 |----------|-------------|
 | [Database Setup](docs/SUPABASE_LOCAL_SETUP_WINDOWS.md) | Supabase configuration |
-| [Curation Dashboard](docs/CURATION_DASHBOARD_REQUIREMENTS.md) | Review workflow requirements |
-| [MCP Server](mcp-server/docs/MCP_SERVER_REQUIREMENTS.md) | Query interface specification |
-| [Architecture](docs/architecture/AGENTIC_ARCHITECTURE.md) | Technical design |
-| [Implementation Roadmap](.deepagents/IMPLEMENTATION_ROADMAP.md) | Current development phase |
+| [Curation Dashboard](docs/CURATION_DASHBOARD_REQUIREMENTS.md) | Review workflow |
+| [MCP Server](mcp-server/docs/MCP_SERVER_REQUIREMENTS.md) | Query interface |
 
 ---
 
