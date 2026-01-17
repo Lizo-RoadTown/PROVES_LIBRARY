@@ -7,6 +7,8 @@ An agentic system for teams that move fast. Captures knowledge, creates SOPs, an
 [![Database: Supabase](https://img.shields.io/badge/database-Supabase-3ECF8E.svg)](https://supabase.com)
 [![Dashboard](https://img.shields.io/badge/dashboard-live-blue.svg)](https://proves-curation-dashboard.vercel.app/)
 
+Built for engineering teams who can't afford to lose institutional knowledge—space labs, flight software groups, and research teams where one person leaving shouldn't mean starting over.
+
 ---
 
 ## What It Does
@@ -84,11 +86,16 @@ git clone https://github.com/Lizo-RoadTown/PROVES_LIBRARY.git
 cd PROVES_LIBRARY
 pip install -r requirements.txt
 cp .env.example .env
-# Add Supabase credentials and Anthropic API key
+# Fill in: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE keys, DATABASE_URL
 
+# Queue up documentation to process
 python production/scripts/find_good_urls.py --proveskit
+
+# Run extraction on a few pages
 python production/Version\ 3/process_extractions_v3.py --limit 5
 ```
+
+When it works, you'll see extractions appear in the [dashboard](https://proves-curation-dashboard.vercel.app/) ready for review.
 
 ---
 
