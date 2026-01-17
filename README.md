@@ -20,13 +20,24 @@ Captures your organization's knowledge at multiple levels—both documented and 
 
 The system captures what your team knows before it walks out the door.
 
+### Query and Use
+
+Teams interact with captured knowledge through natural language.
+
+- **Answer questions** — "What components depend on the I2C bus?" or "What's the procedure for battery calibration?"
+- **Scan your own code** — Point it at your repo to assess risk or check for known failure patterns
+- **Source of truth** — Verified knowledge becomes the authoritative reference for processes and procedures
+- **Always available** — Organizational knowledge accessible to anyone on the team, anytime
+
+No more digging through Slack threads or asking who knows what.
+
 ### SOPs and Workflows
 
 Turns scattered information into structured procedures and maps how your systems connect.
 
-### Lean Team Support
+### Predictive Analysis
 
-Automates the busywork so small teams can punch above their weight.
+Neural network and predictive modeling to anticipate issues before they happen. *(planned)*
 
 ---
 
@@ -36,8 +47,18 @@ Built for [PROVES Kit](https://docs.proveskit.space/), an open-source CubeSat fr
 
 ## How It Works
 
-```
-Sources → Agents capture → Engineers verify → Knowledge base → Team queries
+```mermaid
+flowchart LR
+    DOCS[Sources] --> AGENTS[AI Agents]
+    AGENTS --> REVIEW[Human Review]
+    REVIEW --> LIB[Knowledge Base]
+    LIB --> QUERY[Team Queries]
+
+    style DOCS fill:#bbdefb
+    style AGENTS fill:#ffe0b2
+    style REVIEW fill:#ffb74d
+    style LIB fill:#a5d6a7
+    style QUERY fill:#f8bbd9
 ```
 
 Agents process your documentation, meetings, and correspondence. Engineers do a quick review to catch errors. Verified knowledge goes into a searchable database your whole team can query.
@@ -80,12 +101,21 @@ python production/Version\ 3/process_extractions_v3.py --limit 5
 
 ---
 
-## Related
+## Built On
 
-- [PROVES Kit](https://docs.proveskit.space/)
-- [F´ (F Prime)](https://nasa.github.io/fprime/)
-- [Bronco Space Lab](https://broncospace.cpp.edu/)
+- [PROVES Kit](https://docs.proveskit.space/) — Open-source CubeSat framework
+- [F´ (F Prime)](https://nasa.github.io/fprime/) — NASA JPL flight software framework
+- [Frames AI Research](docs/diagrams/frames-ai-overview.md) — Agentic knowledge capture research
 
 ---
 
-MIT License | **Bronco Space Lab** | Cal Poly Pomona
+## Contact
+
+**Liz Osborn** — eosborn@cpp.edu
+**Michael Pham** — mpham@cpp.edu
+
+[Bronco Space Lab](https://broncospace.cpp.edu/) | Cal Poly Pomona
+
+---
+
+MIT License
