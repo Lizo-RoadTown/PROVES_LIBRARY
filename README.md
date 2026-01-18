@@ -1,93 +1,113 @@
 # PROVES Library
 
-An agentic system for teams that move fast. Captures knowledge, creates SOPs, and understands workflows so lean teams can stay focused on building.
+Agentic AI for lean teams building in emergent technology. Extracts what matters from documentation, verifies it with engineers, and builds a knowledge graph that grows smarter over time.
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Database: Supabase](https://img.shields.io/badge/database-Supabase-3ECF8E.svg)](https://supabase.com)
 [![Dashboard](https://img.shields.io/badge/dashboard-live-blue.svg)](https://proves-curation-dashboard.vercel.app/)
 
-Built for engineering teams, space labs, flight software groups, and research teams, where teams work rapid and lean.
+Built for engineering teams in rapid prototyping phases who need to move fast without losing embodied knowledge.
 
 ---
 
-## What It Does
+## The Problem
 
-### Automated Knowledge Capture
+Small teams building complex systems lose knowledge constantly. Documentation gets stale. Decisions get forgotten. When someone leaves, their expertise walks out the door.
 
-Captures your organization's knowledge at multiple levels—both documented and embodied—so nothing gets lost along the way.
+Traditional knowledge bases don't help because they require manual entry and maintenance that lean teams don't have time for.
 
-- **Scans documentation** — Reads through repos, wikis, and docs to extract components, procedures, and dependencies
-- **Listens in meetings** — Captures decisions, action items, and context from team discussions *(in progress)*
-- **Updates from correspondence** — Learns from written and verbal communication to keep knowledge current
+## The Solution
 
-The system captures what your team knows before it walks out the door.
+AI agents that read your documentation and extract the **couplings** that matter: what connects to what, what breaks if something fails, what procedures maintain critical systems.
 
-### Query and Use
+But agents make mistakes. So engineers review every extraction before it enters the shared knowledge graph. This human-in-the-loop approach means the graph contains verified truth, not AI hallucinations.
 
-Teams interact with captured knowledge through natural language.
-
-- **Answer questions** — "What components depend on the I2C bus?" or "What's the procedure for battery calibration?"
-- **Scan your own code** — Point it at your repo to assess risk or check for known failure patterns
-- **Source of truth** — Verified knowledge becomes the authoritative reference for processes and procedures
-- **Always available** — Organizational knowledge accessible to anyone on the team, anytime
-
-### SOPs and Workflows
-
-Turns scattered information into structured procedures and maps how your systems connect.
-
-### Predictive Analysis
-
-Neural network and predictive modeling to anticipate issues before they happen. *(planned)*
-
----
-
-Built for [PROVES Kit](https://docs.proveskit.space/), an open-source CubeSat framework on NASA JPL's [F´](https://nasa.github.io/fprime/) flight software.
+The result: a growing knowledge graph that answers questions, identifies risks, and eventually powers predictive modeling.
 
 ---
 
 ## How It Works
 
-```mermaid
-flowchart LR
-    DOCS[Sources] --> AGENTS[AI Agents]
-    AGENTS --> REVIEW[Human Review]
-    REVIEW --> LIB[Knowledge Base]
-    LIB --> QUERY[Team Queries]
-
-    style DOCS fill:#bbdefb
-    style AGENTS fill:#ffe0b2
-    style REVIEW fill:#ffb74d
-    style LIB fill:#a5d6a7
-    style QUERY fill:#f8bbd9
+```
+Sources → AI Extraction → Engineer Review → Knowledge Graph → Team Queries
+                              ↓
+                    (nothing enters without approval)
 ```
 
-Agents process your documentation, meetings, and correspondence. Engineers do a quick review to catch errors. Verified knowledge goes into a searchable database your whole team can query.
+**Agents extract.** They read repos, wikis, and docs to identify components, interfaces, procedures, and dependencies.
+
+**Engineers verify.** Every extraction goes through human review. Approve, reject, or edit. Nothing enters the shared graph without sign-off.
+
+**Knowledge accumulates.** Verified extractions become the authoritative source of truth that the whole team can query.
 
 ---
 
-## Components
+## Architecture
 
-| Component | Description |
-|-----------|-------------|
-| **Extraction Pipeline** | LangGraph agents that process documentation |
-| **Knowledge Graph** | PostgreSQL + pgvector for entities and relationships |
-| **Dashboard** | Web UI for verification ([live](https://proves-curation-dashboard.vercel.app/)) |
-| **MCP Server** | Query interface for team questions |
+The system has three surfaces:
 
-## Supported Sources
+### Mission Control (Shared Awareness)
 
-The system can extract knowledge from multiple source types:
+A read-only view showing activity across all teams. Heat maps of who's active, pipeline flow visualization, real-time awareness of what's happening across the project.
 
-| Source Type | What It Captures |
-|-------------|------------------|
-| **Web Documentation** | F', PROVES Kit docs, tutorials, API references |
-| **GitHub Repos** | Code comments, READMEs, architecture patterns |
-| **Notion** | Team wikis, meeting notes, project documentation |
-| **Google Drive** | Shared docs, spreadsheets, technical specs |
-| **Discord** | Team discussions, decisions, Q&A threads |
+### Library (Validated Knowledge)
 
-For team collaboration sources setup, see [Team Sources Setup Guide](docs/TEAM_SOURCES_SETUP.md).
+The shared knowledge graph. Search and browse verified entities, relationships, and procedures. This is the source of truth that all teams contribute to and query from.
+
+### Admin (Team Workspace)
+
+Each team's private workspace. Manage your sources, review your extractions, monitor your ingestion pipeline. Your data stays yours until you promote it to the shared graph.
+
+---
+
+## For Distributed Teams
+
+Multiple remote teams, each with their own workspace, building one unified knowledge base.
+
+Each team:
+- Connects their own sources (repos, docs, wikis)
+- Reviews their own extractions
+- Promotes verified knowledge to the shared graph
+
+The shared graph grows from contributions across all teams. Mission Control shows who's active and where knowledge is flowing.
+
+---
+
+## What Gets Extracted
+
+Not generic "knowledge" - **couplings**. The system focuses on what connects to what:
+
+| Question | Why It Matters |
+|----------|----------------|
+| What flows between components? | Data, power, commands, thermal |
+| What breaks if this fails? | Downstream dependencies |
+| What maintains this? | Procedures, monitoring, redundancy |
+| How critical is this coupling? | Critical / Important / Minor |
+
+This coupling-aware extraction is what makes the graph useful for risk analysis and future predictive modeling.
+
+---
+
+## The Roadmap
+
+**Now:** Extraction pipeline, human review, knowledge graph, team workspaces
+
+**Next:** Query interface via MCP, natural language questions against the graph
+
+**Planned:** Graph neural network for predictive analysis - using the verified knowledge graph as training data to anticipate issues before they happen
+
+---
+
+## Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Database** | Supabase (PostgreSQL + pgvector) |
+| **LLM** | Claude (Anthropic) |
+| **Orchestration** | LangGraph |
+| **Frontend** | React + Vite |
+| **Query** | Model Context Protocol (MCP) |
 
 ---
 
@@ -99,40 +119,51 @@ cd PROVES_LIBRARY
 pip install -r requirements.txt
 cp .env.example .env
 # Fill in: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE keys, DATABASE_URL
+```
 
-# Queue up documentation to process
+**Run migrations:**
+```powershell
+cd supabase
+.\migrate.ps1 -List          # See available migrations
+.\migrate.ps1 034            # Apply a specific migration
+```
+
+**Process some documentation:**
+```bash
 python production/scripts/find_good_urls.py --proveskit
-
-# Run extraction on a few pages
 python production/Version\ 3/process_extractions_v3.py --limit 5
 ```
 
-When it works, you'll see extractions appear in the [dashboard](https://proves-curation-dashboard.vercel.app/) ready for review.
+Extractions appear in the [dashboard](https://proves-curation-dashboard.vercel.app/) ready for review.
 
 ---
 
-## Stack
+## Repository Structure
 
-- **LLM**: Claude (Anthropic)
-- **Orchestration**: LangGraph
-- **Database**: Supabase (PostgreSQL + pgvector)
-- **Frontend**: React, Vite
-- **Query**: Model Context Protocol
+| Folder | Purpose |
+|--------|---------|
+| `curation_dashboard/` | React dashboard (separate repo, deployed via Vercel) |
+| `supabase/migrations/` | Database schema migrations |
+| `production/` | Extraction pipeline code |
+| `canon/` | Design principles and ontology |
+| `.deepagents/` | Agent contracts and implementation roadmap |
 
 ---
 
-## Built On
+## Currently In Use
 
-- [PROVES Kit](https://docs.proveskit.space/) — Open-source CubeSat framework
-- [F´ (F Prime)](https://nasa.github.io/fprime/) — NASA JPL flight software framework
-- [Frames AI Research](docs/diagrams/frames-ai-overview.md) — Agentic knowledge capture research
+Built for [PROVES Kit](https://docs.proveskit.space/), an open-source CubeSat framework running on NASA JPL's [F' (F Prime)](https://nasa.github.io/fprime/) flight software.
+
+Active teams: Cal Poly Pomona, Columbia University, Northeastern University, UC Santa Cruz, Texas State University
+
+Each team builds their own satellites and ground stations. The shared knowledge graph helps them learn from each other without duplicating mistakes.
 
 ---
 
 ## Contact
 
-**Liz Osborn** — eosborn@cpp.edu
-**Michael Pham** — mpham@cpp.edu
+**Liz Osborn** - eosborn@cpp.edu
+**Michael Pham** - mpham@cpp.edu
 
 [Bronco Space Lab](https://broncospace.cpp.edu/) | Cal Poly Pomona
 
