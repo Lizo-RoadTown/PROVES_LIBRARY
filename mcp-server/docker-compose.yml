@@ -1,0 +1,65 @@
+# Docker Compose for PROVES MCP Server
+#
+# Usage:
+#   docker compose up -d        # Start server
+#   docker compose logs -f      # View logs
+#   docker compose down         # Stop server
+
+services:
+  proves-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: proves-mcp-server
+    ports:
+      - "${MCP_PORT:-8000}:8000"
+    environment:
+      # Database connection (required)
+      - DATABASE_URL=${DATABASE_URL}
+
+      # Supabase API (optional, for future features)
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY:-}
+
+      # Anthropic API (optional, for deep search tools)
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+
+      # Logging
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+    restart: unless-stopped
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+# For development with hot-reload
+  proves-mcp-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: proves-mcp-dev
+    ports:
+      - "${MCP_PORT:-8001}:8000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - ./src:/app/src:ro
+      - ./source_registry.yaml:/app/source_registry.yaml:ro
+    profiles:
+      - dev
+    restart: "no"

@@ -40,6 +40,9 @@ import sys
 sys.path.insert(0, str(version3_folder))
 from database import get_connection, get_db_connection
 
+# Import team collaboration loaders (Notion, Google Drive, Discord)
+from team_loaders import TEAM_LOADER_TOOLS
+
 
 @tool
 def get_ontology() -> str:

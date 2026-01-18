@@ -24,6 +24,18 @@ from extractor_v3 import (
     get_ontology,
 )
 
+# Import team collaboration loaders (Notion, Google Drive, Discord)
+from team_loaders import (
+    fetch_notion_page,
+    fetch_notion_database,
+    fetch_google_doc,
+    fetch_google_sheet,
+    list_google_drive_folder,
+    fetch_discord_channel,
+    fetch_discord_thread,
+    search_discord_messages,
+)
+
 # Import validator tools from v3 validator in same folder
 from validator_v3 import (
     get_pending_extractions,
@@ -352,8 +364,18 @@ Your final response should be structured text that includes:
 
 Work step-by-step through the workflow above.""",
         "tools": [
+            # Documentation fetching
             fetch_webpage,
-            # Lineage creation removed - storage handles it deterministically
+            # Team collaboration sources
+            fetch_notion_page,
+            fetch_notion_database,
+            fetch_google_doc,
+            fetch_google_sheet,
+            list_google_drive_folder,
+            fetch_discord_channel,
+            fetch_discord_thread,
+            search_discord_messages,
+            # Database queries for confidence calibration
             query_verified_entities,
             query_staging_history,
             get_ontology,  # Optional: Full FRAMES reference if needed

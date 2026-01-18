@@ -93,6 +93,9 @@ def store_extraction(
     # EPISTEMIC DEFAULTS + OVERRIDES PATTERN (anti-boilerplate optimization)
     epistemic_defaults: dict = None,  # Defaults for all candidates from this page/snapshot
     epistemic_overrides: dict = None,  # Overrides for this specific candidate (only what differs)
+    # ORGANIZATION/PROVENANCE (Multi-tenant support - Migration 023)
+    source_organization_id: str = None,  # UUID of org that owns the source (auto-detected from team_sources if not provided)
+    submitted_by_user_id: str = None,  # UUID of user who triggered extraction (if known)
     # Knowledge Capture Checklist (7 questions) - stored in knowledge_epistemics sidecar
     domain: str = "external",  # 'fprime', 'proveskit', 'external', etc.
     # EPISTEMIC ATTRIBUTION: You are the RECORDER, not the OBSERVER
@@ -180,6 +183,11 @@ def store_extraction(
                 "source_type": "webpage",
                 "fetch_timestamp": "2025-12-23T10:45:32Z"
             }
+        source_organization_id: UUID of the organization that owns the source.
+            If not provided, auto-detected from team_sources table based on source_id.
+            Routes extraction to org's review queue. Required for multi-tenant support.
+        submitted_by_user_id: UUID of user who triggered the extraction (if known).
+            Useful for attribution and tracking who submitted what.
         observer_id: WHO claimed to know this (NOT you the AI!)
             - "designers" | "authors" | "maintainers" | "system" | "unknown"
             - You are the RECORDER (artifact_recorder_id = ai:extractor_v3)
@@ -438,6 +446,8 @@ def store_extraction(
             evidence = json.dumps(evidence_data)
 
             # Insert into staging_extractions (core extraction data)
+            # Note: source_organization_id routes to correct org's review queue (Migration 023)
+            # If not provided, trigger auto_assign_extraction_org will try to get it from team_sources
             cur.execute("""
                 INSERT INTO staging_extractions (
                     pipeline_run_id, snapshot_id, agent_id, agent_version,
@@ -446,7 +456,8 @@ def store_extraction(
                     evidence, evidence_type, status,
                     evidence_checksum, evidence_byte_offset, evidence_byte_length,
                     lineage_verified, lineage_confidence, lineage_verified_at,
-                    lineage_verification_details
+                    lineage_verification_details,
+                    source_organization_id, submitted_by_user_id
                 ) VALUES (
                     %s::uuid, %s::uuid, %s, %s,
                     %s::candidate_type, %s, %s::jsonb,
@@ -454,7 +465,8 @@ def store_extraction(
                     %s::jsonb, %s::evidence_type, 'pending'::candidate_status,
                     %s, %s, %s,
                     %s, %s, %s,
-                    %s::jsonb
+                    %s::jsonb,
+                    %s::uuid, %s::uuid
                 ) RETURNING extraction_id
             """, (
                 run_id, source_snapshot_id, 'storage_agent', '1.0',
@@ -463,7 +475,8 @@ def store_extraction(
                 evidence, evidence_type,
                 evidence_checksum, evidence_byte_offset, evidence_byte_length,
                 lineage_verified, lineage_confidence, lineage_verified_at,
-                json.dumps(lineage_verification_details)
+                json.dumps(lineage_verification_details),
+                source_organization_id, submitted_by_user_id
             ))
             extraction_id = cur.fetchone()[0]
 
@@ -578,10 +591,10 @@ def promote_to_core(
                 promoted_at, entity_id, action = promotion_status
                 return f"[SKIPPED] Already promoted on {promoted_at} (action: {action}, entity_id: {entity_id})"
 
-            # STEP 2: Get the staging extraction
+            # STEP 2: Get the staging extraction (including org provenance from Migration 023)
             cur.execute("""
                 SELECT candidate_type::text, candidate_key, candidate_payload, ecosystem::text,
-                       confidence_score, snapshot_id
+                       confidence_score, snapshot_id, source_organization_id, submitted_by_user_id
                 FROM staging_extractions WHERE extraction_id = %s::uuid
             """, (extraction_id,))
             row = cur.fetchone()
@@ -589,7 +602,7 @@ def promote_to_core(
             if not row:
                 return f"Extraction {extraction_id} not found"
 
-            candidate_type, candidate_key, payload, ecosystem, confidence, snapshot_id = row
+            candidate_type, candidate_key, payload, ecosystem, confidence, snapshot_id, source_org_id, submitted_by_id = row
             final_name = canonical_name or candidate_key
 
             # STEP 3: Hard Identity Matching (if not explicitly provided)
@@ -672,22 +685,25 @@ def promote_to_core(
                 ))
 
             else:
-                # CREATE: New core entity
+                # CREATE: New core entity (with org attribution from Migration 023)
                 action = 'created'
                 cur.execute("""
                     INSERT INTO core_entities (
                         entity_type, canonical_key, name, display_name,
                         ecosystem, attributes,
-                        source_snapshot_id, created_by_run_id
+                        source_snapshot_id, created_by_run_id,
+                        contributed_by_org_id, verified_by_user_id
                     ) VALUES (
                         %s::entity_type, %s, %s, %s,
                         %s::ecosystem_type, %s::jsonb,
+                        %s::uuid, %s::uuid,
                         %s::uuid, %s::uuid
                     ) RETURNING id
                 """, (
                     candidate_type, candidate_key, final_name, final_name,
                     ecosystem, json.dumps(payload) if payload else '{}',
-                    snapshot_id, run_id
+                    snapshot_id, run_id,
+                    source_org_id, submitted_by_id
                 ))
                 entity_id = str(cur.fetchone()[0])
 

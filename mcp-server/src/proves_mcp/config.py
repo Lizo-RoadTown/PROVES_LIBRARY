@@ -17,15 +17,30 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    # Database
-    neon_database_url: str = Field(
+    # Database (Supabase)
+    database_url: str = Field(
         default="",
-        description="PostgreSQL connection string for Neon database"
+        alias="DATABASE_URL",
+        description="PostgreSQL connection string for Supabase database"
+    )
+
+    # Supabase API (for auth and real-time features)
+    supabase_url: Optional[str] = Field(
+        default=None,
+        alias="NEXT_PUBLIC_SUPABASE_URL",
+        description="Supabase project URL"
+    )
+
+    supabase_anon_key: Optional[str] = Field(
+        default=None,
+        alias="NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        description="Supabase anonymous key"
     )
 
     # For agent-backed deep tools
     anthropic_api_key: Optional[str] = Field(
         default=None,
+        alias="ANTHROPIC_API_KEY",
         description="Anthropic API key for deep search tools"
     )
 

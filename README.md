@@ -75,6 +75,20 @@ Agents process your documentation, meetings, and correspondence. Engineers do a 
 | **Dashboard** | Web UI for verification ([live](https://proves-curation-dashboard.vercel.app/)) |
 | **MCP Server** | Query interface for team questions |
 
+## Supported Sources
+
+The system can extract knowledge from multiple source types:
+
+| Source Type | What It Captures |
+|-------------|------------------|
+| **Web Documentation** | F', PROVES Kit docs, tutorials, API references |
+| **GitHub Repos** | Code comments, READMEs, architecture patterns |
+| **Notion** | Team wikis, meeting notes, project documentation |
+| **Google Drive** | Shared docs, spreadsheets, technical specs |
+| **Discord** | Team discussions, decisions, Q&A threads |
+
+For team collaboration sources setup, see [Team Sources Setup Guide](docs/TEAM_SOURCES_SETUP.md).
+
 ---
 
 ## Quick Start

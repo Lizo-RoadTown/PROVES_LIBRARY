@@ -146,11 +146,16 @@ class SourceRegistry:
         """Get F' repository URL."""
         self.load()
         return self.fprime.get('docs', {}).get('repo', 'github.com/nasa/fprime')
-    
+
     def get_proveskit_repos(self) -> Dict[str, Dict[str, Any]]:
         """Get all ProvesKit repository configurations."""
         self.load()
         return self.proveskit.get('repos', {})
+
+    def get_all_hardware(self) -> Dict[str, Dict[str, Any]]:
+        """Get all hardware components from the registry."""
+        self.load()
+        return self.proveskit.get('hardware', {})
     
     def find_matching_topics(self, query: str) -> List[str]:
         """
