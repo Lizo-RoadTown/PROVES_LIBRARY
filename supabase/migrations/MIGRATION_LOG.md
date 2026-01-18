@@ -33,6 +33,7 @@ Tracks all database migrations applied to the PROVES Library Supabase project.
 | 019 | enhanced_human_review | 2026-01-17 | Enhanced human review workflow |
 | 020 | user_attachments | 2026-01-17 | User attachments (student notebook) - pointers not copies |
 | 021 | answer_evidence | 2026-01-17 | Answer evidence tracking for Ask surface |
+| 022 | team_sources | 2026-01-17 | Team sources for Admin extraction pipelines |
 | 20260115191105 | teams_and_batch_claims | 2026-01-15 | Teams and batch claim system |
 
 ---
@@ -72,6 +73,11 @@ These files don't follow the timestamp naming pattern and are skipped by Supabas
 - `answer_evidence` - Sources used per answer
 - `answer_metadata` - Confidence/freshness per answer
 
+### Admin Surface (Extraction Pipelines)
+- `team_sources` - Connected sources (Discord, Notion, Google Drive, GitHub)
+- `crawl_jobs` - Ingestion queue and job tracking
+- `crawl_items` - Discovered items from crawls
+
 ---
 
 ## Notes
@@ -85,6 +91,7 @@ These files don't follow the timestamp naming pattern and are skipped by Supabas
 ### 2026-01-17: Week 3-4 Dashboard Features
 - Migration 020: User attachments for "student notebook" model
 - Migration 021: Answer evidence tracking for evidence strip UI
+- Migration 022: Team sources for Admin extraction pipelines (Discord, Notion, Google Drive, GitHub)
 
 ---
 
