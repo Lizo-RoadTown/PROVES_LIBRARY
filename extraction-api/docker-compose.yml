@@ -1,0 +1,27 @@
+# PROVES Extraction API - Docker Compose
+#
+# Usage (from project root):
+#   docker-compose -f extraction-api/docker-compose.yml up -d
+#   docker-compose -f extraction-api/docker-compose.yml logs -f
+#   docker-compose -f extraction-api/docker-compose.yml down
+#
+# The API will be available at http://localhost:8080
+
+services:
+  extraction-api:
+    build:
+      context: ..
+      dockerfile: extraction-api/Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - ../.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

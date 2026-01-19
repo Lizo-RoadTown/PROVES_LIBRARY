@@ -36,22 +36,28 @@ _pool_lock = Lock()
 
 
 def _get_db_url() -> str:
-    """Get database URL from environment, loading .env if needed."""
-    # Check if already loaded
-    db_url = os.environ.get('DATABASE_URL')
-    if db_url:
-        return db_url
+    """Get database URL from environment, loading .env if needed.
 
-    # Try to load from .env
+    Prefers DIRECT_URL or PROVES_DATABASE_URL (port 5432) over DATABASE_URL
+    because psycopg doesn't understand the ?pgbouncer=true query parameter
+    that Supabase adds to the pooled connection URL.
+    """
+    # Try to load from .env first
     version3_folder = Path(__file__).parent
     project_root = version3_folder.parent.parent
     load_dotenv(project_root / '.env')
 
-    db_url = os.environ.get('DATABASE_URL')
+    # Prefer direct connection URLs (no pgbouncer parameter)
+    db_url = (
+        os.environ.get('DIRECT_URL') or
+        os.environ.get('PROVES_DATABASE_URL') or
+        os.environ.get('DATABASE_URL')
+    )
+
     if not db_url:
         raise ValueError(
-            "DATABASE_URL not set. "
-            "Check your .env file or environment variables."
+            "No database URL set. "
+            "Set DIRECT_URL, PROVES_DATABASE_URL, or DATABASE_URL in your .env file."
         )
     return db_url
 

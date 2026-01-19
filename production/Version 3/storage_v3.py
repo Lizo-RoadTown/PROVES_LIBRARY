@@ -538,12 +538,18 @@ def store_extraction(
                 reenactment_required, practice_interval, skill_transferability
             ))
         conn.commit()
-        conn.close()
 
         return f"[STAGED] Extraction recorded (ID: {extraction_id})\n  Type: {candidate_type}\n  Key: {candidate_key}\n  Confidence: {confidence_score}"
 
     except Exception as e:
         return f"Error storing extraction: {str(e)}"
+    finally:
+        # CRITICAL: Always return connection to pool to prevent exhaustion
+        if 'conn' in dir() and conn is not None:
+            try:
+                conn.close()
+            except Exception:
+                pass  # Ignore close errors
 
 
 @tool

@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 import psycopg2
 
 load_dotenv()
-db_url = os.getenv('DATABASE_URL')
+# Prefer direct connection URLs (no pgbouncer parameter)
+db_url = os.getenv('DIRECT_URL') or os.getenv('PROVES_DATABASE_URL') or os.getenv('DATABASE_URL')
 
 conn = psycopg2.connect(db_url)
 cur = conn.cursor()
