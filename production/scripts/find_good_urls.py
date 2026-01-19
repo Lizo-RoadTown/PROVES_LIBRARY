@@ -37,8 +37,10 @@ from dotenv import load_dotenv
 import psycopg
 
 # Setup paths
-sys.path.insert(0, str(Path(__file__).parent.parent))
-load_dotenv(os.path.join(Path(__file__).parent.parent, '.env'))
+# Script is in production/scripts/, project root is 2 levels up
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+load_dotenv(project_root / '.env')
 
 
 class SmartWebFetchAgent:
@@ -49,9 +51,17 @@ class SmartWebFetchAgent:
 
     def __init__(self):
         """Initialize with database connection."""
-        self.db_url = os.environ.get('DATABASE_URL')
+        # Use DIRECT_URL (no pgbouncer) or fall back to DATABASE_URL
+        self.db_url = (
+            os.environ.get('DIRECT_URL') or
+            os.environ.get('PROVES_DATABASE_URL') or
+            os.environ.get('DATABASE_URL')
+        )
         if not self.db_url:
-            raise ValueError("DATABASE_URL not set in environment")
+            raise ValueError("DATABASE_URL or DIRECT_URL not set in environment")
+        # Strip pgbouncer param if present (psycopg doesn't support it)
+        if 'pgbouncer' in self.db_url:
+            self.db_url = self.db_url.split('?')[0]
 
     def get_processed_urls(self) -> Set[str]:
         """Get URLs that have already been added to queue or processed."""

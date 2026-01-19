@@ -175,13 +175,13 @@ Return format:
     # The extractor uses markdown format like: **candidate_key:** RadioModule_to_FlightControllerBoard
     import re
 
-    # Pattern: match "candidate_key" preceded by any chars (including **), then : and the value
+    # Pattern: match "candidate_key" in markdown format like **candidate_key:** value
     # Value can contain letters, numbers, underscores, colons, hyphens, dots
-    key_pattern = r'candidate_key[*]*:\s*`?([A-Za-z0-9_:\-\.]+)`?'
+    key_pattern = r'\*?\*?candidate_key\*?\*?:\*?\*?\s*`?([A-Za-z0-9_:\-\.]+)`?'
     candidate_keys = re.findall(key_pattern, final_message, re.IGNORECASE)
 
     # Pattern for candidate_type
-    type_pattern = r'candidate_type[*]*:\s*`?([a-z_]+)`?'
+    type_pattern = r'\*?\*?candidate_type\*?\*?:\*?\*?\s*`?([a-z_]+)`?'
     candidate_types = re.findall(type_pattern, final_message, re.IGNORECASE)
 
     # Debug: print what we found
