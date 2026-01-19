@@ -240,15 +240,15 @@ If context seems stale, read these in order:
 
 ## Current State (Auto-Generated)
 
-> Last refreshed: 2026-01-18 14:30
+> Last refreshed: 2026-01-18 16:58
 
 ### Git Status
 - **Branch:** main
-- **Uncommitted changes:** 0 files
+- **Uncommitted changes:** 2 files
 - **Recent commits:**
+  - 7b8b7fa updated the CLAUDE.md and README.md files with new information.
   - d17d5b1 Add tenant isolation and Mission Control data hooks
   - f3227bf Add PROVES university teams and migrations
-  - 2b4c52a Fix graph nodes timestamp type mismatch (migration 028)
 
 ### Implementation Phase
 - **Current:** Naming and Standards Alignment (Week 3)

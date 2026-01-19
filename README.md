@@ -39,7 +39,11 @@ Sources → AI Extraction → Engineer Review → Knowledge Graph → Team Queri
 
 **Engineers verify.** Every extraction goes through human review. Approve, reject, or edit. Nothing enters the shared graph without sign-off.
 
-**Knowledge accumulates.** Verified extractions become the authoritative source of truth that the whole team can query.
+**Agents learn.** Engineer feedback improves the agents over time. Each approval, rejection, and correction teaches the system better domain knowledge. This is active learning (human-in-the-loop) - the same approach used to train modern AI systems like ChatGPT. The more your team reviews, the smarter the extraction becomes for your specific technical context, and the less oversight engineers need to provide.
+
+**Knowledge normalizes.** Before entering the graph, verified knowledge goes through a normalization process that prepares it for multiple immediately useful processes: semantic search, relationship mapping, gap analysis, and future predictive modeling. This standardization ensures consistent structure across all team contributions.
+
+**Knowledge accumulates.** Verified and normalized extractions become the authoritative source of truth that the whole team can query.
 
 ---
 
