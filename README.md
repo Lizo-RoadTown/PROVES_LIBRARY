@@ -3,7 +3,7 @@
 Agentic AI for lean teams building in emergent technology. Extracts what matters from documentation, verifies it with engineers, and builds a knowledge graph that grows smarter over time.
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License: All Rights Reserved](https://img.shields.io/badge/License-All%20Rights%20Reserved-red.svg)](LICENSE)
 [![Database: Supabase](https://img.shields.io/badge/database-Supabase-3ECF8E.svg)](https://supabase.com)
 [![Dashboard](https://img.shields.io/badge/dashboard-live-blue.svg)](https://proves-curation-dashboard.vercel.app/)
 
@@ -115,62 +115,23 @@ This coupling-aware extraction is what makes the graph useful for risk analysis 
 
 ---
 
-## Quick Start
+## Access
 
-```bash
-git clone https://github.com/Lizo-RoadTown/PROVES_LIBRARY.git
-cd PROVES_LIBRARY
-pip install -r requirements.txt
-cp .env.example .env
-# Fill in: ANTHROPIC_API_KEY, SUPABASE_URL, SUPABASE keys, DATABASE_URL
-```
-
-**Run migrations:**
-```powershell
-cd supabase
-.\migrate.ps1 -List          # See available migrations
-.\migrate.ps1 034            # Apply a specific migration
-```
-
-**Process some documentation:**
-```bash
-python production/scripts/find_good_urls.py --proveskit
-python production/Version\ 3/process_extractions_v3.py --limit 5
-```
-
-Extractions appear in the [dashboard](https://proves-curation-dashboard.vercel.app/) ready for review.
-
----
-
-## Repository Structure
-
-| Folder | Purpose |
-|--------|---------|
-| `curation_dashboard/` | React dashboard (separate repo, deployed via Vercel) |
-| `supabase/migrations/` | Database schema migrations |
-| `production/` | Extraction pipeline code |
-| `canon/` | Design principles and ontology |
-| `.deepagents/` | Agent contracts and implementation roadmap |
+This repository is available for viewing and research reference only. For collaboration or access inquiries, contact lizosborn@gmail.com
 
 ---
 
 ## Currently In Use
 
-Built for [PROVES Kit](https://docs.proveskit.space/), an open-source CubeSat framework running on NASA JPL's [F' (F Prime)](https://nasa.github.io/fprime/) flight software.
-
-Active teams: Cal Poly Pomona, Columbia University, Northeastern University, UC Santa Cruz, Texas State University
-
-Each team builds their own satellites and ground stations. The shared knowledge graph helps them learn from each other without duplicating mistakes.
+Built for [PROVES Kit](https://github.com/Open-Source-Space-Foundation), an open-source CubeSat framework running on NASA JPL's [F' (F Prime)](https://nasa.github.io/fprime/) flight software.
 
 ---
 
 ## Contact
 
-**Liz Osborn** - eosborn@cpp.edu
-**Michael Pham** - mpham@cpp.edu
-
-[Bronco Space Lab](https://broncospace.cpp.edu/) | Cal Poly Pomona
+**Liz Osborn** - lizosborn@gmail.com
+**Michael Pham**
 
 ---
 
-MIT License
+© 2026 Elizabeth Osborn. All rights reserved.

@@ -1,7 +1,0 @@
-{
-  "dependencies": ["../../production"],
-  "graphs": {
-    "curator": "../../production/curator/agent_v2.py:graph"
-  },
-  "env": "../../.env"
-}

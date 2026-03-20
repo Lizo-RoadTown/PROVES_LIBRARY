@@ -107,3 +107,41 @@ curation_dashboard/
 
 # Root package.json (not a node project)
 /package.json
+
+# Visual Studio artifacts
+.vs/
+
+# Local Python lib (pip install --target)
+Lib/
+
+# Notebooks (local experiments)
+notebooks/
+
+# Testing artifacts
+testing/
+testing_data/
+
+# Legacy/unused folders
+langchain/
+PROVES_AI/
+PROVES_NOTION/
+
+# Local setup/config files
+.mcp.json
+.markdownlint.json
+_config.yml
+nul
+fix_function.sql
+setup.bat
+setup.sh
+setup.py
+refresh-memory.ps1
+
+# Credentials
+credentials/
+
+# Claude local config
+.claude/
+
+# Docs site (GitHub Pages artifacts)
+docs/
