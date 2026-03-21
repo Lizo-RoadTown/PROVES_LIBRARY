@@ -129,7 +129,7 @@ Built for [PROVES Kit](https://github.com/Open-Source-Space-Foundation), an open
 
 ## Contact
 
-**Liz Osborn** - lizosborn@gmail.com
+**Liz Osborn** - lizocontactinfo@gmail.com
 **Michael Pham**
 
 ---
