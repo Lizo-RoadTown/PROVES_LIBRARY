@@ -117,7 +117,7 @@ This coupling-aware extraction is what makes the graph useful for risk analysis 
 
 ## Access
 
-This repository is available for viewing and research reference only. For collaboration or access inquiries, contact lizosborn@gmail.com
+This repository is available for viewing and research reference only. For collaboration or access inquiries, contact lizocontactinfo@gmail.com
 
 ---
 
