@@ -145,3 +145,7 @@ credentials/
 
 # Docs site (GitHub Pages artifacts)
 docs/
+
+# Private design/canon and production scripts
+canon/
+production/
